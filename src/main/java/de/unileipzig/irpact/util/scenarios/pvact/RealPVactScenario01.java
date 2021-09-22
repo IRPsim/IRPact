@@ -141,6 +141,8 @@ public class RealPVactScenario01 extends AbstractPVactScenario {
         root.getGeneral().setFirstSimulationYear(2008);
         root.getGeneral().setLastSimulationYear(2008);
         root.getGeneral().useInfoLogging();
+        root.getGeneral().enableAllResultLogging();
+        root.getGeneral().setEvaluationBucketSize(0.1);
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());
         root.setAgentPopulationSize(population);

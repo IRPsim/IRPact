@@ -151,6 +151,12 @@ InGenericOutputImage_cumulativeAnnualPhase:
 InGenericOutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InGenericOutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InGenericOutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InGenericOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -188,6 +194,12 @@ InGnuPlotOutputImage_cumulativeAnnualPhase:
 InGnuPlotOutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InGnuPlotOutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InGnuPlotOutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InGnuPlotOutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -225,6 +237,12 @@ InROutputImage_cumulativeAnnualPhase:
 InROutputImage_cumulativeAnnualPhase2:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (mit Initialen)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden bei den Daten berücksichtigt, aber nicht direkt visualisiert."
+InROutputImage_annualInterest2D:
+  gams_identifier: "Darstellung: Jährliches Interesse (2D)"
+  gams_description: "Stellt die Entwicklung des jährlichen Interesses dar."
+InROutputImage_annualPhaseOverview:
+  gams_identifier: "Darstellung: Jährliche Phasenübersicht"
+  gams_description: "Stellt die Entwicklung des Phasen dar."
 InROutputImage_storeScript:
   gams_identifier: "Skript speichern?"
   gams_description: "Speichert auf Wunsch das Skript für die Bilderzeugung."
@@ -294,15 +312,43 @@ InConsumerAgentGroupColor_groups:
 data_output:
   edn_label: "Datenausgabe"
   edn_description: "Hier kann die Datenausgabe konfiguriert werden."
-InGeneral_logResultAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
-InGeneral_logResultAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
 InGeneral_logResultAdoptionsAll:
   gams_identifier: "Komplettausgabe"
   gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
+InGeneral_logPerformance:
+  gams_identifier: "Performance"
+  gams_description: "Performance.xlsx"
+InGeneral_logPhaseOverview:
+  gams_identifier: "Phasenübersicht"
+  gams_description: "Phasenuebersicht.xlsx"
+InGeneral_logInterest:
+  gams_identifier: "Interessensentwicklung"
+  gams_description: "Interesse.xlsx"
+InGeneral_logEvaluation:
+  gams_identifier: "Evaluierungsdaten"
+  gams_description: "Evaluierung.xlsx"
+InGeneral_evaluationBucketSize:
+  gams_identifier: "Bereichsgröße (Evaluierungswerte)"
+  gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
+
+data_analysis:
+  edn_label: "Postanalyse"
+  edn_description: "Konfiguriert die Daten, welche für eine Postanalyse gesammelt werden sollen. Die Daten werden in einer Zip (Analyse.zip) gesammelt."
+InGeneral_logNonAdopterAnalysis:
+  gams_identifier: "Nicht-Adopter"
+  gams_description: "Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)"
+InGeneral_logInitialAdopterAnalysis:
+  gams_identifier: "Initiale Adopter"
+  gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
+InGeneral_logAdoptionAnalysis:
+  gams_identifier: "Adoptions"
+  gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
+InGeneral_logDecisionAnalysis:
+  gams_identifier: "Decision making"
+  gams_description: "Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)"
+InGeneral_logFinancialThresholdAnalysis:
+  gams_identifier: "Financial Threshold"
+  gams_description: "Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)"
 
 
 informations:
@@ -312,7 +358,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.5.1"
+  edn_description: "IRPact v1.8.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2457,3 +2503,11 @@ InGraphvizGeneral_layoutAlgCIRCO:
 InGraphvizGeneral_scaleFactor:
   gams_identifier: "Skalierungsfaktor"
   gams_description: "Definiert den Skalierungsfaktor."
+
+#deprecated
+InGeneral_logResultAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+InGeneral_logResultAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."

@@ -1,0 +1,145 @@
+
+//0.36 = 0.36 + (x +  / 5
+//1 = 5 / 5
+
+//0|0.36 und 5|1
+// dx = (5 - 0), dy = (1-0.36)
+//
+
+/*
+simple:
+ */
+
+/*
+v1: nicht stetig
+x = [linspace(0,5,25);  linspace(5,10,25)];
+y = [10 - x(1,:);  10 * exp(-x(2,:))];
+figure(1)
+plot(x', y')
+grid
+ */
+
+/*
+v2: stetig
+x = [linspace(0,5,25);  linspace(5,10,25)];
+y = [10 - x(1,:);  5 * exp(-x(2,:) + 5)];
+figure(1)
+plot(x', y')
+grid
+ */
+
+/*
+[x0,y1]
+y0 * e^((-x + x0)*(1/y1))
+ */
+
+/*
+v3: erst exp, dann linear
+x = [linspace(0,5,25);  linspace(5,10,25)];
+y = [exp(-1./5 * x(1,:));  x(2,:)];
+figure(1)
+plot(x', y')
+grid
+ */
+
+/*
+x = [linspace(0,5,50);  linspace(5,10,50)];
+y = [1 - 0.1* x(1,:); 0.5 * exp(((-x(2,:) + 5)*(1./10)))];
+figure(1)
+plot(x', y')
+grid
+ */
+
+/*
+x = linspace(0,10,25);
+y = 1 * exp(-x * (1./10));
+plot(x,y)
+ */
+
+/*
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,10,50)];
+y = [0.7 + 0*x(1,:); 1 - 0.1 * x(2,:); 0.5 * exp(((-x(3,:) + 5)*(1./10)))];
+figure(1)
+plot(x', y')
+grid
+ */
+
+/*
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,10,50)];
+y = [0.7 + 0*x(1,:); 0.7 - 0.1 * (x(2,:) - 2); 0.4 * exp((-(x(3,:) - 5)*(1./10)))];
+figure(1)
+plot(x', y')
+grid
+ */
+/*
+y0 ist das y1 der vorherigen Funktion
+-> init(x0,y0) als Methode
+-> getX1, getY1 als Methoden
+constant: x0
+linear: y0 - ((x-x0) * (1/M))^z
+exp:    y0 * e(-(x-x0) * (1/M))
+ */
+
+/*
+ANMERKUNG: die lin:
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,20,50)];
+y = [0.7 + 0*x(1,:); 0.7 - (1./20) * (x(2,:) - 2); 0.55 * exp((-(x(3,:) - 5)*(1./20)*4))];
+figure(1)
+plot(x', y')
+ylim([0 1])
+grid
+ */
+
+/*
+ANMERKUNG: die lin:
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,20,50)];
+y = [0.7 + 0*x(1,:); 0.7 - (1./20) * (x(2,:) - 2); 0.55 * exp((-(x(3,:) - 5)*(1./20)*4))];
+figure(1)
+plot(x', y')
+ylim([0 1])
+grid
+ */
+
+-(x - 5) * 0.05 * 4
+-(x - 5) * 0.2
+-0.2 * (x - 5)
+-0.2 + 1
+
+//v2
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,20,50)];
+y = [0.7 + 0*x(1,:); 0.7 - 0.05 * (x(2,:) - 2); 0.55 * exp(-0.2 * (x(3,:) - 1))];
+figure(1)
+plot(x', y')
+ylim([0 1])
+grid
+
+
+/*
+ANMERKUNG: SWITCHED
+0.55 - (1./20) * (x(2,:) - 5)
+
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,20,50)];
+y = [0.7 + 0*x(1,:); 0.7 * exp((-(x(3,:) - 2)*(1./20)*4)); 0.384 - (1./20) * (x(2,:) - 5)];
+figure(1)
+plot(x', y')
+ylim([0 1])
+grid
+ */
+
+/*
+x = [linspace(0,2,50); linspace(2,5,50); linspace(5,20,50)];
+y = [0.7 + 0*x(1,:); -x(2,:); exp((-(x(3,:)) * 4))];
+figure(1)
+plot(x', y')
+ylim([0 1])
+grid
+ */
+
+
+
+/*
+x = linspace(0,5,25);
+y = 10 * exp(-x ./ 5);
+plot(x,y)
+ */
+//https://de.mathworks.com/help/matlab/ref/plot.html

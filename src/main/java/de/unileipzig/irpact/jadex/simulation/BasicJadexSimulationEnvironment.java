@@ -14,8 +14,7 @@ import de.unileipzig.irpact.core.agent.BasicAgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -57,6 +56,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
+    protected PostAnalysisLogger postAnalysisLogger;
+    protected PostAnalysisData postAnalysisData;
 
     //components
     protected AgentManager agentManager;
@@ -113,8 +114,16 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
+        BasicPostAnalysisLogger postAnalysisLogger = new BasicPostAnalysisLogger();
+        BasicPostAnalysisData postAnalysisData = new BasicPostAnalysisData();
 
         setSettings(initData);
+
+        setPostAnalysisData(postAnalysisData);
+        postAnalysisData.setEnvironment(this);
+
+        setPostAnalysisLogger(postAnalysisLogger);
+        postAnalysisLogger.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -273,6 +282,24 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public ProgressCalculator getProgressCalculator() {
         return PROGRESS_CALC;
+    }
+
+    @Override
+    public PostAnalysisLogger getPostAnalysisLogger() {
+        return postAnalysisLogger;
+    }
+
+    public void setPostAnalysisLogger(PostAnalysisLogger postAnalysisLogger) {
+        this.postAnalysisLogger = postAnalysisLogger;
+    }
+
+    @Override
+    public PostAnalysisData getPostAnalysisData() {
+        return postAnalysisData;
+    }
+
+    public void setPostAnalysisData(PostAnalysisData postAnalysisData) {
+        this.postAnalysisData = postAnalysisData;
     }
 
     @Override

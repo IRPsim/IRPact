@@ -1,11 +1,12 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
+import de.unileipzig.irpact.commons.resource.JsonResource;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsPhase2;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsZip2;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
-import de.unileipzig.irpact.core.postprocessing.image.LocalizedImageData;
+import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
@@ -29,8 +30,8 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
         return imageProcessor.getTargetDir();
     }
 
-    protected LocalizedImageData getLocalizedImageData() {
-        return imageProcessor.getLocalizedImageData();
+    protected JsonResource getLocalizedData() {
+        return imageProcessor.getLocalizedData();
     }
 
     @Override
@@ -45,7 +46,21 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
 
     protected abstract String getEngineName();
 
+    protected abstract SupportedEngine getSupportedEngine();
+
     protected abstract DataToVisualize getMode();
+
+    protected Object buildKey(String key) {
+        return new String[] {getSupportedEngine().name(), getMode().name(), key};
+    }
+
+    protected String getLocalizedString(String key) {
+        return getLocalizedData().getString(buildKey(key));
+    }
+
+    protected String getLocalizedFormattedString(String key, Object... args) {
+        return getLocalizedData().getFormattedString(buildKey(key), args);
+    }
 
     public void handleImage(InOutputImage image) throws IOException {
         trace("handle '{}': storeData={}, storeScript={}, storeImage={}", image.getBaseFileName(), image.isStoreData(), image.isStoreScript(), image.isStoreImage());

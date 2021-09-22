@@ -11,6 +11,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPo
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
@@ -48,6 +49,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
     protected InRoot createInRoot(int year, int delta) {
         InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
         InPVFile pvFile = new InPVFile("Barwertrechner");
+        InRealAdoptionDataFile realData = new InRealAdoptionDataFile("PV_Diffusion_Leipzig");
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);
 
         //spatial
@@ -105,6 +107,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         root.setSpatialModel(space2D);
         root.setGraphTopologyScheme(topology);
         root.setTimeModel(timeModel);
+        root.addFile(realData);
 
         //general
         InGeneral general = root.getGeneral();

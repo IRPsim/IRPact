@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
+import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image.engine.GnuPlotImageScriptTask;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
@@ -20,6 +21,11 @@ public abstract class AbstractGnuPlotDataVisualizer extends AbstractDataVisualiz
 
     public AbstractGnuPlotDataVisualizer(ImageProcessor imageProcessor) {
         super(imageProcessor);
+    }
+
+    @Override
+    protected SupportedEngine getSupportedEngine() {
+        return SupportedEngine.GNUPLOT;
     }
 
     @Override
@@ -74,7 +80,7 @@ public abstract class AbstractGnuPlotDataVisualizer extends AbstractDataVisualiz
         GnuPlotFileScript fileScript = builder.build();
         GnuPlotImageScriptTask task = new GnuPlotImageScriptTask(image.isStoreScript(), image.isStoreData(), image.isStoreImage());
         task.setupCsvAndPng(getTargetDir(), image.getBaseFileName());
-        task.setDelimiter(getLocalizedImageData().getSep(getMode()));
+        task.setDelimiter(getLocalizedString("sep"));
         if(engineUsable) {
             task.run(
                     getEngine(),

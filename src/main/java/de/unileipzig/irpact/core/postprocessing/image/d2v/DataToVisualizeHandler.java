@@ -17,7 +17,7 @@ public final class DataToVisualizeHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataToVisualizeHandler.class);
 
-    protected DataToVisualizeHandler() {
+    private DataToVisualizeHandler() {
     }
 
     public static void handleImage(ImageProcessor processor, InOutputImage image) throws IOException, ParsingException {
@@ -50,7 +50,7 @@ public final class DataToVisualizeHandler {
                 break;
 
             case COMPARED_ANNUAL_ZIP:
-                ComparedAnnualZipWithGnuPlot caz = new ComparedAnnualZipWithGnuPlot(processor);
+                ComparedAnnualZipWithGnuPlotVersionLess528 caz = new ComparedAnnualZipWithGnuPlotVersionLess528(processor);
                 caz.handleImage(image);
                 break;
 
@@ -59,9 +59,27 @@ public final class DataToVisualizeHandler {
                 cap.handleImage(image);
                 break;
 
-            case CUMULATIVE_ANNUAL_PHASE2:
-                CumulativeAnnualPhase2WithGnuPlot cap2 = new CumulativeAnnualPhase2WithGnuPlot(processor);
+            case CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
+                CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot cap2 = new CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot(processor);
                 cap2.handleImage(image);
+                break;
+
+            case ANNUAL_INTEREST_2D:
+                if(processor.getEnvironment().getPostAnalysisData().isLogAnnualInterest()) {
+                    AnnualInterestWithGnuPlot2D ai2d = new AnnualInterestWithGnuPlot2D(processor);
+                    ai2d.handleImage(image);
+                } else {
+                    LOGGER.info("annual interest disabled");
+                }
+                break;
+
+            case ANNUAL_PHASE_OVERVIEW:
+                if(processor.getEnvironment().getPostAnalysisData().isLogPhaseTransition()) {
+                    AnnualPhaseOverviewWithGnuPlot apo = new AnnualPhaseOverviewWithGnuPlot(processor);
+                    apo.handleImage(image);
+                } else {
+                    LOGGER.info("annual phase overview disabled");
+                }
                 break;
 
             default:
@@ -74,6 +92,7 @@ public final class DataToVisualizeHandler {
         if(data == null) {
             throw new NullPointerException("missing data to visualize");
         }
+
 
         switch (data) {
             case ANNUAL_ZIP:

@@ -196,7 +196,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
+                        for(ProcessPlan plan: ca.getRunningPlans()) {
                             if(plan.isModel(RAProcessModelBase.this)) {
                                 RAProcessPlanBase raPlan = (RAProcessPlanBase) plan;
                                 raPlan.runAdjustmentAtStartOfYear();
@@ -222,7 +222,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
                 setYearChange(true);
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
+                        for(ProcessPlan plan: ca.getRunningPlans()) {
                             if(plan.isModel(RAProcessModelBase.this)) {
                                 RAProcessPlanBase raPlan = (RAProcessPlanBase) plan;
                                 raPlan.runEvaluationAtEndOfYear();
@@ -248,7 +248,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
                 for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
                     for(ConsumerAgent ca: cag.getAgents()) {
-                        for(ProcessPlan plan: ca.getPlans().values()) {
+                        for(ProcessPlan plan: ca.getRunningPlans()) {
                             if(plan.isModel(RAProcessModelBase.this)) {
                                 RAProcessPlanBase raPlan = (RAProcessPlanBase) plan;
                                 raPlan.runUpdateAtMidOfYear();

@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -52,8 +53,23 @@ public class GnuPlotBuilder {
         return quote(print(path));
     }
 
+    public static String formatForGnuplot(String input) {
+        String temp = input;
+        temp = escapeUnderscore(temp);
+        temp = escapeLineBreak(temp);
+        return temp;
+    }
+
     public static String escapeUnderscore(String input) {
-        return input.replace("_", "\\\\\\_");
+        return input == null
+                ? null
+                : input.replace("_", "\\\\\\_");
+    }
+
+    public static String escapeLineBreak(String input) {
+        return input == null
+                ? null
+                : input.replace("\n", "\\n");
     }
 
     public static String min(Object a, Object b, boolean parentheses) {
@@ -203,12 +219,70 @@ public class GnuPlotBuilder {
         buildSet("title", quote(title));
     }
 
+    public void formatAndSetTitle(String title) {
+        setTitle(formatForGnuplot(title));
+    }
+
     public void setXLabel(String label) {
         buildSet("xlabel", quote(label));
     }
 
+    public void formatAndSetXLabel(String label) {
+        setXLabel(formatForGnuplot(label));
+    }
+
     public void setYLabel(String label) {
         buildSet("ylabel", quote(label));
+    }
+
+    public void formatAndSetYLabel(String label) {
+        setYLabel(formatForGnuplot(label));
+    }
+
+    public void setView(double rotx, double roty, int scale, int scalez) {
+        buildSet("view", StringUtil.concat(", ", rotx, roty, scale, scalez));
+    }
+
+    public void setGridNoPolar() {
+        buildSet("grid nopolar");
+    }
+
+    public void setGridSetup1() {
+        buildSet("grid noxtics nomxtics noytics nomytics ztics nomztics nortics nomrtics nox2tics nomx2tics noy2tics nomy2tics nocbtics nomcbtics");
+    }
+
+    public void setGridSetup2() {
+        buildSet("grid vertical layerdefault lt 0 linecolor 0 linewidth 1.0, lt 0 linecolor 0 linewidth 1.0");
+    }
+
+    public void setXYPlaneAt0() {
+        setXYPlaneAt(0);
+    }
+
+    public void setXYPlaneAt(int pos) {
+        buildSet("xyplane at", pos);
+    }
+
+    public void setPM3D() {
+        buildSet("pm3d interpolate 1,1 flush begin noftriangles border linewidth 1.0 dashtype solid corners2color mean");
+    }
+
+    public void setXTics(Map<Integer, String> tics) {
+        SetTicsCommand cmd = new SetTicsCommand();
+        cmd.setXTics();
+        cmd.setTics(tics);
+        add(cmd);
+    }
+
+    public void setYTics(Map<Integer, String> tics) {
+        SetTicsCommand cmd = new SetTicsCommand();
+        cmd.setYTics();
+        cmd.setTics(tics);
+        add(cmd);
+    }
+
+    public void setNoAnimation() {
+        add(new SimpleCommand("NO_ANIMATION = 1"));
     }
 
     public void setLegendOutsideRightTop() {
@@ -219,6 +293,10 @@ public class GnuPlotBuilder {
     public void setLegendOutsideRightTop(String label) {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
         buildSet("key outside right top vertical Left title ", quote(label));
+    }
+
+    public void formatAndSetLegendOutsideRightTop(String label) {
+        setLegendOutsideRightTop(formatForGnuplot(label));
     }
 
     public void printUnknown() {
@@ -257,24 +335,51 @@ public class GnuPlotBuilder {
         buildSet("datafile", "separator", quote(separator));
     }
 
-    public void plotSpecialLinePlot(String data) {
-        plotRawSpecialLinePlot(quote(data));
+    public void plotGenericData(int arg) {
+        plotGenericData(arg, 1);
     }
 
-    public void plotArgSpecialLinePlot(int i) {
-        plotRawSpecialLinePlot(arg(i));
+    public void plotGenericData(int arg, int linewidth) {
+        add(new GenericPlotCommand(arg(arg), linewidth));
     }
 
-    public void plotRawSpecialLinePlot(String data) {
-        plotRawSpecialLinePlot(data, 1);
+    public void plot3DataColumns(String phase0, String phase1, String phase2, int arg) {
+        add(new DataColumns3AndCustomKeyPlotCommand(phase0, phase1, phase2, arg(arg), 1));
     }
 
-    public void plotRawSpecialLinePlot(String data, int linewidth) {
-        add(new SpecialLinePlotCommand(data, linewidth));
+    public void splotBoxesReverse(int from, int to, int arg) {
+        splotBoxesReverse(from, to, arg(arg));
     }
 
-    public void plotRawSpecialLinePlotWithKey(String phase0, String phase1, String phase2, String data, int linewidth) {
-        add(new SpecialPlotCommandWith3DataColumnsAndCustomKey(phase0, phase1, phase2, data, linewidth));
+    public void splotBoxesReverse(int from, int to, String source) {
+        SplotBoxesReverseCommand cmd = new SplotBoxesReverseCommand();
+        cmd.setFrom(from);
+        cmd.setTo(to);
+        cmd.setSource(source);
+        add(cmd);
+    }
+
+    public void plotCirclesAndPoints(int arg) {
+        plotCirclesAndPoints(arg(arg));
+    }
+
+    public void plotCirclesAndPoints(String source) {
+        PlotCirclesAndPointsCommand cmd = new PlotCirclesAndPointsCommand();
+        cmd.setSource(source);
+        add(cmd);
+    }
+
+    public void setWildcardXYRange() {
+        setWildcardXRange();
+        setWildcardYRange();
+    }
+
+    public void setWildcardXRange() {
+        setXRange(WILDCARD, WILDCARD);
+    }
+
+    public void setWildcardYRange() {
+        setYRange(WILDCARD, WILDCARD);
     }
 
     public void setXRange(Object min, Object max) {

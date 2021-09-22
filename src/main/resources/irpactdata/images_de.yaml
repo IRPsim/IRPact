@@ -3,61 +3,111 @@
 # Die Zuweisung basiert auf dem Wert der Datenvisualisierung (mode).
 #########################
 ---
-# line plot - zip
-ANNUAL_ZIP:
-  title: "Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete"
-  xarg: "year"
-  yarg: "adoptions"
-  grparg: "zip"
-  xlab: "Jahre"
-  ylab: "Adoptionen"
-  grplab: "PLZ"
-  sep: ";"
-  encoding: "UTF-8"
+# gnuplot
+GNUPLOT:
+  # line plot - zip
+  ANNUAL_ZIP:
+    title: "Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    grplab: "PLZ"
+    sep: ";"
 
-# line plot - zip with real data
-COMPARED_ANNUAL_ZIP:
-  title: |-
-    Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
-    im Vergleich zu realen Daten
-  xarg: "year"
-  yarg: "adoptions"
-  grparg: "zip"
-  distinctarg: "real"
-  xlab: "Jahre"
-  ylab: "Adoptionen"
-  grplab: "PLZ"
-  distinctlab: "Reale Daten"
-  distinct0lab: "nein"
-  distinct1lab: "ja"
-  sep: ";"
-  encoding: "UTF-8"
+  # line plot - zip with real data
+  COMPARED_ANNUAL_ZIP:
+    title: |-
+      Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keytitle0: "Reale Daten"
+    keytitle1: "PLZ"
+    dashtype0lab: "nein"
+    dashtype1lab: "ja"
+    sep: ";"
 
-# stacked bar chart - phase
-CUMULATIVE_ANNUAL_PHASE:
-  title: "Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen"
-  xarg: "year"
-  yarg: "adoptionsCumulative"
-  fillarg: "phase"
-  xlab: "Jahre"
-  ylab: "Adoptionen (kumuliert)"
-  filllab: "Adoptionsphase"
-  sep: ";"
-  encoding: "UTF-8"
+  # stacked bar chart - phase
+  CUMULATIVE_ANNUAL_PHASE:
+    title: "Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen"
+    xlab: "Jahre"
+    ylab: "Adoptionen (kumuliert)"
+    filllab: "Adoptionsphase"
+    sep: ";"
 
-# stacked bar chart - phase and initial agents (not visible)
-CUMULATIVE_ANNUAL_PHASE2:
-  title: |-
-    Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
-    (initiale Adopter: {0})
-  xarg: "year"
-  yarg: "adoptionsCumulative"
-  fillarg: "phase"
-  xlab: "Jahre"
-  ylab: "Adoptionen (kumuliert)"
-  filllab: "Adoptionsphase"
-  sep: ";"
-  encoding: "UTF-8"
-  phase0: "Start-Mitte"
-  phase1: "Mitte-Ende"
-  phase2: "Ende-Start"
+  # stacked bar chart - phase and initial agents (not visible)
+  CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL:
+    title: |-
+      Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
+      (initiale Adopter: {0})
+    xlab: "Jahre"
+    ylab: "Adoptionen (kumuliert)"
+    filllab: "Adoptionsphase"
+    phase0: "Start-Mitte"
+    phase1: "Mitte-Ende"
+    phase2: "Ende-Start"
+    sep: ";"
+
+  # 2d stacked bar chart - interest
+  ANNUAL_INTEREST_2D:
+    title: "Interessensübersicht"
+    xlab: "Jahre"
+    ylab: "Anzahl"
+    filllab: "Interesse"
+    sep: ";"
+
+  # 2d stacked bar chart - phase
+  ANNUAL_PHASE_OVERVIEW:
+    title: "Phasenübersicht"
+    xlab: "Jahre"
+    ylab: "Anzahl"
+    filllab: "Phasen"
+    sep: ";"
+    phase0: "Initial"
+    phase1: "Awareness"
+    phase2: "Feasibility"
+    phase3: "Decision making"
+    phase4: "Adopted"
+
+#R
+R:
+  # line plot - zip
+  ANNUAL_ZIP:
+    title: "Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete"
+    xarg: "year"
+    yarg: "adoptions"
+    grparg: "zip"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    grplab: "PLZ"
+    sep: ";"
+    encoding: "UTF-8"
+
+  # line plot - zip with real data
+  COMPARED_ANNUAL_ZIP:
+    title: |-
+      Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xarg: "year"
+    yarg: "adoptions"
+    grparg: "zip"
+    distinctarg: "real"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    grplab: "PLZ"
+    distinctlab: "Reale Daten"
+    distinct0lab: "nein"
+    distinct1lab: "ja"
+    sep: ";"
+    encoding: "UTF-8"
+
+  # stacked bar chart - phase
+  CUMULATIVE_ANNUAL_PHASE:
+    title: "Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen"
+    xarg: "year"
+    yarg: "adoptionsCumulative"
+    fillarg: "phase"
+    xlab: "Jahre"
+    ylab: "Adoptionen (kumuliert)"
+    filllab: "Adoptionsphase"
+    sep: ";"
+    encoding: "UTF-8"

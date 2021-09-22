@@ -7,6 +7,8 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
+import de.unileipzig.irpact.core.logging.PostAnalysisData;
+import de.unileipzig.irpact.core.logging.PostAnalysisLogger;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
@@ -72,4 +74,8 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     DataStore getGlobalData();
 
     ProgressCalculator getProgressCalculator();
+
+    PostAnalysisLogger getPostAnalysisLogger();
+
+    PostAnalysisData getPostAnalysisData();
 }

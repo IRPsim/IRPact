@@ -53,7 +53,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     protected ProductFindingScheme productFindingScheme;
     protected ProcessFindingScheme processFindingScheme;
     protected Set<Need> needs;
-    protected Map<Need, ProcessPlan> plans;
+    protected Map<Need, ProcessPlan> activePlans;
+    protected List<ProcessPlan> runningPlans;
     protected Set<AttributeAccess> externAttributes;
 
     public ProxyConsumerAgent() {
@@ -63,6 +64,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
                 new LinkedHashMap<>(),
                 new LinkedHashSet<>(),
                 new LinkedHashMap<>(),
+                new ArrayList<>(),
                 new LinkedHashSet<>()
         );
     }
@@ -72,13 +74,15 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             Map<String, ConsumerAgentProductRelatedAttribute> productRelatedAttributes,
             Map<Product, AdoptedProduct> adoptedProducts,
             Set<Need> needs,
-            Map<Need, ProcessPlan> plans,
+            Map<Need, ProcessPlan> activePlans,
+            List<ProcessPlan> runningPlans,
             Set<AttributeAccess> externAttributes) {
         this.attributes = attributes;
         this.productRelatedAttributes = productRelatedAttributes;
         this.adoptedProducts = adoptedProducts;
         this.needs = needs;
-        this.plans = plans;
+        this.activePlans = activePlans;
+        this.runningPlans = runningPlans;
         this.externAttributes = externAttributes;
     }
 
@@ -102,7 +106,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
                     getProductFindingScheme(),
                     getProcessFindingScheme(),
                     ChecksumComparable.getCollChecksum(getNeeds()),
-                    ChecksumComparable.getMapChecksum(getPlans()),
+                    ChecksumComparable.getMapChecksum(getActivePlans()),
                     ChecksumComparable.getCollChecksum(getExternAttributes())
             );
         }
@@ -132,7 +136,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         logChecksum("product finding scheme", ChecksumComparable.getChecksum(getProductFindingScheme()));
         logChecksum("process finding scheme", ChecksumComparable.getChecksum(getProcessFindingScheme()));
         logChecksum("needs", ChecksumComparable.getCollChecksum(getNeeds()));
-        logChecksum("plans", ChecksumComparable.getMapChecksum(getPlans()));
+        logChecksum("plans", ChecksumComparable.getMapChecksum(getActivePlans()));
         logChecksum("external attributes", ChecksumComparable.getCollChecksum(getExternAttributes()));
     }
 
@@ -164,7 +168,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         productFindingScheme = null;
         processFindingScheme = null;
         needs.clear();
-        plans.clear();
+        activePlans.clear();
+        runningPlans.clear();
     }
 
     public void unsync(ConsumerAgent realAgent) {
@@ -191,7 +196,8 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
             productFindingScheme = realAgent.getProductFindingScheme();
             processFindingScheme = realAgent.getProcessFindingScheme();
             needs.addAll(realAgent.getNeeds());
-            addAllPlans(realAgent.getPlans());
+            addAllActivePlans(realAgent.getActivePlans());
+            addAllRunningPlans(realAgent.getRunningPlans());
         } catch (Throwable t) {
             LOGGER.error("reset failed for agent '" + getName() + "'", t);
         }
@@ -590,11 +596,30 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
+    public AdoptedProduct getAdoptedProduct(Product product) {
+        if(isSynced()) {
+            return getRealAgent().getAdoptedProduct(product);
+        } else {
+            return adoptedProducts.get(product);
+        }
+    }
+
+    @Override
     public boolean hasAdopted(Product product) {
         if(isSynced()) {
             return getRealAgent().hasAdopted(product);
         } else {
             return adoptedProducts.containsKey(product);
+        }
+    }
+
+    @Override
+    public boolean hasInitialAdopted(Product product) {
+        if(isSynced()) {
+            return getRealAgent().hasAdopted(product);
+        } else {
+            AdoptedProduct adoptedProduct = adoptedProducts.get(product);
+            return adoptedProduct != null && adoptedProduct.isInitial();
         }
     }
 
@@ -620,6 +645,7 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         } else {
             BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(null, product, null, AdoptionPhase.INITIAL);
             adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
+            environment.getPostAnalysisLogger().logInitialAdopter(this, product);
         }
     }
 
@@ -697,16 +723,29 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
     }
 
     @Override
-    public Map<Need, ProcessPlan> getPlans() {
+    public Map<Need, ProcessPlan> getActivePlans() {
         if(isSynced()) {
-            return getRealAgent().getPlans();
+            return getRealAgent().getActivePlans();
         } else {
-            return plans;
+            return activePlans;
         }
     }
 
-    public void addAllPlans(Map<Need, ProcessPlan> plans) {
-        this.plans.putAll(plans);
+    @Override
+    public Collection<ProcessPlan> getRunningPlans() {
+        if(isSynced()) {
+            return getRealAgent().getRunningPlans();
+        } else {
+            return runningPlans;
+        }
+    }
+
+    public void addAllActivePlans(Map<Need, ProcessPlan> plans) {
+        this.activePlans.putAll(plans);
+    }
+
+    public void addAllRunningPlans(Collection<ProcessPlan> runningPlans) {
+        this.runningPlans.addAll(runningPlans);
     }
 
     @Override

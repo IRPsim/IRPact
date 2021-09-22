@@ -9,6 +9,8 @@ import de.unileipzig.irpact.core.simulation.tasks.SyncTask;
 import java.time.Month;
 import java.time.ZonedDateTime;
 import java.util.Set;
+import java.util.function.IntSupplier;
+import java.util.function.LongConsumer;
 
 /**
  * @author Daniel Abitz
@@ -44,7 +46,7 @@ public interface TimeModel extends Nameable, InitalizablePart {
 
     boolean hasYearChange();
 
-    void performYearChange(Set<SyncTask> lastYearTasks, Set<SyncTask> newYearTasks);
+    void performYearChange(LongConsumer lastYearTasks, LongConsumer newYearTasks);
 
     //=========================
     //util

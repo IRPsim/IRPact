@@ -508,7 +508,7 @@ SET set_InSpatialTableFile(set_InFile)
 * - type: Float
 PARAMETER par_InSpatialTableFile_placeholderInSpatialFile(set_InSpatialTableFile)
 
-* - default: JaehrlicheAdoptionenPLZ, JaehrlicheAdoptionenPLZVergleich, JaehrlicheAdoptionenPhase
+* - default: JaehrlicheAdoptionenPLZ, JaehrlicheAdoptionenPLZVergleich, JaehrlicheAdoptionenPhase, Interessensentwicklung
 * - identifier: InGenericOutputImage
 * - type: String
 SET set_InGenericOutputImage(set_InOutputImage)
@@ -540,10 +540,14 @@ PARAMETER par_InGenericOutputImage_useR(set_InGenericOutputImage)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 1, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZip = 1)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualZip == 0, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 
@@ -554,10 +558,14 @@ PARAMETER par_InGenericOutputImage_annualZip(set_InGenericOutputImage)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 1, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualZipWithReal == 0, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
 
@@ -568,10 +576,14 @@ PARAMETER par_InGenericOutputImage_annualZipWithReal(set_InGenericOutputImage)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 1, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 1)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase == 0, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase(set_InGenericOutputImage)
 
@@ -582,12 +594,52 @@ PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase(set_InGenericOutputImag
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 1, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualZip = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 1)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_cumulativeAnnualPhase2 == 0, par_InGenericOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGenericOutputImage_cumulativeAnnualPhase2(set_InGenericOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des jährlichen Interesses dar.
+* - identifier: Darstellung: Jährliches Interesse (2D)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 1, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 1, par_InGenericOutputImage_annualPhaseOverview = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_annualInterest2D = 1)
+* - rule: IF (par_InGenericOutputImage_annualInterest2D == 0, par_InGenericOutputImage_annualPhaseOverview = 0)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_annualInterest2D(set_InGenericOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des Phasen dar.
+* - identifier: Darstellung: Jährliche Phasenübersicht
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 1, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 1, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 1, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 1, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 1, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_annualZip = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGenericOutputImage_annualPhaseOverview == 0, par_InGenericOutputImage_annualPhaseOverview = 1)
+* - type: Boolean
+PARAMETER par_InGenericOutputImage_annualPhaseOverview(set_InGenericOutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -649,10 +701,14 @@ SET set_InGnuPlotOutputImage(set_InOutputImage)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 1, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZip = 1)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZip == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 
@@ -663,10 +719,14 @@ PARAMETER par_InGnuPlotOutputImage_annualZip(set_InGnuPlotOutputImage)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 1, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualZipWithReal == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
 
@@ -677,10 +737,14 @@ PARAMETER par_InGnuPlotOutputImage_annualZipWithReal(set_InGnuPlotOutputImage)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 1, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 1)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase(set_InGnuPlotOutputImage)
 
@@ -691,12 +755,52 @@ PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase(set_InGnuPlotOutputImag
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 1, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualZip = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 1)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_cumulativeAnnualPhase2 == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InGnuPlotOutputImage_cumulativeAnnualPhase2(set_InGnuPlotOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des jährlichen Interesses dar.
+* - identifier: Darstellung: Jährliches Interesse (2D)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 1, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 1, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_annualInterest2D = 1)
+* - rule: IF (par_InGnuPlotOutputImage_annualInterest2D == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 0)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_annualInterest2D(set_InGnuPlotOutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des Phasen dar.
+* - identifier: Darstellung: Jährliche Phasenübersicht
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 1, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 1, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 1, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 1, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_annualZip = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_annualInterest2D = 0)
+* - rule: IF (par_InGnuPlotOutputImage_annualPhaseOverview == 0, par_InGnuPlotOutputImage_annualPhaseOverview = 1)
+* - type: Boolean
+PARAMETER par_InGnuPlotOutputImage_annualPhaseOverview(set_InGnuPlotOutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -763,10 +867,14 @@ SET set_InROutputImage(set_InOutputImage)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualZip == 1, par_InROutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZip = 1)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualZip == 0, par_InROutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 
@@ -777,10 +885,14 @@ PARAMETER par_InROutputImage_annualZip(set_InROutputImage)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 1, par_InROutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualZipWithReal = 1)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualZipWithReal == 0, par_InROutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
 
@@ -791,10 +903,14 @@ PARAMETER par_InROutputImage_annualZipWithReal(set_InROutputImage)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 1, par_InROutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_cumulativeAnnualPhase = 1)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase == 0, par_InROutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_cumulativeAnnualPhase(set_InROutputImage)
 
@@ -805,12 +921,52 @@ PARAMETER par_InROutputImage_cumulativeAnnualPhase(set_InROutputImage)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 1, par_InROutputImage_annualPhaseOverview = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualZip = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualZipWithReal = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
 * - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_cumulativeAnnualPhase2 = 1)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_cumulativeAnnualPhase2 == 0, par_InROutputImage_annualPhaseOverview = 0)
 * - type: Boolean
 PARAMETER par_InROutputImage_cumulativeAnnualPhase2(set_InROutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des jährlichen Interesses dar.
+* - identifier: Darstellung: Jährliches Interesse (2D)
+* - rule: IF (par_InROutputImage_annualInterest2D == 1, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 1, par_InROutputImage_annualPhaseOverview = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_annualInterest2D = 1)
+* - rule: IF (par_InROutputImage_annualInterest2D == 0, par_InROutputImage_annualPhaseOverview = 0)
+* - type: Boolean
+PARAMETER par_InROutputImage_annualInterest2D(set_InROutputImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Stellt die Entwicklung des Phasen dar.
+* - identifier: Darstellung: Jährliche Phasenübersicht
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 1, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 1, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 1, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 1, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 1, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_annualZip = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_annualZipWithReal = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_cumulativeAnnualPhase = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_cumulativeAnnualPhase2 = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_annualInterest2D = 0)
+* - rule: IF (par_InROutputImage_annualPhaseOverview == 0, par_InROutputImage_annualPhaseOverview = 1)
+* - type: Boolean
+PARAMETER par_InROutputImage_annualPhaseOverview(set_InROutputImage)
 
 * - default: 0
 * - domain: [0|1]
@@ -3348,6 +3504,41 @@ SCALAR sca_InGeneral_innerParallelism
 
 * - default: 0
 * - domain: [0|1]
+* - description: Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)
+* - identifier: Nicht-Adopter
+* - type: Boolean
+SCALAR sca_InGeneral_logNonAdopterAnalysis
+
+* - default: 0
+* - domain: [0|1]
+* - description: Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)
+* - identifier: Initiale Adopter
+* - type: Boolean
+SCALAR sca_InGeneral_logInitialAdopterAnalysis
+
+* - default: 0
+* - domain: [0|1]
+* - description: Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)
+* - identifier: Adoptions
+* - type: Boolean
+SCALAR sca_InGeneral_logAdoptionAnalysis
+
+* - default: 0
+* - domain: [0|1]
+* - description: Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)
+* - identifier: Decision making
+* - type: Boolean
+SCALAR sca_InGeneral_logDecisionAnalysis
+
+* - default: 0
+* - domain: [0|1]
+* - description: Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)
+* - identifier: Financial Threshold
+* - type: Boolean
+SCALAR sca_InGeneral_logFinancialThresholdAnalysis
+
+* - default: 0
+* - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
 * - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
@@ -3545,23 +3736,47 @@ SCALAR sca_InGeneral_logFinancalComponent
 * - type: Boolean
 SCALAR sca_InGeneral_logCalculateDecisionMaking
 
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus.
-* - identifier: Adoptionen nach PLZ
-* - type: Boolean
-SCALAR sca_InGeneral_logResultAdoptionsZip
-
-* - domain: [0|1]
-* - description: Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus.
-* - identifier: kumulierte Adoptionen nach PLZ und Phase
-* - type: Boolean
-SCALAR sca_InGeneral_logResultAdoptionsZipPhase
-
+* - default: 0
 * - domain: [0|1]
 * - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
 * - identifier: Komplettausgabe
 * - type: Boolean
 SCALAR sca_InGeneral_logResultAdoptionsAll
+
+* - default: 0
+* - domain: [0|1]
+* - description: Performance.xlsx
+* - identifier: Performance
+* - type: Boolean
+SCALAR sca_InGeneral_logPerformance
+
+* - default: 0
+* - domain: [0|1]
+* - description: Phasenuebersicht.xlsx
+* - identifier: Phasenübersicht
+* - type: Boolean
+SCALAR sca_InGeneral_logPhaseOverview
+
+* - default: 0
+* - domain: [0|1]
+* - description: Interesse.xlsx
+* - identifier: Interessensentwicklung
+* - type: Boolean
+SCALAR sca_InGeneral_logInterest
+
+* - default: 0
+* - domain: [0|1]
+* - description: Evaluierung.xlsx
+* - identifier: Evaluierungsdaten
+* - type: Boolean
+SCALAR sca_InGeneral_logEvaluation
+
+* - default: 0.1
+* - domain: [0,)
+* - description: Bestimmt die Bereichsgrößen bei den Evaluierungsdaten.
+* - identifier: Bereichsgröße (Evaluierungswerte)
+* - type: Float
+SCALAR sca_InGeneral_evaluationBucketSize
 
 * - identifier: logScriptAdoptionsZip
 * - type: Boolean

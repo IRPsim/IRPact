@@ -3,10 +3,7 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
-import de.unileipzig.irpact.core.logging.IRPLevel;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
+import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -130,13 +127,19 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
 
         //data
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZip", InRootUI.SETT_DATAOUTPUT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsZipPhase", InRootUI.SETT_DATAOUTPUT);
-        putFieldPathAndAddEntry(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPerformance", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPhaseOverview", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", InRootUI.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
 
-        setDomain(res, thisClass(), "logResultAdoptionsZip", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logResultAdoptionsZipPhase", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logResultAdoptionsAll", DOMAIN_BOOLEAN);
+        //analysis
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logNonAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInitialAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAdoptionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logDecisionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialThresholdAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
@@ -375,7 +378,64 @@ public class InGeneral implements Copyable {
     public int getNumberOfThreads() {
         return getOuterParallelism() * getInnerParallelism();
     }
-    
+
+    //=========================
+    //data analysis
+    //=========================
+
+    public void enableAllAnalysis() {
+        setLogNonAdopterAnalysis(true);
+        setLogInitialAdopterAnalysis(true);
+        setLogAdoptionAnalysis(true);
+        setLogDecisionAnalysis(true);
+        setLogFinancialThresholdAnalysis(true);
+    }
+
+    @FieldDefinition
+    public boolean logNonAdopterAnalysis = false;
+    public void setLogNonAdopterAnalysis(boolean logNonAdopterAnalysis) {
+        this.logNonAdopterAnalysis = logNonAdopterAnalysis;
+    }
+    public boolean isLogNonAdopterAnalysis() {
+        return logNonAdopterAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logInitialAdopterAnalysis = false;
+    public void setLogInitialAdopterAnalysis(boolean logInitialAdopterAnalysis) {
+        this.logInitialAdopterAnalysis = logInitialAdopterAnalysis;
+    }
+    public boolean isLogInitialAdopterAnalysis() {
+        return logInitialAdopterAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logAdoptionAnalysis = false;
+    public void setLogAdoptionAnalysis(boolean logAdoptionAnalysis) {
+        this.logAdoptionAnalysis = logAdoptionAnalysis;
+    }
+    public boolean isLogAdoptionAnalysis() {
+        return logAdoptionAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logDecisionAnalysis = false;
+    public void setLogDecisionAnalysis(boolean logDecisionAnalysis) {
+        this.logDecisionAnalysis = logDecisionAnalysis;
+    }
+    public boolean isLogDecisionAnalysis() {
+        return logDecisionAnalysis;
+    }
+
+    @FieldDefinition
+    public boolean logFinancialThresholdAnalysis = false;
+    public void setLogFinancialThresholdAnalysis(boolean logFinancialThresholdAnalysis) {
+        this.logFinancialThresholdAnalysis = logFinancialThresholdAnalysis;
+    }
+    public boolean isLogFinancialThresholdAnalysis() {
+        return logFinancialThresholdAnalysis;
+    }
+
     //=========================
     //general logging
     //=========================
@@ -504,13 +564,28 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition
-    public boolean logResultAdoptionsZip;
-
-    @FieldDefinition
-    public boolean logResultAdoptionsZipPhase;
-
-    @FieldDefinition
     public boolean logResultAdoptionsAll;
+
+    @FieldDefinition
+    public boolean logPerformance;
+
+    @FieldDefinition
+    public boolean logPhaseOverview;
+
+    @FieldDefinition
+    public boolean logInterest;
+
+    @FieldDefinition
+    public boolean logEvaluation;
+
+    @FieldDefinition
+    public double evaluationBucketSize = 0.1;
+    public void setEvaluationBucketSize(double evaluationBucketSize) {
+        this.evaluationBucketSize = evaluationBucketSize;
+    }
+    public double getEvaluationBucketSize() {
+        return evaluationBucketSize;
+    }
 
     //=========================
     //script + data logging
@@ -575,8 +650,6 @@ public class InGeneral implements Copyable {
         copy.logFinancalComponent = logFinancalComponent;
         copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
         //result logging
-        copy.logResultAdoptionsZip = logResultAdoptionsZip;
-        copy.logResultAdoptionsZipPhase = logResultAdoptionsZipPhase;
         copy.logResultAdoptionsAll = logResultAdoptionsAll;
         //script + data logging
         copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
@@ -614,9 +687,11 @@ public class InGeneral implements Copyable {
     }
 
     public void enableAllResultLogging() {
-        logResultAdoptionsZip = true;
-        logResultAdoptionsZipPhase = true;
         logResultAdoptionsAll = true;
+        logPerformance = true;
+        logPhaseOverview = true;
+        logInterest = true;
+        logEvaluation = true;
     }
 
     public void enableAllScriptLogging() {
@@ -643,6 +718,7 @@ public class InGeneral implements Copyable {
 
     public void setup(IRPactInputParser parser) throws ParsingException {
         parseSettings(parser.getEnvironment().getSettings());
+        parsePostAnalysisDataSettings(parser.getEnvironment().getPostAnalysisData());
         parseSeed(parser);
         parseLifeCycleControl(parser);
 
@@ -657,12 +733,18 @@ public class InGeneral implements Copyable {
         settings.setLogFinancialComponent(logFinancalComponent);
         settings.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
 
-        settings.setLogResultAdoptionsZip(logResultAdoptionsZip);
-        settings.setLogResultAdoptionsZipPhase(logResultAdoptionsZipPhase);
         settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
+        settings.setLogPerformance(logPerformance);
 
         settings.setLogScriptAdoptionsZip(logScriptAdoptionsZip);
         settings.setLogScriptAdoptionsZipPhase(logScriptAdoptionsZipPhase);
+    }
+
+    public void parsePostAnalysisDataSettings(PostAnalysisData data) {
+        data.setLogAnnualInterest(logInterest);
+        data.setLogPhaseTransition(logPhaseOverview);
+        data.setLogEvaluationData(logEvaluation);
+        data.setEvaluationBucketSize(evaluationBucketSize);
     }
 
     private void parseSeed(IRPactInputParser parser) {

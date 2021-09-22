@@ -29,9 +29,8 @@ public class BasicSettings implements Settings, ChecksumComparable {
     protected boolean logFinancalComponent = false;
     protected boolean logCalculateAdoption = false;
 
-    protected boolean logResultAdoptionsZip = false;
-    protected boolean logResultAdoptionsZipPhase = false;
     protected boolean logResultAdoptionsAll = false;
+    protected boolean logPerformance = false;
 
     protected boolean logScriptAdoptionsZip = false;
     protected boolean logScriptAdoptionsZipPhase = false;
@@ -265,26 +264,6 @@ public class BasicSettings implements Settings, ChecksumComparable {
     //=========================
 
     @Override
-    public void setLogResultAdoptionsZip(boolean log) {
-        logResultAdoptionsZip = log;
-    }
-
-    @Override
-    public boolean isLogResultAdoptionsZip() {
-        return logResultAdoptionsZip;
-    }
-
-    @Override
-    public void setLogResultAdoptionsZipPhase(boolean log) {
-        logResultAdoptionsZipPhase = log;
-    }
-
-    @Override
-    public boolean isLogResultAdoptionsZipPhase() {
-        return logResultAdoptionsZipPhase;
-    }
-
-    @Override
     public void setLogResultAdoptionsAll(boolean log) {
         logResultAdoptionsAll = log;
     }
@@ -292,6 +271,16 @@ public class BasicSettings implements Settings, ChecksumComparable {
     @Override
     public boolean isLogResultAdoptionsAll() {
         return logResultAdoptionsAll;
+    }
+
+    @Override
+    public void setLogPerformance(boolean log) {
+        logPerformance = log;
+    }
+
+    @Override
+    public boolean isLogPerformance() {
+        return logPerformance;
     }
 
     //=========================

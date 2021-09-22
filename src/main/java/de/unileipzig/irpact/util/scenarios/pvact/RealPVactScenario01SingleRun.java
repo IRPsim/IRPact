@@ -30,6 +30,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
     public static final int REVISION = 0;
 
     protected InDiracUnivariateDistribution dirac0 = new InDiracUnivariateDistribution("dirac0", 0);
+    protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
 
     public Path xlsx;
 
@@ -56,7 +57,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         grp.setCommunication(dirac0);                             //C1 !
         grp.setRateOfConvergence(dirac0);                         //C3 !
 
-        grp.setInitialProductAwareness(dirac0);                   //D1 -
+        grp.setInitialProductAwareness(dirac1);                   //D1 -
         grp.setInterestThreshold(dirac0);                         //D2 !
         grp.setFinancialThreshold(dirac0);                        //D3 !
         grp.setAdoptionThreshold(dirac0);                         //D4 !
@@ -101,7 +102,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         //REWIRE
         Map<Milieu, InBernoulliDistribution> rewire = RealData.buildBernoulli("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
         realData.CAGS.applyMilieus(rewire, InPVactConsumerAgentGroup::setRewire);
-        //COMMU
+        //INITAL ADOPTER
         Map<Milieu, InDiracUnivariateDistribution> initialAdopter = RealData.buildDirac("INITADOPT", RealData.XLSX_ORDER_ARR, RealData.INITIAL_ADOPTER);
         realData.CAGS.applyMilieus(initialAdopter, InPVactConsumerAgentGroup::setInitialAdopter);
 
@@ -119,6 +120,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InFreeNetworkTopology topology = createFreeTopology("Topo", affinities, edgeCount);
 
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
+        timeModel.setAmountOfTime(1);
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
@@ -138,9 +140,12 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
 
         //=====
         InRoot root = createRootWithInformationsWithFullLogging();
+        root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2020);
+        root.getGeneral().setLastSimulationYear(2019);
         root.getGeneral().useInfoLogging();
+        root.getGeneral().enableAllResultLogging();
+        root.getGeneral().setEvaluationBucketSize(0.1);
         root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
@@ -176,6 +181,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         setColors(root, realData.CAGS.cags());
 
         setupGeneral(root.getGeneral());
+        root.getGeneral().enableAllAnalysis();
 
         return Collections.singletonList(root);
     }

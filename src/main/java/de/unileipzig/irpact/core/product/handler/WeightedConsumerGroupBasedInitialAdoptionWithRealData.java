@@ -11,7 +11,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
-import de.unileipzig.irpact.core.postprocessing.image.RealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -84,11 +84,25 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         return rnd;
     }
 
+    protected void analyseZips(Set<String> zips) {
+        List<String> validZips = new ArrayList<>();
+        List<String> invalidZips = new ArrayList<>();
+        List<String> unusedZips = new ArrayList<>();
+        adoptionData.getValidZips(zips, validZips);
+        adoptionData.getInvalidZips(zips, invalidZips);
+        adoptionData.getUnusedZips(zips, unusedZips);
+        trace("valid zips: {}", validZips);
+        trace("invalid zips: {}", invalidZips);
+        trace("unused zips: {}", unusedZips);
+    }
+
     @Override
     public void handleProduct(SimulationEnvironment environment, Product product) {
         int startYear = getStartYear(environment);
         final int initialAdoptionYear = startYear - 1;
         Set<String> zips = getAllZIPs(environment);
+
+        analyseZips(zips);
 
         trace("zipAttr={}, validationAttr={}, shareAttr={}", zipAttributeName, validationAttributeName, shareAttributeName);
 
@@ -97,7 +111,7 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
 
 
         for(String zip: zips) {
-            int numberOfRealAdoptions = adoptionData.get(initialAdoptionYear, zip);
+            int numberOfRealAdoptions = adoptionData.getCumulated(initialAdoptionYear, zip);
             if(numberOfRealAdoptions < 1) {
                 trace("skip '{}', number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
                 continue;

@@ -23,4 +23,9 @@ public final class MathUtil {
     public static double logit(double x) {
         return Math.log(x / (1.0 - x));
     }
+
+    public static double transform(double in, double inMin, double inMax, double outMin, double outMax) {
+        double slope = (outMax - outMin) / (inMax - inMin);
+        return outMin + slope * (in - inMin);
+    }
 }

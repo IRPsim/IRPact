@@ -429,6 +429,40 @@ public class InRoot implements RootClass {
     public InTimeModel getTimeModel() throws ParsingException {
         return getInstance(timeModel, "timeModel");
     }
+
+    //=========================
+    //files
+    //=========================
+
+    @FieldDefinition
+    public InFile[] files = new InFile[0];
+    public void setFiles(InFile[] files) {
+        this.files = files;
+    }
+    public InFile[] getFiles() {
+        return files;
+    }
+    public boolean hasFiles() {
+        return len(files) > 0;
+    }
+    public void addFile(InFile file) {
+        files = add(files, file);
+    }
+    public void addFiles(InFile... files) {
+        this.files = addAll(this.files, files);
+    }
+    public <F extends InFile> List<F> findFiles(Class<F> type) {
+        List<F> found = new ArrayList<>();
+        if(hasFiles()) {
+            for(InFile file: getFiles()) {
+                if(type.isInstance(file)) {
+                    found.add(type.cast(file));
+                }
+            }
+        }
+        return found;
+    }
+
     //=========================
     //Graphviz
     //=========================

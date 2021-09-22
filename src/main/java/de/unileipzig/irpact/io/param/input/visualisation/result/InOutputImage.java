@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.visualisation.result;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
@@ -18,8 +19,15 @@ import static de.unileipzig.irpact.io.param.ParamUtil.len;
 @Definition
 public interface InOutputImage extends InIRPactEntity {
 
-    String[] dataToVisualize = {"annualZip", "annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
-    String[] dataToVisualizeWithoutDefault = {"annualZipWithReal", "cumulativeAnnualPhase", "cumulativeAnnualPhase2"};
+    String[] dataToVisualize = {
+            "annualZip",
+            "annualZipWithReal",
+            "cumulativeAnnualPhase",
+            "cumulativeAnnualPhase2",
+            "annualInterest2D",
+            "annualPhaseOverview"
+    };
+    String[] dataToVisualizeWithoutDefault = StringUtil.without(dataToVisualize, "annualZip");
     XorWithoutUnselectRuleBuilder dataToVisualizeBuilder = new XorWithoutUnselectRuleBuilder()
             .withTrueValue(Constants.TRUE1)
             .withFalseValue(Constants.FALSE0)
@@ -55,6 +63,10 @@ public interface InOutputImage extends InIRPactEntity {
     boolean isStoreScript();
 
     double getLinewidth();
+
+    default int getLinewidthInt() {
+        return (int) getLinewidth();
+    }
 
     int getImageWidth();
 

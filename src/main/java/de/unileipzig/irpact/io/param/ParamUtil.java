@@ -67,6 +67,7 @@ public final class ParamUtil {
     public static final Object[] VALUE_NEG_ONE = {"-1"};
     public static final Object[] VALUE_0_25 = {"0.25"};
     public static final Object[] VALUE_0_5 = {"0.5"};
+    public static final Object[] VALUE_0_1 = {"0.1"};
 
     private ParamUtil() {
     }
@@ -674,7 +675,7 @@ public final class ParamUtil {
     //xlsx
     //=========================
 
-    public static Rows<Attribute> parseXlsx(ResourceLoader loader, String fileName) throws ParsingException {
+    public static Rows<Attribute> parseXlsx(ResourceLoader loader, String fileName, String sheet) throws ParsingException {
         try {
             if(loader == null) {
                 throw new ParsingException("loader");
@@ -689,13 +690,13 @@ public final class ParamUtil {
                 Path xlsxPath = loader.getExternal(xlsxFile);
                 LOGGER.trace("load xlsx file '{}'", xlsxPath);
                 try(InputStream in = Files.newInputStream(xlsxPath)) {
-                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
+                    rows = xlsxParser.parse(in, sheet);
                 }
             }
             else if(loader.hasInternal(xlsxFile)) {
                 LOGGER.trace("load xlsx resource '{}'", xlsxFile);
                 try(InputStream in = loader.getInternalAsStream(xlsxFile)) {
-                    rows = xlsxParser.parse(in, RAConstants.REAL_ADOPTION_DATA_SHEET);
+                    rows = xlsxParser.parse(in, sheet);
                 }
             }
             else {

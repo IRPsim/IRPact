@@ -9,7 +9,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
-import de.unileipzig.irpact.core.postprocessing.image.RealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -94,7 +94,7 @@ public class ConsumerGroupBasedInitialAdoptionWithRealData extends NameableBase 
         int totalNumberOfSimulationAdoptions = 0;
 
         for(String zip: zips) {
-            int numberOfRealAdoptions = adoptionData.get(initialAdoptionYear, zip);
+            int numberOfRealAdoptions = adoptionData.getCumulated(initialAdoptionYear, zip);
             if(numberOfRealAdoptions < 1) {
                 trace("skip '{}', number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
                 continue;

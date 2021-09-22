@@ -59,7 +59,9 @@ public class ReadDotCsv extends Component {
     }
 
     public void setColClasses(String... classes) {
-        set(COL_CLASSES, new ColClasses(classes));
+        if(classes != null && classes.length > 0) {
+            set(COL_CLASSES, new ColClasses(classes));
+        }
     }
     public Element getColClasses() {
         return get(COL_CLASSES);
