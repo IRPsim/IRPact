@@ -67,6 +67,7 @@ public final class ParamUtil {
     public static final Object[] VALUE_NEG_ONE = {"-1"};
     public static final Object[] VALUE_0_25 = {"0.25"};
     public static final Object[] VALUE_0_5 = {"0.5"};
+    public static final Object[] VALUE_0_1 = {"0.1"};
 
     private ParamUtil() {
     }

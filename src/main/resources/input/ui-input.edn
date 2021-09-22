@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.7.2" 
+        :description "IRPact v1.8.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -190,7 +190,7 @@
       {
         :label "Datenausgabe" 
         :description "Hier kann die Datenausgabe konfiguriert werden." 
-        :tags [["InGeneral" "logResultAdoptionsZip"] ["InGeneral" "logResultAdoptionsZipPhase"] ["InGeneral" "logResultAdoptionsAll"]]
+        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"]]
       } 
       {
         :label "Postanalyse" 

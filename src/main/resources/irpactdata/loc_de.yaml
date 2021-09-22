@@ -312,16 +312,24 @@ InConsumerAgentGroupColor_groups:
 data_output:
   edn_label: "Datenausgabe"
   edn_description: "Hier kann die Datenausgabe konfiguriert werden."
-InGeneral_logResultAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
-InGeneral_logResultAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
 InGeneral_logResultAdoptionsAll:
   gams_identifier: "Komplettausgabe"
   gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
-
+InGeneral_logPerformance:
+  gams_identifier: "Performance"
+  gams_description: "Performance.xlsx"
+InGeneral_logPhaseOverview:
+  gams_identifier: "Phasenübersicht"
+  gams_description: "Phasenuebersicht.xlsx"
+InGeneral_logInterest:
+  gams_identifier: "Interessensentwicklung"
+  gams_description: "Interesse.xlsx"
+InGeneral_logEvaluation:
+  gams_identifier: "Evaluierungsdaten"
+  gams_description: "Evaluierung.xlsx"
+InGeneral_evaluationBucketSize:
+  gams_identifier: "Bereichsgröße (Evaluierungswerte)"
+  gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
 
 data_analysis:
   edn_label: "Postanalyse"
@@ -350,7 +358,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.7.2"
+  edn_description: "IRPact v1.8.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2495,3 +2503,11 @@ InGraphvizGeneral_layoutAlgCIRCO:
 InGraphvizGeneral_scaleFactor:
   gams_identifier: "Skalierungsfaktor"
   gams_description: "Definiert den Skalierungsfaktor."
+
+#deprecated
+InGeneral_logResultAdoptionsZip:
+  gams_identifier: "Adoptionen nach PLZ"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus."
+InGeneral_logResultAdoptionsZipPhase:
+  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
+  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."

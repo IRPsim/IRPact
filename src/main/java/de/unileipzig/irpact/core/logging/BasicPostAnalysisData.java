@@ -8,6 +8,8 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -356,6 +358,265 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         @Override
         public double getInterest(int year) {
             return annualInterest.getOrDefault(year, 0.0);
+        }
+    }
+
+    //=========================
+    //evaluation data
+    //=========================
+
+    protected static final BasicBucket NAN_BUCKET = new BasicBucket(Double.NaN, Double.NaN);
+    protected final Map<Double, BasicBucket> bucketCache = new ConcurrentHashMap<>();
+    protected final Map<Product, Map<Integer, Map<Bucket, BasicEvaluationData>>> productAnnualBucketMap = new ConcurrentHashMap<>();
+    protected boolean logEvaluationData = true;
+    protected double bucketSize = 0.1;
+    protected DecimalFormat bucketPrinter = buildFormat(2);
+
+    protected static DecimalFormat buildFormat(int digits) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        DecimalFormat format = new DecimalFormat();
+        format.setMaximumFractionDigits(digits);
+        format.setDecimalFormatSymbols(symbols);
+        return format;
+    }
+
+    protected BasicBucket getBucket0(double from) {
+        if(bucketCache.containsKey(from)) {
+            return bucketCache.get(from);
+        } else {
+            double to = from + bucketSize;
+            BasicBucket bucket = new BasicBucket(from, to);
+            bucketCache.put(from, bucket);
+            return bucket;
+        }
+    }
+
+    protected BasicBucket getBucket(double value) {
+        if(Double.isNaN(value)) {
+            return NAN_BUCKET;
+        } else {
+            double from = Math.floor(value / bucketSize) * bucketSize;
+            return getBucket0(from);
+        }
+    }
+
+    protected BasicEvaluationData getData(Product product, Timestamp stamp, BasicBucket bucket) {
+        Map<Integer, Map<Bucket, BasicEvaluationData>> annualBucketMap = productAnnualBucketMap.computeIfAbsent(product, _product -> new ConcurrentHashMap<>());
+        Map<Bucket, BasicEvaluationData> bucketMap = annualBucketMap.computeIfAbsent(stamp.getYear(), _year -> new ConcurrentHashMap<>());
+        return bucketMap.computeIfAbsent(bucket, _bucket -> new BasicEvaluationData());
+    }
+
+    @Override
+    public void setLogEvaluationData(boolean logEvaluationData) {
+        this.logEvaluationData = logEvaluationData;
+    }
+
+    @Override
+    public boolean isLogEvaluationData() {
+        return logEvaluationData;
+    }
+
+    @Override
+    public void setEvaluationBucketSize(double bucketSize) {
+        this.bucketSize = bucketSize;
+        String str = Double.toString(bucketSize);
+        int decimalIndex = str.indexOf('.');
+        int digits = decimalIndex == -1
+                ? 0
+                : str.length() - decimalIndex - 1;
+        bucketPrinter = buildFormat(digits);
+    }
+
+    @Override
+    public double getEvaluationBucketSize() {
+        return bucketSize;
+    }
+
+    @Override
+    public DecimalFormat getEvaluationBucketFormatter() {
+        return bucketPrinter;
+    }
+
+    @Override
+    public void logEvaluationData(
+            Product product, Timestamp stamp,
+            double a, double b, double c, double d, double adoptionFactor) {
+        getData(product, stamp, getBucket(a)).updateA();
+        getData(product, stamp, getBucket(b)).updateB();
+        getData(product, stamp, getBucket(c)).updateC();
+        getData(product, stamp, getBucket(d)).updateD();
+        getData(product, stamp, getBucket(adoptionFactor)).updateAdoptionFactor();
+    }
+
+    @Override
+    public Bucket getNaNBucket() {
+        return NAN_BUCKET;
+    }
+
+    @Override
+    public List<Bucket> createAllBuckets(int from, int to) {
+        List<Bucket> list = new ArrayList<>();
+        for(double f = from; f < to; f += bucketSize) {
+            BasicBucket bucket = getBucket0(f);
+            list.add(bucket);
+        }
+        return list;
+    }
+
+    @Override
+    public NavigableSet<Bucket> getBuckets() {
+        NavigableSet<Bucket> buckets = new TreeSet<>();
+        productAnnualBucketMap.values()
+                .stream()
+                .flatMap(map -> map.values().stream())
+                .map(Map::keySet)
+                .forEach(buckets::addAll);
+        return buckets;
+    }
+
+    @Override
+    public EvaluationData getEvaluationData(Product product, int year, Bucket bucket) {
+        Map<Integer, Map<Bucket, BasicEvaluationData>> annualData = productAnnualBucketMap.get(product);
+        if(annualData == null) return null;
+        Map<Bucket, BasicEvaluationData> bucketData = annualData.get(year);
+        return bucketData == null
+                ? null
+                : bucketData.get(bucket);
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private static final class BasicBucket implements Bucket {
+
+        private final double from;
+        private final double to;
+
+        private BasicBucket(double from, double to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof BasicBucket)) return false;
+            BasicBucket bucket = (BasicBucket) o;
+            return Double.compare(bucket.from, from) == 0 && Double.compare(bucket.to, to) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(from, to);
+        }
+
+        @Override
+        public boolean isNaN() {
+            return Double.isNaN(from);
+        }
+
+        @Override
+        public double getFrom() {
+            return from;
+        }
+
+        @Override
+        public double getTo() {
+            return to;
+        }
+
+        @Override
+        public String print() {
+            return isNaN()
+                    ? "NaN"
+                    : "[" + getFrom() + ", " + getTo() + ")";
+        }
+
+        @Override
+        public String print(DecimalFormat format) {
+            if(format == null || isNaN()) {
+                return print();
+            } else {
+                return "[" + format.format(getFrom()) + ", " + format.format(getTo()) + ")";
+            }
+        }
+
+        @Override
+        public int compareTo(Bucket o) {
+            if(isNaN()) {
+                if(o.isNaN()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else {
+                if(o.isNaN()) {
+                    return 1;
+                } else {
+                    return Double.compare(getFrom(), o.getFrom());
+                }
+            }
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private static final class BasicEvaluationData implements EvaluationData {
+
+        private int a;
+        private int b;
+        private int c;
+        private int d;
+        private int adoptionFactor;
+
+        private BasicEvaluationData() {
+        }
+
+        private void updateA() {
+            a++;
+        }
+
+        private void updateB() {
+            b++;
+        }
+
+        private void updateC() {
+            c++;
+        }
+
+        private void updateD() {
+            d++;
+        }
+
+        private void updateAdoptionFactor() {
+            adoptionFactor++;
+        }
+
+        @Override
+        public int countA() {
+            return a;
+        }
+
+        @Override
+        public int countB() {
+            return b;
+        }
+
+        @Override
+        public int countC() {
+            return c;
+        }
+
+        @Override
+        public int countD() {
+            return d;
+        }
+
+        @Override
+        public int countAdoptionFactor() {
+            return adoptionFactor;
         }
     }
 }

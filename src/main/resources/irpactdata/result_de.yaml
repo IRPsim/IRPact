@@ -27,5 +27,14 @@ XLSX:
     phase3: "Decision making"
     phase4: "Adopted"
 
+  EVALUATION:
+    aSheet: "a"
+    bSheet: "b"
+    cSheet: "c"
+    dSheet: "d"
+    BSheet: "Adoptionswert"
+    bucketColumn: "Zahlenbereich"
+    valueColumn: "Anzahl"
+
 # CSV
 CSV:

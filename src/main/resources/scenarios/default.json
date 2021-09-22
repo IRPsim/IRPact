@@ -23,6 +23,7 @@
       "sca_delta_ii" : 0.0,
       "sca_InGeneral_copyLogIfPossible" : 0,
       "sca_InGeneral_debugTask" : 0,
+      "sca_InGeneral_evaluationBucketSize" : 0.1,
       "sca_InGeneral_forceLogToConsole" : 1,
       "sca_InGeneral_innerParallelism" : 0,
       "sca_InGeneral_lastSimulationYear" : 2015,
@@ -39,17 +40,19 @@
       "sca_InGeneral_logAllTools" : 0,
       "sca_InGeneral_logCalculateDecisionMaking" : 0,
       "sca_InGeneral_logDecisionAnalysis" : 0,
+      "sca_InGeneral_logEvaluation" : 0,
       "sca_InGeneral_logFinancalComponent" : 0,
       "sca_InGeneral_logFinancialThresholdAnalysis" : 0,
       "sca_InGeneral_logGraphUpdate" : 0,
       "sca_InGeneral_logInitialAdopterAnalysis" : 0,
       "sca_InGeneral_logInitialization" : 0,
+      "sca_InGeneral_logInterest" : 0,
       "sca_InGeneral_logInterestUpdate" : 0,
       "sca_InGeneral_logNonAdopterAnalysis" : 0,
+      "sca_InGeneral_logPerformance" : 0,
+      "sca_InGeneral_logPhaseOverview" : 0,
       "sca_InGeneral_logRelativeAgreement" : 0,
       "sca_InGeneral_logResultAdoptionsAll" : 0,
-      "sca_InGeneral_logResultAdoptionsZip" : 0,
-      "sca_InGeneral_logResultAdoptionsZipPhase" : 0,
       "sca_InGeneral_logScriptAdoptionsZip" : 0,
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
       "sca_InGeneral_logShareNetworkLocal" : 0,
@@ -338,7 +341,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_21_T_17_10_48" : {
+        "CT_D_2021_09_22_T_09_18_09" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -444,7 +447,7 @@
       },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_7_2" : {
+        "v1_8_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

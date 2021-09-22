@@ -104,14 +104,11 @@ public interface Settings {
     //result logging
     //=========================
 
-    void setLogResultAdoptionsZip(boolean log);
-    boolean isLogResultAdoptionsZip();
-
-    void setLogResultAdoptionsZipPhase(boolean log);
-    boolean isLogResultAdoptionsZipPhase();
-
     void setLogResultAdoptionsAll(boolean log);
     boolean isLogResultAdoptionsAll();
+
+    void setLogPerformance(boolean log);
+    boolean isLogPerformance();
 
     //=========================
     //script logging

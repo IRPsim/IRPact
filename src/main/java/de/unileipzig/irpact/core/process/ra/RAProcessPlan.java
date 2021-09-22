@@ -476,6 +476,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
         PostAnalysisLogger postAnalysis = environment.getPostAnalysisLogger();
+        PostAnalysisData postData = environment.getPostAnalysisData();
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
                 .setAutoDispose(true);
@@ -504,61 +505,41 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         double B = 0.0;
 
-        if(a != 0.0) {
-            double financial = getFinancialComponent();
-            aValue = financial;
-            double temp = a * financial;
-            alm.append("a * financial component = {} * {} = {}", a, financial, temp);
-            B += temp;
-//            double financial = getFinancialComponent();
-//            double financialThreshold = getFinancialThreshold(agent, product);
-//            //check D3 reached
-//            if(financial < financialThreshold) {
-//                alm.append("financial component < financial threshold ({} < {}) = {}", financial, financialThreshold, true);
-//                logCalculateDecisionMaking(alm);
-//
-//                updateStage(RAStage.IMPEDED);
-//                return ProcessPlanResult.IMPEDED;
-//            }
-//            double temp = a * financial;
-//            alm.append("a * financial component = {} * {} = {}", a, financial, temp);
-//            B += temp;
-        } else {
-            alm.append("a = 0");
-        }
+        //a
+        double financial = getFinancialComponent();
+        aValue = financial;
+        double temp = a * financial;
+        alm.append("a * financial component = {} * {} = {}", a, financial, temp);
+        B += temp;
 
-        if(b != 0.0) {
-            double env = getEnvironmentalComponent();
-            bValue = env;
-            double benv = b * env;
-            alm.append("b * environmental component = {} * {} = {}", b, env, benv);
-            B += benv;
-        } else {
-            alm.append("b = 0");
-        }
+        //b
+        double env = getEnvironmentalComponent();
+        bValue = env;
+        double benv = b * env;
+        alm.append("b * environmental component = {} * {} = {}", b, env, benv);
+        B += benv;
 
-        if(c != 0.0) {
-            double nov = getNoveltyCompoenent();
-            cValue = nov;
-            double cnov = c * nov;
-            alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
-            B += cnov;
-        } else {
-            alm.append("c = 0");
-        }
+        //c
+        double nov = getNoveltyCompoenent();
+        cValue = nov;
+        double cnov = c * nov;
+        alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
+        B += cnov;
 
-        if(d != 0.0) {
-            double soc = getSocialComponent();
-            dValue = soc;
-            double dsoc = d * soc;
-            alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
-            B += dsoc;
-        } else {
-            alm.append("d = 0");
-        }
+        //d
+        double soc = getSocialComponent();
+        dValue = soc;
+        double dsoc = d * soc;
+        alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
+        B += dsoc;
 
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
+
+        postData.logEvaluationData(
+                product, now,
+                aValue, bValue, cValue, dValue, B
+        );
 
         postAnalysis.logDecision(
                 agent, product,
