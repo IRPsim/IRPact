@@ -605,7 +605,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected final void logGraphUpdateEdgeAdded(Agent agent, Agent target) {
-        boolean logData = getEnvironment().getSettings().isLogGraphUpdate();
+        boolean logData = true;
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -621,7 +621,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
             Agent agent,
             double myOldPoints, double myNewPoints,
             Agent target, double targetOldPoints, double targetNewPoints) {
-        boolean logData = getEnvironment().getSettings().isLogInterestUpdate();
+        boolean logData = true;
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -635,7 +635,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected void logGraphUpdateEdgeRemoved(Agent agent, Agent target) {
-        boolean logData = getEnvironment().getSettings().isLogGraphUpdate();
+        boolean logData = true;
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -663,7 +663,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
             double ft, double npv,
             double logisticFt, double logisticNpv,
             double comp) {
-        boolean logData = getEnvironment().getSettings().isLogFinancialComponent();
+        boolean logData = true;
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -682,7 +682,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
             MutableDouble totalLocal,
             MutableDouble adopterLocal,
             MutableDouble shareLocal) {
-        boolean logData = getEnvironment().getSettings().isLogShareNetworkLocale();
+        boolean logData = true;
         IRPLogger logger = getLogger(logData);
         IRPSection section = getSection(logData);
         Level level = getLevel(logData);
@@ -695,7 +695,7 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected void logCalculateDecisionMaking(IRPLoggingMessageCollection mlm) {
-        boolean logData = getEnvironment().getSettings().isLogCalculateDecisionMaking();
+        boolean logData = true;
         mlm.setSection(getSection(logData))
                 .setLevel(getLevel(logData))
                 .log(getLogger(logData));

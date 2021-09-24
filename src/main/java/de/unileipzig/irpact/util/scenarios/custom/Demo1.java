@@ -143,7 +143,6 @@ public class Demo1 extends AbstractScenario {
         general.runPVAct = true;
         general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
-        general.enableAllDataLogging();
         general.enableAllResultLogging();
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;

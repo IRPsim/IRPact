@@ -11,7 +11,6 @@ import org.slf4j.event.Level;
  */
 public abstract class AbstractRelativeAgreementAlgorithm extends SimulationEntityBase implements RelativeAgreementAlgorithm {
 
-    protected boolean logDataFallback;
     protected boolean disableLogging = false;
     protected int currentYearFallback;
 
@@ -58,17 +57,7 @@ public abstract class AbstractRelativeAgreementAlgorithm extends SimulationEntit
         return disableLogging;
     }
 
-    public void setLogDataFallback(boolean logDataFallback) {
-        this.logDataFallback = logDataFallback;
-    }
-
-    public boolean isLogDataFallback() {
-        return logDataFallback;
-    }
-
     public boolean isLogData() {
-        return environment == null
-                ? logDataFallback
-                : environment.getSettings().isLogRelativeAgreement();
+        return true;
     }
 }

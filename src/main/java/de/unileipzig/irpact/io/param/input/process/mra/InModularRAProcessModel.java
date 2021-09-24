@@ -211,7 +211,6 @@ public class InModularRAProcessModel implements InProcessModel {
         algorithm.setRandom(raRnd);
         algorithm.setAttitudeGap(getAttitudeGap());
         algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        algorithm.setLogDataFallback(false);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
         model.setRelativeAgreementAlgorithm(algorithm);
 

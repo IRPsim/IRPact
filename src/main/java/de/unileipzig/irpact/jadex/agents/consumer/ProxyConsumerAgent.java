@@ -645,7 +645,6 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
         } else {
             BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(null, product, null, AdoptionPhase.INITIAL);
             adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
-            environment.getPostAnalysisLogger().logInitialAdopter(this, product);
         }
     }
 

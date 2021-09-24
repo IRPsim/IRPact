@@ -193,7 +193,6 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.runPVAct = true;
         general.setLogLevel(IRPLevel.INFO);
         general.logAllIRPact = true;
-        general.enableAllDataLogging();
         general.enableAllResultLogging();
         general.setFirstSimulationYear(2015);
         general.lastSimulationYear = 2015;

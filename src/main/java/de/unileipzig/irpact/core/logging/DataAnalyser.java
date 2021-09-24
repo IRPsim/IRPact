@@ -4,8 +4,6 @@ import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.Product;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
@@ -14,34 +12,33 @@ import java.util.NavigableSet;
 /**
  * @author Daniel Abitz
  */
-public interface PostAnalysisData {
-
-    //=========================
-    //general
-    //=========================
-
-    int getNumberOfInitialAdopter(Product product);
+public interface DataAnalyser {
 
     //=========================
     //phase transition
     //=========================
 
-    int UNKNOWN = -1;
-    int INITIAL_ADOPTED = 0;
-    int AWARENESS = 1;
-    int FEASIBILITY = 2;
-    int DECISION_MAKING = 3;
-    int ADOPTED = 4;
-
     void setLogPhaseTransition(boolean enable);
 
     boolean isLogPhaseTransition();
 
-    void logPhaseTransition(ConsumerAgent agent, int phase, Product product, Timestamp stamp);
+    void logPhaseTransition(ConsumerAgent agent, Phase phase, Product product, Timestamp stamp);
 
-    Map<Integer, Integer> getTransitionOverviewForYear(Product product, int year);
+    Map<Phase, Integer> getTransitionOverviewForYear(Product product, int year);
 
-    int getPhaseFor(ConsumerAgent agent, Product product, int year);
+    Phase getPhaseFor(ConsumerAgent agent, Product product, int year);
+
+    /**
+     * @author Daniel Abitz
+     */
+    enum Phase {
+        UNKNOWN,
+        INITIAL_ADOPTED,
+        AWARENESS,
+        FEASIBILITY,
+        DECISION_MAKING,
+        ADOPTED
+    }
 
     /**
      * @author Daniel Abitz
@@ -52,7 +49,7 @@ public interface PostAnalysisData {
 
         Product getProduct();
 
-        int getPhase();
+        Phase getPhase();
     }
 
     //=========================
@@ -65,37 +62,9 @@ public interface PostAnalysisData {
 
     void logAnnualInterest(ConsumerAgent agent, Product product, double interest, Timestamp stamp);
 
-    CumulatedAnnualInterest getCumulatedAnnualInterest(Product product, int year);
-
     int getCumulatedAnnualInterestCount(Product product, int year, double interest);
 
     double getAnnualInterest(ConsumerAgent agent, Product product, int year);
-
-    /**
-     * @author Daniel Abitz
-     */
-    interface CumulatedAnnualInterest {
-
-        int getYear();
-
-        Product getProduct();
-
-        Map<Double, Integer> getInterest();
-
-        default int getInterestCount(double value) {
-            return getInterest().getOrDefault(value, 0);
-        }
-    }
-
-    /**
-     * @author Daniel Abitz
-     */
-    interface AnnualInterest {
-
-        Product getProduct();
-
-        double getInterest(int year);
-    }
 
     //=========================
     //annual evaluation data
@@ -111,7 +80,7 @@ public interface PostAnalysisData {
 
     DecimalFormat getEvaluationBucketFormatter();
 
-    void logEvaluationData2(
+    void logEvaluationData(
             Product product, Timestamp stamp,
             double a, double b, double c, double d,
             double aa, double bb, double cc, double dd,
@@ -174,32 +143,4 @@ public interface PostAnalysisData {
 
         int countAdoptionFactor();
     }
-
-    //=========================
-    //full evaluation
-    //=========================
-
-    void setLogAllEvaluationData(boolean value);
-
-    boolean isLogAllEvaluationData();
-
-    void setLogAllEvaluationTemp(Path target);
-
-    void finishAllEvaluation(boolean cleanup) throws IOException;
-
-    void logAllEvaluationDataFinancialFailed(
-            ConsumerAgent agent, Product product, Timestamp stamp,
-            double financialThreshold, double financialValue
-    );
-
-    void logAllEvaluationData(
-            ConsumerAgent agent, Product product, Timestamp stamp,
-            double aWeight, double bWeight, double cWeight, double dWeight,
-            double a, double b, double c, double d,
-            double aValue, double bValue, double cValue, double dValue,
-            double aa, double bb, double cc, double dd,
-            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
-            double financialThreshold, double financialValue,
-            double adoptionThreshold, double adoptionValue
-    );
 }

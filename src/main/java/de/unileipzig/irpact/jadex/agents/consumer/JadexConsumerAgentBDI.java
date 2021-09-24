@@ -604,7 +604,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     public void adoptInitial(Product product) {
         AdoptedProduct adoptedProduct = new BasicAdoptedProduct(null, product, null, AdoptionPhase.INITIAL);
         addAdoptedProduct(adoptedProduct);
-        environment.getPostAnalysisLogger().logInitialAdopter(this, product);
     }
 
     @Override
@@ -614,7 +613,6 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
             needs.remove(need);
             addAdoptedProduct(adoptedProduct);
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
-            getEnvironment().getPostAnalysisLogger().logAdoption(this, product, phase, stamp);
         } else {
             LOGGER.warn("need '{}' does not exist", need.getName());
         }

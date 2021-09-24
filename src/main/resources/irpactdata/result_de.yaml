@@ -75,5 +75,24 @@ XLSX:
     columnAdoptionThreshold: "adoption threshold"
     columnAdoptionValue: "adoption value"
 
+  FINANCIAL_COMPONENT:
+    sheet: "Übersicht"
+    columnAgent: "Agent"
+    columnProduct: "Produkt"
+    columnTime: "Zeit"
+    columnYear: "Jahr"
+    columnLogisticFactor: "Logistikfaktor"
+    columnWeightFt: "Wichtung Kaufkraft"
+    columnFtAvg: "Durchschnittliche Kaufkraft"
+    columnFtThis: "Kaufkraft Agent"
+    columnFt: "Kaufkraft (non logistic)"
+    columnLogisticFt: "Kaufkraft (logistic)"
+    columnWeightNpv: "Wichtung Barwert"
+    columnMpvAvg: "Durchschnittlicher Barwert"
+    columnNpvThis: "Barwert Agent"
+    columnNpv: "Barwert (nonlogistic)"
+    columnLogisticNpv: "Barwert (logistic)"
+    columnFin: "Finanzielle Komponente"
+
 # CSV
 CSV:

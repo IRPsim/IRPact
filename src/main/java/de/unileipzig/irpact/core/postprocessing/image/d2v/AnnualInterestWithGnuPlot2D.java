@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.core.logging.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
@@ -54,7 +54,7 @@ public class AnnualInterestWithGnuPlot2D extends AbstractGnuPlotDataVisualizer {
         }
         Product product = products.get(0);
 
-        PostAnalysisData postData = imageProcessor.getEnvironment().getPostAnalysisData();
+        DataAnalyser dataAnalyser = imageProcessor.getDataAnalyser();
         List<Integer> years = imageProcessor.getAllSimulationYears();
         List<Double> interestValues = imageProcessor.getInterestValues(product);
 
@@ -71,7 +71,7 @@ public class AnnualInterestWithGnuPlot2D extends AbstractGnuPlotDataVisualizer {
             tableData.setInt(row, 0, year);
             column = 1;
             for(double value: interestValues) {
-                int interest = postData.getCumulatedAnnualInterestCount(product, year, value);
+                int interest = dataAnalyser.getCumulatedAnnualInterestCount(product, year, value);
                 tableData.setInt(row, column++, interest);
             }
             row++;

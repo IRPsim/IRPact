@@ -34,22 +34,18 @@
       "sca_InGeneral_levelOff" : 0,
       "sca_InGeneral_levelTrace" : 0,
       "sca_InGeneral_levelWarn" : 0,
-      "sca_InGeneral_logAdoptionAnalysis" : 0,
       "sca_InGeneral_logAll" : 1,
       "sca_InGeneral_logAllEvaluation" : 0,
       "sca_InGeneral_logAllIRPact" : 0,
       "sca_InGeneral_logAllTools" : 0,
       "sca_InGeneral_logCalculateDecisionMaking" : 0,
-      "sca_InGeneral_logDecisionAnalysis" : 0,
       "sca_InGeneral_logEvaluation" : 0,
       "sca_InGeneral_logFinancalComponent" : 0,
-      "sca_InGeneral_logFinancialThresholdAnalysis" : 0,
+      "sca_InGeneral_logFinancialComponent" : 0,
       "sca_InGeneral_logGraphUpdate" : 0,
-      "sca_InGeneral_logInitialAdopterAnalysis" : 0,
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterest" : 0,
       "sca_InGeneral_logInterestUpdate" : 0,
-      "sca_InGeneral_logNonAdopterAnalysis" : 0,
       "sca_InGeneral_logPerformance" : 0,
       "sca_InGeneral_logPhaseOverview" : 0,
       "sca_InGeneral_logRelativeAgreement" : 0,
@@ -342,7 +338,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_22_T_14_09_36" : {
+        "CT_D_2021_09_24_T_07_12_48" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -458,7 +454,7 @@
       },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_9_0" : {
+        "v1_10_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
