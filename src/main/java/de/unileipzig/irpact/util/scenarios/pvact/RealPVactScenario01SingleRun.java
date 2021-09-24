@@ -97,10 +97,12 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         Map<Milieu, InTruncatedNormalDistribution> nep = RealData.buildTruncNorm("NEP", RealData.XLSX_ORDER_ARR, RealData.NEP_MEANS, RealData.NEP_SD);
         realData.CAGS.applyMilieus(nep, InPVactConsumerAgentGroup::setEnvironmentalConcern);
         //COMMU
-        Map<Milieu, InBernoulliDistribution> commu = RealData.buildBernoulli("COMMU", RealData.XLSX_ORDER_ARR, RealData.COMMU);
+        //Map<Milieu, InBernoulliDistribution> commu = RealData.buildBernoulli("COMMU", RealData.XLSX_ORDER_ARR, RealData.COMMU);
+        Map<Milieu, InDiracUnivariateDistribution> commu = RealData.buildDirac("COMMU", RealData.XLSX_ORDER_ARR, RealData.COMMU);
         realData.CAGS.applyMilieus(commu, InPVactConsumerAgentGroup::setCommunication);
         //REWIRE
-        Map<Milieu, InBernoulliDistribution> rewire = RealData.buildBernoulli("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
+        //Map<Milieu, InBernoulliDistribution> rewire = RealData.buildBernoulli("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
+        Map<Milieu, InDiracUnivariateDistribution> rewire = RealData.buildDirac("REWIRE", RealData.XLSX_ORDER_ARR, RealData.REWIRE);
         realData.CAGS.applyMilieus(rewire, InPVactConsumerAgentGroup::setRewire);
         //INITAL ADOPTER
         Map<Milieu, InDiracUnivariateDistribution> initialAdopter = RealData.buildDirac("INITADOPT", RealData.XLSX_ORDER_ARR, RealData.INITIAL_ADOPTER);
