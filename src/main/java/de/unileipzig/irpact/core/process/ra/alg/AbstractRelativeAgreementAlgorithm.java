@@ -58,6 +58,6 @@ public abstract class AbstractRelativeAgreementAlgorithm extends SimulationEntit
     }
 
     public boolean isLogData() {
-        return true;
+        return false;
     }
 }
