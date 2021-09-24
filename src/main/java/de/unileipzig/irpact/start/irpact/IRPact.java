@@ -14,9 +14,9 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
+import de.unileipzig.irpact.core.logging.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.logging.PostAnalysisLogger;
 import de.unileipzig.irpact.core.misc.InitializationStage;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
@@ -84,9 +84,9 @@ public final class IRPact implements IRPActAccess {
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
-    //dran denken die Version auch in der loc.yaml zu aktualisieren
+    //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "8";
+    private static final String MINOR_STRING = "10";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -124,12 +124,13 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
     public static final String IMAGE_PHASE_OVERVIEW_JPG = IMAGE_PHASE_OVERVIEW + ".png";
 
-    public static final String ANALYSIS_ZIP = "Analysis.zip";
-    public static final String NON_ADOPTER_ANALYSIS_CSV = "NonAdopter.csv";
-    public static final String INITIAL_ADOPTER_ANALYSIS_CSV = "InitialAdopter.csv";
-    public static final String ADOPTIONS_ANALYSIS_CSV = "Adoptions.csv";
-    public static final String DECISION_ANALYSIS_CSV = "DecisionMaking.csv";
-    public static final String FINANCIAL_ANALYSIS_CSV = "FinancialThreshold.csv";
+    private static final String ALL_EVAL_BASENAME = "Komplette_Evaluierungen";
+    public static final String ALL_EVAL_CSV = ALL_EVAL_BASENAME + ".csv";
+    public static final String ALL_EVAL_XLSX = ALL_EVAL_BASENAME + ".xlsx";
+
+    private static final String FIN_BASENAME = "Finanzielle_Komponente";
+    public static final String FIN_CSV = FIN_BASENAME + ".csv";
+    public static final String FIN_XLSX = FIN_BASENAME + ".xlsx";
 
     public static final String DOWNLOAD_DIR_NAME = "images";
 
@@ -352,7 +353,7 @@ public final class IRPact implements IRPActAccess {
             initializeNewSimulationEnvironment();
         }
 
-        initializePostAnalysis();
+        initializeDataLogger();
 
         META_DATA.apply(environment.getSettings());
 
@@ -402,15 +403,15 @@ public final class IRPact implements IRPActAccess {
         );
     }
 
-    private void initializePostAnalysis() throws IOException {
+    private void initializeDataLogger() throws IOException {
         Path dir = CL_OPTIONS.getCreatedDownloadDir();
-        PostAnalysisLogger postAnalysis = environment.getPostAnalysisLogger();
-        postAnalysis.setupLogNonAdopter(dir.resolve(NON_ADOPTER_ANALYSIS_CSV), inRoot.getGeneral().isLogNonAdopterAnalysis());
-        postAnalysis.setupLogInitialAdopter(dir.resolve(INITIAL_ADOPTER_ANALYSIS_CSV), inRoot.getGeneral().isLogInitialAdopterAnalysis());
-        postAnalysis.setupLogAdoptions(dir.resolve(ADOPTIONS_ANALYSIS_CSV), inRoot.getGeneral().isLogAdoptionAnalysis());
-        postAnalysis.setupLogDecisions(dir.resolve(DECISION_ANALYSIS_CSV), inRoot.getGeneral().isLogDecisionAnalysis());
-        postAnalysis.setupLogFinancialThresholds(dir.resolve(FINANCIAL_ANALYSIS_CSV), inRoot.getGeneral().isLogFinancialThresholdAnalysis());
-        postAnalysis.startLogging();
+        DataLogger dataLogger = environment.getDataLogger();
+
+        dataLogger.setLogEvaluationTarget(dir.resolve(ALL_EVAL_CSV));
+        dataLogger.startLogEvaluation();
+
+        dataLogger.setLogFinancialComponentTarget(dir.resolve(FIN_CSV));
+        dataLogger.startLogFinancialComponent();
     }
 
     private void createGraphvizConfiguration() throws Exception {

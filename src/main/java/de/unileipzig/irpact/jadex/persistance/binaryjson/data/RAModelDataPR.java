@@ -38,6 +38,10 @@ public class RAModelDataPR extends BinaryPRBase<RAModelData> {
         data.putDouble(object.b());
         data.putDouble(object.c());
         data.putDouble(object.d());
+        data.putDouble(object.getAWeight());
+        data.putDouble(object.getBWeight());
+        data.putDouble(object.getCWeight());
+        data.putDouble(object.getDWeight());
         data.putInt(object.getAdopterPoints());
         data.putInt(object.getInterestedPoints());
         data.putInt(object.getAwarePoints());
@@ -61,6 +65,10 @@ public class RAModelDataPR extends BinaryPRBase<RAModelData> {
         object.setB(data.getDouble());
         object.setC(data.getDouble());
         object.setD(data.getDouble());
+        object.setAWeight(data.getDouble());
+        object.setBWeight(data.getDouble());
+        object.setCWeight(data.getDouble());
+        object.setDWeight(data.getDouble());
         object.setAdopterPoints(data.getInt());
         object.setInterestedPoints(data.getInt());
         object.setAwarePoints(data.getInt());

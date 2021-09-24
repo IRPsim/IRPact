@@ -8,5 +8,7 @@ public enum DataToAnalyse {
     PERFORMANCE,
     INTEREST,
     PHASE_OVERVIEW,
-    EVALUATION
+    EVALUATION,
+    ALL_EVALUATION,
+    FINANCIAL_COMPONENT
 }

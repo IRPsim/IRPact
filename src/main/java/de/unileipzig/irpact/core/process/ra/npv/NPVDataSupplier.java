@@ -9,18 +9,19 @@ import de.unileipzig.irpact.core.util.AttributeHelper;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("FieldMayBeFinal")
 public final class NPVDataSupplier {
 
-    protected AttributeHelper attributeHelper;
-    protected Map<Integer, NPVMatrix> npData;
-    protected MutableDouble avgFT = new MutableDouble(Double.NaN);
-    protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
-    protected int avgNPVYear = -1;
+    private AttributeHelper attributeHelper;
+    private Map<Integer, NPVMatrix> npData;
+    private MutableDouble avgFT = new MutableDouble(Double.NaN);
+    private Map<Integer, Double> avgNPVCache = new ConcurrentHashMap<>();
 
     public NPVDataSupplier() {
         this(null, new HashMap<>());
@@ -58,19 +59,19 @@ public final class NPVDataSupplier {
         }
     }
 
-    protected double getNPV(ConsumerAgent agent) {
+    private double getNPV(ConsumerAgent agent) {
         return attributeHelper.getDoubleValue(agent, RAConstants.NET_PRESENT_VALUE);
     }
 
-    protected int getN(ConsumerAgent agent) {
+    private int getN(ConsumerAgent agent) {
         return attributeHelper.findIntValue(agent, RAConstants.SLOPE);
     }
 
-    protected int getA(ConsumerAgent agent) {
+    private int getA(ConsumerAgent agent) {
         return attributeHelper.findIntValue(agent, RAConstants.ORIENTATION);
     }
 
-    protected double getFinancialPurchasePower(ConsumerAgent agent) {
+    private double getFinancialPurchasePower(ConsumerAgent agent) {
         return RAProcessModel.getFinancialPurchasePower(agent, attributeHelper);
     }
 
@@ -81,7 +82,7 @@ public final class NPVDataSupplier {
         return avgFT.get();
     }
 
-    protected synchronized void calcAvgFT(Stream<? extends ConsumerAgent> agents) {
+    private synchronized void calcAvgFT(Stream<? extends ConsumerAgent> agents) {
         if(Double.isNaN(avgFT.get())) {
             MutableDouble total = MutableDouble.zero();
             double sum = agents.mapToDouble(ca -> {
@@ -94,42 +95,45 @@ public final class NPVDataSupplier {
     }
 
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
-            calcAvgNPV(agents, year);
-            //calcAvgNPV2(agents, year);
-        }
-        return avgNPV.get();
+        return cachedAvgNPV(agents, year);
     }
 
-    protected synchronized void calcAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
-        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
+    private double cachedAvgNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        Double avgNPV = avgNPVCache.get(year);
+        if(avgNPV == null) {
+            return calcAvgNPV(agents, year);
+            //return calcAvgNPV2(agents, year);
+        } else {
+            return avgNPV;
+        }
+    }
+
+    private synchronized double calcAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(avgNPVCache.containsKey(year)) {
+            return avgNPVCache.get(year);
+        } else {
             MutableDouble total = MutableDouble.zero();
-            double sum = agents.mapToDouble(
-                    ca -> {
-                        total.inc();
-                        return NPV(ca, year);
-                    })
-                    .sum();
-            if(total.isZero()) {
-                throw new IllegalStateException("no consumer agents");
-            }
-
+            double sum = agents.mapToDouble(ca -> {
+                total.inc();
+                return NPV(ca, year);
+            }).sum();
             double result = sum / total.get();
-            avgNPV.set(result);
-            avgNPVYear = year;
+            avgNPVCache.put(year, result);
+            return result;
         }
     }
 
-    protected synchronized void calcAvgNPV2(Stream<? extends ConsumerAgent> agents, final int year) {
-        if(year != avgNPVYear || Double.isNaN(avgNPV.get())) {
+    private synchronized double calcAvgNPV2(final int year) {
+        if(avgNPVCache.containsKey(year)) {
+            return avgNPVCache.get(year);
+        } else {
             NPVMatrix matrix = npData.get(year);
             if(matrix == null) {
                 throw new NoSuchElementException("missing npv data for year: " + year);
             }
-
-            double avg = matrix.averageValue();
-            avgNPV.set(avg);
-            avgNPVYear = year;
+            double result = matrix.averageValue();
+            avgNPVCache.put(year, result);
+            return result;
         }
     }
 }

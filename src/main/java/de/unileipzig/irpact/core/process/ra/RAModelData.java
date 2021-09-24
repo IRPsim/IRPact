@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -29,6 +28,11 @@ public class RAModelData implements ChecksumComparable {
     protected double c;
     protected double d;
 
+    protected double aWeight;
+    protected double bWeight;
+    protected double cWeight;
+    protected double dWeight;
+
     protected int adopterPoints = DEFAULT_ADOPTER_POINTS;
     protected int interestedPoints = DEFAULT_INTERESTED_POINTS;
     protected int awarePoints = DEFAULT_AWARE_POINTS;
@@ -40,6 +44,9 @@ public class RAModelData implements ChecksumComparable {
     protected double weightLocal = 0.5;
 
     protected double logisticFactor = 0.0;
+
+    protected double communicationFactor = 1.0;
+    protected double rewireFactor = 1.0;
 
     public RAModelData() {
         this(new HashMap<>());
@@ -79,6 +86,22 @@ public class RAModelData implements ChecksumComparable {
         this.d = d;
     }
 
+    public void setAWeight(double aWeight) {
+        this.aWeight = aWeight;
+    }
+
+    public void setBWeight(double bWeight) {
+        this.bWeight = bWeight;
+    }
+
+    public void setCWeight(double cWeight) {
+        this.cWeight = cWeight;
+    }
+
+    public void setDWeight(double dWeight) {
+        this.dWeight = dWeight;
+    }
+
     public void setAdopterPoints(int adopterPoints) {
         this.adopterPoints = adopterPoints;
     }
@@ -111,6 +134,14 @@ public class RAModelData implements ChecksumComparable {
         this.weightSocial = weightSocial;
     }
 
+    public void setCommunicationFactor(double communicationFactor) {
+        this.communicationFactor = communicationFactor;
+    }
+
+    public void setRewireFactor(double rewireFactor) {
+        this.rewireFactor = rewireFactor;
+    }
+
     public void put(int year, NPVMatrix matrix) {
         npvDataSupplier.put(year, matrix);
     }
@@ -119,21 +150,8 @@ public class RAModelData implements ChecksumComparable {
         return npvDataSupplier.NPV(agent, year);
     }
 
-    protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
-    protected int avgNPVYear = -1;
-
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        if(Double.isNaN(avgNPV.get()) || year != avgNPVYear) {
-            MutableDouble total = MutableDouble.zero();
-            double sum = agents.mapToDouble(ca -> {
-                total.inc();
-                return NPV(ca, year);
-            }).sum();
-            double result = sum / total.get();
-            avgNPV.set(result);
-            avgNPVYear = year;
-        }
-        return avgNPV.get();
+        return npvDataSupplier.avgNPV(agents, year);
     }
 
     public double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents) {
@@ -158,6 +176,22 @@ public class RAModelData implements ChecksumComparable {
 
     public double d() {
         return d;
+    }
+
+    public double getAWeight() {
+        return aWeight;
+    }
+
+    public double getBWeight() {
+        return bWeight;
+    }
+
+    public double getCWeight() {
+        return cWeight;
+    }
+
+    public double getDWeight() {
+        return dWeight;
     }
 
     public int getAdopterPoints() {
@@ -194,5 +228,13 @@ public class RAModelData implements ChecksumComparable {
 
     public double getWeightLocal() {
         return weightLocal;
+    }
+
+    public double getCommunicationFactor() {
+        return communicationFactor;
+    }
+
+    public double getRewireFactor() {
+        return rewireFactor;
     }
 }

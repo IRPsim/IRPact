@@ -130,13 +130,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
     protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
         if(agent.hasAdopted(product)) {
             if(agent.hasInitialAdopted(product)) {
-                logPhaseTransition(PostAnalysisData.INITIAL_ADOPTED, now());
+                logPhaseTransition(DataAnalyser.Phase.INITIAL_ADOPTED, now());
             } else {
-                logPhaseTransition(PostAnalysisData.ADOPTED, now());
+                logPhaseTransition(DataAnalyser.Phase.ADOPTED, now());
             }
             currentStage = RAStage.ADOPTED;
         } else {
-            logPhaseTransition(PostAnalysisData.AWARENESS, now());
+            logPhaseTransition(DataAnalyser.Phase.AWARENESS, now());
             currentStage = RAStage.AWARENESS;
         }
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "initial stage for '{}': {}", agent.getName(), currentStage);
@@ -176,7 +176,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(isInterested(agent)) {
             doSelfActionAndAllowAttention();
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
-            logPhaseTransition(PostAnalysisData.FEASIBILITY, now());
+            logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
             updateStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
@@ -247,9 +247,11 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean doCommunicate() {
         double r = rnd.nextDouble();
+        double factor = modelData().getCommunicationFactor();
+        double chance = r * factor;
         double freq = getCommunicationFrequencySN(agent);
-        boolean doCommunicate = r < freq;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do communicate: {} ({} < {})", agent.getName(), doCommunicate, r, freq);
+        boolean doCommunicate = chance < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do communicate: {} ({} * {} = {} < {})", agent.getName(), doCommunicate, r, factor, chance, freq);
         return doCommunicate;
     }
 
@@ -324,9 +326,11 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean doRewire() {
         double r = rnd.nextDouble();
+        double factor = modelData().getRewireFactor();
+        double chance = r * factor;
         double freq = getRewiringRate(agent);
-        boolean doRewire = r < freq;
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do rewire: {} ({} < {})", agent.getName(), doRewire, r, freq);
+        boolean doRewire = chance < freq;
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] do rewire: {} ({} * {} = {} < {})", agent.getName(), doRewire, r, factor, chance, freq);
         return doRewire;
     }
 
@@ -463,7 +467,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention();
-            logPhaseTransition(PostAnalysisData.DECISION_MAKING, now());
+            logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
             updateStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
         }
@@ -475,8 +479,8 @@ public class RAProcessPlan extends RAProcessPlanBase {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
-        PostAnalysisLogger postAnalysis = environment.getPostAnalysisLogger();
-        PostAnalysisData postData = environment.getPostAnalysisData();
+        DataLogger dataLogger = environment.getDataLogger();
+        DataAnalyser dataAnalyser = environment.getDataAnalyser();
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
                 .setAutoDispose(true);
@@ -485,8 +489,11 @@ public class RAProcessPlan extends RAProcessPlanBase {
         Timestamp now = now();
         double ft = getFinancialThresholdAgent(agent);
         double financialThreshold = getFinancialThreshold(agent, product);
-        postAnalysis.logFinancialThreshold(agent, product, ft, financialThreshold, ft < financialThreshold, now);
         if(ft < financialThreshold) {
+            dataLogger.logEvaluationFailed(
+                    agent, product, now,
+                    financialThreshold, ft
+            );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
             updateStage(RAStage.IMPEDED);
@@ -498,54 +505,67 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double c = modelData().c();
         double d = modelData().d();
 
-        double aValue = Double.NaN;
-        double bValue = Double.NaN;
-        double cValue = Double.NaN;
-        double dValue = Double.NaN;
+        double aWeight = modelData().getAWeight();
+        double bWeight = modelData().getBWeight();
+        double cWeight = modelData().getCWeight();
+        double dWeight = modelData().getDWeight();
+
+        double fin;
+        double env;
+        double nov;
+        double soc;
 
         double B = 0.0;
 
         //a
-        double financial = getFinancialComponent();
-        aValue = financial;
-        double temp = a * financial;
-        alm.append("a * financial component = {} * {} = {}", a, financial, temp);
-        B += temp;
+        fin = getFinancialComponent();
+        double afin = a * fin;
+        double wafin = aWeight * afin;
+        alm.append("aWeight * a * financial component = {} * {} * {} = {}", aWeight, a, fin, wafin);
+        B += wafin;
 
         //b
-        double env = getEnvironmentalComponent();
-        bValue = env;
+        env = getEnvironmentalComponent();
         double benv = b * env;
-        alm.append("b * environmental component = {} * {} = {}", b, env, benv);
-        B += benv;
+        double wbenv = bWeight * benv;
+        alm.append("bWeight * b * environmental component = {} * {} * {} = {}", bWeight, b, env, wbenv);
+        B += wbenv;
 
         //c
-        double nov = getNoveltyCompoenent();
-        cValue = nov;
+        nov = getNoveltyCompoenent();
         double cnov = c * nov;
-        alm.append("c * novelty component = {} * {} = {}", c, nov, cnov);
-        B += cnov;
+        double wcnov = cWeight * cnov;
+        alm.append("cWeight * c * novelty component = {} * {} * {} = {}", cWeight, c, nov, wcnov);
+        B += wcnov;
 
         //d
-        double soc = getSocialComponent();
-        dValue = soc;
+        soc = getSocialComponent();
         double dsoc = d * soc;
-        alm.append("d * social component = {} * {} = {}", d, soc, dsoc);
-        B += dsoc;
+        double wdsoc = dWeight * dsoc;
+        alm.append("dWeight * d * social component = {} * {} * {} = {}", dWeight, d, soc, wdsoc);
+        B += wdsoc;
 
         double adoptionThreshold = getAdoptionThreshold(agent, product);
         boolean noAdoption = B < adoptionThreshold;
 
-        postData.logEvaluationData(
+        dataAnalyser.logEvaluationData(
                 product, now,
-                aValue, bValue, cValue, dValue, B
+                fin, env, nov, soc,
+                afin, benv, cnov, dsoc,
+                wafin, wbenv, wcnov, wdsoc,
+                B
         );
 
-        postAnalysis.logDecision(
-                agent, product,
+        dataLogger.logEvaluationSuccess(
+                agent, product, now,
+                aWeight, bWeight, cWeight, dWeight,
                 a, b, c, d,
-                aValue, bValue, cValue, dValue,
-                adoptionThreshold, noAdoption, now);
+                fin, env, nov, soc,
+                afin, benv, cnov, dsoc,
+                wafin, wbenv, wcnov, wdsoc,
+                financialThreshold, ft,
+                adoptionThreshold, B
+        );
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
         logCalculateDecisionMaking(alm);
@@ -555,7 +575,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product, now, determinePhase(now));
-            logPhaseTransition(PostAnalysisData.ADOPTED, now);
+            logPhaseTransition(DataAnalyser.Phase.ADOPTED, now);
             updateStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
@@ -569,8 +589,8 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return environment.getTimeModel().now();
     }
 
-    protected void logPhaseTransition(int phaseId, Timestamp now) {
-        environment.getPostAnalysisData().logPhaseTransition(agent, phaseId, product, now);
+    protected void logPhaseTransition(DataAnalyser.Phase phaseId, Timestamp now) {
+        environment.getDataAnalyser().logPhaseTransition(agent, phaseId, product, now);
     }
 
     protected void updateStage(RAStage nextStage) {
@@ -598,10 +618,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double npvAvg = getAverageNPV();
         double npvThis = getNPV(agent);
 
-        return getFinancialComponent(npvAvg, npvThis);
-    }
-
-    protected double getFinancialComponent(double npvAvg, double npvThis) {
         double ftAvg = getAverageFinancialThresholdAgent();
         double ftThis = getFinancialThresholdAgent(agent);
 
@@ -611,18 +627,18 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double logisticFt = MathUtil.logistic(ft);
         double logisticNpv = MathUtil.logistic(npv);
 
-        double comp = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
+        double fin = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
 
-        logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, comp);
+        logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, fin);
+        environment.getDataLogger().logFinancialComponent(
+                agent, product, now(),
+                getLogisticFactor(),
+                modelData().getWeightFT(), ftAvg, ftThis, ft, logisticFt,
+                modelData().getWeightNPV(), npvAvg, npvThis, npv, logisticNpv,
+                fin
+        );
 
-        return comp;
-    }
-
-    public double getFinancialComponent(int year) {
-        double npvAvg = getAverageNPV(year);
-        double npvThis = getNPV(agent, year);
-
-        return getFinancialComponent(npvAvg, npvThis);
+        return fin;
     }
 
     protected double getNoveltyCompoenent() {
@@ -659,16 +675,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return getNPV(agent, environment.getTimeModel().getCurrentYear());
     }
 
-    protected double getAverageNPV() {
-        double sum = environment.getAgents()
-                .streamConsumerAgents()
-                .mapToDouble(this::getNPV)
-                .sum();
-        return sum / environment.getAgents().getTotalNumberOfConsumerAgents();
-    }
-
     protected double getNPV(ConsumerAgent agent, int year) {
         return modelData().NPV(agent, year);
+    }
+
+    protected double getAverageNPV() {
+        return getAverageNPV(environment.getTimeModel().getCurrentYear());
     }
 
     protected double getAverageNPV(int year) {
@@ -740,7 +752,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void logInterestValues() {
-        environment.getPostAnalysisData().logAnnualInterest(agent, product, getInterest(agent), now());
+        environment.getDataAnalyser().logAnnualInterest(agent, product, getInterest(agent), now());
     }
 
     protected boolean isAdopter(ConsumerAgent agent) {
@@ -884,12 +896,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     protected void logInterestUpdate(
             double myOldPoints, double myNewPoints,
             Agent target, double targetOldPoints, double targetNewPoints) {
-        boolean logData = getSettings().isLogInterestUpdate();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(
-                section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] interest update: '{}': {} -> {}, '{}': {} -> {}",
                 InfoTag.INTEREST_UPDATE, agent.getName(),
                 agent.getName(), myOldPoints, myNewPoints,
@@ -898,12 +905,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void logGraphUpdateEdgeAdded(Agent target) {
-        boolean logData = getSettings().isLogGraphUpdate();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(
-                section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] graph update, edge added: '{}' -> '{}'",
                 InfoTag.GRAPH_UPDATE, agent.getName(),
                 agent.getName(), target.getName()
@@ -911,19 +913,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void logGraphUpdateEdgeRemoved(Agent target) {
-        boolean logData = getSettings().isLogGraphUpdate();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
         if(target == null) {
-            logger.log(
-                    section, level,
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                     "{} [{}] graph not updated, no valid target found",
                     InfoTag.GRAPH_UPDATE, agent.getName()
             );
         } else {
-            logger.log(
-                    section, level,
+            LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                     "{} [{}] graph update, edge removed: '{}' -> '{}'",
                     InfoTag.GRAPH_UPDATE, agent.getName(),
                     agent.getName(), target.getName()
@@ -935,11 +931,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double m,
             double hij, double ra, double newXj, double newUj) {
-        boolean logData = getSettings().isLogRelativeAgreement();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] relative agreement between i='{}' and j='{}' for '{}' success (hij={} > ui={}) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {}) | ra = {} = {} / {} - 1.0 | newXj = {} = {} + {} * {} * ({} - {}) | newUj = {} = {} + {} * {} * ({} - {})",
                 InfoTag.RELATIVE_AGREEMENT, ai, ai, aj, attribute, hij, ui,
                 xi, ui, xj, uj,
@@ -953,11 +945,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     protected void logRelativeAgreementFailed(
             String ai, String aj, String attribute,
             double xi, double ui, double xj, double uj, double hij) {
-        boolean logData = getSettings().isLogRelativeAgreement();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] relative agreement between i='{}' and j='{}' for '{}' failed (hij={} <= ui={})) | xi={}, ui={}, xj={}, uj={} | hij = {} = Math.min({} + {}, {} + {}) - Math.max({} - {}, {} - {})",
                 InfoTag.RELATIVE_AGREEMENT, ai, ai, aj, attribute, hij, ui,
                 xi, ui, xj, uj,
@@ -972,12 +960,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             MutableDouble totalLocal,
             MutableDouble adopterLocal,
             MutableDouble shareLocal) {
-        boolean logData = getSettings().isLogShareNetworkLocale();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-
-        logger.log(section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] global share = {} ({} / {}), local share = {} ({} / {})",
                 InfoTag.SHARE_NETORK_LOCAL, agent.getName(),
                 shareGlobal.doubleValue(), adopterGlobal.doubleValue(), totalGlobal.doubleValue(), shareLocal.doubleValue(), adopterLocal.doubleValue(), totalLocal.doubleValue()
@@ -991,11 +974,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             double ft, double npv,
             double logisticFt, double logisticNpv,
             double comp) {
-        boolean logData = getSettings().isLogFinancialComponent();
-        IRPLogger logger = getLogger(logData);
-        IRPSection section = getSection(logData);
-        Level level = getLevel(logData);
-        logger.log(section, level,
+        LOGGER.trace(IRPSection.SIMULATION_PROCESS,
                 "{} [{}] financal component calculation: t_avg = {}, t = {}, NPV_avg = {}, NPV = {}, lf = {} | lf * (t - t_avg) = {}, lf * (NPV - NPV_avg) = {} | 1 / (1 + e^(-(lf * (t - t_avg))) = {}, 1 / (1 + e^(-(lf * (NPV - NPV_avg))) = {} | (logistic(t) + logistic(NPV)) / 2.0 = {}",
                 InfoTag.FINANCAL_COMPONENT, agent.getName(),
                 ftAvg, ftThis, npvAvg, npvThis, logisticFactor, ft, npv, logisticFt, logisticNpv, comp
@@ -1003,9 +982,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void logCalculateDecisionMaking(IRPLoggingMessageCollection mlm) {
-        boolean logData = getSettings().isLogCalculateDecisionMaking();
-        mlm.setSection(getSection(logData))
-                .setLevel(getLevel(logData))
-                .log(getLogger(logData));
+        mlm.setSection(IRPSection.SIMULATION_PROCESS)
+                .trace(LOGGER);
     }
 }

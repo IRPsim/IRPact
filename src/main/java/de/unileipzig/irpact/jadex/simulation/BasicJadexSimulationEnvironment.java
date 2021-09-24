@@ -15,6 +15,10 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.*;
+import de.unileipzig.irpact.core.logging.BasicDataAnalyser;
+import de.unileipzig.irpact.core.logging.BasicDataLogger;
+import de.unileipzig.irpact.core.logging.DataAnalyser;
+import de.unileipzig.irpact.core.logging.DataLogger;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -56,8 +60,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
-    protected PostAnalysisLogger postAnalysisLogger;
-    protected PostAnalysisData postAnalysisData;
+    protected DataLogger dataLogger;
+    protected DataAnalyser dataAnalyser;
 
     //components
     protected AgentManager agentManager;
@@ -114,16 +118,16 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
-        BasicPostAnalysisLogger postAnalysisLogger = new BasicPostAnalysisLogger();
-        BasicPostAnalysisData postAnalysisData = new BasicPostAnalysisData();
+        BasicDataLogger dataLogger = new BasicDataLogger();
+        BasicDataAnalyser dataAnalyser = new BasicDataAnalyser();
 
         setSettings(initData);
 
-        setPostAnalysisData(postAnalysisData);
-        postAnalysisData.setEnvironment(this);
+        setDataAnalyser(dataAnalyser);
+        dataAnalyser.setEnvironment(this);
 
-        setPostAnalysisLogger(postAnalysisLogger);
-        postAnalysisLogger.setEnvironment(this);
+        setDataLogger(dataLogger);
+        dataLogger.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -285,21 +289,21 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public PostAnalysisLogger getPostAnalysisLogger() {
-        return postAnalysisLogger;
+    public DataLogger getDataLogger() {
+        return dataLogger;
     }
 
-    public void setPostAnalysisLogger(PostAnalysisLogger postAnalysisLogger) {
-        this.postAnalysisLogger = postAnalysisLogger;
+    public void setDataLogger(DataLogger dataLogger) {
+        this.dataLogger = dataLogger;
     }
 
     @Override
-    public PostAnalysisData getPostAnalysisData() {
-        return postAnalysisData;
+    public DataAnalyser getDataAnalyser() {
+        return dataAnalyser;
     }
 
-    public void setPostAnalysisData(PostAnalysisData postAnalysisData) {
-        this.postAnalysisData = postAnalysisData;
+    public void setDataAnalyser(DataAnalyser dataAnalyser) {
+        this.dataAnalyser = dataAnalyser;
     }
 
     @Override

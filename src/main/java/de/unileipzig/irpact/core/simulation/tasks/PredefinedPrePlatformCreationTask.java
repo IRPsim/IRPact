@@ -48,7 +48,7 @@ public class PredefinedPrePlatformCreationTask extends PredefinedBinaryTask impl
                 callHelloWorld();
                 break;
             case FINANCIAL_COMPONENT:
-                callFinancialComponent(environment);
+//                callFinancialComponent(environment);
                 break;
 
             case NO_TASK:
@@ -69,19 +69,19 @@ public class PredefinedPrePlatformCreationTask extends PredefinedBinaryTask impl
         LOGGER.info("[{}] Hello World", getInfo());
     }
 
-    private void callFinancialComponent(SimulationEnvironment environment) {
-        LOGGER.trace("call FinancialComponent-Task ({})", getInfo());
-        int year = environment.getSettings().getFirstSimulationYear();
-        RAProcessModel model = (RAProcessModel) CollectionUtil.get(environment.getProcessModels().getProcessModels(), 0);
-        environment.getAgents().streamConsumerAgents()
-                .forEach(ca -> fcLogCa(year, model, ca));
-    }
+//    private void callFinancialComponent(SimulationEnvironment environment) {
+//        LOGGER.trace("call FinancialComponent-Task ({})", getInfo());
+//        int year = environment.getSettings().getFirstSimulationYear();
+//        RAProcessModel model = (RAProcessModel) CollectionUtil.get(environment.getProcessModels().getProcessModels(), 0);
+//        environment.getAgents().streamConsumerAgents()
+//                .forEach(ca -> fcLogCa(year, model, ca));
+//    }
 
-    private void fcLogCa(int year, RAProcessModel model, ConsumerAgent ca) {
-        RAProcessPlan plan = (RAProcessPlan) model.newPlan(ca, null, null);
-        double fc = plan.getFinancialComponent(year);
-        int id = ca.findAttribute(RAConstants.ID).asValueAttribute().getIntValue();
-        String milieu = ca.getGroup().getName();
-        IRPLogging.getResultLogger().trace("[FCX] {},{},{}", id, milieu, fc);
-    }
+//    private void fcLogCa(int year, RAProcessModel model, ConsumerAgent ca) {
+//        RAProcessPlan plan = (RAProcessPlan) model.newPlan(ca, null, null);
+//        double fc = plan.getFinancialComponent(year);
+//        int id = ca.findAttribute(RAConstants.ID).asValueAttribute().getIntValue();
+//        String milieu = ca.getGroup().getName();
+//        IRPLogging.getResultLogger().trace("[FCX] {},{},{}", id, milieu, fc);
+//    }
 }

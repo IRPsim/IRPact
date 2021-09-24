@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.core.logging.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
@@ -47,21 +47,21 @@ public class AnnualPhaseOverviewWithGnuPlot extends AbstractGnuPlotDataVisualize
         );
     }
 
-    protected String getNameForPhase(int phase) {
+    protected String getNameForPhase(DataAnalyser.Phase phase) {
         switch (phase) {
-            case PostAnalysisData.INITIAL_ADOPTED:
+            case INITIAL_ADOPTED:
                 return getLocalizedString("phase0");
 
-            case PostAnalysisData.AWARENESS:
+            case AWARENESS:
                 return getLocalizedString("phase1");
 
-            case PostAnalysisData.FEASIBILITY:
+            case FEASIBILITY:
                 return getLocalizedString("phase2");
 
-            case PostAnalysisData.DECISION_MAKING:
+            case DECISION_MAKING:
                 return getLocalizedString("phase3");
 
-            case PostAnalysisData.ADOPTED:
+            case ADOPTED:
                 return getLocalizedString("phase4");
 
             default:
@@ -77,27 +77,27 @@ public class AnnualPhaseOverviewWithGnuPlot extends AbstractGnuPlotDataVisualize
         }
         Product product = products.get(0);
 
-        PostAnalysisData postData = imageProcessor.getEnvironment().getPostAnalysisData();
+        DataAnalyser dataAnalyser = imageProcessor.getDataAnalyser();
         List<Integer> years = imageProcessor.getAllSimulationYears();
 
         JsonTableData3 tableData = new JsonTableData3();
         //header
         tableData.setString(0, 0, "year");
-        tableData.setString(0, 1, getNameForPhase(PostAnalysisData.INITIAL_ADOPTED));
-        tableData.setString(0, 2, getNameForPhase(PostAnalysisData.AWARENESS));
-        tableData.setString(0, 3, getNameForPhase(PostAnalysisData.FEASIBILITY));
-        tableData.setString(0, 4, getNameForPhase(PostAnalysisData.DECISION_MAKING));
-        tableData.setString(0, 5, getNameForPhase(PostAnalysisData.ADOPTED));
+        tableData.setString(0, 1, getNameForPhase(DataAnalyser.Phase.INITIAL_ADOPTED));
+        tableData.setString(0, 2, getNameForPhase(DataAnalyser.Phase.AWARENESS));
+        tableData.setString(0, 3, getNameForPhase(DataAnalyser.Phase.FEASIBILITY));
+        tableData.setString(0, 4, getNameForPhase(DataAnalyser.Phase.DECISION_MAKING));
+        tableData.setString(0, 5, getNameForPhase(DataAnalyser.Phase.ADOPTED));
         //data
         int row = 1;
         for(int year: years) {
-            Map<Integer, Integer> annualOverview = postData.getTransitionOverviewForYear(product, year);
+            Map<DataAnalyser.Phase, Integer> annualOverview = dataAnalyser.getTransitionOverviewForYear(product, year);
             tableData.setInt(row, 0, year);
-            tableData.setInt(row, 1, annualOverview.getOrDefault(PostAnalysisData.INITIAL_ADOPTED, 0));
-            tableData.setInt(row, 2, annualOverview.getOrDefault(PostAnalysisData.AWARENESS, 0));
-            tableData.setInt(row, 3, annualOverview.getOrDefault(PostAnalysisData.FEASIBILITY, 0));
-            tableData.setInt(row, 4, annualOverview.getOrDefault(PostAnalysisData.DECISION_MAKING, 0));
-            tableData.setInt(row, 5, annualOverview.getOrDefault(PostAnalysisData.ADOPTED, 0));
+            tableData.setInt(row, 1, annualOverview.getOrDefault(DataAnalyser.Phase.INITIAL_ADOPTED, 0));
+            tableData.setInt(row, 2, annualOverview.getOrDefault(DataAnalyser.Phase.AWARENESS, 0));
+            tableData.setInt(row, 3, annualOverview.getOrDefault(DataAnalyser.Phase.FEASIBILITY, 0));
+            tableData.setInt(row, 4, annualOverview.getOrDefault(DataAnalyser.Phase.DECISION_MAKING, 0));
+            tableData.setInt(row, 5, annualOverview.getOrDefault(DataAnalyser.Phase.ADOPTED, 0));
             row++;
         }
 

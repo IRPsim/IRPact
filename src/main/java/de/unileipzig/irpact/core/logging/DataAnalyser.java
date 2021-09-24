@@ -8,39 +8,37 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
-import java.util.Set;
 
 /**
  * @author Daniel Abitz
  */
-public interface PostAnalysisData {
-
-    //=========================
-    //general
-    //=========================
-
-    int getNumberOfInitialAdopter(Product product);
+public interface DataAnalyser {
 
     //=========================
     //phase transition
     //=========================
 
-    int UNKNOWN = -1;
-    int INITIAL_ADOPTED = 0;
-    int AWARENESS = 1;
-    int FEASIBILITY = 2;
-    int DECISION_MAKING = 3;
-    int ADOPTED = 4;
-
     void setLogPhaseTransition(boolean enable);
 
     boolean isLogPhaseTransition();
 
-    void logPhaseTransition(ConsumerAgent agent, int phase, Product product, Timestamp stamp);
+    void logPhaseTransition(ConsumerAgent agent, Phase phase, Product product, Timestamp stamp);
 
-    Map<Integer, Integer> getTransitionOverviewForYear(Product product, int year);
+    Map<Phase, Integer> getTransitionOverviewForYear(Product product, int year);
 
-    int getPhaseFor(ConsumerAgent agent, Product product, int year);
+    Phase getPhaseFor(ConsumerAgent agent, Product product, int year);
+
+    /**
+     * @author Daniel Abitz
+     */
+    enum Phase {
+        UNKNOWN,
+        INITIAL_ADOPTED,
+        AWARENESS,
+        FEASIBILITY,
+        DECISION_MAKING,
+        ADOPTED
+    }
 
     /**
      * @author Daniel Abitz
@@ -51,7 +49,7 @@ public interface PostAnalysisData {
 
         Product getProduct();
 
-        int getPhase();
+        Phase getPhase();
     }
 
     //=========================
@@ -64,37 +62,9 @@ public interface PostAnalysisData {
 
     void logAnnualInterest(ConsumerAgent agent, Product product, double interest, Timestamp stamp);
 
-    CumulatedAnnualInterest getCumulatedAnnualInterest(Product product, int year);
-
     int getCumulatedAnnualInterestCount(Product product, int year, double interest);
 
     double getAnnualInterest(ConsumerAgent agent, Product product, int year);
-
-    /**
-     * @author Daniel Abitz
-     */
-    interface CumulatedAnnualInterest {
-
-        int getYear();
-
-        Product getProduct();
-
-        Map<Double, Integer> getInterest();
-
-        default int getInterestCount(double value) {
-            return getInterest().getOrDefault(value, 0);
-        }
-    }
-
-    /**
-     * @author Daniel Abitz
-     */
-    interface AnnualInterest {
-
-        Product getProduct();
-
-        double getInterest(int year);
-    }
 
     //=========================
     //annual evaluation data
@@ -110,7 +80,13 @@ public interface PostAnalysisData {
 
     DecimalFormat getEvaluationBucketFormatter();
 
-    void logEvaluationData(Product product, Timestamp stamp, double a, double b, double c, double d, double adoptionValue);
+    void logEvaluationData(
+            Product product, Timestamp stamp,
+            double a, double b, double c, double d,
+            double aa, double bb, double cc, double dd,
+            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
+            double adoptionFactor
+    );
 
     Bucket getNaNBucket();
 
@@ -148,6 +124,22 @@ public interface PostAnalysisData {
         int countC();
 
         int countD();
+
+        int countAA();
+
+        int countBB();
+
+        int countCC();
+
+        int countDD();
+
+        int countWeightedAA();
+
+        int countWeightedBB();
+
+        int countWeightedCC();
+
+        int countWeightedDD();
 
         int countAdoptionFactor();
     }

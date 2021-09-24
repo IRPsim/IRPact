@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.logging.Logback;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Daniel Abitz
@@ -30,5 +31,10 @@ public class SimplifiedFileLogger extends SingleAppenderLogger<FileAppender<ILog
 
     public static FileAppender<ILoggingEvent> create(String name, String pattern, Path target) {
         return Logback.createFileAppender(name, pattern, target);
+    }
+
+    public Path getTarget() {
+        String file = getAppender().getFile();
+        return Paths.get(file);
     }
 }

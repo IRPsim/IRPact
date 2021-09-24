@@ -22,13 +22,6 @@ public class BasicSettings implements Settings, ChecksumComparable {
     @AddToParam("InGeneral")
     protected boolean prefereCsv = false;
 
-    protected boolean logRelativeAgreement = false;
-    protected boolean logInterestUpdate = false;
-    protected boolean logGraphUpdate = false;
-    protected boolean logShareNetworkLocale = false;
-    protected boolean logFinancalComponent = false;
-    protected boolean logCalculateAdoption = false;
-
     protected boolean logResultAdoptionsAll = false;
     protected boolean logPerformance = false;
 
@@ -199,64 +192,6 @@ public class BasicSettings implements Settings, ChecksumComparable {
     public List<Integer> listActualYears() {
         return streamActualSimulationYears().boxed()
                 .collect(Collectors.toList());
-    }
-
-    //=========================
-    //data logging
-    //=========================
-
-    @Override
-    public void setLogGraphUpdate(boolean log) {
-        this.logGraphUpdate = log;
-    }
-    @Override
-    public boolean isLogGraphUpdate() {
-        return logGraphUpdate;
-    }
-
-    @Override
-    public void setLogInterestUpdate(boolean log) {
-        this.logInterestUpdate = log;
-    }
-    @Override
-    public boolean isLogInterestUpdate() {
-        return logInterestUpdate;
-    }
-
-    @Override
-    public void setLogRelativeAgreement(boolean log) {
-        this.logRelativeAgreement = log;
-    }
-    @Override
-    public boolean isLogRelativeAgreement() {
-        return logRelativeAgreement;
-    }
-
-    @Override
-    public void setLogShareNetworkLocale(boolean log) {
-        this.logShareNetworkLocale = log;
-    }
-    @Override
-    public boolean isLogShareNetworkLocale() {
-        return logShareNetworkLocale;
-    }
-
-    @Override
-    public void setLogFinancialComponent(boolean log) {
-        this.logFinancalComponent = log;
-    }
-    @Override
-    public boolean isLogFinancialComponent() {
-        return logFinancalComponent;
-    }
-
-    @Override
-    public void setLogCalculateDecisionMaking(boolean log) {
-        this.logCalculateAdoption = log;
-    }
-    @Override
-    public boolean isLogCalculateDecisionMaking() {
-        return logCalculateAdoption;
     }
 
     //=========================
