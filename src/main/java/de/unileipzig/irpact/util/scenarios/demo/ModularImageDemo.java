@@ -148,7 +148,6 @@ public class ModularImageDemo extends AbstractScenario {
         general.runPVAct = true;
         general.setLogLevel(IRPLevel.ALL);
         general.logAllIRPact = true;
-        general.enableAllDataLogging();
         general.enableAllResultLogging();
         general.enableAllScriptLogging();
         general.setFirstSimulationYear(2015);

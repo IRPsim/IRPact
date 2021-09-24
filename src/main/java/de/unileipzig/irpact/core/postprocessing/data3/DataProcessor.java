@@ -14,9 +14,9 @@ import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.logging.BasicPostAnalysisData;
+import de.unileipzig.irpact.core.logging.DataAnalyser;
+import de.unileipzig.irpact.core.logging.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.logging.PostAnalysisData;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.Product;
@@ -32,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -42,8 +43,8 @@ public class DataProcessor extends PostProcessor {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataProcessor.class);
 
-    protected static final String RESULT_BASENAME = "result";
-    protected static final String RESULT_EXTENSION = "yaml";
+    protected static final String RESULT_RES_BASENAME = "result";
+    protected static final String RESULT_RES_EXTENSION = "yaml";
 
     protected static final String ALL_ADOPTIONS_XLSX = "Alle_Adoptionen.xlsx";
     protected static final String PERFORMANCE_XLSX = "Performance.xlsx";
@@ -86,24 +87,29 @@ public class DataProcessor extends PostProcessor {
             analysePerfomance();
         }
 
-        trace("isLogPhaseTransition: {}", getPostAnalysisData().isLogPhaseTransition());
-        if(getPostAnalysisData().isLogPhaseTransition()) {
+        trace("isLogPhaseTransition: {}", getDataAnalyser().isLogPhaseTransition());
+        if(getDataAnalyser().isLogPhaseTransition()) {
             logPhaseOverview();
         }
 
-        trace("isLogAnnualInterest: {}", getPostAnalysisData().isLogAnnualInterest());
-        if(getPostAnalysisData().isLogAnnualInterest()) {
+        trace("isLogAnnualInterest: {}", getDataAnalyser().isLogAnnualInterest());
+        if(getDataAnalyser().isLogAnnualInterest()) {
             logInterest();
         }
 
-        trace("isLogEvaluationData: {}", getPostAnalysisData().isLogEvaluationData());
-        if(getPostAnalysisData().isLogEvaluationData()) {
+        trace("isLogEvaluationData: {}", getDataAnalyser().isLogEvaluationData());
+        if(getDataAnalyser().isLogEvaluationData()) {
+            logEvaluationData();
+        }
+
+        trace("isLogEvaluation: {}", getDataLogger().isLogEvaluation());
+        if(getDataLogger().isLogEvaluation()) {
             logEvaluation();
         }
 
-        trace("isLogEvaluationData: {}", getPostAnalysisData().isLogAllEvaluationData());
-        if(getPostAnalysisData().isLogAllEvaluationData()) {
-            logAllEvaluation();
+        trace("isLogFinancialComponent: {}", getDataLogger().isLogFinancialComponent());
+        if(getDataLogger().isLogFinancialComponent()) {
+            logFinancialComponent();
         }
     }
 
@@ -203,7 +209,7 @@ public class DataProcessor extends PostProcessor {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
 
-        LOGGER.info("write {}", target);
+        info("write {}", target);
         XSSFWorkbook book = new XSSFWorkbook();
         writer.write(book, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "sheetGlobal"), globalSheetData);
         writer.write(book, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "sheetZIP"), zipSheetData);
@@ -263,7 +269,7 @@ public class DataProcessor extends PostProcessor {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
 
-        LOGGER.info("write {}", target);
+        info("write {}", target);
         writer.write(target, sheets);
     }
 
@@ -274,21 +280,21 @@ public class DataProcessor extends PostProcessor {
         JsonTableData3 overviewData = new JsonTableData3();
         //header
         overviewData.setString(0, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "year"));
-        overviewData.setString(0, 1, getNameForPhase(PostAnalysisData.INITIAL_ADOPTED));
-        overviewData.setString(0, 2, getNameForPhase(PostAnalysisData.AWARENESS));
-        overviewData.setString(0, 3, getNameForPhase(PostAnalysisData.FEASIBILITY));
-        overviewData.setString(0, 4, getNameForPhase(PostAnalysisData.DECISION_MAKING));
-        overviewData.setString(0, 5, getNameForPhase(PostAnalysisData.ADOPTED));
+        overviewData.setString(0, 1, getNameForPhase(DataAnalyser.Phase.INITIAL_ADOPTED));
+        overviewData.setString(0, 2, getNameForPhase(DataAnalyser.Phase.AWARENESS));
+        overviewData.setString(0, 3, getNameForPhase(DataAnalyser.Phase.FEASIBILITY));
+        overviewData.setString(0, 4, getNameForPhase(DataAnalyser.Phase.DECISION_MAKING));
+        overviewData.setString(0, 5, getNameForPhase(DataAnalyser.Phase.ADOPTED));
         //data
         int row = 1;
         for(int year: years) {
-            Map<Integer, Integer> annualOverview = getPostAnalysisData().getTransitionOverviewForYear(product, year);
+            Map<DataAnalyser.Phase, Integer> annualOverview = getDataAnalyser().getTransitionOverviewForYear(product, year);
             overviewData.setInt(row, 0, year);
-            overviewData.setInt(row, 1, annualOverview.getOrDefault(PostAnalysisData.INITIAL_ADOPTED, 0));
-            overviewData.setInt(row, 2, annualOverview.getOrDefault(PostAnalysisData.AWARENESS, 0));
-            overviewData.setInt(row, 3, annualOverview.getOrDefault(PostAnalysisData.FEASIBILITY, 0));
-            overviewData.setInt(row, 4, annualOverview.getOrDefault(PostAnalysisData.DECISION_MAKING, 0));
-            overviewData.setInt(row, 5, annualOverview.getOrDefault(PostAnalysisData.ADOPTED, 0));
+            overviewData.setInt(row, 1, annualOverview.getOrDefault(DataAnalyser.Phase.INITIAL_ADOPTED, 0));
+            overviewData.setInt(row, 2, annualOverview.getOrDefault(DataAnalyser.Phase.AWARENESS, 0));
+            overviewData.setInt(row, 3, annualOverview.getOrDefault(DataAnalyser.Phase.FEASIBILITY, 0));
+            overviewData.setInt(row, 4, annualOverview.getOrDefault(DataAnalyser.Phase.DECISION_MAKING, 0));
+            overviewData.setInt(row, 5, annualOverview.getOrDefault(DataAnalyser.Phase.ADOPTED, 0));
             row++;
         }
         sheets.put(getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "sheet"), overviewData);
@@ -300,11 +306,11 @@ public class DataProcessor extends PostProcessor {
             Product product,
             Map<String, JsonTableData3> sheets) {
 
-        CountMap3D<String, Integer, Integer> zipYearPhase = new CountMap3D<>();
+        CountMap3D<String, Integer, DataAnalyser.Phase> zipYearPhase = new CountMap3D<>();
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             String zip = getZIP(agent, RAConstants.ZIP);
             for(int year: years) {
-                int phase = getPostAnalysisData().getPhaseFor(agent, product, year);
+                DataAnalyser.Phase phase = getDataAnalyser().getPhaseFor(agent, product, year);
                 zipYearPhase.update(zip, year, phase);
             }
         }
@@ -313,47 +319,47 @@ public class DataProcessor extends PostProcessor {
             JsonTableData3 zipSheet = new JsonTableData3();
             //header
             zipSheet.setString(0, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PHASE_OVERVIEW, "year"));
-            zipSheet.setString(0, 1, getNameForPhase(PostAnalysisData.INITIAL_ADOPTED));
-            zipSheet.setString(0, 2, getNameForPhase(PostAnalysisData.AWARENESS));
-            zipSheet.setString(0, 3, getNameForPhase(PostAnalysisData.FEASIBILITY));
-            zipSheet.setString(0, 4, getNameForPhase(PostAnalysisData.DECISION_MAKING));
-            zipSheet.setString(0, 5, getNameForPhase(PostAnalysisData.ADOPTED));
+            zipSheet.setString(0, 1, getNameForPhase(DataAnalyser.Phase.INITIAL_ADOPTED));
+            zipSheet.setString(0, 2, getNameForPhase(DataAnalyser.Phase.AWARENESS));
+            zipSheet.setString(0, 3, getNameForPhase(DataAnalyser.Phase.FEASIBILITY));
+            zipSheet.setString(0, 4, getNameForPhase(DataAnalyser.Phase.DECISION_MAKING));
+            zipSheet.setString(0, 5, getNameForPhase(DataAnalyser.Phase.ADOPTED));
 
             //data
             int row = 0;
             for(int year: years) {
                 row++;
                 zipSheet.setInt(row, 0, year);
-                zipSheet.setInt(row, 1, zipYearPhase.getCount(zip, year, PostAnalysisData.INITIAL_ADOPTED));
-                zipSheet.setInt(row, 2, zipYearPhase.getCount(zip, year, PostAnalysisData.AWARENESS));
-                zipSheet.setInt(row, 3, zipYearPhase.getCount(zip, year, PostAnalysisData.FEASIBILITY));
-                zipSheet.setInt(row, 4, zipYearPhase.getCount(zip, year, PostAnalysisData.DECISION_MAKING));
-                zipSheet.setInt(row, 5, zipYearPhase.getCount(zip, year, PostAnalysisData.ADOPTED));
+                zipSheet.setInt(row, 1, zipYearPhase.getCount(zip, year, DataAnalyser.Phase.INITIAL_ADOPTED));
+                zipSheet.setInt(row, 2, zipYearPhase.getCount(zip, year, DataAnalyser.Phase.AWARENESS));
+                zipSheet.setInt(row, 3, zipYearPhase.getCount(zip, year, DataAnalyser.Phase.FEASIBILITY));
+                zipSheet.setInt(row, 4, zipYearPhase.getCount(zip, year, DataAnalyser.Phase.DECISION_MAKING));
+                zipSheet.setInt(row, 5, zipYearPhase.getCount(zip, year, DataAnalyser.Phase.ADOPTED));
             }
             sheets.put(zip, zipSheet);
         }
     }
 
-    protected String getNameForPhase(int phase) {
+    protected String getNameForPhase(DataAnalyser.Phase phase) {
         String key;
         switch (phase) {
-            case PostAnalysisData.INITIAL_ADOPTED:
+            case INITIAL_ADOPTED:
                 key = "phase0";
                 break;
 
-            case PostAnalysisData.AWARENESS:
+            case AWARENESS:
                 key = "phase1";
                 break;
 
-            case PostAnalysisData.FEASIBILITY:
+            case FEASIBILITY:
                 key = "phase2";
                 break;
 
-            case PostAnalysisData.DECISION_MAKING:
+            case DECISION_MAKING:
                 key = "phase3";
                 break;
 
-            case PostAnalysisData.ADOPTED:
+            case ADOPTED:
                 key = "phase4";
                 break;
 
@@ -389,7 +395,7 @@ public class DataProcessor extends PostProcessor {
         logGlobalInterest(years, interestValues, product, sheets);
         logZipInterest(zips, years, interestValues, product, sheets);
 
-        LOGGER.info("write {}", target);
+        info("write {}", target);
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
         writer.write(target, sheets);
@@ -419,7 +425,7 @@ public class DataProcessor extends PostProcessor {
             row = 0;
             for(double interest: interestValues) {
                 row++;
-                int count = getPostAnalysisData().getCumulatedAnnualInterestCount(product, year, interest);
+                int count = getDataAnalyser().getCumulatedAnnualInterestCount(product, year, interest);
                 globalSheet.setInt(row, column, count);
             }
         }
@@ -437,7 +443,7 @@ public class DataProcessor extends PostProcessor {
         for(ConsumerAgent agent: environment.getAgents().iterableConsumerAgents()) {
             String zip = getZIP(agent, RAConstants.ZIP);
             for(int year: years) {
-                double interest = getPostAnalysisData().getAnnualInterest(agent, product, year);
+                double interest = getDataAnalyser().getAnnualInterest(agent, product, year);
                 zipYearInterest.update(zip, year, interest);
             }
         }
@@ -471,16 +477,16 @@ public class DataProcessor extends PostProcessor {
         }
     }
 
-    protected void logEvaluation() {
+    protected void logEvaluationData() {
         try {
-            trace("log evaluation");
-            logEvaluation0();
+            trace("log evaluation data");
+            logEvaluationData0();
         } catch (Throwable t) {
-            error("error while running 'logEvaluation'", t);
+            error("error while running 'logEvaluationData'", t);
         }
     }
 
-    protected void logEvaluation0() throws IOException {
+    protected void logEvaluationData0() throws IOException {
         List<Product> products = getAllProducts();
         if(products.size() != 1) {
             throw new IllegalArgumentException("products");
@@ -496,7 +502,7 @@ public class DataProcessor extends PostProcessor {
             logEvaluationData(type, years, product, sheets);
         }
 
-        LOGGER.info("write {}", target);
+        info("write {}", target);
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
         writer.write(target, sheets);
@@ -569,7 +575,7 @@ public class DataProcessor extends PostProcessor {
         return getLocalizedString(FileType.XLSX, DataToAnalyse.EVALUATION, key);
     }
 
-    protected int getEvaluationCount(EvaluationType type, PostAnalysisData.EvaluationData data) {
+    protected int getEvaluationCount(EvaluationType type, DataAnalyser.EvaluationData data) {
         switch (type) {
             case a:
                 return data.countA();
@@ -608,7 +614,7 @@ public class DataProcessor extends PostProcessor {
             Product product,
             Map<String, JsonTableData3> sheets) {
 
-        NavigableSet<PostAnalysisData.Bucket> buckets = getPostAnalysisData().getBuckets();
+        NavigableSet<DataAnalyser.Bucket> buckets = getDataAnalyser().getBuckets();
 
         JsonTableData3 sheetData = new JsonTableData3();
 
@@ -618,11 +624,11 @@ public class DataProcessor extends PostProcessor {
             sheetData.setInt(0, column, year);
 
             int row = 0;
-            for(PostAnalysisData.Bucket bucket: buckets) {
+            for(DataAnalyser.Bucket bucket: buckets) {
                 row++;
-                sheetData.setString(row, 0, bucket.print(getPostAnalysisData().getEvaluationBucketFormatter()));
+                sheetData.setString(row, 0, bucket.print(getDataAnalyser().getEvaluationBucketFormatter()));
 
-                PostAnalysisData.EvaluationData data = getPostAnalysisData().getEvaluationData(product, year, bucket);
+                DataAnalyser.EvaluationData data = getDataAnalyser().getEvaluationData(product, year, bucket);
                 int count = data == null
                         ? 0
                         : getEvaluationCount(type, data);
@@ -633,30 +639,30 @@ public class DataProcessor extends PostProcessor {
         sheets.put(getSheetName(type), sheetData);
     }
 
-    protected void logAllEvaluation() {
+    protected void logEvaluation() {
         try {
-            trace("log all evaluation");
-            logAllEvaluation0();
+            trace("log evaluation");
+            logEvaluation0();
         } catch (Throwable t) {
-            error("error while running 'logAllEvaluation'", t);
+            error("error while running 'logEvaluation'", t);
         }
     }
 
-    protected void logAllEvaluation0() throws IOException {
+    protected void logEvaluation0() throws IOException {
         Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_CSV);
         Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_XLSX);
 
         //read
-        LOGGER.info("read {}", csvFile);
+        info("read {}", csvFile);
         CsvParser<JsonNode> csvParser = new CsvParser<>();
         csvParser.setValueGetter(CsvParser.forJson());
-
-
-        LOGGER.trace("map csv to xlsx");
         JsonTableData3 data = new JsonTableData3(csvParser.parseToList(csvFile, StandardCharsets.UTF_8));
+
+
+        trace("map csv to xlsx");
         data.mapColumn(3, 0, node -> {
             String str = node.textValue();
-            if(BasicPostAnalysisData.NO_VALUE.equals(str)) {
+            if(DataLogger.NO_VALUE.equals(str)) {
                 return node;
             } else {
                 return data.getCreator().numberNode(Integer.parseInt(str));
@@ -666,7 +672,7 @@ public class DataProcessor extends PostProcessor {
         for(int c = 4; c < 28; c++) {
             data.mapColumn(c, 0, node -> {
                 String str = node.textValue();
-                if(BasicPostAnalysisData.NO_VALUE.equals(str)) {
+                if(DataLogger.NO_VALUE.equals(str)) {
                     return node;
                 } else {
                     return data.getCreator().numberNode(Double.parseDouble(str));
@@ -709,19 +715,102 @@ public class DataProcessor extends PostProcessor {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
 
-        LOGGER.info("write {}", xlsxFile);
+        info("write {}", xlsxFile);
         writer.write(xlsxFile, getAllEvalString("sheet"), data);
 
         //cleanup
+        getDataLogger().finishLogEvaluation();
         try {
-            getPostAnalysisData().finishAllEvaluation(true);
+            trace("delete: {}", getDataLogger().getLogEvaluationTarget());
+            Files.deleteIfExists(getDataLogger().getLogEvaluationTarget());
         } catch (IOException e) {
-            LOGGER.warn("cleanup failed", e);
+            warn("deleting failed", e);
         }
     }
 
     protected String getAllEvalString(String key) {
         return getLocalizedString(FileType.XLSX, DataToAnalyse.ALL_EVALUATION, key);
+    }
+
+    protected void logFinancialComponent() {
+        try {
+            trace("log financial component");
+            logFinancialComponent0();
+        } catch (Throwable t) {
+            error("error while running 'logFinancialComponent'", t);
+        }
+    }
+
+    protected void logFinancialComponent0() throws IOException {
+        Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_CSV);
+        Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_XLSX);
+
+        //read
+        info("read {}", csvFile);
+        CsvParser<JsonNode> csvParser = new CsvParser<>();
+        csvParser.setValueGetter(CsvParser.forJson());
+        JsonTableData3 data = new JsonTableData3(csvParser.parseToList(csvFile, StandardCharsets.UTF_8));
+
+
+        trace("map csv to xlsx");
+        data.mapColumn(3, 0, node -> {
+            String str = node.textValue();
+            if(DataLogger.NO_VALUE.equals(str)) {
+                return node;
+            } else {
+                return data.getCreator().numberNode(Integer.parseInt(str));
+            }
+        });
+
+        for(int c = 4; c < 16; c++) {
+            data.mapColumn(c, 0, node -> {
+                String str = node.textValue();
+                if(DataLogger.NO_VALUE.equals(str)) {
+                    return node;
+                } else {
+                    return data.getCreator().numberNode(Double.parseDouble(str));
+                }
+            });
+        }
+
+        //header
+        data.insertRow(0);
+        data.setString(0, 0, getFinString("columnAgent"));
+        data.setString(0, 1, getFinString("columnProduct"));
+        data.setString(0, 2, getFinString("columnTime"));
+        data.setString(0, 3, getFinString("columnYear"));
+        data.setString(0, 4, getFinString("columnLogisticFactor"));
+        data.setString(0, 5, getFinString("columnWeightFt"));
+        data.setString(0, 6, getFinString("columnFtAvg"));
+        data.setString(0, 7, getFinString("columnFtThis"));
+        data.setString(0, 8, getFinString("columnFt"));
+        data.setString(0, 9, getFinString("columnLogisticFt"));
+        data.setString(0, 10, getFinString("columnWeightNpv"));
+        data.setString(0, 11, getFinString("columnMpvAvg"));
+        data.setString(0, 12, getFinString("columnNpvThis"));
+        data.setString(0, 13, getFinString("columnNpv"));
+        data.setString(0, 14, getFinString("columnLogisticNpv"));
+        data.setString(0, 15, getFinString("columnFin"));
+
+        //write
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+
+        info("write {}", xlsxFile);
+        writer.write(xlsxFile, getFinString("sheet"), data);
+
+        //cleanup
+        getDataLogger().finishLogFinancialComponent();
+        try {
+            trace("delete: {}", getDataLogger().getLogFinancialComponentTarget());
+            Files.deleteIfExists(getDataLogger().getLogFinancialComponentTarget());
+        } catch (IOException e) {
+            warn("deleting failed", e);
+        }
+    }
+
+    protected String getFinString(String key) {
+        return getLocalizedString(FileType.XLSX, DataToAnalyse.FINANCIAL_COMPONENT, key);
     }
 
     //=========================
@@ -742,9 +831,9 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void loadLocalizedData() throws IOException {
-        ObjectNode root = tryLoadYaml(RESULT_BASENAME, RESULT_EXTENSION);
+        ObjectNode root = tryLoadYaml(RESULT_RES_BASENAME, RESULT_RES_EXTENSION);
         if(root == null) {
-            throw new IOException("missing resource: " + LocaleUtil.buildName(RESULT_BASENAME, metaData.getLocale(), RESULT_EXTENSION));
+            throw new IOException("missing resource: " + LocaleUtil.buildName(RESULT_RES_BASENAME, metaData.getLocale(), RESULT_RES_EXTENSION));
         }
         localizedData = new JsonResource(root);
     }

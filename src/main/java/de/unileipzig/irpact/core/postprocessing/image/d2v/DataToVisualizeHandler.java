@@ -65,7 +65,7 @@ public final class DataToVisualizeHandler {
                 break;
 
             case ANNUAL_INTEREST_2D:
-                if(processor.getEnvironment().getPostAnalysisData().isLogAnnualInterest()) {
+                if(processor.getEnvironment().getDataAnalyser().isLogAnnualInterest()) {
                     AnnualInterestWithGnuPlot2D ai2d = new AnnualInterestWithGnuPlot2D(processor);
                     ai2d.handleImage(image);
                 } else {
@@ -74,7 +74,7 @@ public final class DataToVisualizeHandler {
                 break;
 
             case ANNUAL_PHASE_OVERVIEW:
-                if(processor.getEnvironment().getPostAnalysisData().isLogPhaseTransition()) {
+                if(processor.getEnvironment().getDataAnalyser().isLogPhaseTransition()) {
                     AnnualPhaseOverviewWithGnuPlot apo = new AnnualPhaseOverviewWithGnuPlot(processor);
                     apo.handleImage(image);
                 } else {

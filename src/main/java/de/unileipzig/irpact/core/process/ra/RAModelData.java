@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.core.process.ra;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -151,21 +150,8 @@ public class RAModelData implements ChecksumComparable {
         return npvDataSupplier.NPV(agent, year);
     }
 
-    protected MutableDouble avgNPV = new MutableDouble(Double.NaN);
-    protected int avgNPVYear = -1;
-
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        if(Double.isNaN(avgNPV.get()) || year != avgNPVYear) {
-            MutableDouble total = MutableDouble.zero();
-            double sum = agents.mapToDouble(ca -> {
-                total.inc();
-                return NPV(ca, year);
-            }).sum();
-            double result = sum / total.get();
-            avgNPV.set(result);
-            avgNPVYear = year;
-        }
-        return avgNPV.get();
+        return npvDataSupplier.avgNPV(agents, year);
     }
 
     public double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents) {

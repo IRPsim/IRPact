@@ -3564,41 +3564,6 @@ SCALAR sca_InGeneral_innerParallelism
 
 * - default: 0
 * - domain: [0|1]
-* - description: Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)
-* - identifier: Nicht-Adopter
-* - type: Boolean
-SCALAR sca_InGeneral_logNonAdopterAnalysis
-
-* - default: 0
-* - domain: [0|1]
-* - description: Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)
-* - identifier: Initiale Adopter
-* - type: Boolean
-SCALAR sca_InGeneral_logInitialAdopterAnalysis
-
-* - default: 0
-* - domain: [0|1]
-* - description: Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)
-* - identifier: Adoptions
-* - type: Boolean
-SCALAR sca_InGeneral_logAdoptionAnalysis
-
-* - default: 0
-* - domain: [0|1]
-* - description: Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)
-* - identifier: Decision making
-* - type: Boolean
-SCALAR sca_InGeneral_logDecisionAnalysis
-
-* - default: 0
-* - domain: [0|1]
-* - description: Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)
-* - identifier: Financial Threshold
-* - type: Boolean
-SCALAR sca_InGeneral_logFinancialThresholdAnalysis
-
-* - default: 0
-* - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
 * - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
@@ -3772,30 +3737,6 @@ SCALAR sca_InGeneral_logInitialization
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulation
 
-* - identifier: logGraphUpdate
-* - type: Boolean
-SCALAR sca_InGeneral_logGraphUpdate
-
-* - identifier: logRelativeAgreement
-* - type: Boolean
-SCALAR sca_InGeneral_logRelativeAgreement
-
-* - identifier: logInterestUpdate
-* - type: Boolean
-SCALAR sca_InGeneral_logInterestUpdate
-
-* - identifier: logShareNetworkLocal
-* - type: Boolean
-SCALAR sca_InGeneral_logShareNetworkLocal
-
-* - identifier: logFinancalComponent
-* - type: Boolean
-SCALAR sca_InGeneral_logFinancalComponent
-
-* - identifier: logCalculateDecisionMaking
-* - type: Boolean
-SCALAR sca_InGeneral_logCalculateDecisionMaking
-
 * - default: 0
 * - domain: [0|1]
 * - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
@@ -3844,6 +3785,13 @@ SCALAR sca_InGeneral_evaluationBucketSize
 * - identifier: Komplette Evaluierungsdaten
 * - type: Boolean
 SCALAR sca_InGeneral_logAllEvaluation
+
+* - default: 0
+* - domain: [0|1]
+* - description: Finanzielle_Komponente.xlsx
+* - identifier: Finanzielle Komponente
+* - type: Boolean
+SCALAR sca_InGeneral_logFinancialComponent
 
 * - identifier: logScriptAdoptionsZip
 * - type: Boolean

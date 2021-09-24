@@ -79,28 +79,6 @@ public interface Settings {
     List<Integer> listActualYears();
 
     //=========================
-    //data logging
-    //=========================
-
-    void setLogGraphUpdate(boolean log);
-    boolean isLogGraphUpdate();
-
-    void setLogInterestUpdate(boolean log);
-    boolean isLogInterestUpdate();
-
-    void setLogRelativeAgreement(boolean log);
-    boolean isLogRelativeAgreement();
-
-    void setLogShareNetworkLocale(boolean log);
-    boolean isLogShareNetworkLocale();
-
-    void setLogFinancialComponent(boolean log);
-    boolean isLogFinancialComponent();
-
-    void setLogCalculateDecisionMaking(boolean log);
-    boolean isLogCalculateDecisionMaking();
-
-    //=========================
     //result logging
     //=========================
 

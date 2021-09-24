@@ -1,17 +1,11 @@
 package de.unileipzig.irpact.core.logging;
 
-import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -20,44 +14,17 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Daniel Abitz
  */
-public class BasicPostAnalysisData implements PostAnalysisData {
+public class BasicDataAnalyser implements DataAnalyser {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicPostAnalysisData.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicDataAnalyser.class);
 
     private SimulationEnvironment environment;
-
-    public BasicPostAnalysisData() {
+    
+    public BasicDataAnalyser() {
     }
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-    }
-
-    //=========================
-    //general
-    //=========================
-
-    @Override
-    public int getNumberOfInitialAdopter(Product product) {
-        int total = 0;
-        for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
-            for(ConsumerAgent ca: cag.getAgents()) {
-                for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-                    if(ap.isInitial() && ap.isProduct(product)) {
-                        total++;
-                    }
-                }
-            }
-        }
-        return total;
-    }
-
-    private int getStartYear() {
-        return environment.getTimeModel().getFirstSimulationYear();
-    }
-
-    private int getEndYear() {
-        return environment.getTimeModel().getLastSimulationYear();
     }
 
     //=========================
@@ -82,16 +49,16 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     }
 
     @Override
-    public void logPhaseTransition(ConsumerAgent agent, int phase, Product product, Timestamp stamp) {
+    public void logPhaseTransition(ConsumerAgent agent, Phase phase, Product product, Timestamp stamp) {
         if(logPhaseTransition) {
             getInfo(agent).add(phase, product, stamp);
         }
     }
 
     @Override
-    public Map<Integer, Integer> getTransitionOverviewForYear(Product product, int year) {
+    public Map<Phase, Integer> getTransitionOverviewForYear(Product product, int year) {
         if(logPhaseTransition) {
-            Map<Integer, Integer> overviewMap = new TreeMap<>();
+            Map<Phase, Integer> overviewMap = new TreeMap<>();
             for(PhaseTransitionList transitionList: transitionMap.values()) {
                 BasicPhaseTransition info = transitionList.getLatestInfoUntilYear(product, year);
                 if(info != null) {
@@ -106,13 +73,13 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     }
 
     @Override
-    public int getPhaseFor(ConsumerAgent agent, Product product, int year) {
+    public Phase getPhaseFor(ConsumerAgent agent, Product product, int year) {
         if(logPhaseTransition) {
             PhaseTransitionList list = transitionMap.get(agent);
-            if(list == null) return UNKNOWN;
+            if(list == null) return Phase.UNKNOWN;
             BasicPhaseTransition transition = list.getLatestInfoUntilYear(product, year);
             return transition == null
-                    ? UNKNOWN
+                    ? Phase.UNKNOWN
                     : transition.getPhase();
         } else {
             throw new IllegalStateException();
@@ -145,19 +112,7 @@ public class BasicPostAnalysisData implements PostAnalysisData {
             }
         }
 
-        private boolean has(int phase, Product product, int year) {
-            List<BasicPhaseTransition> list = transitions.get(product);
-            if(list == null) return false;
-
-            for(BasicPhaseTransition info: list) {
-                if(info.isPhaseProductYear(phase, product, year)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void add(int phase, Product product, Timestamp stamp) {
+        private void add(Phase phase, Product product, Timestamp stamp) {
             getList(product).add(new BasicPhaseTransition(phase, product, stamp));
             prepared = false;
         }
@@ -186,17 +141,17 @@ public class BasicPostAnalysisData implements PostAnalysisData {
 
         private static final Comparator<BasicPhaseTransition> COMPARE_STAMP = Comparator.comparing(BasicPhaseTransition::getStamp);
 
-        private final int phase;
+        private final Phase phase;
         private final Product product;
         private final Timestamp stamp;
 
-        private BasicPhaseTransition(int phase, Product product, Timestamp stamp) {
+        private BasicPhaseTransition(Phase phase, Product product, Timestamp stamp) {
             this.phase = phase;
             this.product = product;
             this.stamp = stamp;
         }
 
-        private boolean isPhaseProductYear(int phase, Product product, int year) {
+        private boolean isPhaseProductYear(Phase phase, Product product, int year) {
             return this.phase == phase && isProductYear(product, year);
         }
 
@@ -209,7 +164,7 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         }
 
         @Override
-        public int getPhase() {
+        public Phase getPhase() {
             return phase;
         }
 
@@ -251,7 +206,7 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         Map<Product, BasicCumulatedAnnualInterest> productMapping = cumulatedAnnualInterest.computeIfAbsent(stamp.getYear(), _year -> new ConcurrentHashMap<>());
         BasicCumulatedAnnualInterest interest = productMapping.get(product);
         if(interest == null) {
-            interest = new BasicCumulatedAnnualInterest(stamp.getYear(), product);
+            interest = new BasicCumulatedAnnualInterest();
             productMapping.put(product, interest);
         }
         return interest;
@@ -261,7 +216,7 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         Map<ConsumerAgent, BasicAnnualInterest> productMapping = annualInterest.computeIfAbsent(product, _product -> new ConcurrentHashMap<>());
         BasicAnnualInterest interest = productMapping.get(agent);
         if(interest == null) {
-            interest = new BasicAnnualInterest(product);
+            interest = new BasicAnnualInterest();
             productMapping.put(agent, interest);
         }
         return interest;
@@ -276,16 +231,13 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     }
 
     @Override
-    public CumulatedAnnualInterest getCumulatedAnnualInterest(Product product, int year) {
-        Map<Product, BasicCumulatedAnnualInterest> productMapping = cumulatedAnnualInterest.get(year);
-        return productMapping == null
-                ? null
-                : productMapping.get(product);
-    }
-
-    @Override
     public int getCumulatedAnnualInterestCount(Product product, int year, double interest) {
-        CumulatedAnnualInterest cumulatedAnnualInterest = getCumulatedAnnualInterest(product, year);
+        Map<Product, BasicCumulatedAnnualInterest> productMapping = cumulatedAnnualInterest.get(year);
+        if(productMapping == null) {
+            LOGGER.warn("no interest for product '{}' in year '{}'", product.getName(), year);
+            return 0;
+        }
+        BasicCumulatedAnnualInterest cumulatedAnnualInterest = productMapping.get(product);
         if(cumulatedAnnualInterest == null) {
             LOGGER.warn("no interest for product '{}' in year '{}'", product.getName(), year);
             return 0;
@@ -306,67 +258,43 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     /**
      * @author Daniel Abitz
      */
-    private static class BasicCumulatedAnnualInterest implements CumulatedAnnualInterest {
+    private static class BasicCumulatedAnnualInterest {
 
-        private final int year;
-        private final Product product;
         private final Map<Double, Integer> interest = new ConcurrentHashMap<>();
 
-        private BasicCumulatedAnnualInterest(int year, Product product) {
-            this.year = year;
-            this.product = product;
+        private BasicCumulatedAnnualInterest() {
         }
 
         private void update(double interestValue) {
             int current = interest.getOrDefault(interestValue, 0);
             interest.put(interestValue, current + 1);
         }
-
-        @Override
-        public int getYear() {
-            return year;
-        }
-
-        @Override
-        public Product getProduct() {
-            return product;
-        }
-
-        @Override
-        public Map<Double, Integer> getInterest() {
-            return interest;
+        private int getInterestCount(double value) {
+            return interest.getOrDefault(value, 0);
         }
     }
 
     /**
      * @author Daniel Abitz
      */
-    private static class BasicAnnualInterest implements AnnualInterest {
+    private static class BasicAnnualInterest {
 
-        private final Product product;
         private final Map<Integer, Double> annualInterest = new HashMap<>();
 
-        private BasicAnnualInterest(Product product) {
-            this.product = product;
-        }
-
-        @Override
-        public Product getProduct() {
-            return product;
+        private BasicAnnualInterest() {
         }
 
         private void update(Timestamp stamp, double interest) {
             annualInterest.put(stamp.getYear(), interest);
         }
 
-        @Override
-        public double getInterest(int year) {
+        private double getInterest(int year) {
             return annualInterest.getOrDefault(year, 0.0);
         }
     }
 
     //=========================
-    //evaluation data
+    //annual evaluation data
     //=========================
 
     protected static final BasicBucket NAN_BUCKET = new BasicBucket(Double.NaN, Double.NaN);
@@ -443,7 +371,7 @@ public class BasicPostAnalysisData implements PostAnalysisData {
     }
 
     @Override
-    public void logEvaluationData2(
+    public void logEvaluationData(
             Product product, Timestamp stamp,
             double a, double b, double c, double d,
             double aa, double bb, double cc, double dd,
@@ -712,104 +640,6 @@ public class BasicPostAnalysisData implements PostAnalysisData {
         @Override
         public int countAdoptionFactor() {
             return adoptionFactor;
-        }
-    }
-
-    //=========================
-    //full evaluation
-    //=========================
-
-    public static final String NO_VALUE = "-";
-    private static final int FORMAT_LEN = 28;
-    private static final String LOGGER_NAME = "ALL_EVAL_LOGGER";
-    private static final String APPENDER_NAME = "ALL_EVAL_APPENDER";
-    private static final String FORMAT = BasicPostAnalysisLogger.createFormat(FORMAT_LEN);
-    private boolean logAllEvaluationData = false;
-    private SimplifiedFileLogger evalLogger;
-
-    @Override
-    public void setLogAllEvaluationData(boolean value) {
-        logAllEvaluationData = true;
-    }
-
-    @Override
-    public boolean isLogAllEvaluationData() {
-        return logAllEvaluationData;
-    }
-
-    @Override
-    public void setLogAllEvaluationTemp(Path target) {
-        if(logAllEvaluationData) {
-            try {
-                LOGGER.trace("create logger: {}", target);
-                evalLogger = new SimplifiedFileLogger(
-                        LOGGER_NAME,
-                        SimplifiedFileLogger.createNew(
-                                APPENDER_NAME,
-                                BasicPostAnalysisLogger.DEFAULT_PATTERN,
-                                target
-                        )
-                );
-            } catch (IOException e) {
-                LOGGER.error("logger creation failed, disable log all evaluations", e);
-                logAllEvaluationData = false;
-            }
-        } else {
-            LOGGER.trace("log all evalution is disabled");
-            evalLogger = null;
-        }
-    }
-
-    @Override
-    public void finishAllEvaluation(boolean cleanup) throws IOException {
-        if(evalLogger != null) {
-            evalLogger.stop();
-            if(cleanup) {
-                Path target = evalLogger.getTarget();
-                Files.deleteIfExists(target);
-            }
-        }
-    }
-
-    @Override
-    public void logAllEvaluationDataFinancialFailed(
-            ConsumerAgent agent, Product product, Timestamp stamp,
-            double financialThreshold, double financialValue) {
-        if(evalLogger != null) {
-            evalLogger.log(FORMAT,
-                    agent.getName(), product.getName(), BasicPostAnalysisLogger.printStamp(stamp), stamp.getYear(),
-                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
-                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
-                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
-                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
-                    NO_VALUE, NO_VALUE, NO_VALUE, NO_VALUE,
-                    financialThreshold, financialValue,
-                    NO_VALUE, NO_VALUE
-            );
-        }
-    }
-
-    @Override
-    public void logAllEvaluationData(
-            ConsumerAgent agent, Product product, Timestamp stamp,
-            double aWeight, double bWeight, double cWeight, double dWeight,
-            double a, double b, double c, double d,
-            double aValue, double bValue, double cValue, double dValue,
-            double aa, double bb, double cc, double dd,
-            double weightedAA, double weightedBB, double weightedCC, double weightedDD,
-            double financialThreshold, double financialValue,
-            double adoptionThreshold, double adoptionValue) {
-        if(evalLogger != null) {
-            evalLogger.log(FORMAT,
-                    agent.getName(), product.getName(), BasicPostAnalysisLogger.printStamp(stamp), stamp.getYear(),
-                    aWeight, bWeight, cWeight, dWeight,
-                    a, b, c, d,
-                    aValue, bValue, cValue, dValue,
-                    aa, bb, cc, dd,
-                    weightedAA, weightedBB, weightedCC, weightedDD,
-                    financialThreshold, financialValue,
-                    adoptionThreshold, adoptionValue
-            );
         }
     }
 }

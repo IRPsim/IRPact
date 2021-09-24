@@ -67,7 +67,6 @@ public class AttitudeGapRelativeAgreementAlgorithm extends AbstractRelativeAgree
         return Checksums.SMART.getChecksum(
                 getName(),
                 getAttitudeGap(),
-                isLogDataFallback(),
                 getWeight(Mode.NEUTRAL),
                 getWeight(Mode.CONVERGENCE),
                 getWeight(Mode.DIVERGENCE),

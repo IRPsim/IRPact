@@ -134,24 +134,10 @@ public class InGeneral implements Copyable {
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", InRootUI.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
         putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-
-        //analysis
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logNonAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInitialAdopterAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAdoptionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logDecisionAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialThresholdAnalysis", InRootUI.SETT_DATAANALYSIS, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialComponent", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
-
-        //logging data
-//        putFieldPathAndAddEntry(res, thisClass(), "logGraphUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-//        putFieldPathAndAddEntry(res, thisClass(), "logRelativeAgreement", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-//        putFieldPathAndAddEntry(res, thisClass(), "logInterestUpdate", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-//        putFieldPathAndAddEntry(res, thisClass(), "logShareNetworkLocal", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-//        putFieldPathAndAddEntry(res, thisClass(), "logFinancalComponent", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
-//        putFieldPathAndAddEntry(res, thisClass(), "logCalculateDecisionMaking", GENERAL_SETTINGS, LOGGING, LOGGING_DATA);
 
         //logging script
 //        putFieldPathAndAddEntry(res, thisClass(), "logScriptAdoptionsZip", GENERAL_SETTINGS, LOGGING, LOGGING_SCRIPT);
@@ -381,63 +367,6 @@ public class InGeneral implements Copyable {
     }
 
     //=========================
-    //data analysis
-    //=========================
-
-    public void enableAllAnalysis() {
-        setLogNonAdopterAnalysis(true);
-        setLogInitialAdopterAnalysis(true);
-        setLogAdoptionAnalysis(true);
-        setLogDecisionAnalysis(true);
-        setLogFinancialThresholdAnalysis(true);
-    }
-
-    @FieldDefinition
-    public boolean logNonAdopterAnalysis = false;
-    public void setLogNonAdopterAnalysis(boolean logNonAdopterAnalysis) {
-        this.logNonAdopterAnalysis = logNonAdopterAnalysis;
-    }
-    public boolean isLogNonAdopterAnalysis() {
-        return logNonAdopterAnalysis;
-    }
-
-    @FieldDefinition
-    public boolean logInitialAdopterAnalysis = false;
-    public void setLogInitialAdopterAnalysis(boolean logInitialAdopterAnalysis) {
-        this.logInitialAdopterAnalysis = logInitialAdopterAnalysis;
-    }
-    public boolean isLogInitialAdopterAnalysis() {
-        return logInitialAdopterAnalysis;
-    }
-
-    @FieldDefinition
-    public boolean logAdoptionAnalysis = false;
-    public void setLogAdoptionAnalysis(boolean logAdoptionAnalysis) {
-        this.logAdoptionAnalysis = logAdoptionAnalysis;
-    }
-    public boolean isLogAdoptionAnalysis() {
-        return logAdoptionAnalysis;
-    }
-
-    @FieldDefinition
-    public boolean logDecisionAnalysis = false;
-    public void setLogDecisionAnalysis(boolean logDecisionAnalysis) {
-        this.logDecisionAnalysis = logDecisionAnalysis;
-    }
-    public boolean isLogDecisionAnalysis() {
-        return logDecisionAnalysis;
-    }
-
-    @FieldDefinition
-    public boolean logFinancialThresholdAnalysis = false;
-    public void setLogFinancialThresholdAnalysis(boolean logFinancialThresholdAnalysis) {
-        this.logFinancialThresholdAnalysis = logFinancialThresholdAnalysis;
-    }
-    public boolean isLogFinancialThresholdAnalysis() {
-        return logFinancialThresholdAnalysis;
-    }
-
-    //=========================
     //general logging
     //=========================
 
@@ -539,28 +468,6 @@ public class InGeneral implements Copyable {
     }
 
     //=========================
-    //data logging
-    //=========================
-
-    @FieldDefinition
-    public boolean logGraphUpdate;
-
-    @FieldDefinition
-    public boolean logRelativeAgreement;
-
-    @FieldDefinition
-    public boolean logInterestUpdate;
-
-    @FieldDefinition
-    public boolean logShareNetworkLocal;
-
-    @FieldDefinition
-    public boolean logFinancalComponent;
-
-    @FieldDefinition
-    public boolean logCalculateDecisionMaking;
-
-    //=========================
     //result logging
     //=========================
 
@@ -590,6 +497,9 @@ public class InGeneral implements Copyable {
 
     @FieldDefinition
     public boolean logAllEvaluation;
+
+    @FieldDefinition
+    public boolean logFinancialComponent;
 
     //=========================
     //script + data logging
@@ -647,15 +557,10 @@ public class InGeneral implements Copyable {
         copy.logInitialization = logInitialization;
         copy.logSimulation = logSimulation;
         //data logging
-        copy.logGraphUpdate = logGraphUpdate;
-        copy.logRelativeAgreement = logRelativeAgreement;
-        copy.logInterestUpdate = logInterestUpdate;
-        copy.logShareNetworkLocal = logShareNetworkLocal;
-        copy.logFinancalComponent = logFinancalComponent;
-        copy.logCalculateDecisionMaking = logCalculateDecisionMaking;
         //result logging
         copy.logResultAdoptionsAll = logResultAdoptionsAll;
         copy.logAllEvaluation = logAllEvaluation;
+        copy.logFinancialComponent = logFinancialComponent;
         //script + data logging
         copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
         copy.logScriptAdoptionsZipPhase = logScriptAdoptionsZipPhase;
@@ -682,15 +587,6 @@ public class InGeneral implements Copyable {
         return scenarioMode;
     }
 
-    public void enableAllDataLogging() {
-        logGraphUpdate = true;
-        logRelativeAgreement = true;
-        logInterestUpdate = true;
-        logShareNetworkLocal = true;
-        logFinancalComponent = true;
-        logCalculateDecisionMaking = true;
-    }
-
     public void enableAllResultLogging() {
         logResultAdoptionsAll = true;
         logPerformance = true;
@@ -698,6 +594,7 @@ public class InGeneral implements Copyable {
         logInterest = true;
         logEvaluation = true;
         logAllEvaluation = true;
+        logFinancialComponent = true;
     }
 
     public void enableAllScriptLogging() {
@@ -724,7 +621,8 @@ public class InGeneral implements Copyable {
 
     public void setup(IRPactInputParser parser) throws ParsingException {
         parseSettings(parser.getEnvironment().getSettings());
-        parsePostAnalysisDataSettings(parser.getEnvironment().getPostAnalysisData());
+        parseDataAnalyserSettings(parser.getEnvironment().getDataAnalyser());
+        parseDataLoggerSettings(parser.getEnvironment().getDataLogger());
         parseSeed(parser);
         parseLifeCycleControl(parser);
 
@@ -732,13 +630,6 @@ public class InGeneral implements Copyable {
     }
 
     public void parseSettings(Settings settings) {
-        settings.setLogGraphUpdate(logGraphUpdate);
-        settings.setLogRelativeAgreement(logRelativeAgreement);
-        settings.setLogInterestUpdate(logInterestUpdate);
-        settings.setLogShareNetworkLocale(logShareNetworkLocal);
-        settings.setLogFinancialComponent(logFinancalComponent);
-        settings.setLogCalculateDecisionMaking(logCalculateDecisionMaking);
-
         settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
         settings.setLogPerformance(logPerformance);
 
@@ -746,12 +637,16 @@ public class InGeneral implements Copyable {
         settings.setLogScriptAdoptionsZipPhase(logScriptAdoptionsZipPhase);
     }
 
-    public void parsePostAnalysisDataSettings(PostAnalysisData data) {
-        data.setLogAnnualInterest(logInterest);
-        data.setLogPhaseTransition(logPhaseOverview);
-        data.setLogEvaluationData(logEvaluation);
-        data.setEvaluationBucketSize(evaluationBucketSize);
-        data.setLogAllEvaluationData(logAllEvaluation);
+    public void parseDataAnalyserSettings(DataAnalyser dataAnalyser) {
+        dataAnalyser.setLogAnnualInterest(logInterest);
+        dataAnalyser.setLogPhaseTransition(logPhaseOverview);
+        dataAnalyser.setLogEvaluationData(logEvaluation);
+        dataAnalyser.setEvaluationBucketSize(evaluationBucketSize);
+    }
+
+    public void parseDataLoggerSettings(DataLogger dataLogger) {
+        dataLogger.enableLogEvaluation(logAllEvaluation);
+        dataLogger.enableLogFinancialComponent(logFinancialComponent);
     }
 
     private void parseSeed(IRPactInputParser parser) {

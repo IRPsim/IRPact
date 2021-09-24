@@ -333,25 +333,9 @@ InGeneral_logAllEvaluation:
 InGeneral_evaluationBucketSize:
   gams_identifier: "Bereichsgröße (Evaluierungswerte)"
   gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
-
-data_analysis:
-  edn_label: "Postanalyse"
-  edn_description: "Konfiguriert die Daten, welche für eine Postanalyse gesammelt werden sollen. Die Daten werden in einer Zip (Analyse.zip) gesammelt."
-InGeneral_logNonAdopterAnalysis:
-  gams_identifier: "Nicht-Adopter"
-  gams_description: "Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)"
-InGeneral_logInitialAdopterAnalysis:
-  gams_identifier: "Initiale Adopter"
-  gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
-InGeneral_logAdoptionAnalysis:
-  gams_identifier: "Adoptions"
-  gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
-InGeneral_logDecisionAnalysis:
-  gams_identifier: "Decision making"
-  gams_description: "Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)"
-InGeneral_logFinancialThresholdAnalysis:
-  gams_identifier: "Financial Threshold"
-  gams_description: "Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)"
+InGeneral_logFinancialComponent:
+  gams_identifier: "Finanzielle Komponente"
+  gams_description: "Finanzielle_Komponente.xlsx"
 
 
 informations:
@@ -361,7 +345,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.9.0"
+  edn_description: "IRPact v1.10.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2532,3 +2516,23 @@ InGeneral_logResultAdoptionsZip:
 InGeneral_logResultAdoptionsZipPhase:
   gams_identifier: "kumulierte Adoptionen nach PLZ und Phase"
   gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus."
+
+#deprecated
+data_analysis:
+  edn_label: "Postanalyse"
+  edn_description: "Konfiguriert die Daten, welche für eine Postanalyse gesammelt werden sollen. Die Daten werden in einer Zip (Analyse.zip) gesammelt."
+InGeneral_logNonAdopterAnalysis:
+  gams_identifier: "Nicht-Adopter"
+  gams_description: "Speichert alle auftretenden Nicht-Adopter. (NonAdopter.csv in Analyse.zip)"
+InGeneral_logInitialAdopterAnalysis:
+  gams_identifier: "Initiale Adopter"
+  gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
+InGeneral_logAdoptionAnalysis:
+  gams_identifier: "Adoptions"
+  gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
+InGeneral_logDecisionAnalysis:
+  gams_identifier: "Decision making"
+  gams_description: "Speichert a, b, c, d und den Grenzwert bei jeder Evaluation. (DecisionMaking.csv in Analyse.zip)"
+InGeneral_logFinancialThresholdAnalysis:
+  gams_identifier: "Financial Threshold"
+  gams_description: "Speichert Kaufkraft und Grenzwert bei jeder Evaluation. (FinancialThreshold.csv in Analyse.zip)"

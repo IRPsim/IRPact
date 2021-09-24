@@ -181,7 +181,6 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         setColors(root, realData.CAGS.cags());
 
         setupGeneral(root.getGeneral());
-        root.getGeneral().enableAllAnalysis();
 
         return Collections.singletonList(root);
     }

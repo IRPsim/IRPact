@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.9.0" 
+        :description "IRPact v1.10.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -125,7 +125,7 @@
       {
         :label "Allgemeine Einstellungen" 
         :description "Allgemeine Einstellungen von IRPact" 
-        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
+        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
         :sections [
           {
             :label "Logging" 
@@ -190,12 +190,7 @@
       {
         :label "Datenausgabe" 
         :description "Hier kann die Datenausgabe konfiguriert werden." 
-        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"]]
-      } 
-      {
-        :label "Postanalyse" 
-        :description "Konfiguriert die Daten, welche für eine Postanalyse gesammelt werden sollen. Die Daten werden in einer Zip (Analyse.zip) gesammelt." 
-        :tags [["InGeneral" "logNonAdopterAnalysis"] ["InGeneral" "logInitialAdopterAnalysis"] ["InGeneral" "logAdoptionAnalysis"] ["InGeneral" "logDecisionAnalysis"] ["InGeneral" "logFinancialThresholdAnalysis"]]
+        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"] ["InGeneral" "logFinancialComponent"]]
       }
     ]
   } 
