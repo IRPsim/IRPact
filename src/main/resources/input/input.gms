@@ -3737,30 +3737,6 @@ SCALAR sca_InGeneral_logInitialization
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulation
 
-* - identifier: logGraphUpdate
-* - type: Boolean
-SCALAR sca_InGeneral_logGraphUpdate
-
-* - identifier: logRelativeAgreement
-* - type: Boolean
-SCALAR sca_InGeneral_logRelativeAgreement
-
-* - identifier: logInterestUpdate
-* - type: Boolean
-SCALAR sca_InGeneral_logInterestUpdate
-
-* - identifier: logShareNetworkLocal
-* - type: Boolean
-SCALAR sca_InGeneral_logShareNetworkLocal
-
-* - identifier: logFinancalComponent
-* - type: Boolean
-SCALAR sca_InGeneral_logFinancalComponent
-
-* - identifier: logCalculateDecisionMaking
-* - type: Boolean
-SCALAR sca_InGeneral_logCalculateDecisionMaking
-
 * - default: 0
 * - domain: [0|1]
 * - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.

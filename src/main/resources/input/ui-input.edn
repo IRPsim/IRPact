@@ -125,7 +125,7 @@
       {
         :label "Allgemeine Einstellungen" 
         :description "Allgemeine Einstellungen von IRPact" 
-        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logGraphUpdate"] ["InGeneral" "logRelativeAgreement"] ["InGeneral" "logInterestUpdate"] ["InGeneral" "logShareNetworkLocal"] ["InGeneral" "logFinancalComponent"] ["InGeneral" "logCalculateDecisionMaking"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
+        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"] ["InGeneral" "logScriptAdoptionsZip"] ["InGeneral" "logScriptAdoptionsZipPhase"]] 
         :sections [
           {
             :label "Logging" 

@@ -38,21 +38,15 @@
       "sca_InGeneral_logAllEvaluation" : 0,
       "sca_InGeneral_logAllIRPact" : 0,
       "sca_InGeneral_logAllTools" : 0,
-      "sca_InGeneral_logCalculateDecisionMaking" : 0,
       "sca_InGeneral_logEvaluation" : 0,
-      "sca_InGeneral_logFinancalComponent" : 0,
       "sca_InGeneral_logFinancialComponent" : 0,
-      "sca_InGeneral_logGraphUpdate" : 0,
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterest" : 0,
-      "sca_InGeneral_logInterestUpdate" : 0,
       "sca_InGeneral_logPerformance" : 0,
       "sca_InGeneral_logPhaseOverview" : 0,
-      "sca_InGeneral_logRelativeAgreement" : 0,
       "sca_InGeneral_logResultAdoptionsAll" : 0,
       "sca_InGeneral_logScriptAdoptionsZip" : 0,
       "sca_InGeneral_logScriptAdoptionsZipPhase" : 0,
-      "sca_InGeneral_logShareNetworkLocal" : 0,
       "sca_InGeneral_logSimulation" : 0,
       "sca_InGeneral_outerParallelism" : 0,
       "sca_InGeneral_passErrorMessageToOutput" : 1,
@@ -338,7 +332,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_24_T_07_12_48" : {
+        "CT_D_2021_09_24_T_07_51_46" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
