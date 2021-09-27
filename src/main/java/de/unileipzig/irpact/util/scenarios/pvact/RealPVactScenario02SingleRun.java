@@ -128,8 +128,10 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
         processModel.setDefaultValues();
+        processModel.setA(1);
         processModel.setB(RealData.WEIGHT_NEP);
         processModel.setC(RealData.WEIGHT_NS);
+        processModel.setD(1);
         processModel.setWeightFT(RealData.WEIGHT_EK);
         processModel.setWeightNPV(RealData.WEIGHT_NPV);
         processModel.setWeightSocial(RealData.WEIGHT_SOCIAL);

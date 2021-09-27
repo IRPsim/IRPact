@@ -9,7 +9,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
  */
 public final class RAConstants {
 
-    public static final double DEFAULT_LOGISTIC_FACTOR = 1.0 / 8.0;
+    public static final double DEFAULT_LOGISTIC_FACTOR = 0.005;
     public static final double DEFAULT_SPEED_OF_CONVERGENCE = 0.5;
     public static final double DEFAULT_ATTIDUTE_GAP = 1.75;
     public static final double DEFAULT_NEUTRAL_CHANCE = 0.5;
