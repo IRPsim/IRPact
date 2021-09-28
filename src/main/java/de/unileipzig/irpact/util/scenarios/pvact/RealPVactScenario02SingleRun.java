@@ -127,8 +127,8 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
-        processModel.setAdoptionCertaintyBase(0.5);
-        processModel.setAdoptionCertaintyFactor(0.5);
+        processModel.setAdoptionCertaintyBase(1);
+        processModel.setAdoptionCertaintyFactor(1);
         processModel.setDefaultValues();
         processModel.setA(1);
         processModel.setB(RealData.WEIGHT_NEP);

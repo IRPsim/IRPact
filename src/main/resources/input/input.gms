@@ -1517,7 +1517,7 @@ PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
 * - type: Float
 PARAMETER par_InRAProcessModel_adoptionCertaintyBase(set_InRAProcessModel)
 
-* - default: 0
+* - default: 1
 * - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
 * - identifier: Rewire-Faktor
 * - type: Float

@@ -332,7 +332,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_28_T_18_08_58" : {
+        "CT_D_2021_09_28_T_18_55_33" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -434,7 +434,7 @@
           "par_InRAProcessModel_communicationFactor" : 1.0,
           "par_InRAProcessModel_rewireFactor" : 1.0,
           "par_InRAProcessModel_adoptionCertaintyBase" : 1.0,
-          "par_InRAProcessModel_adoptionCertaintyFactor" : 0.0
+          "par_InRAProcessModel_adoptionCertaintyFactor" : 1.0
         }
       },
       "set_InRAProcessPlanMaxDistanceFilterScheme" : {
@@ -453,7 +453,7 @@
       },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_12_0" : {
+        "v1_12_1" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
