@@ -47,7 +47,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     protected boolean skipFeasibility = false;
     protected boolean forceEvaluate = false;
     protected double adoptionCertaintyBase = 1.0;
-    protected double adoptionCertaintyFactor = 0.0;
+    protected double adoptionCertaintyFactor = 1.0;
 
     protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
 
@@ -70,7 +70,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     public boolean hasAdoptionCertainty() {
-        return !(adoptionCertaintyBase == 1.0 && adoptionCertaintyFactor == 0.0);
+        return !(adoptionCertaintyBase == 1.0 && adoptionCertaintyFactor == 1.0);
     }
 
     protected double getAdoptionCertainty() {

@@ -112,7 +112,7 @@ public class InRAProcessModel implements InProcessModel {
         setDefault(res, thisClass(), "communicationFactor", VALUE_1);
         setDefault(res, thisClass(), "rewireFactor", VALUE_1);
         setDefault(res, thisClass(), "adoptionCertaintyBase", VALUE_1);
-        setDefault(res, thisClass(), "adoptionCertaintyFactor", VALUE_0);
+        setDefault(res, thisClass(), "adoptionCertaintyFactor", VALUE_1);
         setDefault(res, thisClass(), "adopterPoints", varargs(RAModelData.DEFAULT_ADOPTER_POINTS));
         setDefault(res, thisClass(), "interestedPoints", varargs(RAModelData.DEFAULT_INTERESTED_POINTS));
         setDefault(res, thisClass(), "awarePoints", varargs(RAModelData.DEFAULT_AWARE_POINTS));
@@ -214,7 +214,7 @@ public class InRAProcessModel implements InProcessModel {
     public double adoptionCertaintyBase = 1.0;
 
     @FieldDefinition
-    public double adoptionCertaintyFactor = 0.0;
+    public double adoptionCertaintyFactor = 1.0;
 
     @FieldDefinition
     public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;

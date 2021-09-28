@@ -296,7 +296,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setSkipFeasibility(false);
         processModel.setForceEvaluate(true);
         processModel.setAdoptionCertaintyBase(1.0);
-        processModel.setAdoptionCertaintyFactor(0.0);
+        processModel.setAdoptionCertaintyFactor(1.0);
         return processModel;
     }
 
