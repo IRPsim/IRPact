@@ -332,7 +332,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_09_24_T_07_51_46" : {
+        "CT_D_2021_09_28_T_11_39_46" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -406,6 +406,9 @@
       },
       "set_InRAProcessModel" : {
         "ProcessModel" : {
+          "par_InRAProcessModel_skipAwareness" : 0,
+          "par_InRAProcessModel_skipFeasibility" : 0,
+          "par_InRAProcessModel_forceEvaluate" : 0,
           "par_InRAProcessModel_a" : 0.25,
           "par_InRAProcessModel_b" : 0.25,
           "par_InRAProcessModel_c" : 0.25,
@@ -418,7 +421,7 @@
           "par_InRAProcessModel_interestedPoints" : 2,
           "par_InRAProcessModel_awarePoints" : 1,
           "par_InRAProcessModel_unknownPoints" : 0,
-          "par_InRAProcessModel_logisticFactor" : 0.125,
+          "par_InRAProcessModel_logisticFactor" : 0.005,
           "par_InRAProcessModel_speedOfConvergence" : 0.0,
           "par_InRAProcessModel_attitudeGap" : 1.75,
           "par_InRAProcessModel_chanceNeutral" : 0.5,
@@ -448,7 +451,7 @@
       },
       "set_InROutputImage" : { },
       "set_InScenarioVersion" : {
-        "v1_10_0" : {
+        "v1_11_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

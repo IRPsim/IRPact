@@ -82,6 +82,7 @@ public interface DataAnalyser {
 
     void logEvaluationData(
             Product product, Timestamp stamp,
+            boolean valid,
             double a, double b, double c, double d,
             double aa, double bb, double cc, double dd,
             double weightedAA, double weightedBB, double weightedCC, double weightedDD,
@@ -94,7 +95,7 @@ public interface DataAnalyser {
 
     NavigableSet<Bucket> getBuckets();
 
-    EvaluationData getEvaluationData(Product product, int year, Bucket bucket);
+    EvaluationData getEvaluationData(boolean valid, Product product, int year, Bucket bucket);
 
     /**
      * @author Daniel Abitz

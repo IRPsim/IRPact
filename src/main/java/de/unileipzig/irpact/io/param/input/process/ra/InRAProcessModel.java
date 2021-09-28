@@ -51,6 +51,9 @@ public class InRAProcessModel implements InProcessModel {
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), PROCESS_MODEL, thisName());
 
+        addEntry(res, thisClass(), "skipAwareness");
+        addEntry(res, thisClass(), "skipFeasibility");
+        addEntry(res, thisClass(), "forceEvaluate");
         addEntry(res, thisClass(), "a");
         addEntry(res, thisClass(), "b");
         addEntry(res, thisClass(), "c");
@@ -81,11 +84,17 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "newProductHandlers");
 
 
+        setDomain(res, thisClass(), "skipAwareness", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "skipFeasibility", DOMAIN_BOOLEAN);
+        setDomain(res, thisClass(), "forceEvaluate", DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "chanceNeutral", DOMAIN_CLOSED_0_1);
         setDomain(res, thisClass(), "chanceConvergence", DOMAIN_CLOSED_0_1);
         setDomain(res, thisClass(), "chanceDivergence", DOMAIN_CLOSED_0_1);
 
 
+        setDefault(res, thisClass(), "skipAwareness", VALUE_FALSE);
+        setDefault(res, thisClass(), "skipFeasibility", VALUE_FALSE);
+        setDefault(res, thisClass(), "forceEvaluate", VALUE_FALSE);
         setDefault(res, thisClass(), "a", VALUE_0_25);
         setDefault(res, thisClass(), "b", VALUE_0_25);
         setDefault(res, thisClass(), "c", VALUE_0_25);
@@ -115,6 +124,15 @@ public class InRAProcessModel implements InProcessModel {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
+
+    @FieldDefinition
+    public boolean skipAwareness = false;
+
+    @FieldDefinition
+    public boolean skipFeasibility = false;
+
+    @FieldDefinition
+    public boolean forceEvaluate = false;
 
     @FieldDefinition
     public double a;
@@ -278,6 +296,30 @@ public class InRAProcessModel implements InProcessModel {
         setBWeight(value);
         setCWeight(value);
         setDWeight(value);
+    }
+
+    public void setSkipAwareness(boolean skipAwareness) {
+        this.skipAwareness = skipAwareness;
+    }
+
+    public boolean isSkipAwareness() {
+        return skipAwareness;
+    }
+
+    public void setSkipFeasibility(boolean skipFeasibility) {
+        this.skipFeasibility = skipFeasibility;
+    }
+
+    public boolean isSkipFeasibility() {
+        return skipFeasibility;
+    }
+
+    public void setForceEvaluate(boolean forceEvaluate) {
+        this.forceEvaluate = forceEvaluate;
+    }
+
+    public boolean isForceEvaluate() {
+        return forceEvaluate;
     }
 
     public double getA() {
@@ -575,6 +617,12 @@ public class InRAProcessModel implements InProcessModel {
         model.setModelData(data);
         model.setRnd(rnd);
         model.setSpeedOfConvergence(getSpeedOfConvergence());
+        model.setSkipAwareness(isSkipAwareness());
+        model.setSkipFeasibility(isSkipFeasibility());
+        model.setForceEvaluate(isForceEvaluate());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] skip awareness: {}", getName(), isSkipAwareness());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] skip feasibility: {}", getName(), isSkipFeasibility());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] force evaluate: {}", getName(), isForceEvaluate());
 
         Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
         for(InUncertainty uncertainty: getUncertainties()) {

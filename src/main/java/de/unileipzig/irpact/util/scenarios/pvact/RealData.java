@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;

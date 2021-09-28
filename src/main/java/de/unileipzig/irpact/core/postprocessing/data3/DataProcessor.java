@@ -50,7 +50,9 @@ public class DataProcessor extends PostProcessor {
     protected static final String PERFORMANCE_XLSX = "Performance.xlsx";
     protected static final String PHASE_OVERVIEW_XLSX = "Phasenuebersicht.xlsx";
     protected static final String INTEREST_XLSX = "Interesse.xlsx";
-    protected static final String EVALUATION_XLSX = "Evaluierung.xlsx";
+    protected static final String SUCC_EVALUATION_XLSX = "Evaluierung_Erfolgreicher_Finanztest.xlsx";
+    protected static final String FAIL_EVALUATION_XLSX = "Evaluierung_Fehlgeschlagener_Finanztest.xlsx";
+    protected static final String BOTH_EVALUATION_XLSX = "Evaluierung_Kombiniert.xlsx";
 
     public DataProcessor(
             MetaData metaData,
@@ -486,20 +488,51 @@ public class DataProcessor extends PostProcessor {
         }
     }
 
-    protected void logEvaluationData0() throws IOException {
+    protected void logEvaluationData0() {
+        logSuccessfulEvaluation();
+        logFailedEvaluation();
+        logBothEvaluation();
+    }
+
+    protected void logSuccessfulEvaluation() {
+        try {
+            trace("log successful evaluation data");
+            logEvaluationData0(EvaluationMode.SUCCESS, getPath(SUCC_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logSuccessfulEvaluation'", t);
+        }
+    }
+
+    protected void logFailedEvaluation() {
+        try {
+            trace("log failed evaluation data");
+            logEvaluationData0(EvaluationMode.FAILURE, getPath(FAIL_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logFailedEvaluation'", t);
+        }
+    }
+
+    protected void logBothEvaluation() {
+        try {
+            trace("log both evaluation data");
+            logEvaluationData0(EvaluationMode.BOTH, getPath(BOTH_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logBothEvaluation'", t);
+        }
+    }
+
+    protected void logEvaluationData0(EvaluationMode mode, Path target) throws IOException {
         List<Product> products = getAllProducts();
         if(products.size() != 1) {
             throw new IllegalArgumentException("products");
         }
         Product product = products.get(0);
 
-        Path target = getPath(EVALUATION_XLSX);
-
         List<Integer> years = getAllSimulationYears();
 
         Map<String, JsonTableData3> sheets = new LinkedHashMap<>();
         for(EvaluationType type: EvaluationType.values()) {
-            logEvaluationData(type, years, product, sheets);
+            logEvaluationData(mode, type, years, product, sheets);
         }
 
         info("write {}", target);
@@ -525,6 +558,15 @@ public class DataProcessor extends PostProcessor {
         weightedCC,
         weightedDD,
         B
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private enum EvaluationMode {
+        SUCCESS,
+        FAILURE,
+        BOTH
     }
 
     protected String getSheetName(EvaluationType type) {
@@ -576,6 +618,10 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected int getEvaluationCount(EvaluationType type, DataAnalyser.EvaluationData data) {
+        if(data == null) {
+            return 0;
+        }
+
         switch (type) {
             case a:
                 return data.countA();
@@ -609,6 +655,7 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logEvaluationData(
+            EvaluationMode mode,
             EvaluationType type,
             List<Integer> years,
             Product product,
@@ -627,16 +674,44 @@ public class DataProcessor extends PostProcessor {
             for(DataAnalyser.Bucket bucket: buckets) {
                 row++;
                 sheetData.setString(row, 0, bucket.print(getDataAnalyser().getEvaluationBucketFormatter()));
-
-                DataAnalyser.EvaluationData data = getDataAnalyser().getEvaluationData(product, year, bucket);
-                int count = data == null
-                        ? 0
-                        : getEvaluationCount(type, data);
+                int count = getEvaluationCount(mode, type, product, year, bucket);
                 sheetData.setInt(row, column, count);
             }
         }
 
         sheets.put(getSheetName(type), sheetData);
+    }
+
+    protected int getEvaluationCount(
+            EvaluationMode mode,
+            EvaluationType type,
+            Product product,
+            int year,
+            DataAnalyser.Bucket bucket) {
+        switch (mode) {
+            case SUCCESS:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(true, product, year, bucket)
+                );
+            case FAILURE:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(false, product, year, bucket)
+                );
+            case BOTH:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(true, product, year, bucket)
+                )
+                        + getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(false, product, year, bucket)
+                );
+
+            default:
+                throw new IllegalArgumentException("unknown mode: " + mode);
+        }
     }
 
     protected void logEvaluation() {

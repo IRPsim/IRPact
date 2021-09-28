@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.logging;
 
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.data.map.Map5;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -265,10 +266,11 @@ public class BasicDataAnalyser implements DataAnalyser {
         private BasicCumulatedAnnualInterest() {
         }
 
-        private void update(double interestValue) {
+        private synchronized void update(double interestValue) {
             int current = interest.getOrDefault(interestValue, 0);
             interest.put(interestValue, current + 1);
         }
+
         private int getInterestCount(double value) {
             return interest.getOrDefault(value, 0);
         }
@@ -284,7 +286,7 @@ public class BasicDataAnalyser implements DataAnalyser {
         private BasicAnnualInterest() {
         }
 
-        private void update(Timestamp stamp, double interest) {
+        private synchronized void update(Timestamp stamp, double interest) {
             annualInterest.put(stamp.getYear(), interest);
         }
 
@@ -299,7 +301,7 @@ public class BasicDataAnalyser implements DataAnalyser {
 
     protected static final BasicBucket NAN_BUCKET = new BasicBucket(Double.NaN, Double.NaN);
     protected final Map<Double, BasicBucket> bucketCache = new ConcurrentHashMap<>();
-    protected final Map<Product, Map<Integer, Map<Bucket, BasicEvaluationData>>> productAnnualBucketMap = new ConcurrentHashMap<>();
+    protected final Map5<Boolean, Product, Integer, Bucket, BasicEvaluationData> productAnnualBucketMap = Map5.newConcurrentHashMap();
     protected boolean logEvaluationData = true;
     protected double bucketSize = 0.1;
     protected DecimalFormat bucketPrinter = buildFormat(2);
@@ -333,10 +335,8 @@ public class BasicDataAnalyser implements DataAnalyser {
         }
     }
 
-    protected BasicEvaluationData getData(Product product, Timestamp stamp, BasicBucket bucket) {
-        Map<Integer, Map<Bucket, BasicEvaluationData>> annualBucketMap = productAnnualBucketMap.computeIfAbsent(product, _product -> new ConcurrentHashMap<>());
-        Map<Bucket, BasicEvaluationData> bucketMap = annualBucketMap.computeIfAbsent(stamp.getYear(), _year -> new ConcurrentHashMap<>());
-        return bucketMap.computeIfAbsent(bucket, _bucket -> new BasicEvaluationData());
+    protected BasicEvaluationData getData(boolean valid, Product product, Timestamp stamp, BasicBucket bucket) {
+        return productAnnualBucketMap.computeIfAbsent(valid, product, stamp.getYear(), bucket, _bucket -> new BasicEvaluationData());
     }
 
     @Override
@@ -373,23 +373,24 @@ public class BasicDataAnalyser implements DataAnalyser {
     @Override
     public void logEvaluationData(
             Product product, Timestamp stamp,
+            boolean valid,
             double a, double b, double c, double d,
             double aa, double bb, double cc, double dd,
             double weightedAA, double weightedBB, double weightedCC, double weightedDD,
             double adoptionFactor) {
-        getData(product, stamp, getBucket(a)).updateA();
-        getData(product, stamp, getBucket(b)).updateB();
-        getData(product, stamp, getBucket(c)).updateC();
-        getData(product, stamp, getBucket(d)).updateD();
-        getData(product, stamp, getBucket(aa)).updateAA();
-        getData(product, stamp, getBucket(bb)).updateBB();
-        getData(product, stamp, getBucket(cc)).updateCC();
-        getData(product, stamp, getBucket(dd)).updateDD();
-        getData(product, stamp, getBucket(weightedAA)).updateWeightedAA();
-        getData(product, stamp, getBucket(weightedBB)).updateWeightedBB();
-        getData(product, stamp, getBucket(weightedCC)).updateWeightedCC();
-        getData(product, stamp, getBucket(weightedDD)).updateWeightedDD();
-        getData(product, stamp, getBucket(adoptionFactor)).updateAdoptionFactor();
+        getData(valid, product, stamp, getBucket(a)).updateA();
+        getData(valid, product, stamp, getBucket(b)).updateB();
+        getData(valid, product, stamp, getBucket(c)).updateC();
+        getData(valid, product, stamp, getBucket(d)).updateD();
+        getData(valid, product, stamp, getBucket(aa)).updateAA();
+        getData(valid, product, stamp, getBucket(bb)).updateBB();
+        getData(valid, product, stamp, getBucket(cc)).updateCC();
+        getData(valid, product, stamp, getBucket(dd)).updateDD();
+        getData(valid, product, stamp, getBucket(weightedAA)).updateWeightedAA();
+        getData(valid, product, stamp, getBucket(weightedBB)).updateWeightedBB();
+        getData(valid, product, stamp, getBucket(weightedCC)).updateWeightedCC();
+        getData(valid, product, stamp, getBucket(weightedDD)).updateWeightedDD();
+        getData(valid, product, stamp, getBucket(adoptionFactor)).updateAdoptionFactor();
     }
 
     @Override
@@ -410,8 +411,9 @@ public class BasicDataAnalyser implements DataAnalyser {
     @Override
     public NavigableSet<Bucket> getBuckets() {
         NavigableSet<Bucket> buckets = new TreeSet<>();
-        productAnnualBucketMap.values()
+        productAnnualBucketMap.getMap().values()
                 .stream()
+                .flatMap(map -> map.values().stream())
                 .flatMap(map -> map.values().stream())
                 .map(Map::keySet)
                 .forEach(buckets::addAll);
@@ -419,13 +421,8 @@ public class BasicDataAnalyser implements DataAnalyser {
     }
 
     @Override
-    public EvaluationData getEvaluationData(Product product, int year, Bucket bucket) {
-        Map<Integer, Map<Bucket, BasicEvaluationData>> annualData = productAnnualBucketMap.get(product);
-        if(annualData == null) return null;
-        Map<Bucket, BasicEvaluationData> bucketData = annualData.get(year);
-        return bucketData == null
-                ? null
-                : bucketData.get(bucket);
+    public EvaluationData getEvaluationData(boolean valid, Product product, int year, Bucket bucket) {
+        return productAnnualBucketMap.getOrDefault(valid, product, year, bucket, null);
     }
 
     /**
@@ -525,55 +522,55 @@ public class BasicDataAnalyser implements DataAnalyser {
         private BasicEvaluationData() {
         }
 
-        private void updateA() {
+        private synchronized void updateA() {
             a++;
         }
 
-        private void updateB() {
+        private synchronized void updateB() {
             b++;
         }
 
-        private void updateC() {
+        private synchronized void updateC() {
             c++;
         }
 
-        private void updateD() {
+        private synchronized void updateD() {
             d++;
         }
 
-        private void updateAA() {
+        private synchronized void updateAA() {
             aa++;
         }
 
-        private void updateBB() {
+        private synchronized void updateBB() {
             bb++;
         }
 
-        private void updateCC() {
+        private synchronized void updateCC() {
             cc++;
         }
 
-        private void updateDD() {
+        private synchronized void updateDD() {
             dd++;
         }
 
-        private void updateWeightedAA() {
+        private synchronized void updateWeightedAA() {
             weightedAA++;
         }
 
-        private void updateWeightedBB() {
+        private synchronized void updateWeightedBB() {
             weightedBB++;
         }
 
-        private void updateWeightedCC() {
+        private synchronized void updateWeightedCC() {
             weightedCC++;
         }
 
-        private void updateWeightedDD() {
+        private synchronized void updateWeightedDD() {
             weightedDD++;
         }
 
-        private void updateAdoptionFactor() {
+        private synchronized void updateAdoptionFactor() {
             adoptionFactor++;
         }
 

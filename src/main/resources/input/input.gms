@@ -1343,6 +1343,27 @@ PARAMETER par_InEntireNetworkNodeFilterScheme_placeholder(set_InEntireNetworkNod
 * - type: String
 SET set_InRAProcessModel(set_InProcessModel)
 
+* - default: 0
+* - domain: [0|1]
+* - description: Überspringt die Awareness-Phase. Interesse wird dabei automatisch maximiert.
+* - identifier: Awareness überspringen?
+* - type: Boolean
+PARAMETER par_InRAProcessModel_skipAwareness(set_InRAProcessModel)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Überspringt die Feasibility-Phase.
+* - identifier: Feasibility überspringen?
+* - type: Boolean
+PARAMETER par_InRAProcessModel_skipFeasibility(set_InRAProcessModel)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Agenten führen die Evaluierung auch bei finanziellem Misserfolg durch. Diese Option dient primär der Datenanalyse und hat keine weiteren Auswirkungen.
+* - identifier: Evaluierung auch bei fin. Misserfolg?
+* - type: Boolean
+PARAMETER par_InRAProcessModel_forceEvaluate(set_InRAProcessModel)
+
 * - default: 0.25
 * - description: Legt den Einfluss der finanziellen Komponente fest.
 * - identifier: Einfluss finanzielle Komponente (a)
@@ -1415,7 +1436,7 @@ PARAMETER par_InRAProcessModel_awarePoints(set_InRAProcessModel)
 * - type: Integer
 PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 
-* - default: 0.125
+* - default: 0.005
 * - description: Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x).
 * - identifier: Einflussfaktor der logistischen Funktion
 * - type: Float
@@ -1624,7 +1645,7 @@ PARAMETER par_InDefaultHandleDecisionMakingComponent_weightSocial(set_InDefaultH
 * - type: Float
 PARAMETER par_InDefaultHandleDecisionMakingComponent_weightLocal(set_InDefaultHandleDecisionMakingComponent)
 
-* - default: 0.125
+* - default: 0.005
 * - description: todo
 * - identifier: logistic factor
 * - type: Float
@@ -1878,7 +1899,7 @@ SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentCalcula
 * - type: Float
 PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_weight(set_InDisaggregatedFinancialModule_inputgraphnode)
 
-* - default: 0.125
+* - default: 0.005
 * - description: todo
 * - identifier: Logistikfaktor
 * - type: Float
@@ -1896,7 +1917,7 @@ SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentCalculationMo
 * - type: Float
 PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_weight(set_InDisaggregatedNPVModule_inputgraphnode)
 
-* - default: 0.125
+* - default: 0.005
 * - description: todo
 * - identifier: Logistikfaktor
 * - type: Float
@@ -1943,7 +1964,7 @@ PARAMETER par_InFinancialComponentModule_inputgraphnode_weightFT(set_InFinancial
 * - type: Float
 PARAMETER par_InFinancialComponentModule_inputgraphnode_weightNPV(set_InFinancialComponentModule_inputgraphnode)
 
-* - default: 0.125
+* - default: 0.005
 * - description: todo
 * - identifier: Logistikfaktor
 * - type: Float
@@ -2302,7 +2323,7 @@ PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightSocial(set_InDef
 * - type: Float
 PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightLocal(set_InDefaultDecisionMakingModule_evalgraphnode)
 
-* - default: 0.125
+* - default: 0.005
 * - description: todo
 * - identifier: Wichtung lokales Netz
 * - type: Float
