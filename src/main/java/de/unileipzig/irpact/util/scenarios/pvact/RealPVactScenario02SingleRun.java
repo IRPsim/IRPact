@@ -127,6 +127,8 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        processModel.setAdoptionCertaintyBase(0.5);
+        processModel.setAdoptionCertaintyFactor(0.5);
         processModel.setDefaultValues();
         processModel.setA(1);
         processModel.setB(RealData.WEIGHT_NEP);
@@ -146,7 +148,7 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2019);
+        root.getGeneral().setLastSimulationYear(2010);
         root.getGeneral().useInfoLogging();
         root.getGeneral().enableAllResultLogging();
         root.getGeneral().setEvaluationBucketSize(0.1);

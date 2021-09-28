@@ -587,9 +587,19 @@ public class RAProcessPlan extends RAProcessPlanBase {
         );
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
-        logCalculateDecisionMaking(alm);
 
-        if(noAdoption || noFinancial) {
+        alm.append("adoption uncertainty: {}", model.hasAdoptionCertainty());
+        boolean doNotAdopt = false;
+        if(model.hasAdoptionCertainty()) {
+            double adoptDraw = rnd.nextDouble();
+            double adoptThreshold = model.getAdoptionCertainty();
+            boolean doAdopt = adoptDraw < adoptThreshold;
+            doNotAdopt = !doAdopt;
+            alm.append("adoptDraw < adoptThreshold ({} < {}): {}", adoptDraw, adoptThreshold, doAdopt);
+        }
+
+        logCalculateDecisionMaking(alm);
+        if(doNotAdopt || noAdoption || noFinancial) {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {

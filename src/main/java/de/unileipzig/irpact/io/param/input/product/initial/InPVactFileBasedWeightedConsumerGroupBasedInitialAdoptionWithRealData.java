@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.product.handler.WeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -40,12 +41,20 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED);
+        addEntryWithDefaultAndDomain(res, thisClass(), "scale", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "fixError", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "file");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     public String _name;
+
+    @FieldDefinition
+    public boolean scale = false;
+
+    @FieldDefinition
+    public boolean fixError = false;
 
     @FieldDefinition
     public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
@@ -71,6 +80,22 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public void setScale(boolean scale) {
+        this.scale = scale;
+    }
+
+    public boolean isScale() {
+        return scale;
+    }
+
+    public void setFixError(boolean fixError) {
+        this.fixError = fixError;
+    }
+
+    public boolean isFixError() {
+        return fixError;
     }
 
     public void setFile(InRealAdoptionDataFile file) {
@@ -106,6 +131,8 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
         handler.setZipAttributeName(RAConstants.ZIP);
         handler.setValidationAttributeName(RAConstants.SHARE_1_2_HOUSE);
         handler.setShareAttributeName(RAConstants.INITIAL_ADOPTER);
+        handler.setScale(scale);
+        handler.setFixError(fixError);
 
         return handler;
     }

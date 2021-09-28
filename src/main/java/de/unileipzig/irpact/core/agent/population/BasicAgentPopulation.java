@@ -14,6 +14,7 @@ import java.util.Map;
 public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable {
 
     protected Map<AgentGroup<?>, Integer> population;
+    protected int maximumPossibleSize = -1;
 
     public BasicAgentPopulation() {
         this(new HashMap<>());
@@ -45,6 +46,32 @@ public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable
                 .stream()
                 .mapToInt(i -> i)
                 .sum();
+    }
+
+    @Override
+    public void setMaximumPossibleSize(int size) {
+        this.maximumPossibleSize = size;
+    }
+
+    @Override
+    public int getMaximumPossibleSize() {
+        return maximumPossibleSize;
+    }
+
+    @Override
+    public boolean hasScale() {
+        return maximumPossibleSize != -1;
+    }
+
+    @Override
+    public double getScale() {
+        if(maximumPossibleSize == -1) {
+            return Double.NaN;
+        }
+        int total = total();
+        return total == maximumPossibleSize
+                ? 1.0
+                : (double) total / (double) maximumPossibleSize;
     }
 
     @Override

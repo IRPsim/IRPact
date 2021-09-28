@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.commons.util.data.map;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
@@ -53,6 +55,16 @@ public class Map3<A, B, C> {
         return map0.get(b);
     }
 
+    public Map<B, C> remove(A a) {
+        return map.remove(a);
+    }
+
+    public C remove(A a, B b) {
+        Map<B, C> map0 = map.get(a);
+        if(map0 == null) return null;
+        return map0.remove(b);
+    }
+
     public C getOrDefault(A a, B b, C defaultValue) {
         Map<B, C> map0 = map.get(a);
         if(map0 == null) return defaultValue;
@@ -63,5 +75,28 @@ public class Map3<A, B, C> {
         C current = getOrDefault(a, b, defaultValue);
         C newValue = op.apply(current);
         return put(a, b, newValue);
+    }
+
+    public boolean isEmpty(A a) {
+        Map<B, C> map0 = map.get(a);
+        return map0 == null || map0.isEmpty();
+    }
+
+    public Set<A> keySet() {
+        return map.keySet();
+    }
+
+    public Set<B> keySet(A a) {
+        Map<B, C> map0 = map.get(a);
+        return map0 == null
+                ? Collections.emptySet()
+                : map0.keySet();
+    }
+
+    public Set<Map.Entry<B, C>> entrySet(A a) {
+        Map<B, C> map0 = map.get(a);
+        return map0 == null
+                ? Collections.emptySet()
+                : map0.entrySet();
     }
 }

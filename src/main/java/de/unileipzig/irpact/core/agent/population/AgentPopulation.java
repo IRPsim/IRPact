@@ -14,4 +14,12 @@ public interface AgentPopulation {
     boolean has(AgentGroup<?> group);
 
     int total();
+
+    void setMaximumPossibleSize(int size);
+
+    int getMaximumPossibleSize();
+
+    boolean hasScale();
+
+    double getScale();
 }

@@ -345,7 +345,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.11.0"
+  edn_description: "IRPact v1.12.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -717,6 +717,12 @@ InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Gewichtete initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_scale:
+  gams_identifier: "Automatische Skalierung"
+  gams_description: "Ermöglicht das automatische Skalieren der Werte. Die Skalierung selber orientiert sich dabei an der Agentenpopulation."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_fixError:
+  gams_identifier: "Automatische Fehlerkorrektur"
+  gams_description: "Falls aufgrund arithmetisch Fehler initiale Adopter fehlen, werden diese nachträglich bestimmt."
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
@@ -974,6 +980,12 @@ InRAProcessModel_communicationFactor:
   gams_identifier: "Kommunikationsfaktor"
   gams_description: "Skaliert die Kommunikationwahrscheinlichkeit der Agenten."
 InRAProcessModel_rewireFactor:
+  gams_identifier: "Adoptionsbestätigung (Basiswert)"
+  gams_description: "Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
+InRAProcessModel_adoptionCertaintyBase:
+  gams_identifier: "Adoptionsbestätigung (Jahresfaktor)"
+  gams_description: "Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
+InRAProcessModel_adoptionCertaintyFactor:
   gams_identifier: "Rewire-Faktor"
   gams_description: "Skaliert die Rewire-Wahrscheinlichkeit der Agenten."
 InRAProcessModel_adopterPoints:
