@@ -345,7 +345,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.10.0"
+  edn_description: "IRPact v1.11.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -925,6 +925,15 @@ process_model:
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
+InRAProcessModel_skipAwareness:
+  gams_identifier: "Awareness überspringen?"
+  gams_description: "Überspringt die Awareness-Phase. Interesse wird dabei automatisch maximiert."
+InRAProcessModel_skipFeasibility:
+  gams_identifier: "Feasibility überspringen?"
+  gams_description: "Überspringt die Feasibility-Phase."
+InRAProcessModel_forceEvaluate:
+  gams_identifier: "Evaluierung auch bei fin. Misserfolg?"
+  gams_description: "Die Agenten führen die Evaluierung auch bei finanziellem Misserfolg durch. Diese Option dient primär der Datenanalyse und hat keine weiteren Auswirkungen."
 InRAProcessModel_a:
   gams_identifier: "Einfluss finanzielle Komponente (a)"
   gams_description: "Legt den Einfluss der finanziellen Komponente fest."

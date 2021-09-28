@@ -290,6 +290,9 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setPvFile(getPVFile());
         processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(speedOfConvergence);
+        processModel.setSkipAwareness(false);
+        processModel.setSkipFeasibility(false);
+        processModel.setForceEvaluate(true);
         return processModel;
     }
 

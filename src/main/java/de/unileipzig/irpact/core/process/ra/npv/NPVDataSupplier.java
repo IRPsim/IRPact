@@ -101,8 +101,9 @@ public final class NPVDataSupplier {
     private double cachedAvgNPV(Stream<? extends ConsumerAgent> agents, int year) {
         Double avgNPV = avgNPVCache.get(year);
         if(avgNPV == null) {
-            return calcAvgNPV(agents, year);
+            //return calcAvgNPV(agents, year);
             //return calcAvgNPV2(agents, year);
+            return calcGlobalAvgNPV(year);
         } else {
             return avgNPV;
         }
@@ -123,7 +124,7 @@ public final class NPVDataSupplier {
         }
     }
 
-    private synchronized double calcAvgNPV2(final int year) {
+    private synchronized double calcAvgNPV(final int year) {
         if(avgNPVCache.containsKey(year)) {
             return avgNPVCache.get(year);
         } else {
@@ -132,6 +133,23 @@ public final class NPVDataSupplier {
                 throw new NoSuchElementException("missing npv data for year: " + year);
             }
             double result = matrix.averageValue();
+            avgNPVCache.put(year, result);
+            return result;
+        }
+    }
+
+    private synchronized double calcGlobalAvgNPV(int year) {
+        if(avgNPVCache.containsKey(year)) {
+            return avgNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+            double total = npData.values()
+                    .stream()
+                    .mapToDouble(NPVMatrix::averageValue)
+                    .sum();
+            double result = total / npData.size();
             avgNPVCache.put(year, result);
             return result;
         }

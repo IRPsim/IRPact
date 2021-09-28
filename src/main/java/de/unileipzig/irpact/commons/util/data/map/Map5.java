@@ -85,6 +85,10 @@ public class Map5<A, B, C, D, E> {
         return map2.getOrDefault(d, defaultValue);
     }
 
+    public E computeIfAbsent(A a, B b, C c, D d, Function<? super D, ? extends E> func) {
+        return getMap2(a, b, c).computeIfAbsent(d, func);
+    }
+
     public E update(A a, B b, C c, D d, E defaultValue, UnaryOperator<E> op) {
         E current = getOrDefault(a, b, c, d, defaultValue);
         E newValue = op.apply(current);

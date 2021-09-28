@@ -194,6 +194,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 return ProcessPlanResult.IN_PROCESS;
             }
         }
+
+        if(model.isSkipAwareness()) {
+            LOGGER.trace("[{}] skip awareness", agent.getName());
+            makeAware(agent);
+            makeInterested(agent);
+            logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
+            updateStage(RAStage.FEASIBILITY);
+            return handleFeasibility(postActions);
+        }
+
         return doAction(postActions);
     }
 
@@ -472,6 +482,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
             return ProcessPlanResult.IN_PROCESS;
         }
 
+        if(model.isSkipFeasibility()) {
+            LOGGER.trace("[{}] skip feasibility", agent.getName());
+            logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
+            updateStage(RAStage.DECISION_MAKING);
+            return handleDecisionMaking(postActions);
+        }
+
         return doAction(postActions);
     }
 
@@ -489,7 +506,8 @@ public class RAProcessPlan extends RAProcessPlanBase {
         Timestamp now = now();
         double ft = getFinancialThresholdAgent(agent);
         double financialThreshold = getFinancialThreshold(agent, product);
-        if(ft < financialThreshold) {
+        boolean noFinancial = ft < financialThreshold;
+        if(noFinancial && model.isNotForceEvaluate()) {
             dataLogger.logEvaluationFailed(
                     agent, product, now,
                     financialThreshold, ft
@@ -550,6 +568,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         dataAnalyser.logEvaluationData(
                 product, now,
+                noFinancial,
                 fin, env, nov, soc,
                 afin, benv, cnov, dsoc,
                 wafin, wbenv, wcnov, wdsoc,
@@ -570,7 +589,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
         logCalculateDecisionMaking(alm);
 
-        if(noAdoption) {
+        if(noAdoption || noFinancial) {
             updateStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
@@ -764,7 +783,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void makeInterested(ConsumerAgent agent) {
-        agent.makeInterested(product);
+        if(!isInterested(agent)) {
+            agent.makeInterested(product);
+        }
     }
 
     protected double getInterest(ConsumerAgent agent) {
@@ -773,6 +794,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean isAware(ConsumerAgent agent) {
         return agent.isAware(product);
+    }
+
+    protected void makeAware(ConsumerAgent agent) {
+        if(!isAware(agent)) {
+            agent.makeAware(product);
+        }
     }
 
     protected double getInterestPoints(ConsumerAgent agent) {

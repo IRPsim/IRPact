@@ -77,7 +77,7 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InDiracUnivariateDistribution renoDist = new InDiracUnivariateDistribution("RENO", 0.00394339526076053);
         InDiracUnivariateDistribution constDist = new InDiracUnivariateDistribution("CONST", 0.00364015558626337);
         InDiracUnivariateDistribution interestDist = new InDiracUnivariateDistribution("INTEREST_THRESHOLD", 9);
-        InDiracUnivariateDistribution financialThresholdDist = new InDiracUnivariateDistribution("FINANCIAL_THRESHOLD", 0);
+        InDiracUnivariateDistribution financialThresholdDist = new InDiracUnivariateDistribution("FINANCIAL_THRESHOLD", 40000);
         InDiracUnivariateDistribution adoptionThreshold = new InDiracUnivariateDistribution("ADOPTION_THRESHOLD", 0);
         realData.CAGS.forEach(cag -> cag.setRenovationRate(renoDist));
         realData.CAGS.forEach(cag -> cag.setConstructionRate(constDist));
@@ -128,8 +128,10 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
 
         InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
         processModel.setDefaultValues();
+        processModel.setA(1);
         processModel.setB(RealData.WEIGHT_NEP);
         processModel.setC(RealData.WEIGHT_NS);
+        processModel.setD(1);
         processModel.setWeightFT(RealData.WEIGHT_EK);
         processModel.setWeightNPV(RealData.WEIGHT_NPV);
         processModel.setWeightSocial(RealData.WEIGHT_SOCIAL);
@@ -144,7 +146,7 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2012);
+        root.getGeneral().setLastSimulationYear(2019);
         root.getGeneral().useInfoLogging();
         root.getGeneral().enableAllResultLogging();
         root.getGeneral().setEvaluationBucketSize(0.1);

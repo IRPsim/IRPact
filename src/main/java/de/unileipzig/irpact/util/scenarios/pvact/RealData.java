@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.commons.util.CollectionUtil;
+import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinityEntry;
 import de.unileipzig.irpact.io.param.input.affinity.InComplexAffinityEntry;
@@ -127,12 +128,12 @@ public final class RealData {
     public static final double SCALE = 0.5;
     public static final double MULTIPLIER = 15;
 
-    public static final double WEIGHT_NS = 0.3472;
-    public static final double WEIGHT_NEP = -0.0780;
-    public static final double WEIGHT_EK = 0.0013;
-    public static final double WEIGHT_NPV = 0.5673;
-    public static final double WEIGHT_SOCIAL = 0.0113;
-    public static final double WEIGHT_LOCALE = 0.1509;
+    public static final double WEIGHT_NS = 0.348;
+    public static final double WEIGHT_NEP = -0.0996;
+    public static final double WEIGHT_EK = 0;
+    public static final double WEIGHT_NPV = 0.5927;
+    public static final double WEIGHT_SOCIAL = 0;
+    public static final double WEIGHT_LOCALE = 0.1589;
 
     public static final double[] COMMU = {
             0.204,

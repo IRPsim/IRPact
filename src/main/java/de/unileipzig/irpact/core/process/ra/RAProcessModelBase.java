@@ -43,6 +43,9 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     protected RelativeAgreementAlgorithm raAlgorithm;
     protected Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected boolean isYearChange = false;
+    protected boolean skipAwareness = false;
+    protected boolean skipFeasibility = false;
+    protected boolean forceEvaluate = false;
 
     protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
 
@@ -82,6 +85,34 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     public Rnd getRnd() {
         return rnd;
+    }
+
+    public void setSkipAwareness(boolean skipAwareness) {
+        this.skipAwareness = skipAwareness;
+    }
+
+    public boolean isSkipAwareness() {
+        return skipAwareness;
+    }
+
+    public void setSkipFeasibility(boolean skipFeasibility) {
+        this.skipFeasibility = skipFeasibility;
+    }
+
+    public boolean isSkipFeasibility() {
+        return skipFeasibility;
+    }
+
+    public void setForceEvaluate(boolean forceEvaluate) {
+        this.forceEvaluate = forceEvaluate;
+    }
+
+    public boolean isForceEvaluate() {
+        return forceEvaluate;
+    }
+
+    public boolean isNotForceEvaluate() {
+        return !isForceEvaluate();
     }
 
     public void setSpeedOfConvergence(double speedOfConvergence) {
