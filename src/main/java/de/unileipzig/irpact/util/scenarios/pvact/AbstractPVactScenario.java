@@ -220,6 +220,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
             initAdopter.setName(DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER);
             initAdopter.setFile(getRealAdoptionDataFile());
+            initAdopter.setScale(true);
+            initAdopter.setFixError(true);
             cache(initAdopter.getName(), initAdopter);
             return initAdopter;
         }
@@ -293,6 +295,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setSkipAwareness(false);
         processModel.setSkipFeasibility(false);
         processModel.setForceEvaluate(true);
+        processModel.setAdoptionCertaintyBase(1.0);
+        processModel.setAdoptionCertaintyFactor(0.0);
         return processModel;
     }
 

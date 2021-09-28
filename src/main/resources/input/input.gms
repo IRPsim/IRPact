@@ -1506,10 +1506,22 @@ PARAMETER par_InRAProcessModel_weightLocal(set_InRAProcessModel)
 PARAMETER par_InRAProcessModel_communicationFactor(set_InRAProcessModel)
 
 * - default: 1
+* - description: Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
+* - identifier: Adoptionsbestätigung (Basiswert)
+* - type: Float
+PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
+
+* - default: 1
+* - description: Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
+* - identifier: Adoptionsbestätigung (Jahresfaktor)
+* - type: Float
+PARAMETER par_InRAProcessModel_adoptionCertaintyBase(set_InRAProcessModel)
+
+* - default: 0
 * - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
 * - identifier: Rewire-Faktor
 * - type: Float
-PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
+PARAMETER par_InRAProcessModel_adoptionCertaintyFactor(set_InRAProcessModel)
 
 * - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
 * - identifier: Netzwerkfilter für räumliche Sicht
@@ -2982,6 +2994,20 @@ PARAMETER par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData
 * - identifier: InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData
 * - type: String
 SET set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewProductHandler)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Ermöglicht das automatische Skalieren der Werte. Die Skalierung selber orientiert sich dabei an der Agentenpopulation.
+* - identifier: Automatische Skalierung
+* - type: Boolean
+PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_scale(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Falls aufgrund arithmetisch Fehler initiale Adopter fehlen, werden diese nachträglich bestimmt.
+* - identifier: Automatische Fehlerkorrektur
+* - type: Boolean
+PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_fixError(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
 
 * - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei

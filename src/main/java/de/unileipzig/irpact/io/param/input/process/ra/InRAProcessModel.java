@@ -78,6 +78,8 @@ public class InRAProcessModel implements InProcessModel {
         addEntry(res, thisClass(), "weightLocal");
         addEntry(res, thisClass(), "communicationFactor");
         addEntry(res, thisClass(), "rewireFactor");
+        addEntry(res, thisClass(), "adoptionCertaintyBase");
+        addEntry(res, thisClass(), "adoptionCertaintyFactor");
         addEntry(res, thisClass(), "nodeFilterScheme");
         addEntry(res, thisClass(), "pvFile");
         addEntry(res, thisClass(), "uncertainties");
@@ -109,6 +111,8 @@ public class InRAProcessModel implements InProcessModel {
         setDefault(res, thisClass(), "weightLocal", VALUE_0_5);
         setDefault(res, thisClass(), "communicationFactor", VALUE_1);
         setDefault(res, thisClass(), "rewireFactor", VALUE_1);
+        setDefault(res, thisClass(), "adoptionCertaintyBase", VALUE_1);
+        setDefault(res, thisClass(), "adoptionCertaintyFactor", VALUE_0);
         setDefault(res, thisClass(), "adopterPoints", varargs(RAModelData.DEFAULT_ADOPTER_POINTS));
         setDefault(res, thisClass(), "interestedPoints", varargs(RAModelData.DEFAULT_INTERESTED_POINTS));
         setDefault(res, thisClass(), "awarePoints", varargs(RAModelData.DEFAULT_AWARE_POINTS));
@@ -205,6 +209,12 @@ public class InRAProcessModel implements InProcessModel {
 
     @FieldDefinition
     public double rewireFactor = 1.0;
+
+    @FieldDefinition
+    public double adoptionCertaintyBase = 1.0;
+
+    @FieldDefinition
+    public double adoptionCertaintyFactor = 0.0;
 
     @FieldDefinition
     public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
@@ -521,6 +531,22 @@ public class InRAProcessModel implements InProcessModel {
         return rewireFactor;
     }
 
+    public void setAdoptionCertaintyBase(double adoptionCertaintyBase) {
+        this.adoptionCertaintyBase = adoptionCertaintyBase;
+    }
+
+    public double getAdoptionCertaintyBase() {
+        return adoptionCertaintyBase;
+    }
+
+    public void setAdoptionCertaintyFactor(double adoptionCertaintyFactor) {
+        this.adoptionCertaintyFactor = adoptionCertaintyFactor;
+    }
+
+    public double getAdoptionCertaintyFactor() {
+        return adoptionCertaintyFactor;
+    }
+
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
@@ -617,12 +643,17 @@ public class InRAProcessModel implements InProcessModel {
         model.setModelData(data);
         model.setRnd(rnd);
         model.setSpeedOfConvergence(getSpeedOfConvergence());
+
         model.setSkipAwareness(isSkipAwareness());
         model.setSkipFeasibility(isSkipFeasibility());
         model.setForceEvaluate(isForceEvaluate());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] skip awareness: {}", getName(), isSkipAwareness());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] skip feasibility: {}", getName(), isSkipFeasibility());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] force evaluate: {}", getName(), isForceEvaluate());
+
+        model.setAdoptionCertaintyBase(adoptionCertaintyBase);
+        model.setAdoptionCertaintyFactor(adoptionCertaintyFactor);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] adoptionCertaintyBase={}, adoptionCertaintyFactor={}, hasAdoptionCertainty={}", getName(), adoptionCertaintyBase, adoptionCertaintyFactor, model.hasAdoptionCertainty());
 
         Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
         for(InUncertainty uncertainty: getUncertainties()) {

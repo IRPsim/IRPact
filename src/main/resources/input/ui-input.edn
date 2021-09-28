@@ -101,7 +101,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.11.0" 
+        :description "IRPact v1.12.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -557,7 +557,7 @@
             :label "Gewichtete initiale Adopter nach realen Daten" 
             :set "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
-            :tags [["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
+            :tags [["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "scale"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "fixError"] ["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
           }
         ]
       }
@@ -600,7 +600,7 @@
       {
         :label "Relative Agreement" 
         :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
+        :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
       } 
       {
         :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 

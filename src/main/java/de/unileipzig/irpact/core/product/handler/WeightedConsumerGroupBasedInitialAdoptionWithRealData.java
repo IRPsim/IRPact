@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.data.map.Map3;
 import de.unileipzig.irpact.commons.util.data.weighted.NavigableMapWeightedMapping;
 import de.unileipzig.irpact.commons.util.data.weighted.WeightedMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -30,6 +31,8 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
     protected String shareAttributeName; //adopter
     protected RealAdoptionData adoptionData;
     protected Rnd rnd;
+    protected boolean scale = false;
+    protected boolean fixError = false;
 
     public WeightedConsumerGroupBasedInitialAdoptionWithRealData() {
     }
@@ -84,6 +87,22 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         return rnd;
     }
 
+    public void setScale(boolean scale) {
+        this.scale = scale;
+    }
+
+    public boolean isScale() {
+        return scale;
+    }
+
+    public void setFixError(boolean fixError) {
+        this.fixError = fixError;
+    }
+
+    public boolean isFixError() {
+        return fixError;
+    }
+
     protected void analyseZips(Set<String> zips) {
         List<String> validZips = new ArrayList<>();
         List<String> invalidZips = new ArrayList<>();
@@ -96,46 +115,63 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         trace("unused zips: {}", unusedZips);
     }
 
+    protected double getScaleFactor(SimulationEnvironment environment) {
+        return environment.getAgents().getInitialAgentPopulation().hasScale()
+                ? environment.getAgents().getInitialAgentPopulation().getScale()
+                : 1.0;
+    }
+
     @Override
     public void handleProduct(SimulationEnvironment environment, Product product) {
-        int startYear = getStartYear(environment);
-        final int initialAdoptionYear = startYear - 1;
+        int initialAdoptionYear = getInitialAdopterYear(environment);
         Set<String> zips = getAllZIPs(environment);
 
         analyseZips(zips);
 
         trace("zipAttr={}, validationAttr={}, shareAttr={}", zipAttributeName, validationAttributeName, shareAttributeName);
 
+        int unscaledTotalNumberOfRealAdoptions = 0;
         int totalNumberOfRealAdoptions = 0;
         int totalNumberOfSimulationAdoptions = 0;
 
+        double scaleFactor = scale ?
+                getScaleFactor(environment)
+                : 1.0;
+        trace("scale={}, scaleFactor={}", scale, scaleFactor);
 
+        Map3<String, ConsumerAgentGroup, List<ConsumerAgent>> validAgentsMapping = Map3.newHashMap();
         for(String zip: zips) {
             int numberOfRealAdoptions = adoptionData.getCumulated(initialAdoptionYear, zip);
-            if(numberOfRealAdoptions < 1) {
-                trace("skip '{}', number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
+            if(numberOfRealAdoptions > 0) {
+                unscaledTotalNumberOfRealAdoptions += numberOfRealAdoptions;
+            }
+
+            getShuffledValidAgents(environment, zip, validAgentsMapping);
+
+            int scaledNumberOfRealAdoptions = (int) (scaleFactor * numberOfRealAdoptions);
+            if(scaledNumberOfRealAdoptions < 1) {
+                trace("skip '{}', number of adoptions in year {}: {} (unscaled={})", zip, initialAdoptionYear, scaledNumberOfRealAdoptions, numberOfRealAdoptions);
                 continue;
             }
 
-            trace("'{}' number of adoptions in year {}: {}", zip, initialAdoptionYear, numberOfRealAdoptions);
+            trace("'{}' number of adoptions in year {}: {} (unscaled={})", zip, initialAdoptionYear, scaledNumberOfRealAdoptions, numberOfRealAdoptions);
             int numberOfSimulationAdoptions = 0;
 
-            Map<ConsumerAgentGroup, List<ConsumerAgent>> validAgentsMapping = getShuffledValidAgents(environment, zip);
-            for(Map.Entry<ConsumerAgentGroup, List<ConsumerAgent>> entry: validAgentsMapping.entrySet()) {
+            for(Map.Entry<ConsumerAgentGroup, List<ConsumerAgent>> entry: validAgentsMapping.entrySet(zip)) {
                 trace("cag '{}' valid agents: {}", entry.getKey().getName(), entry.getValue().size());
             }
 
             Map<ConsumerAgentGroup, Integer> initialAdopterCount = new HashMap<>();
-            WeightedMapping<ConsumerAgentGroup> cagsShare = buildWeightedMapping(environment, product, validAgentsMapping.keySet());
+            WeightedMapping<ConsumerAgentGroup> cagsShare = buildWeightedMapping(environment, product, validAgentsMapping.keySet(zip));
 
-            for(int i = 0; i < numberOfRealAdoptions; i++) {
-                if(validAgentsMapping.isEmpty()) {
-                    warn("zip '{}' - not enough agents, real={} != simulation={}", zip, numberOfRealAdoptions, numberOfSimulationAdoptions);
+            for(int i = 0; i < scaledNumberOfRealAdoptions; i++) {
+                if(validAgentsMapping.isEmpty(zip)) {
+                    warn("zip '{}' - not enough agents, real={} != simulation={}", zip, scaledNumberOfRealAdoptions, numberOfSimulationAdoptions);
                     break;
                 }
 
                 ConsumerAgentGroup cag = cagsShare.getWeightedRandom(rnd);
-                List<ConsumerAgent> validAgents = validAgentsMapping.get(cag);
+                List<ConsumerAgent> validAgents = validAgentsMapping.get(zip, cag);
                 if(validAgents != null && validAgents.size() > 0) {
                     ConsumerAgent ca = validAgents.remove(validAgents.size() - 1);
                     trace("set initial adopter: agent={} product={}", ca.getName(), product.getName());
@@ -145,22 +181,84 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
                 }
 
                 if(validAgents == null || validAgents.isEmpty()) {
-                    validAgentsMapping.remove(cag);
+                    validAgentsMapping.remove(zip, cag);
+                    if(validAgentsMapping.isEmpty(zip)) {
+                        validAgentsMapping.remove(zip);
+                    }
                     cagsShare = cagsShare.copyWithout(cag);
                 }
             }
 
 
-            trace("'{}' number of initial adoptions: real={}, simularion={} ({})", zip, numberOfRealAdoptions, numberOfSimulationAdoptions, initialAdopterCount.values().stream().mapToInt(x -> x).sum());
+            trace("'{}' number of initial adoptions: real={}, simularion={} ({})", zip, scaledNumberOfRealAdoptions, numberOfSimulationAdoptions, initialAdopterCount.values().stream().mapToInt(x -> x).sum());
             for(Map.Entry<ConsumerAgentGroup, Integer> entry: initialAdopterCount.entrySet()) {
                 trace("cag '{}': {}", entry.getKey().getName(), entry.getValue());
             }
 
-            totalNumberOfRealAdoptions += numberOfRealAdoptions;
+            totalNumberOfRealAdoptions += scaledNumberOfRealAdoptions;
             totalNumberOfSimulationAdoptions += numberOfSimulationAdoptions;
         }
 
         trace("total number of initial adoptions: real={}, simulation={}", totalNumberOfRealAdoptions, totalNumberOfSimulationAdoptions);
+
+        int realScaledNumberOfRealAdoptions = (int) (scaleFactor * unscaledTotalNumberOfRealAdoptions);
+        boolean doFixError = fixError && totalNumberOfSimulationAdoptions < realScaledNumberOfRealAdoptions;
+        trace("fix error: {} (flag={} && {} < {})", doFixError, fixError, totalNumberOfSimulationAdoptions, realScaledNumberOfRealAdoptions);
+        if(doFixError) {
+            fixError(
+                    environment, product,
+                    initialAdoptionYear,
+                    realScaledNumberOfRealAdoptions,
+                    totalNumberOfSimulationAdoptions,
+                    validAgentsMapping
+            );
+        }
+    }
+
+    protected void fixError(
+            SimulationEnvironment environment, Product product,
+            int initialAdoptionYear,
+            int totalNumberOfRealAdoptions,
+            int totalNumberOfSimulationAdoptions,
+            Map3<String, ConsumerAgentGroup, List<ConsumerAgent>> validAgentsMapping) {
+        int remaining = totalNumberOfRealAdoptions - totalNumberOfSimulationAdoptions;
+        trace("fix error, remaining: {}", remaining);
+        WeightedMapping<String> zipMapping = buildWeightedZipMapping(initialAdoptionYear, validAgentsMapping.keySet());
+        for(int i = 0; i < remaining; i++) {
+            if(zipMapping.isEmpty()) {
+                warn("not enough agents, missing: {}", remaining - 1 - i);
+                return;
+            }
+
+            String zip = zipMapping.getWeightedRandom(rnd);
+            WeightedMapping<ConsumerAgentGroup> cagsShare = buildWeightedMapping(environment, product, validAgentsMapping.keySet(zip));
+            ConsumerAgentGroup cag = cagsShare.getWeightedRandom(rnd);
+            List<ConsumerAgent> validAgents = validAgentsMapping.get(zip, cag);
+            ConsumerAgent ca = validAgents.remove(validAgents.size() - 1);
+            trace("set initial adopter: agent={} product={} (i={})", ca.getName(), product.getName(), i);
+            ca.adoptInitial(product);
+            if(validAgents.isEmpty()) {
+                validAgentsMapping.remove(zip, cag);
+                if(validAgentsMapping.isEmpty(zip)) {
+                    trace("remove empty zip: {}", zip);
+                    validAgentsMapping.remove(zip);
+                    zipMapping = buildWeightedZipMapping(initialAdoptionYear, validAgentsMapping.keySet());
+                }
+            }
+        }
+    }
+
+    protected WeightedMapping<String> buildWeightedZipMapping(
+            int initialAdoptionYear,
+            Set<String> zips) {
+        NavigableMapWeightedMapping<String> mapping = new NavigableMapWeightedMapping<>();
+        for(String zip: zips) {
+                int numberOfRealAdoptions = adoptionData.getCumulated(initialAdoptionYear, zip);
+                if(numberOfRealAdoptions > 0) {
+                    mapping.set(zip, numberOfRealAdoptions);
+                }
+        }
+        return mapping;
     }
 
     protected WeightedMapping<ConsumerAgentGroup> buildWeightedMapping(SimulationEnvironment environment, Product product, Collection<ConsumerAgentGroup> validCags) {
@@ -183,22 +281,29 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         return mapping;
     }
 
-    protected Map<ConsumerAgentGroup, List<ConsumerAgent>> getShuffledValidAgents(SimulationEnvironment environment, String zip) {
-        Map<ConsumerAgentGroup, List<ConsumerAgent>> validAgentsMapping = new HashMap<>();
+    protected void getShuffledValidAgents(
+            SimulationEnvironment environment,
+            String zip,
+            Map3<String, ConsumerAgentGroup, List<ConsumerAgent>> validAgentsMapping) {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             List<ConsumerAgent> validAgents = getValidConsumerAgents(cag, zip);
             if(validAgents.isEmpty()) {
                 trace("skip '{}', number of valid agents: 0", cag.getName());
                 continue;
+            } else {
+                trace("'{}' number of valid agents: {}", cag.getName(), validAgents.size());
             }
             rnd.shuffle(validAgents);
-            validAgentsMapping.put(cag, validAgents);
+            validAgentsMapping.put(zip, cag, validAgents);
         }
-        return validAgentsMapping;
     }
 
     protected int getStartYear(SimulationEnvironment environment) {
         return environment.getTimeModel().getFirstSimulationYear();
+    }
+
+    protected int getInitialAdopterYear(SimulationEnvironment environment) {
+        return getStartYear(environment) - 1;
     }
 
     protected Set<String> getAllZIPs(SimulationEnvironment environment) {
