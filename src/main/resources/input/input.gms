@@ -1506,20 +1506,20 @@ PARAMETER par_InRAProcessModel_weightLocal(set_InRAProcessModel)
 PARAMETER par_InRAProcessModel_communicationFactor(set_InRAProcessModel)
 
 * - default: 1
-* - description: Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
-* - identifier: Adoptionsbestätigung (Basiswert)
+* - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
+* - identifier: Rewire-Faktor
 * - type: Float
 PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
 
 * - default: 1
-* - description: Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
-* - identifier: Adoptionsbestätigung (Jahresfaktor)
+* - description: Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
+* - identifier: Adoptionsbestätigung (Basiswert)
 * - type: Float
 PARAMETER par_InRAProcessModel_adoptionCertaintyBase(set_InRAProcessModel)
 
 * - default: 1
-* - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
-* - identifier: Rewire-Faktor
+* - description: Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
+* - identifier: Adoptionsbestätigung (Jahresfaktor)
 * - type: Float
 PARAMETER par_InRAProcessModel_adoptionCertaintyFactor(set_InRAProcessModel)
 
