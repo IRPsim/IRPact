@@ -139,4 +139,14 @@ public class XlsxRealAdoptionData implements RealAdoptionData {
         }
         return total;
     }
+
+    @Override
+    public int getCumulated(int year) {
+        return getCumulated(year, getAllZips());
+    }
+
+    @Override
+    public int getUncumulated(int year) {
+        return getUncumulated(year, getAllZips());
+    }
 }

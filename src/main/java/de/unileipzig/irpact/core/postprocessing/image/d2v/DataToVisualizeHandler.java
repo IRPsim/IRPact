@@ -54,6 +54,11 @@ public final class DataToVisualizeHandler {
                 caz.handleImage(image);
                 break;
 
+            case COMPARED_ANNUAL:
+                ComparedAnnualWithGnuPlot ca = new ComparedAnnualWithGnuPlot(processor);
+                ca.handleImage(image);
+                break;
+
             case CUMULATIVE_ANNUAL_PHASE:
                 CumulativeAnnualPhaseWithGnuPlot cap = new CumulativeAnnualPhaseWithGnuPlot(processor);
                 cap.handleImage(image);

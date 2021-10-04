@@ -44,6 +44,12 @@
             :icon "fa fa-file-image-o" 
             :description "Zeigt die Entwicklung der Phasen an." 
             :image "Phasenuebersicht.png"
+          } 
+          {
+            :label "Jährliche Adoptionen im Vergleich" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheAdoptionenVergleich.png"
           }
         ]
       }

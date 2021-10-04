@@ -14,6 +14,15 @@ GNUPLOT:
     sep: ";"
 
   # line plot - zip with real data
+  COMPARED_ANNUAL:
+    title: "Jährliche Adoptionen im Vergleich zu realen Daten"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    reallab: "Real"
+    simulab: "Simuliert"
+    sep: ";"
+
+  # line plot - zip with real data
   COMPARED_ANNUAL_ZIP:
     title: |-
       Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete

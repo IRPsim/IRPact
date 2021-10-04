@@ -203,6 +203,10 @@ public class GnuPlotBuilder {
         setStyle("histogram rowstacked");
     }
 
+    public void setStyleHistrogramClustered() {
+        setStyle("histogram clustered");
+    }
+
     public void setFillSolid() {
         setStyle("fill solid 1.0 border -1");
     }

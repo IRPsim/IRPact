@@ -86,8 +86,8 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "12";
-    private static final String BUILD_STRING = "2";
+    private static final String MINOR_STRING = "13";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -112,7 +112,10 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZ";
     public static final String IMAGE_ANNUAL_ADOPTIONS_PNG = IMAGE_ANNUAL_ADOPTIONS + ".png";
 
-    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP = "JaehrlicheAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP + ".png";
+
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenVergleich";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
 
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
