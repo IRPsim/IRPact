@@ -1,12 +1,10 @@
 package de.unileipzig.irpact.commons.util.data.map;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -49,10 +47,23 @@ public class Map3<A, B, C> {
         return getMap0(a).put(b, c);
     }
 
+    public Map<B, C> get(A a) {
+        return map.get(a);
+    }
+
     public C get(A a, B b) {
         Map<B, C> map0 = map.get(a);
         if(map0 == null) return null;
         return map0.get(b);
+    }
+
+    public boolean contains(A a) {
+        return map.containsKey(a);
+    }
+
+    public boolean contains(A a, B b) {
+        Map<B, C> map0 = map.get(a);
+        return map0 != null && map0.containsKey(b);
     }
 
     public Map<B, C> remove(A a) {
@@ -82,6 +93,10 @@ public class Map3<A, B, C> {
         return map0 == null || map0.isEmpty();
     }
 
+    public Collection<Map<B, C>> values() {
+        return map.values();
+    }
+
     public Set<A> keySet() {
         return map.keySet();
     }
@@ -98,5 +113,16 @@ public class Map3<A, B, C> {
         return map0 == null
                 ? Collections.emptySet()
                 : map0.entrySet();
+    }
+
+    public Stream<A> streamKeys() {
+        return map.keySet().stream();
+    }
+
+    public Stream<B> streamKeys(A a) {
+        Map<B, C> map0 = map.get(a);
+        return map0 == null
+                ? Stream.empty()
+                : map0.keySet().stream();
     }
 }

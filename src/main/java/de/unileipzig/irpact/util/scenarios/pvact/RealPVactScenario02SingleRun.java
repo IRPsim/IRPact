@@ -148,7 +148,7 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InRoot root = createRootWithInformationsWithFullLogging();
         root.addFiles(getDefaultFiles());
         root.getGeneral().setFirstSimulationYear(2008);
-        root.getGeneral().setLastSimulationYear(2010);
+        root.getGeneral().setLastSimulationYear(2019);
         root.getGeneral().useInfoLogging();
         root.getGeneral().enableAllResultLogging();
         root.getGeneral().setEvaluationBucketSize(0.1);

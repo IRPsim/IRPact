@@ -23,6 +23,14 @@ public final class MutableBoolean extends Number {
         this.value = value;
     }
 
+    public void setTrue() {
+        set(true);
+    }
+
+    public void setFalse() {
+        set(false);
+    }
+
     public boolean get() {
         return value;
     }

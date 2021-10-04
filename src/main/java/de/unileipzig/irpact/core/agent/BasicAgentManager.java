@@ -116,4 +116,10 @@ public class BasicAgentManager implements AgentManager {
     public AgentPopulation getInitialAgentPopulation() {
         return INITIAL_POPULATION;
     }
+
+    //=========================
+    //util
+    //=========================
+
+
 }

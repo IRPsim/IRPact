@@ -31,6 +31,9 @@ public interface LoggingHelper {
     default void trace(String format, Object arg) {
         IRPLogging.trace(getDefaultLogger(), getDefaultSection(), useDefaultSection(), format, arg);
     }
+    default void trace(IRPSection section, String format, Object arg) {
+        getDefaultLogger().trace(section, format, arg);
+    }
 
     default void trace(String format, Object arg1, Object arg2) {
         IRPLogging.trace(getDefaultLogger(), getDefaultSection(), useDefaultSection(), format, arg1, arg2);

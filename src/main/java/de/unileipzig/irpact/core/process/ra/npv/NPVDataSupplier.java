@@ -21,7 +21,6 @@ public final class NPVDataSupplier {
     private AttributeHelper attributeHelper;
     private Map<Integer, NPVMatrix> npData;
     private MutableDouble avgFT = new MutableDouble(Double.NaN);
-    private Map<Integer, Double> avgNPVCache = new ConcurrentHashMap<>();
 
     public NPVDataSupplier() {
         this(null, new HashMap<>());
@@ -94,24 +93,21 @@ public final class NPVDataSupplier {
         }
     }
 
+    private Map<Integer, Double> annualAgentAvgNPVCache = new ConcurrentHashMap<>();
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        return cachedAvgNPV(agents, year);
+        return cachedAnnualAgentAvgNPV(agents, year);
     }
-
-    private double cachedAvgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        Double avgNPV = avgNPVCache.get(year);
+    private double cachedAnnualAgentAvgNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        Double avgNPV = annualAgentAvgNPVCache.get(year);
         if(avgNPV == null) {
-            //return calcAvgNPV(agents, year);
-            //return calcAvgNPV2(agents, year);
-            return calcGlobalAvgNPV(year);
+            return calcAnnualAgentAvgNPV(agents, year);
         } else {
             return avgNPV;
         }
     }
-
-    private synchronized double calcAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
-        if(avgNPVCache.containsKey(year)) {
-            return avgNPVCache.get(year);
+    private synchronized double calcAnnualAgentAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(annualAgentAvgNPVCache.containsKey(year)) {
+            return annualAgentAvgNPVCache.get(year);
         } else {
             MutableDouble total = MutableDouble.zero();
             double sum = agents.mapToDouble(ca -> {
@@ -119,28 +115,52 @@ public final class NPVDataSupplier {
                 return NPV(ca, year);
             }).sum();
             double result = sum / total.get();
-            avgNPVCache.put(year, result);
+            annualAgentAvgNPVCache.put(year, result);
             return result;
         }
     }
 
-    private synchronized double calcAvgNPV(final int year) {
-        if(avgNPVCache.containsKey(year)) {
-            return avgNPVCache.get(year);
+    private Map<Integer, Double> annualAvgNPVCache = new ConcurrentHashMap<>();
+    public double annualAvgNPV(int year) {
+        return cachedAnnualAvgNPV(year);
+    }
+    private double cachedAnnualAvgNPV(int year) {
+        Double avgNPV = annualAvgNPVCache.get(year);
+        if(avgNPV == null) {
+            return calcAnnualAvgNPV(year);
+        } else {
+            return avgNPV;
+        }
+    }
+    private synchronized double calcAnnualAvgNPV(final int year) {
+        if(annualAvgNPVCache.containsKey(year)) {
+            return annualAvgNPVCache.get(year);
         } else {
             NPVMatrix matrix = npData.get(year);
             if(matrix == null) {
                 throw new NoSuchElementException("missing npv data for year: " + year);
             }
             double result = matrix.averageValue();
-            avgNPVCache.put(year, result);
+            annualAvgNPVCache.put(year, result);
             return result;
         }
     }
 
+    private Map<Integer, Double> globalAvgNPVCache = new ConcurrentHashMap<>();
+    public double globalAvgNPV(int year) {
+        return cachedGlobalAvgNPV(year);
+    }
+    private double cachedGlobalAvgNPV(int year) {
+        Double avgNPV = globalAvgNPVCache.get(year);
+        if(avgNPV == null) {
+            return calcGlobalAvgNPV(year);
+        } else {
+            return avgNPV;
+        }
+    }
     private synchronized double calcGlobalAvgNPV(int year) {
-        if(avgNPVCache.containsKey(year)) {
-            return avgNPVCache.get(year);
+        if(globalAvgNPVCache.containsKey(year)) {
+            return globalAvgNPVCache.get(year);
         } else {
             if(npData.isEmpty()) {
                 throw new NoSuchElementException("missing npv data");
@@ -150,7 +170,7 @@ public final class NPVDataSupplier {
                     .mapToDouble(NPVMatrix::averageValue)
                     .sum();
             double result = total / npData.size();
-            avgNPVCache.put(year, result);
+            globalAvgNPVCache.put(year, result);
             return result;
         }
     }
