@@ -345,7 +345,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.12.1"
+  edn_description: "IRPact v1.12.2"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -980,14 +980,14 @@ InRAProcessModel_communicationFactor:
   gams_identifier: "Kommunikationsfaktor"
   gams_description: "Skaliert die Kommunikationwahrscheinlichkeit der Agenten."
 InRAProcessModel_rewireFactor:
-  gams_identifier: "Adoptionsbestätigung (Basiswert)"
-  gams_description: "Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
-InRAProcessModel_adoptionCertaintyBase:
-  gams_identifier: "Adoptionsbestätigung (Jahresfaktor)"
-  gams_description: "Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
-InRAProcessModel_adoptionCertaintyFactor:
   gams_identifier: "Rewire-Faktor"
   gams_description: "Skaliert die Rewire-Wahrscheinlichkeit der Agenten."
+InRAProcessModel_adoptionCertaintyBase:
+  gams_identifier: "Adoptionsbestätigung (Basiswert)"
+  gams_description: "Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
+InRAProcessModel_adoptionCertaintyFactor:
+  gams_identifier: "Adoptionsbestätigung (Jahresfaktor)"
+  gams_description: "Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
 InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."
