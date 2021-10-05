@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsPhase2;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsZip2;
+import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionTotal;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -80,6 +81,12 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
     //=========================
     //helper
     //=========================
+
+    protected AnnualEnumeratedAdoptionTotal createAnnualEnumeratedAdoptionTotal() {
+        AnnualEnumeratedAdoptionTotal analyser = new AnnualEnumeratedAdoptionTotal();
+        analyser.analyse(imageProcessor.getEnvironment());
+        return analyser;
+    }
 
     protected AnnualAdoptionsZip2 createAnnualAdoptionZipData() {
         AnnualAdoptionsZip2 analyser = new AnnualAdoptionsZip2();

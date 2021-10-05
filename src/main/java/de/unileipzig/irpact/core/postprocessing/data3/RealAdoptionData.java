@@ -27,4 +27,8 @@ public interface RealAdoptionData {
     int getCumulated(int year, Collection<? extends String> zips);
 
     int getUncumulated(int year, Collection<? extends String> zips);
+
+    int getCumulated(int year);
+
+    int getUncumulated(int year);
 }

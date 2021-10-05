@@ -17,7 +17,7 @@ public final class MathUtil {
     }
 
     public static double logistic(double L, double k, double x, double x0) {
-        return logistic(L, k * (x - x0));
+        return L / (1.0 + Math.exp(-k * (x - x0)));
     }
 
     public static double logit(double x) {

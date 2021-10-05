@@ -22,6 +22,7 @@ public interface InOutputImage extends InIRPactEntity {
     String[] dataToVisualize = {
             "annualZip",
             "annualZipWithReal",
+            "annualZipWithRealTotal",
             "cumulativeAnnualPhase",
             "cumulativeAnnualPhase2",
             "annualInterest2D",

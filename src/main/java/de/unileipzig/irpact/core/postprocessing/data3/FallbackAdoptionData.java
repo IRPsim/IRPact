@@ -70,4 +70,14 @@ public class FallbackAdoptionData implements RealAdoptionData {
     public Set<String> getAllZips() {
         return Collections.emptySet();
     }
+
+    @Override
+    public int getCumulated(int year) {
+        return value;
+    }
+
+    @Override
+    public int getUncumulated(int year) {
+        return value;
+    }
 }

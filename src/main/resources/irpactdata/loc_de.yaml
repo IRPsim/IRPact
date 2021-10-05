@@ -145,6 +145,9 @@ InGenericOutputImage_annualZip:
 InGenericOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGenericOutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGenericOutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -188,6 +191,9 @@ InGnuPlotOutputImage_annualZip:
 InGnuPlotOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGnuPlotOutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGnuPlotOutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -231,6 +237,9 @@ InROutputImage_annualZip:
 InROutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InROutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InROutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -345,7 +354,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.12.2"
+  edn_description: "IRPact v1.13.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

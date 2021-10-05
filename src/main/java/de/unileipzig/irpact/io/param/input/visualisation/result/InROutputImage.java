@@ -59,6 +59,9 @@ public class InROutputImage implements InOutputImage {
     public boolean annualZipWithReal = false;
 
     @FieldDefinition
+    public boolean annualZipWithRealTotal = false;
+
+    @FieldDefinition
     public boolean cumulativeAnnualPhase = false;
 
     @FieldDefinition
@@ -117,6 +120,7 @@ public class InROutputImage implements InOutputImage {
         copy._name = _name;
         copy.annualZip = annualZip;
         copy.annualZipWithReal = annualZipWithReal;
+        copy.annualZipWithRealTotal = annualZipWithRealTotal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
         copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
         copy.annualInterest2D = annualInterest2D;
@@ -154,6 +158,7 @@ public class InROutputImage implements InOutputImage {
     public void setMode(DataToVisualize mode) {
         annualZip = false;
         annualZipWithReal = false;
+        annualZipWithRealTotal = false;
         cumulativeAnnualPhase = false;
         cumulativeAnnualPhase2 = false;
         annualInterest2D = false;
@@ -166,6 +171,10 @@ public class InROutputImage implements InOutputImage {
 
             case COMPARED_ANNUAL_ZIP:
                 annualZipWithReal = true;
+                break;
+
+            case COMPARED_ANNUAL:
+                annualZipWithRealTotal = true;
                 break;
 
             case CUMULATIVE_ANNUAL_PHASE:
@@ -194,6 +203,7 @@ public class InROutputImage implements InOutputImage {
         List<DataToVisualize> modes = new ArrayList<>();
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
+        if(annualZipWithRealTotal) modes.add(DataToVisualize.COMPARED_ANNUAL);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
         if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL);
         if(annualInterest2D) modes.add(DataToVisualize.ANNUAL_INTEREST_2D);

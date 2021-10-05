@@ -17,6 +17,10 @@ public interface DataStore extends Nameable {
 
     void removeAll();
 
+    //=========================
+    //key
+    //=========================
+
     boolean contains(Object key);
 
     void put(Object key, Object obj);
@@ -33,6 +37,36 @@ public interface DataStore extends Nameable {
     default <R> R getAuto(Object key) {
         return (R) get(key);
     }
+
+    //=========================
+    //multi key
+    //=========================
+
+    boolean contains(Object key1, Object key2);
+
+    void put(Object key1, Object key2, Object obj);
+
+    boolean remove(Object key1, Object key2);
+
+    Object get(Object key1, Object key2);
+
+    default <R> R getAs(Object key1, Object key2, Class<R> c) {
+        return c.cast(get(key1, key2));
+    }
+
+    @SuppressWarnings("unchecked")
+    default <R> R getAuto(Object key1, Object key2) {
+        return (R) get(key1, key2);
+    }
+
+    default <R> R getOr(Object key1, Object key2, R ifMissing) {
+        R value = getAuto(key1, key2);
+        return value == null ? ifMissing : value;
+    }
+
+    //=========================
+    //flag
+    //=========================
 
     boolean hasFlag(Object key, Object flag);
 

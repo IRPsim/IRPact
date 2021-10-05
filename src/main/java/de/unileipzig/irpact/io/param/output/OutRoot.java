@@ -235,7 +235,7 @@ public class OutRoot implements RootClass {
         image2.setPriority(2);
         image2.setLabel("Jährliche Adoptionen im Vergleich (PLZ)");
         image2.setIcon(IRPact.ICON_IMAGE);
-        image2.setImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG);
+        image2.setImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP_PNG);
         image2.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
 
         Section image3 = new Section();
@@ -259,7 +259,14 @@ public class OutRoot implements RootClass {
         image5.setImage(IRPact.IMAGE_PHASE_OVERVIEW_JPG);
         image5.setDescription("Zeigt die Entwicklung der Phasen an.");
 
-        adoptionSections.addAll(image1, image2, image3, image4, image5);
+        Section image6 = new Section();
+        image6.setPriority(6);
+        image6.setLabel("Jährliche Adoptionen im Vergleich");
+        image6.setIcon(IRPact.ICON_IMAGE);
+        image6.setImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG);
+        image6.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5, image6);
 
         return adoptionSection;
     }

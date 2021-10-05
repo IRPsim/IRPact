@@ -22,7 +22,7 @@ public enum SetSupplier {
         return ID;
     }
 
-    public <E> Set<E> newMap() {
+    public <E> Set<E> newSet() {
         switch (ID) {
             case 0:
                 return new HashSet<>();
