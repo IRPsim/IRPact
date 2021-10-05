@@ -20,6 +20,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -137,6 +138,20 @@ public abstract class PostProcessor implements LoggingHelper {
                     .collect(Collectors.toList());
         }
         return zips;
+    }
+
+    public Set<String> getValidZips(RealAdoptionData realData, String key) {
+        List<String> allZips = getAllZips(key);
+        Set<String> validZips = new HashSet<>();
+        realData.getValidZips(allZips, validZips);
+        return validZips;
+    }
+
+    public Set<String> getInvalidZips(RealAdoptionData realData, String key) {
+        List<String> allZips = getAllZips(key);
+        Set<String> invalidZips = new HashSet<>();
+        realData.getInvalidZips(allZips, invalidZips);
+        return invalidZips;
     }
 
     protected List<Product> products;

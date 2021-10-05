@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
@@ -54,8 +55,19 @@ public class ComparedAnnualWithGnuPlot extends AbstractGnuPlotDataVisualizer {
         }
         Product product = products.get(0);
 
-        AnnualEnumeratedAdoptionTotal simuData = createAnnualEnumeratedAdoptionTotal();
         RealAdoptionData realData = imageProcessor.getRealAdoptionData(image);
+        Set<String> validZips = imageProcessor.getValidZips(realData, RAConstants.ZIP);
+        Set<String> invalidZips = imageProcessor.getInvalidZips(realData, RAConstants.ZIP);
+
+        trace("valid zips: {}", validZips);
+        warn("invalid zips: {}", invalidZips);
+
+        AnnualEnumeratedAdoptionTotal simuData = createAnnualEnumeratedAdoptionTotal((ca, ap) -> {
+            String caZip = ca.findAttribute(RAConstants.ZIP)
+                    .asValueAttribute()
+                    .getStringValue();
+            return validZips.contains(caZip);
+        });
 
         List<Integer> years = imageProcessor.getAllSimulationYears();
 
@@ -66,8 +78,9 @@ public class ComparedAnnualWithGnuPlot extends AbstractGnuPlotDataVisualizer {
                 getLocalizedString("simulab"),
                 getLocalizedString("reallab")
         ));
+        //data
         for(int year: years) {
-            double real = realData.getUncumulated(year);
+            double real = realData.getUncumulated(year, validZips);
             double simu = simuData.getCount(year, product);
 
             csvData.add(Arrays.asList(
