@@ -1,11 +1,11 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.RAHelperAPI2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCAConstructionModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractUniformCAMultiModule2_2;
+import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -15,32 +15,13 @@ import java.util.List;
  * @author Daniel Abitz
  */
 public class FinancialComponentModule2
-        extends AbstractCAConstructionModule2
-        implements RAHelperAPI2 {
+        extends AbstractUniformCAMultiModule2_2<Number, Number, CalculationModule2<ConsumerAgentData2>>
+        implements CalculationModule2<ConsumerAgentData2>, RAHelperAPI2 {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FinancialComponentModule2.class);
 
-    protected final DisaggregatedNPVModule2 npvModule = new DisaggregatedNPVModule2();
-    protected final DisaggregatedFinancialModule2 finModule = new DisaggregatedFinancialModule2();
     protected double npvWeight = 0.5;
     protected double finWeight = 0.5;
-
-    public void setData(NPVData data) {
-        npvModule.setData(data);
-    }
-
-    public NPVData getData() {
-        return npvModule.getData();
-    }
-
-    public void setLogisticFactor(double logisticFactor) {
-        npvModule.setLogisticFactor(logisticFactor);
-        finModule.setLogisticFactor(logisticFactor);
-    }
-
-    public double getLogisticFactor() {
-        return npvModule.getLogisticFactor();
-    }
 
     public void setNpvWeight(double npvWeight) {
         this.npvWeight = npvWeight;
@@ -64,22 +45,19 @@ public class FinancialComponentModule2
     }
 
     @Override
-    public void validate() throws Throwable {
-        npvModule.validate();
-        finModule.validate();
+    protected void validateSelf() throws Throwable {
     }
 
     @Override
-    public void initialize(SimulationEnvironment environment) throws Throwable {
-        npvModule.initialize(environment);
-        finModule.initialize(environment);
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleInfo(input);
-        double npv = npvModule.calculate(input, actions);
-        double fin = finModule.calculate(input, actions);
+
+        double npv = getNonnullSubmodule1().calculate(input, actions);
+        double fin = getNonnullSubmodule2().calculate(input, actions);
         return npvWeight * npv + finWeight * fin;
     }
 }

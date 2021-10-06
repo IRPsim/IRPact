@@ -51,6 +51,6 @@ public class NPVModule2
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        return dataSupplier.NPV(input.getAgent(), input.getCurrentYear());
+        return dataSupplier.NPV(input.getAgent(), getCurrentYear(input));
     }
 }

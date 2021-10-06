@@ -1,9 +1,13 @@
 package de.unileipzig.irpact.core.process2.modular.ca;
 
+import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process2.modular.modules.core.InputData2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 
 import java.util.stream.Stream;
@@ -33,8 +37,8 @@ public interface ConsumerAgentData2 extends InputData2 {
         return getEnvironment().getAgents().streamConsumerAgents();
     }
 
-    default int getCurrentYear() {
-        return getEnvironment().getTimeModel().getCurrentYear();
+    default Timestamp now() {
+        return getEnvironment().getTimeModel().now();
     }
 
     default AttributeHelper getAttributeHelper() {
@@ -47,9 +51,19 @@ public interface ConsumerAgentData2 extends InputData2 {
         return getAgent().getName();
     }
 
+    Need getNeed();
+
     Product getProduct();
 
     boolean isUnderConstruction();
 
     boolean isUnderRenovation();
+
+    CAModularProcessModel2 getModel();
+
+    default AdoptionPhase determinePhase(Timestamp ts) {
+        return getModel().determinePhase(ts);
+    }
+
+    Rnd rnd();
 }

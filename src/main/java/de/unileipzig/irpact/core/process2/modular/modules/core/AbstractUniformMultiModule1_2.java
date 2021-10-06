@@ -28,15 +28,15 @@ public abstract class AbstractUniformMultiModule1_2<I, O, I2, O2, M extends Modu
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
-        initalizeSubmodules(environment);
-        initalizeSelf(environment);
+        initializeSubmodules(environment);
+        initializeSelf(environment);
     }
 
-    protected void initalizeSubmodules(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSubmodules(SimulationEnvironment environment) throws Throwable {
         getNonnullSubmodule().initialize(environment);
     }
 
-    protected abstract void initalizeSelf(SimulationEnvironment environment) throws Throwable;
+    protected abstract void initializeSelf(SimulationEnvironment environment) throws Throwable;
 
     @Override
     public int getSubmoduleCount() {

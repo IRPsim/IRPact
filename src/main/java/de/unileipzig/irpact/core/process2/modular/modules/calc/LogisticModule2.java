@@ -45,7 +45,7 @@ public class LogisticModule2<I>
     }
 
     @Override
-    protected void initalizeSelf(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
     @Override

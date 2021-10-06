@@ -56,7 +56,7 @@ public class DisaggregatedNPVModule2
     }
 
     @Override
-    protected void initalizeSelf(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
         dataSupplier = getNPVDataSupplier(environment, data);
     }
 
@@ -64,7 +64,7 @@ public class DisaggregatedNPVModule2
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleInfo(input);
         double avgNpv = getNonnullSubmodule().calculate(input, actions);
-        double npv = dataSupplier.NPV(input.getAgent(), input.getCurrentYear());
+        double npv = dataSupplier.NPV(input.getAgent(), getCurrentYear(input));
         return MathUtil.logistic(1, logisticFactor, npv, avgNpv);
     }
 }

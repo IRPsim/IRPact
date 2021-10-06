@@ -46,8 +46,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected NodeFilter networkFilter;
 
-    protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
-
     public RAProcessPlan() {
     }
 
@@ -177,7 +175,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             doSelfActionAndAllowAttention();
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
             logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
-            updateStage(RAStage.FEASIBILITY);
+            setStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
 
@@ -200,7 +198,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             makeAware(agent);
             makeInterested(agent);
             logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
-            updateStage(RAStage.FEASIBILITY);
+            setStage(RAStage.FEASIBILITY);
             return handleFeasibility(postActions);
         }
 
@@ -478,14 +476,14 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention();
             logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
-            updateStage(RAStage.DECISION_MAKING);
+            setStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
         }
 
         if(model.isSkipFeasibility()) {
             LOGGER.trace("[{}] skip feasibility", agent.getName());
             logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
-            updateStage(RAStage.DECISION_MAKING);
+            setStage(RAStage.DECISION_MAKING);
             return handleDecisionMaking(postActions);
         }
 
@@ -514,7 +512,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
-            updateStage(RAStage.IMPEDED);
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         }
 
@@ -600,12 +598,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         logCalculateDecisionMaking(alm);
         if(doNotAdopt || noAdoption || noFinancial) {
-            updateStage(RAStage.IMPEDED);
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product, now, determinePhase(now));
             logPhaseTransition(DataAnalyser.Phase.ADOPTED, now);
-            updateStage(RAStage.ADOPTED);
+            setStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
     }
@@ -620,11 +618,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected void logPhaseTransition(DataAnalyser.Phase phaseId, Timestamp now) {
         environment.getDataAnalyser().logPhaseTransition(agent, phaseId, product, now);
-    }
-
-    protected void updateStage(RAStage nextStage) {
-        logStageUpdate(nextStage);
-        currentStage = nextStage;
     }
 
     protected AdoptionPhase determinePhase(Timestamp ts) {
@@ -905,10 +898,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //=========================
     //data logging
     //=========================
-
-    protected void logStageUpdate(RAStage nextStage)  {
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage);
-    }
 
     protected static IRPLogger getLogger(boolean logData) {
         return logData

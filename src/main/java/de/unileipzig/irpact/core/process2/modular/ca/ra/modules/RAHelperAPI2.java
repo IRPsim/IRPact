@@ -1,12 +1,16 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules;
 
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.DataAnalyser;
+import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
+import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
@@ -28,7 +32,9 @@ import java.util.List;
  */
 public interface RAHelperAPI2 extends HelperAPI2 {
 
-    int ID = 123456789;
+    int STAGE = 1;
+    int NODE_FILTER = 2;
+    Object NODE_FILTER_LOCK = new Object();
     Object AVG_FIN_KEY = new Object();
     Object LOCAL_NEIGHBOURS = new Object();
     Object LOCAL_NEIGHBOURS_TOO_LARGE = new Object();
@@ -69,6 +75,43 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         }
     }
 
+    default void adopt(ConsumerAgentData2 input, Timestamp now) {
+        input.getAgent().adopt(input.getNeed(), input.getProduct(), now, input.determinePhase(now));
+    }
+
+    default int getCurrentYear(ConsumerAgentData2 input) {
+        return input.getEnvironment().getTimeModel().getCurrentYear();
+    }
+
+    default int getStartYear(ConsumerAgentData2 input) {
+        return input.getEnvironment().getTimeModel().getFirstSimulationYear();
+    }
+
+    default int getYearDelta(ConsumerAgentData2 input) {
+        return getCurrentYear(input) - getStartYear(input);
+    }
+
+    default boolean isAdopter(ConsumerAgentData2 input) {
+        return input.getAgent().hasAdopted(input.getProduct());
+    }
+
+    default boolean isInitialAdopter(ConsumerAgentData2 input) {
+        return input.getAgent().hasInitialAdopted(input.getProduct());
+    }
+
+    //=========================
+    //Logging
+    //=========================
+
+    default void logPhaseTransition(ConsumerAgentData2 input, DataAnalyser.Phase phaseId, Timestamp now) {
+        input.getEnvironment().getDataAnalyser().logPhaseTransition(input.getAgent(), phaseId, input.getProduct(), now);
+    }
+
+    default void traceSimulationProcess(IRPLoggingMessageCollection lmc) {
+        lmc.setSection(IRPSection.SIMULATION_PROCESS)
+                .trace(getDefaultLogger());
+    }
+
     //=========================
     //Attribute
     //=========================
@@ -90,8 +133,12 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         input.getAgent().allowAttention();
     }
 
+    default RAStage2 getStage(ConsumerAgentData2 input) {
+        return (RAStage2) input.get(STAGE);
+    }
+
     default RAStage2 updateStage(ConsumerAgentData2 input, RAStage2 newStage) {
-        return (RAStage2) input.put(ID, newStage);
+        return (RAStage2) input.put(STAGE, newStage);
     }
 
     default void doAction(ConsumerAgentData2 input, List<PostAction2> actions) {
@@ -107,7 +154,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     }
 
     default double getDoubleValue(ConsumerAgentData2 input, String key) {
-        return input.getAttributeHelper().getDoubleValue(input.getAgent(), input.getProduct(), key);
+        return getDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
     }
 
     default double getInitialAdopter(ConsumerAgentData2 input) {
@@ -177,6 +224,43 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 store.put(AVG_FIN_KEY, cachedResult);
                 return cachedResult.get();
             }
+        }
+    }
+
+    default double getFinancialThreshold(ConsumerAgentData2 input) {
+        return getDoubleValue(input, RAConstants.FINANCIAL_THRESHOLD);
+    }
+
+    default double getAdoptionThreshold(ConsumerAgentData2 input) {
+        return getDoubleValue(input, RAConstants.ADOPTION_THRESHOLD);
+    }
+
+    default double getEnvironmentalConcern(ConsumerAgentData2 input) {
+        return getDoubleValue(input, RAConstants.ENVIRONMENTAL_CONCERN);
+    }
+
+    //=========================
+    //util
+    //=========================
+
+    default NodeFilter getNodeFilter(ConsumerAgentData2 input, ProcessPlanNodeFilterScheme scheme) {
+        NodeFilter filter = (NodeFilter) input.get(NODE_FILTER);
+        if(filter == null) {
+            return createNodeFilter(input, scheme);
+        } else {
+            return filter;
+        }
+    }
+
+    default NodeFilter createNodeFilter(ConsumerAgentData2 input, ProcessPlanNodeFilterScheme scheme) {
+        synchronized (NODE_FILTER_LOCK) {
+            NodeFilter filter = (NodeFilter) input.get(NODE_FILTER);
+            if(filter == null) {
+                //filter = scheme.createFilter(input);
+                if(true) throw new RuntimeException("TODO");
+                input.put(NODE_FILTER, filter);
+            }
+            return filter;
         }
     }
 
