@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.process2.modular;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
-import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -53,7 +52,7 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     }
 
     default double getDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, String key) {
-        return environment.getAttributeHelper().getDoubleValue(agent, key);
+        return environment.getAttributeHelper().findDoubleValue(agent, key);
     }
 
     default double getDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, String key, int year) {
@@ -69,6 +68,6 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     }
 
     default boolean getBooleanValue(SimulationEnvironment environment, ConsumerAgent agent, String key) {
-        return environment.getAttributeHelper().getBooleanValue(agent, key);
+        return environment.getAttributeHelper().findBooleanValue(agent, key);
     }
 }

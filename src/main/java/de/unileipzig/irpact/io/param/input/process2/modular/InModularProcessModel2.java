@@ -21,7 +21,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 edgesTags = {GRAPH_EDGE},
                 edgesHeading = "Kantenbedeutung",
 
-                nodesSet = "set_InConsumerAgentModule",
+                nodesSet = "set_InModule2",
                 showIcon = false,
                 borderHeading = "Rahmenfarbe",
                 colorHeading = "Fuellfarbe",
