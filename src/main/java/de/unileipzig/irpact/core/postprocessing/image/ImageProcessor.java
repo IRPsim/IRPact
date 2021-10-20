@@ -85,7 +85,7 @@ public class ImageProcessor extends PostProcessor {
     public RealAdoptionData getRealAdoptionData(InOutputImage image) {
         if(image.hasRealAdoptionDataFile()) {
             try {
-                return getRealAdoptionData(image.getRealAdoptionDataFile());
+                return getScaledRealAdoptionData(image.getRealAdoptionDataFile());
             } catch (Throwable t) {
                 LOGGER.warn("loading adoption data for '{}' failed: {}", image.getBaseFileName(), t.getMessage());
                 return getFallbackAdoptionData();

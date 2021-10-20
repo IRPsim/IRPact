@@ -3,6 +3,7 @@ package de.unileipzig.irpact.commons.util;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -38,12 +39,35 @@ public final class Rnd implements ChecksumComparable {
         this(initialSeed, false);
     }
 
+    public Rnd(String initialSeed) {
+        this(stringTolong(initialSeed));
+    }
+
+    public Rnd(Class<?> c) {
+        this(classTolong(c));
+    }
+
     public Rnd(long initialSeed, boolean sync) {
         setInitialSeed(initialSeed);
         if(sync) {
             enableSync();
         } else {
             disableSync();
+        }
+    }
+
+    public static long classTolong(Class<?> c) {
+        String name = c == null
+                ? null
+                : c.getSimpleName();
+        return stringTolong(name);
+    }
+
+    public static long stringTolong(String input) {
+        if(input == null) {
+            return 0;
+        } else {
+            return 31L * input.hashCode();
         }
     }
 

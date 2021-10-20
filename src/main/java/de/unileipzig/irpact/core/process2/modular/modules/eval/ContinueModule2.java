@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.eval;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.ProcessPlanResult2;
-import de.unileipzig.irpact.core.process2.modular.modules.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.PlanEvaluationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -35,7 +35,7 @@ public class ContinueModule2<I>
 
     @Override
     public ProcessPlanResult2 apply(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo();
+        traceModuleCall();
         return ProcessPlanResult2.CONTINUE;
     }
 }

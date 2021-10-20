@@ -12,5 +12,5 @@ public interface EvaluationModule<I> extends Module {
 
     EvaluationResult evaluate(I input) throws Throwable;
 
-    EvaluationResult evaluate(I input, List<PostAction<?>> postActions) throws Throwable;
+    EvaluationResult evaluate(I input, List<PostAction> postActions) throws Throwable;
 }

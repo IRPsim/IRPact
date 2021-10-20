@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.calc;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.modules.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModuleN_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -24,7 +24,7 @@ public class ProductModule2<I>
     }
 
     @Override
-    protected void initalizeSelf(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ProductModule2<I>
 
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo();
+        traceModuleCall();
         double sum = 1.0;
         for(int i = 0; i < getSubmoduleCount(); i++) {
             sum *= getNonnullSubmodule(i).calculate(input, actions);

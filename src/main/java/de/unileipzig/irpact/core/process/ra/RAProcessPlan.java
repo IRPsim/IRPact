@@ -11,6 +11,8 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.*;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
@@ -45,8 +47,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 //    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
 
     protected NodeFilter networkFilter;
-
-    protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
     public RAProcessPlan() {
     }
@@ -115,7 +115,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     @Override
-    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+    public ProcessPlanResult execute(List<PostAction> postActions) throws Throwable {
         if(currentStage == RAStage.PRE_INITIALIZATION) {
             return initPlan(postActions);
         } else {
@@ -127,7 +127,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //phases
     //=========================
 
-    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult initPlan(List<PostAction> postActions) throws Throwable {
         if(agent.hasAdopted(product)) {
             if(agent.hasInitialAdopted(product)) {
                 logPhaseTransition(DataAnalyser.Phase.INITIAL_ADOPTED, now());
@@ -143,7 +143,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return executePlan(postActions);
     }
 
-    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult executePlan(List<PostAction> postActions) throws Throwable {
         switch (currentStage) {
             case AWARENESS:
                 return handleInterest(postActions);
@@ -168,7 +168,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         agent.allowAttention();
     }
 
-    protected ProcessPlanResult handleInterest(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult handleInterest(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle interest", agent.getName());
 
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] current interest for '{}': {}", agent.getName(), product.getName(), getInterest(agent));
@@ -177,7 +177,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             doSelfActionAndAllowAttention();
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
             logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
-            updateStage(RAStage.FEASIBILITY);
+            setStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
 
@@ -200,14 +200,14 @@ public class RAProcessPlan extends RAProcessPlanBase {
             makeAware(agent);
             makeInterested(agent);
             logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
-            updateStage(RAStage.FEASIBILITY);
+            setStage(RAStage.FEASIBILITY);
             return handleFeasibility(postActions);
         }
 
         return doAction(postActions);
     }
 
-    protected ProcessPlanResult doAction(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult doAction(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] doAction", agent.getName());
 
         agent.allowAttention();
@@ -215,19 +215,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(postActions == null) {
             return doAction0();
         } else {
-            postActions.add(new PostAction<RAProcessPlan>() {
+            postActions.add(new PostAction() {
 
                 private final RAProcessPlan plan = RAProcessPlan.this;
-
-                @Override
-                public boolean isSupported(Class<?> type) {
-                    return type.isInstance(plan);
-                }
-
-                @Override
-                public RAProcessPlan getInput() {
-                    return plan;
-                }
 
                 @Override
                 public String getInputName() {
@@ -468,7 +458,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected ProcessPlanResult handleFeasibility(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult handleFeasibility(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle feasibility", agent.getName());
 
         boolean isShare = isShareOf1Or2FamilyHouse(agent);
@@ -478,21 +468,21 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention();
             logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
-            updateStage(RAStage.DECISION_MAKING);
+            setStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
         }
 
         if(model.isSkipFeasibility()) {
             LOGGER.trace("[{}] skip feasibility", agent.getName());
             logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
-            updateStage(RAStage.DECISION_MAKING);
+            setStage(RAStage.DECISION_MAKING);
             return handleDecisionMaking(postActions);
         }
 
         return doAction(postActions);
     }
 
-    protected ProcessPlanResult handleDecisionMaking(List<PostAction<?>> postActions) {
+    protected ProcessPlanResult handleDecisionMaking(List<PostAction> postActions) {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
@@ -514,7 +504,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
-            updateStage(RAStage.IMPEDED);
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         }
 
@@ -600,12 +590,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         logCalculateDecisionMaking(alm);
         if(doNotAdopt || noAdoption || noFinancial) {
-            updateStage(RAStage.IMPEDED);
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product, now, determinePhase(now));
             logPhaseTransition(DataAnalyser.Phase.ADOPTED, now);
-            updateStage(RAStage.ADOPTED);
+            setStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
     }
@@ -620,11 +610,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected void logPhaseTransition(DataAnalyser.Phase phaseId, Timestamp now) {
         environment.getDataAnalyser().logPhaseTransition(agent, phaseId, product, now);
-    }
-
-    protected void updateStage(RAStage nextStage) {
-        logStageUpdate(nextStage);
-        currentStage = nextStage;
     }
 
     protected AdoptionPhase determinePhase(Timestamp ts) {
@@ -905,10 +890,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //=========================
     //data logging
     //=========================
-
-    protected void logStageUpdate(RAStage nextStage)  {
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage);
-    }
 
     protected static IRPLogger getLogger(boolean logData) {
         return logData

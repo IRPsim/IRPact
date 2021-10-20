@@ -20,5 +20,5 @@ public interface IRPactAgentAPI extends Nameable {
 
     Map<String, Object> endIRPactAgent() throws Throwable;
 
-    void nextIRPactAgentLoopAction(List<PostAction<?>> postActions) throws Throwable;
+    void nextIRPactAgentLoopAction(List<PostAction> postActions) throws Throwable;
 }

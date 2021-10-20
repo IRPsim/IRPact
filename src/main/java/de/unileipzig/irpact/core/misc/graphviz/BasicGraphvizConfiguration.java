@@ -221,11 +221,23 @@ public class BasicGraphvizConfiguration implements GraphvizConfiguration {
     }
 
     private double mapX(double x) {
-        return hasPositionMapper() ? getPositionMapper().mapX(x) : x;
+        double xx = hasPositionMapper() ? getPositionMapper().mapX(x) : x;
+        if(Double.isNaN(xx)) {
+            LOGGER.warn("x position is NaN, return 0");
+            return 0;
+        } else {
+            return xx;
+        }
     }
 
     private double mapY(double y) {
-        return hasPositionMapper() ? getPositionMapper().mapY(y) : y;
+        double yy = hasPositionMapper() ? getPositionMapper().mapY(y) : y;
+        if(Double.isNaN(yy)) {
+            LOGGER.warn("y position is NaN, return 0");
+            return 0;
+        } else {
+            return yy;
+        }
     }
 
     private static void setPosition(MutableNode node, double x, double y) {

@@ -13,7 +13,7 @@ public interface ProcessPlan extends ChecksumComparable {
 
     ProcessPlanResult execute() throws Throwable;
 
-    ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable;
+    ProcessPlanResult execute(List<PostAction> postActions) throws Throwable;
 
     default boolean keepRunningAfterAdoption() {
         return true;

@@ -3,8 +3,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.calc;
 import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.modules.HelperAPI2;
-import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModule1_2;
+import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModule2_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -45,7 +44,7 @@ public class LogisticModule2<I>
     }
 
     @Override
-    protected void initalizeSelf(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
     @Override
@@ -53,11 +52,27 @@ public class LogisticModule2<I>
         return LOGGER;
     }
 
+    public void setX(CalculationModule2<I> xModule) {
+        setSubmodule1(xModule);
+    }
+
+    public CalculationModule2<I> getX() {
+        return getNonnullSubmodule1();
+    }
+
+    public void setX0(CalculationModule2<I> xModule) {
+        setSubmodule2(xModule);
+    }
+
+    public CalculationModule2<I> getX0() {
+        return getNonnullSubmodule2();
+    }
+
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo();
-        double x = getNonnullSubmodule1().calculate(input, actions);
-        double x0 = getNonnullSubmodule2().calculate(input, actions);
-        return MathUtil.logistic(L, k, x, x0);
+        traceModuleCall();
+        double x = getX().calculate(input, actions);
+        double x0 = getX0().calculate(input, actions);
+        return MathUtil.logistic(getL(), getK(), x, x0);
     }
 }

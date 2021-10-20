@@ -354,7 +354,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.13.0"
+  edn_description: "IRPact v1.14.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -388,9 +388,9 @@ InPVFile_placeholderPVFile:
 InSpatialTableFile:
   edn_label: "Tabellarische Dateien"
   edn_description: "Daten in tabellarischer Form. Es werden .xlsx und .csv unterstützt."
-InSpatialTableFile_placeholderInSpatialFile:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+InSpatialTableFile_coverage:
+  gams_identifier: "Abdeckungsfaktor"
+  gams_description: "Gibt an, wie viel die räumlichen Daten im Vergleich zur Realität abbilden."
 
 InRealAdoptionDataFile:
   edn_label: "Reale Adoptionsdaten"
@@ -1956,6 +1956,512 @@ InWeightedModule_calcgraphnode_weight:
 InWeightedModule_calcgraphnode_input_graphedge:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+
+##########################
+# V3
+##########################
+
+process_model2:
+  edn_label: "Prozessmodell2"
+  edn_description: "todo"
+
+process_modular3:
+  edn_label: "Modulares Prozessmodell2"
+  edn_description: "todo"
+
+process_modular3_PV_model:
+  edn_label: "Modell"
+  edn_description: "todo"
+
+process_modular3_PV_modules:
+  edn_label: "Module"
+  edn_description: "todo"
+
+process_modular3_PV_reeval:
+  edn_label: "Reevaluierung"
+  edn_description: "todo"
+
+process_modular3_PV_modules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_bool:
+  edn_label: "Entscheidungsmodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_calc:
+  edn_label: "Berechnungsmodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_input:
+  edn_label: "Eingabemodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_eval:
+  edn_label: "Planauswertungsmodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_evalra:
+  edn_label: "PVact-Auswertungsmodule"
+  edn_description: "todo"
+
+process_modular3_PV_modules_reeval:
+  edn_label: "Reevaluierungsmodule"
+  edn_description: "todo"
+
+InBasicCAModularProcessModel:
+  edn_label: "Standardprozessmodell"
+  edn_description: "todo"
+InBasicCAModularProcessModel_startModule:
+  gams_identifier: "Startmodul"
+  gams_description: "todo"
+InBasicCAModularProcessModel_newProductHandlers:
+  gams_identifier: "Konfiguratoren für neue Produkte"
+  gams_description: "todo"
+InBasicCAModularProcessModel_startOfYearReevaluators:
+  gams_identifier: "Reevalueirung zum Jahresbeginn"
+  gams_description: "todo"
+InBasicCAModularProcessModel_midOfYearReevaluators:
+  gams_identifier: "Reevalueirung zur Jahresmitte (27. Woche)"
+  gams_description: "todo"
+InBasicCAModularProcessModel_endOfYearReevaluators:
+  gams_identifier: "Reevalueirung zum Jahresende"
+  gams_description: "todo"
+
+InCommunicationModule_actiongraphnode2:
+  edn_label: "Kommunikationsmodul"
+  edn_description: "todo"
+InCommunicationModule_actiongraphnode2_adopterPoints:
+  gams_identifier: "adopterPoints"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_interestedPoints:
+  gams_identifier: "interestedPoints"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_awarePoints:
+  gams_identifier: "awarePoints"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_unknownPoints:
+  gams_identifier: "unknownPoints"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_speedOfConvergence:
+  gams_identifier: "speedOfConvergence"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_attitudeGap:
+  gams_identifier: "attitudeGap"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_chanceNeutral:
+  gams_identifier: "chanceNeutral"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_chanceConvergence:
+  gams_identifier: "chanceConvergence"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_chanceDivergence:
+  gams_identifier: "chanceDivergence"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_uncertainties:
+  gams_identifier: "uncertainties"
+  gams_description: "todo"
+
+InRewireModule_actiongraphnode2:
+  edn_label: "Rewiremodul"
+  edn_description: "todo"
+InRewireModule_actiongraphnode2_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InStopAfterSuccessfulTaskModule_actiongraphnode2:
+  edn_label: "StopAfterSuccessfulTaskModule"
+  edn_description: "todo"
+InStopAfterSuccessfulTaskModule_actiongraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InIfThresholdModule_boolgraphnode2:
+  edn_label: "IfThresholdModule"
+  edn_description: "todo"
+InIfThresholdModule_boolgraphnode2_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InIfThresholdModule_boolgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InGeneralIfThresholdModule_boolgraphnode2:
+  edn_label: "IfThresholdModule"
+  edn_description: "todo"
+InGeneralIfThresholdModule_boolgraphnode2_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InGeneralIfThresholdModule_boolgraphnode2_draw_graphedge2:
+  gams_identifier: "Vergleichswertmodul"
+  gams_description: "todo"
+InGeneralIfThresholdModule_boolgraphnode2_threshold_graphedge2:
+  gams_identifier: "Grenzwertmodul"
+  gams_description: "todo"
+
+InIfDoActionModule_boolgraphnode2:
+  edn_label: "IfDoActionModule"
+  edn_description: "todo"
+InIfDoActionModule_boolgraphnode2_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InIfDoActionModule_boolgraphnode2_ifInput_graphedge2:
+  gams_identifier: "IfModule"
+  gams_description: "todo"
+InIfDoActionModule_boolgraphnode2_taskInput_graphedge2:
+  gams_identifier: "TaskModule"
+  gams_description: "todo"
+
+InDisaggregatedNPVModule_calcgraphnode2:
+  edn_label: "DisaggregatedNPVModule"
+  edn_description: "todo"
+InDisaggregatedNPVModule_calcgraphnode2_logisticFactor:
+  gams_identifier: "logisticFactor"
+  gams_description: "todo"
+InDisaggregatedNPVModule_calcgraphnode2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InDisaggregatedNPVModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InFinancialComponentModule_calcgraphnode2:
+  edn_label: "FinancialComponent"
+  edn_description: "todo"
+InFinancialComponentModule_calcgraphnode2_npvWeight:
+  gams_identifier: "npvWeight"
+  gams_description: "todo"
+InFinancialComponentModule_calcgraphnode2_finWeight:
+  gams_identifier: "finWeight"
+  gams_description: "todo"
+InFinancialComponentModule_calcgraphnode2_npvInput_graphedge2:
+  gams_identifier: "NPV-Modul"
+  gams_description: "todo"
+InFinancialComponentModule_calcgraphnode2_finInput_graphedge2:
+  gams_identifier: "Fin-Modul"
+  gams_description: "todo"
+
+InAddScalarModule_calcgraphnode2:
+  edn_label: "AddScalarModule"
+  edn_description: "todo"
+InAddScalarModule_calcgraphnode2_scalar:
+  gams_identifier: "scalar"
+  gams_description: "todo"
+InAddScalarModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InCsvValueLoggingModule_calcloggraphnode2:
+  edn_label: "CsvValueLoggingModule"
+  edn_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InCsvValueReevaluatorModule_reevalgraphnode2:
+  edn_label: "CsvValueReevaluatorModule"
+  edn_description: "todo"
+InCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InCsvValueReevaluatorModule_reevalgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InMinimalCsvValueReevaluatorModule_reevalgraphnode2:
+  edn_label: "MinimalCsvValueReevaluatorModule"
+  edn_description: "todo"
+InMinimalCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InMinimalCsvValueReevaluatorModule_reevalgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InDecisionMakingModule_calcgraphnode2:
+  edn_label: "DecisionMakingModule"
+  edn_description: "todo"
+InDecisionMakingModule_calcgraphnode2_financialCheck_graphedge2:
+  gams_identifier: "Finanz Testmodul"
+  gams_description: "todo"
+InDecisionMakingModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InLogisticModule_calcgraphnode2:
+  edn_label: "LogisticModule"
+  edn_description: "L/(1+e^(-k*(x-x0)))"
+InLogisticModule_calcgraphnode2_valueL:
+  gams_identifier: "L"
+  gams_description: "todo"
+InLogisticModule_calcgraphnode2_valueK:
+  gams_identifier: "k"
+  gams_description: "todo"
+InLogisticModule_calcgraphnode2_xinput_graphedge2:
+  gams_identifier: "x Modul"
+  gams_description: "todo"
+InLogisticModule_calcgraphnode2_x0input_graphedge2:
+  gams_identifier: "x0 Modul"
+  gams_description: "todo"
+
+InMinimalCsvValueLoggingModule_calcloggraphnode2:
+  edn_label: "LogisticModule"
+  edn_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InMulScalarModule_calcgraphnode2:
+  edn_label: "MulScalarModule"
+  edn_description: "todo"
+InMulScalarModule_calcgraphnode2_scalar:
+  gams_identifier: "scalar"
+  gams_description: "todo"
+InMulScalarModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InProductModule_calcgraphnode2:
+  edn_label: "ProductModule"
+  edn_description: "todo"
+InProductModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InScaledWeightModule_calcgraphnode2:
+  edn_label: "ScaledWeightModule"
+  edn_description: "todo"
+InScaledWeightModule_calcgraphnode2_scalar:
+  gams_identifier: "Initialer Wert"
+  gams_description: "todo"
+InScaledWeightModule_calcgraphnode2_attribute:
+  gams_identifier: "Attributname"
+  gams_description: "todo"
+InScaledWeightModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InSumModule_calcgraphnode2:
+  edn_label: "SumModule"
+  edn_description: "todo"
+InSumModule_calcgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InAttributeInputModule_inputgraphnode2:
+  edn_label: "Attributmodul"
+  edn_description: "todo"
+InAttributeInputModule_inputgraphnode2_attribute:
+  gams_identifier: "attribute"
+  gams_description: "todo"
+
+InAvgFinModule_inputgraphnode2:
+  edn_label: "AvgFinModule"
+  edn_description: "todo"
+InAvgFinModule_inputgraphnode2_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InGlobalAvgNPVModule_inputgraphnode2:
+  edn_label: "GlobalAvgNPVModule"
+  edn_description: "todo"
+InGlobalAvgNPVModule_inputgraphnode2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InNPVModule_inputgraphnode2:
+  edn_label: "NPVModule"
+  edn_description: "todo"
+InNPVModule_inputgraphnode2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InDisaggregatedFinancialModule_inputgraphnode2:
+  edn_label: "DisaggregatedFinancialModule"
+  edn_description: "todo"
+InDisaggregatedFinancialModule_inputgraphnode2_logisticFactor:
+  gams_identifier: "logisticFactor"
+  gams_description: "todo"
+
+InLocalShareOfAdopterModule_inputgraphnode2:
+  edn_label: "LocalShareOfAdopterModule"
+  edn_description: "todo"
+InLocalShareOfAdopterModule_inputgraphnode2_maxToStore:
+  gams_identifier: "maxToStore"
+  gams_description: "todo"
+InLocalShareOfAdopterModule_inputgraphnode2_nodeFilterScheme:
+  gams_identifier: "nodeFilterScheme"
+  gams_description: "todo"
+
+InNaNModule_inputgraphnode2:
+  edn_label: "NaNModule"
+  edn_description: "Gibt NaN (not a number) zurück."
+InNaNModule_inputgraphnode2_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InSocialShareOfAdopterModule_inputgraphnode2:
+  edn_label: "SocialShareOfAdopterModule"
+  edn_description: "todo"
+InSocialShareOfAdopterModule_inputgraphnode2_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InValueModule_inputgraphnode2:
+  edn_label: "ValueModule"
+  edn_description: "todo"
+InValueModule_inputgraphnode2_value:
+  gams_identifier: "Rückgabewert"
+  gams_description: "todo"
+
+InDecisionMakingDeciderModule2_evalragraphnode2:
+  edn_label: "DecisionMakingDeciderModule"
+  edn_description: "todo"
+InDecisionMakingDeciderModule2_evalragraphnode2_threshold:
+  gams_identifier: "Grenzwert"
+  gams_description: "todo"
+InDecisionMakingDeciderModule2_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InRunUntilFailureModule_evalgraphnode2:
+  edn_label: "RunUntilFailureModule"
+  edn_description: "todo"
+InRunUntilFailureModule_evalgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InYearBasedAdoptionDeciderModule_evalragraphnode2:
+  edn_label: "YearBasedAdoptionDeciderModule"
+  edn_description: "todo"
+InYearBasedAdoptionDeciderModule_evalragraphnode2_base:
+  gams_identifier: "base"
+  gams_description: "todo"
+InYearBasedAdoptionDeciderModule_evalragraphnode2_factor:
+  gams_identifier: "factor"
+  gams_description: "todo"
+InYearBasedAdoptionDeciderModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InInterestModule_evalragraphnode2:
+  edn_label: "InterestModule"
+  edn_description: "todo"
+InInterestModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InInitializationModule_evalragraphnode2:
+  edn_label: "InitializationModule"
+  edn_description: "todo"
+InInitializationModule_evalragraphnode2_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InFeasibilityModule_evalragraphnode2:
+  edn_label: "FeasibilityModule"
+  edn_description: "todo"
+InFeasibilityModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InDecisionMakingModule_evalragraphnode2:
+  edn_label: "DecisionMakingModule"
+  edn_description: "todo"
+InDecisionMakingModule_evalragraphnode2_financialComponent_graphedge2:
+  gams_identifier: "FinKomponente"
+  gams_description: "todo"
+InDecisionMakingModule_evalragraphnode2_environmentalComponent_graphedge2:
+  gams_identifier: "EnvKomponente"
+  gams_description: "todo"
+InDecisionMakingModule_evalragraphnode2_noveltyCompoenent_graphedge2:
+  gams_identifier: "NovKomponente"
+  gams_description: "todo"
+InDecisionMakingModule_evalragraphnode2_socialComponent_graphedge2:
+  gams_identifier: "SocKomponente"
+  gams_description: "todo"
+
+InMainBranchingModule_evalragraphnode2:
+  edn_label: "DecisionMakingModule"
+  edn_description: "todo"
+InMainBranchingModule_evalragraphnode2_init_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InMainBranchingModule_evalragraphnode2_awareness_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InMainBranchingModule_evalragraphnode2_feasibility_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InMainBranchingModule_evalragraphnode2_decision_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InMainBranchingModule_evalragraphnode2_adopted_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+InMainBranchingModule_evalragraphnode2_impeded_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InPhaseLoggingModule_evalragraphnode2:
+  edn_label: "PhaseLoggingModule"
+  edn_description: "todo"
+InPhaseLoggingModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InPhaseUpdateModule_evalragraphnode2:
+  edn_label: "PhaseUpdateModule"
+  edn_description: "todo"
+InPhaseUpdateModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InAnnualInterestLogger:
+  edn_label: "AnnualInterestLogger"
+  edn_description: "todo"
+InAnnualInterestLogger_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InConstructionRenovationUpdater:
+  edn_label: "ConstructionRenovationUpdater"
+  edn_description: "todo"
+InConstructionRenovationUpdater_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InDecisionMakingReevaluator:
+  edn_label: "DecisionMakingReevaluator"
+  edn_description: "todo"
+InDecisionMakingReevaluator_modules:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InImpededResetter:
+  edn_label: "ImpededResetter"
+  edn_description: "todo"
+InImpededResetter_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InReevaluatorModuleLinker:
+  edn_label: "ReevaluatorModuleLinker"
+  edn_description: "todo"
+InReevaluatorModuleLinker_modules:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+
+##########################
+#
+##########################
 
 spatial:
   edn_label: "Räumliche Modell"

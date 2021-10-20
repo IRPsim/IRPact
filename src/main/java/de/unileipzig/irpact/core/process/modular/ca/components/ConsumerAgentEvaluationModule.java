@@ -18,5 +18,5 @@ public interface ConsumerAgentEvaluationModule extends EvaluationModule<Consumer
     }
 
     @Override
-    AdoptionResult evaluate(ConsumerAgentData input, List<PostAction<?>> postActions) throws Throwable;
+    AdoptionResult evaluate(ConsumerAgentData input, List<PostAction> postActions) throws Throwable;
 }

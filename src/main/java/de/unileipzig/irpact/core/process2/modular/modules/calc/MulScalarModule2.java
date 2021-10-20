@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.calc;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.modules.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModule1_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -19,7 +19,7 @@ public class MulScalarModule2<I>
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(MulScalarModule2.class);
 
-    protected double scalar;
+    protected double scalar = 1.0;
 
     public void setScalar(double scalar) {
         this.scalar = scalar;
@@ -34,7 +34,7 @@ public class MulScalarModule2<I>
     }
 
     @Override
-    protected void initalizeSelf(SimulationEnvironment environment) throws Throwable {
+    protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MulScalarModule2<I>
 
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo();
+        traceModuleCall();
         return getScalar() * getNonnullSubmodule().calculate(input, actions);
     }
 }

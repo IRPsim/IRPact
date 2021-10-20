@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 
 /**
  * @author Daniel Abitz
@@ -17,8 +18,13 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
     public static final int INITIAL_YEAR = Integer.MIN_VALUE;
 
     protected CountMap3D<Integer, Product, T> data = new CountMap3D<>();
+    protected BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter;
 
     public AnnualEnumeratedAdoptionData() {
+    }
+
+    public void setFilter(BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter) {
+        this.filter = filter;
     }
 
     public CountMap3D<Integer, Product, T> getData() {
@@ -29,10 +35,16 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
                 for(AdoptedProduct ap: ca.getAdoptedProducts()) {
-                    update(ca, ap);
+                    if(test(ca, ap)) {
+                        update(ca, ap);
+                    }
                 }
             }
         }
+    }
+
+    protected boolean test(ConsumerAgent ca, AdoptedProduct ap) {
+        return filter == null || filter.test(ca, ap);
     }
 
     public int getCount(int year, Product product, T value) {

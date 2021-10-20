@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process.PostAction;
 /**
  * @author Daniel Abitz
  */
-public interface ConsumerAgentPostAction extends PostAction<ConsumerAgentData> {
+public interface ConsumerAgentPostAction extends PostAction {
 
     AdoptionResult evaluate() throws Throwable;
 }

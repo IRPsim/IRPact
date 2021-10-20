@@ -114,7 +114,7 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         return nop(data);
     }
 
-    protected AdoptionResult doAction(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    protected AdoptionResult doAction(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         allowAttention(data.getAgent());
         if(postActions == null) {
             return doAction0(data);

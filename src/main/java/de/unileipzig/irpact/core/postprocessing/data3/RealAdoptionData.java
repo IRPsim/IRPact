@@ -8,6 +8,12 @@ import java.util.Set;
  */
 public interface RealAdoptionData {
 
+    void createScaledAdoptionData(double scale, boolean fixError);
+
+    boolean hasScaledAdoptionData(double scale);
+
+    ScaledRealAdoptionData getScaledAdoptionData(double scale);
+
     Set<String> getAllZips();
 
     Set<Integer> getAllYears();

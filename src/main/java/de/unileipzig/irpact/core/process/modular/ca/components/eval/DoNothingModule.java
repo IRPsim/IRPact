@@ -45,7 +45,7 @@ public class DoNothingModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         for(ConsumerAgentModule module: iterateModules()) {
             if(module instanceof ConsumerAgentCalculationModule) {
                 LOGGER.trace(

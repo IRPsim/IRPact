@@ -118,7 +118,7 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
         }
 
         @Override
-        public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+        public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
             ConsumerAgentEvaluationModule startModule = getRealStartModule();
             if(startModule == null) {
                 throw new NoSuchElementException("missing start module");
@@ -154,22 +154,22 @@ public class ConsumerAgentMPMWithAdoptionHandler extends AbstractConsumerAgentMP
                 throw new NoSuchElementException("missing start module");
             }
 
-            trace("[{}] start post action", action.getInput().getAgent().getName());
+//            trace("[{}] start post action", action.getInput().getAgent().getName());
 
             AdoptionResult result = action.evaluate();
 
             switch(result) {
-                case ADOPTED:
-                    handleAdopted(action.getInput());
-                    break;
-
-                case IMPEDED:
-                    handleImpeded(action.getInput());
-                    break;
-
-                case IN_PROCESS:
-                    handleInProcess(action.getInput());
-                    break;
+//                case ADOPTED:
+//                    handleAdopted(action.getInput());
+//                    break;
+//
+//                case IMPEDED:
+//                    handleImpeded(action.getInput());
+//                    break;
+//
+//                case IN_PROCESS:
+//                    handleInProcess(action.getInput());
+//                    break;
 
                 default:
                     LOGGER.warn("[{}] unsupported AdoptionResult: {}", HANDLER.getName(), result);

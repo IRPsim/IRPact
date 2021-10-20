@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
 import de.unileipzig.irpact.commons.resource.JsonResource;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data.adoptions2.impl.AnnualAdoptionsPhase2;
@@ -9,12 +10,14 @@ import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionTo
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.product.AdoptedProduct;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.function.BiPredicate;
 
 /**
  * @author Daniel Abitz
@@ -82,8 +85,9 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
     //helper
     //=========================
 
-    protected AnnualEnumeratedAdoptionTotal createAnnualEnumeratedAdoptionTotal() {
+    protected AnnualEnumeratedAdoptionTotal createAnnualEnumeratedAdoptionTotal(BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter) {
         AnnualEnumeratedAdoptionTotal analyser = new AnnualEnumeratedAdoptionTotal();
+        analyser.setFilter(filter);
         analyser.analyse(imageProcessor.getEnvironment());
         return analyser;
     }

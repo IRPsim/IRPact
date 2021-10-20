@@ -172,7 +172,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public void nextIRPactAgentLoopAction(List<PostAction<?>> postActions) throws Throwable {
+    public void nextIRPactAgentLoopAction(List<PostAction> postActions) throws Throwable {
         pulse();
 
         resetOnNewAction();
@@ -689,7 +689,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
     }
 
-    protected void executePlans(List<PostAction<?>> postActions) throws Throwable {
+    protected void executePlans(List<PostAction> postActions) throws Throwable {
         Map<Need, ProcessPlan> adoptedPlans = null;
 
         for(Map.Entry<Need, ProcessPlan> entry: getActivePlans().entrySet()) {
@@ -836,7 +836,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         return plan.execute();
     }
 
-    protected ProcessPlanResult executePlan(ProcessPlan plan, List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult executePlan(ProcessPlan plan, List<PostAction> postActions) throws Throwable {
         return plan.execute(postActions);
     }
 }

@@ -6,12 +6,13 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.FallbackAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data3.ScaledRealAdoptionData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
@@ -139,6 +140,20 @@ public abstract class PostProcessor implements LoggingHelper {
         return zips;
     }
 
+    public Set<String> getValidZips(RealAdoptionData realData, String key) {
+        List<String> allZips = getAllZips(key);
+        Set<String> validZips = new HashSet<>();
+        realData.getValidZips(allZips, validZips);
+        return validZips;
+    }
+
+    public Set<String> getInvalidZips(RealAdoptionData realData, String key) {
+        List<String> allZips = getAllZips(key);
+        Set<String> invalidZips = new HashSet<>();
+        realData.getInvalidZips(allZips, invalidZips);
+        return invalidZips;
+    }
+
     protected List<Product> products;
     public List<Product> getAllProducts() {
         if(products == null) {
@@ -210,7 +225,30 @@ public abstract class PostProcessor implements LoggingHelper {
         }
     }
 
+    public RealAdoptionData getScaledRealAdoptionData(InRealAdoptionDataFile file) {
+        RealAdoptionData realAdoptionData = getRealAdoptionData(file);
+        double scaleFactor = getScaleFactor();
+        if(scaleFactor == 1.0) {
+            return realAdoptionData;
+        } else {
+            if(!realAdoptionData.hasScaledAdoptionData(scaleFactor)) {
+                realAdoptionData.createScaledAdoptionData(scaleFactor, true);
+            }
+            ScaledRealAdoptionData scaledAdoptionData = realAdoptionData.getScaledAdoptionData(scaleFactor);
+            if(scaledAdoptionData.getScale() != scaleFactor) {
+                throw new IllegalStateException("scale mismatch: " + scaledAdoptionData.getScale() + " != " + scaleFactor);
+            }
+            return scaledAdoptionData;
+        }
+    }
+
     protected String getZIP(ConsumerAgent agent, String key) {
         return agent.findAttribute(key).asValueAttribute().getStringValue();
+    }
+
+    protected double getScaleFactor() {
+        return environment.getAgents().getInitialAgentPopulation().hasScale()
+                ? environment.getAgents().getInitialAgentPopulation().getScale()
+                : 1.0;
     }
 }

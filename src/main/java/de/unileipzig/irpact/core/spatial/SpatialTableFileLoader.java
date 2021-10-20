@@ -135,9 +135,14 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
     protected ResourceLoader loader;
     protected String inputFileName;
     protected Table<SpatialAttribute> data;
+    protected double coverage = Double.NaN;
     protected boolean preferCsv = false;
 
     public SpatialTableFileLoader() {
+    }
+
+    public void setCoverage(double coverage) {
+        this.coverage = coverage;
     }
 
     public void setLoader(ResourceLoader loader) {
@@ -161,7 +166,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         if(data == null) {
             throw new IllegalStateException("not initalized");
         }
-        return new SpatialTableFileContent(inputFileName, data);
+        return new SpatialTableFileContent(inputFileName, data, coverage);
     }
 
     private void parse() throws IOException, InvalidFormatException, ParsingException {

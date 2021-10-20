@@ -401,7 +401,7 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
     }
 
     protected void scheduleOnExec(List<IRPactAgentAPI> agents) throws Throwable {
-        List<PostAction<?>> postActions = Collections.synchronizedList(new ArrayList<>());
+        List<PostAction> postActions = Collections.synchronizedList(new ArrayList<>());
 
         //start
         List<IRPactAgentAPI> shuffledAgents = shuffleIfRequired(agents);
@@ -420,7 +420,7 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         }
 
         //postaction
-        List<PostAction<?>> shuffledPostActions = shuffleIfRequired(postActions);
+        List<PostAction> shuffledPostActions = shuffleIfRequired(postActions);
         List<PostActionTask> postTasks = shuffledPostActions.stream()
                 .map(PostActionTask::new)
                 .collect(Collectors.toList());
@@ -437,7 +437,7 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
     }
 
     protected void scheduleSelf(List<IRPactAgentAPI> agents) throws Throwable {
-        List<PostAction<?>> postActions = new ArrayList<>();
+        List<PostAction> postActions = new ArrayList<>();
 
         //start
         List<IRPactAgentAPI> shuffledAgents = shuffleIfRequired(agents);
@@ -453,9 +453,9 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) {} tasks finished", getName(), shuffledAgents.size());
 
         //postaction
-        List<PostAction<?>> shuffledPostActions = shuffleIfRequired(postActions);
+        List<PostAction> shuffledPostActions = shuffleIfRequired(postActions);
         log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} postactions", getName(), shuffledPostActions.size());
-        for(PostAction<?> action: shuffledPostActions) {
+        for(PostAction action: shuffledPostActions) {
             try {
                 action.execute();
             } catch (Throwable t) {
@@ -474,11 +474,11 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
      */
     protected static class LoopTask implements Callable<Void> {
 
-        protected List<PostAction<?>> postActions;
+        protected List<PostAction> postActions;
         protected IRPactAgentAPI agent;
         protected Throwable t;
 
-        public LoopTask(IRPactAgentAPI agent, List<PostAction<?>> postActions) {
+        public LoopTask(IRPactAgentAPI agent, List<PostAction> postActions) {
             this.agent = agent;
             this.postActions = postActions;
         }
@@ -516,10 +516,10 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
      */
     protected static class PostActionTask implements Callable<Void> {
 
-        protected PostAction<?> postAction;
+        protected PostAction postAction;
         protected Throwable t;
 
-        public PostActionTask(PostAction<?> postAction) {
+        public PostActionTask(PostAction postAction) {
             this.postAction = postAction;
         }
 
@@ -538,7 +538,7 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
             t = null;
         }
 
-        public PostAction<?> getPostAction() {
+        public PostAction getPostAction() {
             return postAction;
         }
 

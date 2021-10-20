@@ -37,7 +37,7 @@ public class DefaultActionModule extends AbstractActionModule implements Consume
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         trace("[{}] handle default actions", data.getAgent().getName());
         return doAction(data, postActions);
     }

@@ -77,4 +77,8 @@ public class Map4<A, B, C, D> {
         D newValue = op.apply(current);
         return put(a, b, c, newValue);
     }
+
+    public D computeIfAbsent(A a, B b, C c, Function<? super C, ? extends D> func) {
+        return getMap1(a, b).computeIfAbsent(c, func);
+    }
 }

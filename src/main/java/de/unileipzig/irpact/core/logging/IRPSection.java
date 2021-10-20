@@ -94,7 +94,29 @@ public enum IRPSection implements LoggingSection {
     /**
      * Special logging section for debugging.
      */
-    DEBUG
+    DEBUG,
+
+    //=====
+
+    /**
+     * Trace level 0, default trace.
+     */
+    TRACE0,
+
+    /**
+     * Trace level 1
+     */
+    TRACE1,
+
+    /**
+     * Trace level 2
+     */
+    TRACE2,
+
+    /**
+     * Trace level 3
+     */
+    TRACE3,
     ;
 
     @Override

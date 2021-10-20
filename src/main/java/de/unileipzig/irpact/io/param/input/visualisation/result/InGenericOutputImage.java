@@ -59,8 +59,10 @@ public class InGenericOutputImage implements InOutputImage {
         setDefault(res, thisClass(), varargs(
                 IRPact.IMAGE_ANNUAL_ADOPTIONS,
                 IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP,
+                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS,
                 IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,
-                IRPact.IMAGE_ANNUAL_INTEREST
+                IRPact.IMAGE_ANNUAL_INTEREST,
+                IRPact.IMAGE_PHASE_OVERVIEW
         ));
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
