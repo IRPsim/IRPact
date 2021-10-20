@@ -1,13 +1,9 @@
 package de.unileipzig.irpact.start;
 
-import de.unileipzig.irpact.commons.graph2.CachedDirectedMultiGraph2;
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.SectionLoggingFilter;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.RAHelperAPI2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.AnnualAvgNPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.GlobalAvgNPVModule2;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;

@@ -14,7 +14,7 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.InitializationStage;
@@ -86,7 +86,7 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "13";
+    private static final String MINOR_STRING = "14";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -386,6 +386,7 @@ public final class IRPact implements IRPActAccess {
         JadexInputParser parser = new JadexInputParser();
         parser.setSimulationYear(year);
         parser.setResourceLoader(META_DATA.getLoader());
+        parser.setOptions(CL_OPTIONS);
         environment = parser.parseRoot(inRoot);
         environment.getSettings().setFirstSimulationYear(year);
     }
@@ -396,6 +397,7 @@ public final class IRPact implements IRPActAccess {
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
         updater.setResourceLoader(META_DATA.getLoader());
+        updater.setOptions(CL_OPTIONS);
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 META_DATA,
@@ -1039,6 +1041,7 @@ public final class IRPact implements IRPActAccess {
 
     private void finalTask() {
         LOGGER.info(IRPSection.GENERAL, "simulation finished");
+        environment.closeEntities();
         copyLogIfPossible();;
         IRPLogging.terminate();
         clearConverterCache();

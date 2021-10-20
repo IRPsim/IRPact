@@ -4,7 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCARAEvaluationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -46,8 +46,7 @@ public class SetPhaseModule2
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleInfo(input);
-
-        updateStage(input, stage);
+        input.setStage(stage);
         return stage;
     }
 }

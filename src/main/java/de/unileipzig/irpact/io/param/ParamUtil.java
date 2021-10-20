@@ -19,6 +19,7 @@ import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,12 +44,15 @@ public final class ParamUtil {
     public static final String SHAPE_DIAMOND = "diamond";
     public static final String SHAPE_SQUARE = "square";
     public static final String SHAPE_PENTAGON = "pentagon";
+    public static final String SHAPE_CIRCLE = "circle";
 
     public static final String COLOR_DARK_CYAN = "DarkCyan";
     public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
     public static final String COLOR_GREEN = "Green";
     public static final String COLOR_RED = "Red";
     public static final String COLOR_BLUE = "Blue";
+    public static final String COLOR_YELLOW = "Yellow";
+    public static final String COLOR_MAGENTA = "Magenta";
 
     public static final String UNIT_PIXEL = "[Pixel]";
 
@@ -122,6 +126,10 @@ public final class ParamUtil {
 
     public static UnaryOperator<String> buildDefaultScalarNameOperator(Class<?> c) {
         return field -> buildDefaultScalarName(c, field);
+    }
+
+    public static Object[] asValue(Object singleton) {
+        return varargs(singleton);
     }
 
     public static Object[] varargs(Object singleton) {

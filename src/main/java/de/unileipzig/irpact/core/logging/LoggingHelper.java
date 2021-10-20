@@ -47,6 +47,62 @@ public interface LoggingHelper {
     }
 
     //=========================
+    //trace levels
+    //=========================
+
+    default void trace0(String msg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE0, useDefaultSection(), msg);
+    }
+    default void trace0(String format, Object arg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE0, useDefaultSection(), format, arg);
+    }
+    default void trace0(String format, Object arg1, Object arg2) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE0, useDefaultSection(), format, arg1, arg2);
+    }
+    default void trace0(String format, Object... args) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE0, useDefaultSection(), format, args);
+    }
+
+    default void trace1(String msg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE1, useDefaultSection(), msg);
+    }
+    default void trace1(String format, Object arg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE1, useDefaultSection(), format, arg);
+    }
+    default void trace1(String format, Object arg1, Object arg2) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE1, useDefaultSection(), format, arg1, arg2);
+    }
+    default void trace1(String format, Object... args) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE1, useDefaultSection(), format, args);
+    }
+
+    default void trace2(String msg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE2, useDefaultSection(), msg);
+    }
+    default void trace2(String format, Object arg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE2, useDefaultSection(), format, arg);
+    }
+    default void trace2(String format, Object arg1, Object arg2) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE2, useDefaultSection(), format, arg1, arg2);
+    }
+    default void trace2(String format, Object... args) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE2, useDefaultSection(), format, args);
+    }
+
+    default void trace3(String msg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE3, useDefaultSection(), msg);
+    }
+    default void trace3(String format, Object arg) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE3, useDefaultSection(), format, arg);
+    }
+    default void trace3(String format, Object arg1, Object arg2) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE3, useDefaultSection(), format, arg1, arg2);
+    }
+    default void trace3(String format, Object... args) {
+        IRPLogging.trace(getDefaultLogger(), IRPSection.TRACE3, useDefaultSection(), format, args);
+    }
+
+    //=========================
     //debug
     //=========================
 

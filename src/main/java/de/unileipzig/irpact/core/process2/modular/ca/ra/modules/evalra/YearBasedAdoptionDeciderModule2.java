@@ -4,7 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractUniformCAMultiModule1_2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.RAEvaluationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -75,11 +75,11 @@ public class YearBasedAdoptionDeciderModule2
             double threshold = getThreshold(input);
 
             if(threshold < 0.0) {
-                trace("[{}]@[{}] threshold == {}: IMPEDED", input.getAgentName(), getName(), threshold);
+                trace("[{}]@[{}] threshold == {}: (auto) IMPEDED", input.getAgentName(), getName(), threshold);
                 return RAStage2.IMPEDED;
             }
             if(threshold >= 1.0) {
-                trace("[{}]@[{}] threshold == {}: ADOPTED", input.getAgentName(), getName(), threshold);
+                trace("[{}]@[{}] threshold == {}: (auto) ADOPTED", input.getAgentName(), getName(), threshold);
                 return RAStage2.ADOPTED;
             }
 

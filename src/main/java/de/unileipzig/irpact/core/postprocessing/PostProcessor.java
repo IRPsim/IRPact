@@ -6,12 +6,13 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.FallbackAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data3.ScaledRealAdoptionData;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
@@ -20,7 +21,6 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
-import de.unileipzig.irpact.io.param.input.visualisation.result.InOutputImage;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -225,7 +225,30 @@ public abstract class PostProcessor implements LoggingHelper {
         }
     }
 
+    public RealAdoptionData getScaledRealAdoptionData(InRealAdoptionDataFile file) {
+        RealAdoptionData realAdoptionData = getRealAdoptionData(file);
+        double scaleFactor = getScaleFactor();
+        if(scaleFactor == 1.0) {
+            return realAdoptionData;
+        } else {
+            if(!realAdoptionData.hasScaledAdoptionData(scaleFactor)) {
+                realAdoptionData.createScaledAdoptionData(scaleFactor, true);
+            }
+            ScaledRealAdoptionData scaledAdoptionData = realAdoptionData.getScaledAdoptionData(scaleFactor);
+            if(scaledAdoptionData.getScale() != scaleFactor) {
+                throw new IllegalStateException("scale mismatch: " + scaledAdoptionData.getScale() + " != " + scaleFactor);
+            }
+            return scaledAdoptionData;
+        }
+    }
+
     protected String getZIP(ConsumerAgent agent, String key) {
         return agent.findAttribute(key).asValueAttribute().getStringValue();
+    }
+
+    protected double getScaleFactor() {
+        return environment.getAgents().getInitialAgentPopulation().hasScale()
+                ? environment.getAgents().getInitialAgentPopulation().getScale()
+                : 1.0;
     }
 }

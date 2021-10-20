@@ -177,6 +177,13 @@ public final class AttributeHelper extends SimulationEntityBase {
         }
         return getDoubleValue(attribute);
     }
+    public double getDoubleValue(ConsumerAgent agent, String name, int year) throws IRPactNoSuchElementException {
+        ConsumerAgentAttribute attribute = agent.getAttribute(name);
+        if(attribute == null) {
+            handleMissingAttribute(agent, name);
+        }
+        return getDoubleValue(year, attribute);
+    }
     public double findDoubleValue(ConsumerAgent agent, String name) throws IRPactNoSuchElementException {
         Attribute attribute = agent.findAttribute(name);
         if(attribute == null) {
@@ -211,6 +218,19 @@ public final class AttributeHelper extends SimulationEntityBase {
             handleMissingAttribute(agent, name);
         }
         return getDoubleValue(attribute, product);
+    }
+
+    //=========================
+    //or product
+    //=========================
+
+    public double tryGetDoubleValue(ConsumerAgent agent, Product product, String name) throws IRPactNoSuchElementException {
+        ConsumerAgentAttribute attribute = agent.getAttribute(name);
+        if(attribute == null) {
+            return getDoubleValue(agent, product, name);
+        } else {
+            return getDoubleValue(attribute);
+        }
     }
 
     //==================================================

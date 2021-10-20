@@ -1,9 +1,12 @@
 package de.unileipzig.irpact.core.process2.modular.modules.core;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.ListSupplier;
+import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -24,10 +27,27 @@ public abstract class AbstractUniformMultiModuleN_2<I, O, I2, O2, M extends Modu
         MODULES = supplier.newList();
     }
 
+    protected void sortPriority() {
+        MODULES.sort(PRIORITY_COMPARATOR);
+    }
+
     @Override
     public void validate() throws Throwable {
         validateSubmodules();
         validateSelf();
+    }
+
+    @Override
+    public void setSharedData(SharedModuleData sharedData) {
+        traceSetSharedData();
+        setSharedDataThis(sharedData);
+        for(int i = 0; i < getSubmoduleCount(); i++) {
+            getNonnullSubmodule(i).setSharedData(sharedData);
+        }
+    }
+
+    protected void setSharedDataThis(SharedModuleData sharedData) {
+        this.sharedData = sharedData;
     }
 
     protected void validateSubmodules() throws Throwable {
@@ -40,8 +60,13 @@ public abstract class AbstractUniformMultiModuleN_2<I, O, I2, O2, M extends Modu
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
-        initializeSubmodules(environment);
+        if(alreadyInitalized()) {
+            return;
+        }
+
         initializeSelf(environment);
+        initializeSubmodules(environment);
+        setInitalized();
     }
 
     protected void initializeSubmodules(SimulationEnvironment environment) throws Throwable {
@@ -51,6 +76,12 @@ public abstract class AbstractUniformMultiModuleN_2<I, O, I2, O2, M extends Modu
     }
 
     protected abstract void initializeSelf(SimulationEnvironment environment) throws Throwable;
+
+    protected List<String> listSubmoduleNames() {
+        return MODULES.stream()
+                .map(Nameable::getName)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public int getSubmoduleCount() {
@@ -68,6 +99,10 @@ public abstract class AbstractUniformMultiModuleN_2<I, O, I2, O2, M extends Modu
             throw new NullPointerException("index: " + index);
         }
         return submodule;
+    }
+
+    public void add(M module) {
+        MODULES.add(module);
     }
 
     public void set(int index, M module) {

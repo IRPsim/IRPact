@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process2.modular.modules.core;
 
+import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 /**
@@ -25,6 +26,23 @@ public abstract class AbstractUniformMultiModule6_2<I, O, I2, O2, M extends Modu
         validateSelf();
     }
 
+    @Override
+    public void setSharedData(SharedModuleData sharedData) {
+        traceSetSharedData();
+        super.setSharedData(sharedData);
+        setSharedDataThis(sharedData);
+        getNonnullSubmodule1().setSharedData(sharedData);
+        getNonnullSubmodule2().setSharedData(sharedData);
+        getNonnullSubmodule3().setSharedData(sharedData);
+        getNonnullSubmodule4().setSharedData(sharedData);
+        getNonnullSubmodule5().setSharedData(sharedData);
+        getNonnullSubmodule6().setSharedData(sharedData);
+    }
+
+    protected void setSharedDataThis(SharedModuleData sharedData) {
+        this.sharedData = sharedData;
+    }
+
     protected void validateSubmodules() throws Throwable {
         getNonnullSubmodule1().validate();
         getNonnullSubmodule2().validate();
@@ -38,8 +56,13 @@ public abstract class AbstractUniformMultiModule6_2<I, O, I2, O2, M extends Modu
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
-        initializeSubmodules(environment);
+        if(alreadyInitalized()) {
+            return;
+        }
+
         initializeSelf(environment);
+        initializeSubmodules(environment);
+        setInitalized();
     }
 
     protected void initializeSubmodules(SimulationEnvironment environment) throws Throwable {

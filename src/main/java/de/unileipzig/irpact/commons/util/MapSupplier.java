@@ -13,7 +13,8 @@ public enum MapSupplier {
     HASH(0),
     LINKED(1),
     TREE(2),
-    CONCURRENT_HASH(3);
+    CONCURRENT_HASH(3),
+    CONCURRENT_LINKED(4);
 
     private final int ID;
 
@@ -45,6 +46,9 @@ public enum MapSupplier {
             case 3:
                 return new ConcurrentHashMap<>();
 
+            case 4:
+                return Collections.synchronizedMap(new LinkedHashMap<>());
+
             default:
                 throw new IllegalStateException("unknown");
         }
@@ -72,6 +76,9 @@ public enum MapSupplier {
             case 3:
                 return new ConcurrentHashMap<>(m);
 
+            case 4:
+                return Collections.synchronizedMap(new LinkedHashMap<>(m));
+
             default:
                 throw new IllegalStateException("unknown");
         }
@@ -90,6 +97,9 @@ public enum MapSupplier {
 
             case 3:
                 return CONCURRENT_HASH;
+
+            case 4:
+                return CONCURRENT_LINKED;
 
             default:
                 return UNKNOWN;

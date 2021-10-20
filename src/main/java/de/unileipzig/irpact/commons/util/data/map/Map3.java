@@ -43,6 +43,10 @@ public class Map3<A, B, C> {
         return map.computeIfAbsent(a, map0Creator);
     }
 
+    public void clear() {
+        map.clear();
+    }
+
     public C put(A a, B b, C c) {
         return getMap0(a).put(b, c);
     }

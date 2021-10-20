@@ -15,8 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.IOConstants.FILES;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
@@ -36,7 +35,7 @@ public class InSpatialTableFile implements InFile {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), FILES, thisName());
-        addEntry(res, thisClass(), "placeholderInSpatialFile");
+        addEntryWithDefaultAndDomain(res, thisClass(), "coverage", VALUE_1, DOMAIN_GEQ0);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InSpatialTableFile.class);
@@ -44,7 +43,13 @@ public class InSpatialTableFile implements InFile {
     public String _name;
 
     @FieldDefinition
-    public double placeholderInSpatialFile;
+    public double coverage = 1.0;
+    public void setCoverage(double coverage) {
+        this.coverage = coverage;
+    }
+    public double getCoverage() {
+        return coverage;
+    }
 
     public InSpatialTableFile() {
     }
@@ -81,6 +86,7 @@ public class InSpatialTableFile implements InFile {
             SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
             gisLoader.setLoader(parser.getResourceLoader());
             gisLoader.setInputFileName(fileName);
+            gisLoader.setCoverage(getCoverage());
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             gisLoader.initalize();
             SpatialTableFileContent spatialData = gisLoader.getAllAttributes();

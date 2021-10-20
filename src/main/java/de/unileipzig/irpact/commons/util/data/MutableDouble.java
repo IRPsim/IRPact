@@ -39,6 +39,14 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return new MutableDouble(Double.NaN);
     }
 
+    public static MutableDouble negativeMaxValue() {
+        return new MutableDouble(-Double.MAX_VALUE);
+    }
+
+    public static MutableDouble positiveMaxValue() {
+        return new MutableDouble(Double.MAX_VALUE);
+    }
+
     public static MutableDouble wrap(double value) {
         return new MutableDouble(value);
     }

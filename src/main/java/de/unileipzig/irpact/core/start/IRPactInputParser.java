@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 /**
  * @author Daniel Abitz
@@ -20,6 +21,8 @@ public interface IRPactInputParser extends InputParser {
     int getSimulationYear();
 
     ResourceLoader getResourceLoader();
+
+    MainCommandLineOptions getOptions();
 
     Rnd deriveRnd();
 

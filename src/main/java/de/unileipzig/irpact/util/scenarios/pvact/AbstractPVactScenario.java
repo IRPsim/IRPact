@@ -1,7 +1,9 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
+import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -18,6 +20,19 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InGeneralIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -299,6 +314,309 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setAdoptionCertaintyFactor(1.0);
         return processModel;
     }
+
+    public InBasicCAModularProcessModel createDefaultModularProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
+
+        //ACTION
+        InAttributeInputModule_inputgraphnode2 commuAttr = new InAttributeInputModule_inputgraphnode2();
+        commuAttr.setName("ATTR_COMMUNICATION");
+        commuAttr.setAttribute(getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN));
+        InMulScalarModule_calcgraphnode2 commuAttrWeight = new InMulScalarModule_calcgraphnode2();
+        commuAttrWeight.setName("FACTOR_COMMUNICATION");
+        commuAttrWeight.setScalar(1.0);
+        commuAttrWeight.setInput(commuAttr);
+        InIfThresholdModule_boolgraphnode2 commuIf = new InIfThresholdModule_boolgraphnode2();
+        commuIf.setName("IF_COMMUNICATION");
+        commuIf.setInput(commuAttrWeight);
+        InCommunicationModule_actiongraphnode2 commuAction = new InCommunicationModule_actiongraphnode2();
+        commuAction.setName("COMMU_ACTION");
+        commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+        commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+        commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+        commuAction.setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+        commuAction.setSpeedOfConvergence(speedOfConvergence);
+        commuAction.setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
+        commuAction.setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
+        commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
+        commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
+        commuAction.setUncertainty(uncertainty);
+        InIfDoActionModule_boolgraphnode2 commuDo = new InIfDoActionModule_boolgraphnode2();
+        commuDo.setName("COMMU");
+        commuDo.setPriority(1);
+        commuDo.setIfInput(commuIf);
+        commuDo.setTaskInput(commuAction);
+
+        InAttributeInputModule_inputgraphnode2 rewireAttr = new InAttributeInputModule_inputgraphnode2();
+        rewireAttr.setName("ATTR_REWIRE");
+        rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
+        InMulScalarModule_calcgraphnode2 rewireAttrWeight = new InMulScalarModule_calcgraphnode2();
+        rewireAttrWeight.setName("REWIRE_COMMUNICATION");
+        rewireAttrWeight.setScalar(1.0);
+        rewireAttrWeight.setInput(rewireAttr);
+        InIfThresholdModule_boolgraphnode2 rewireIf = new InIfThresholdModule_boolgraphnode2();
+        rewireIf.setName("IF_REWIRE");
+        rewireIf.setInput(rewireAttrWeight);
+        InRewireModule_actiongraphnode2 rewireAction = new InRewireModule_actiongraphnode2();
+        rewireAction.setName("REWIRE_ACTION");
+        InIfDoActionModule_boolgraphnode2 rewireDo = new InIfDoActionModule_boolgraphnode2();
+        rewireDo.setName("REWIRE");
+        rewireDo.setPriority(2);
+        rewireDo.setIfInput(rewireIf);
+        rewireDo.setTaskInput(rewireAction);
+
+
+        InStopAfterSuccessfulTaskModule_actiongraphnode2 actions = new InStopAfterSuccessfulTaskModule_actiongraphnode2();
+        actions.setName("ACTIONS");
+        actions.setInput(commuDo, rewireDo);
+
+        //INIT
+        InInitializationModule_evalragraphnode2 init = new InInitializationModule_evalragraphnode2();
+        init.setName("INIT");
+
+        //INTEREST
+        InInterestModule_evalragraphnode2 interest = new InInterestModule_evalragraphnode2();
+        interest.setName("INTEREST");
+        interest.setInput(actions);
+
+        //FEASIBILITY
+        InFeasibilityModule_evalragraphnode2 feasibility = new InFeasibilityModule_evalragraphnode2();
+        feasibility.setName("FEASIBITLITY");
+        feasibility.setInput(actions);
+
+        //===
+        //DECISION
+
+        //npv
+        InGlobalAvgNPVModule_inputgraphnode2 avgNPV = new InGlobalAvgNPVModule_inputgraphnode2();
+        avgNPV.setName("AVG_NPV");
+        avgNPV.setPvFile(getPVFile());
+        InNPVModule_inputgraphnode2 npv = new InNPVModule_inputgraphnode2();
+        npv.setName("NPV");
+        npv.setPvFile(getPVFile());
+        InLogisticModule_calcgraphnode2 logisticNPV = new InLogisticModule_calcgraphnode2();
+        logisticNPV.setName("LOGISTIC_NPV");
+        logisticNPV.setValueL(1.0);
+        logisticNPV.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+        logisticNPV.setXInput(npv);
+        logisticNPV.setX0Input(avgNPV);
+
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        npvLogger.setName(LazyData2FileLinker.NPV_LOGGER);
+        npvLogger.setInput(logisticNPV);
+        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 npvReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
+        npvReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
+        npvReevaluator.setInput(logisticNPV);
+        npvReevaluator.setStoreXlsx(true);
+
+        //pp
+        InAttributeInputModule_inputgraphnode2 pp = new InAttributeInputModule_inputgraphnode2();
+        pp.setName("PP");
+        pp.setAttribute(getAttribute(RAConstants.PURCHASE_POWER_EUR));
+        InAvgFinModule_inputgraphnode2 avgPP = new InAvgFinModule_inputgraphnode2();
+        avgPP.setName("AVG_PP");
+        InLogisticModule_calcgraphnode2 logisticPP = new InLogisticModule_calcgraphnode2();
+        logisticPP.setName("LOGISTIC_PP");
+        logisticPP.setValueL(1.0);
+        logisticPP.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+        logisticPP.setXInput(pp);
+        logisticPP.setX0Input(avgPP);
+
+        //fin comp
+        InMulScalarModule_calcgraphnode2 npvWeight = new InMulScalarModule_calcgraphnode2();
+        npvWeight.setName("NPV_WEIGHT");
+        npvWeight.setScalar(RealData.WEIGHT_NPV);
+        npvWeight.setInput(npvLogger);
+        InMulScalarModule_calcgraphnode2 ppWeight = new InMulScalarModule_calcgraphnode2();
+        ppWeight.setName("PP_WEIGHT");
+        ppWeight.setScalar(RealData.WEIGHT_EK);
+        ppWeight.setInput(logisticPP);
+        InSumModule_calcgraphnode2 finComp = new InSumModule_calcgraphnode2();
+        finComp.setName("FIN_COMPONENT");
+        finComp.setInput(npvWeight, ppWeight);
+
+        //env comp
+        InAttributeInputModule_inputgraphnode2 envAttr = new InAttributeInputModule_inputgraphnode2();
+        envAttr.setName("ENV");
+        envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        envLogger.setName(LazyData2FileLinker.ENV_LOGGER);
+        envLogger.setInput(envAttr);
+        InScaledWeightModule_calcgraphnode2 envWeight = new InScaledWeightModule_calcgraphnode2();
+        envWeight.setName("ENV_WEIGHT");
+        envWeight.setInitialWeight(RealData.WEIGHT_EK);
+        envWeight.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+        envWeight.setInput(envLogger);
+        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 envReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
+        envReevaluator.setName(LazyData2FileLinker.ENV_REEVAL);
+        envReevaluator.setInput(envAttr);
+        envReevaluator.setStoreXlsx(true);
+
+        //nov comp
+        InAttributeInputModule_inputgraphnode2 novAttr = new InAttributeInputModule_inputgraphnode2();
+        novAttr.setName("NOV");
+        novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        novLogger.setName(LazyData2FileLinker.NOV_LOGGER);
+        novLogger.setInput(novAttr);
+        InScaledWeightModule_calcgraphnode2 novWeight = new InScaledWeightModule_calcgraphnode2();
+        novWeight.setName("NOV_WEIGHT");
+        novWeight.setInitialWeight(RealData.WEIGHT_NS);
+        novWeight.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+        novWeight.setInput(novLogger);
+        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 novReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
+        novReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
+        novReevaluator.setInput(novAttr);
+        novReevaluator.setStoreXlsx(true);
+
+        //soc
+        InLocalShareOfAdopterModule_inputgraphnode2 localShare = new InLocalShareOfAdopterModule_inputgraphnode2();
+        localShare.setName("LOCAL_SHARE");
+        localShare.setMaxToStore(2000);
+        localShare.setNodeFilterScheme(null);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        localLogger.setName(LazyData2FileLinker.LOCAL_LOGGER);
+        localLogger.setInput(localShare);
+        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 localReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
+        localReevaluator.setName(LazyData2FileLinker.LOCAL_REEVAL);
+        localReevaluator.setInput(localShare);
+        localReevaluator.setStoreXlsx(true);
+
+        InSocialShareOfAdopterModule_inputgraphnode2 socialShare = new InSocialShareOfAdopterModule_inputgraphnode2();
+        socialShare.setName("SOCIAL_SHARE");
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        socialLogger.setName(LazyData2FileLinker.SOCIAL_LOGGER);
+        socialLogger.setInput(socialShare);
+        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 socialReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
+        socialReevaluator.setName(LazyData2FileLinker.SOCIAL_REEVAL);
+        socialReevaluator.setInput(socialShare);
+        socialReevaluator.setStoreXlsx(true);
+
+        InMulScalarModule_calcgraphnode2 localWeight = new InMulScalarModule_calcgraphnode2();
+        localWeight.setName("LOCAL_WEIGHT");
+        localWeight.setScalar(RealData.WEIGHT_LOCALE);
+        localWeight.setInput(localLogger);
+        InMulScalarModule_calcgraphnode2 socialWeight = new InMulScalarModule_calcgraphnode2();
+        socialWeight.setName("SOCIAL_WEIGHT");
+        socialWeight.setScalar(RealData.WEIGHT_SOCIAL);
+        socialWeight.setInput(socialLogger);
+        InSumModule_calcgraphnode2 socComp = new InSumModule_calcgraphnode2();
+        socComp.setName("SOC_COMPONENT");
+        socComp.setInput(localWeight, socialWeight);
+
+        //decision
+        InAttributeInputModule_inputgraphnode2 finThreshold = new InAttributeInputModule_inputgraphnode2();
+        finThreshold.setName("FIN_THRESHOLD");
+        finThreshold.setAttribute(getAttribute(RAConstants.FINANCIAL_THRESHOLD));
+
+        InGeneralIfThresholdModule_boolgraphnode2 finCheck = new InGeneralIfThresholdModule_boolgraphnode2();
+        finCheck.setName("FIN_CHECK");
+        finCheck.setDraw(pp);
+        finCheck.setThreshold(finThreshold);
+
+        InDecisionMakingModule_calcgraphnode2 decision = new InDecisionMakingModule_calcgraphnode2();
+        decision.setName("DECISION_MAKING");
+        decision.setFinancialCheckComponent(finCheck);
+        decision.setInput(
+                finComp,
+                envWeight,
+                novWeight,
+                socComp
+        );
+
+        InDecisionMakingDeciderModule2_evalragraphnode2 decisionDecider = new InDecisionMakingDeciderModule2_evalragraphnode2();
+        decisionDecider.setName("DECISION_DECIDER");
+        decisionDecider.setThreshold(0.0);
+        decisionDecider.setInput(decision);
+
+        InYearBasedAdoptionDeciderModule_evalragraphnode2 nextDecisionDecider = new InYearBasedAdoptionDeciderModule_evalragraphnode2();
+        nextDecisionDecider.setName("DECISION_DECIDER");
+        nextDecisionDecider.setBase(1);
+        nextDecisionDecider.setFactor(0);
+        nextDecisionDecider.setInput(decisionDecider);
+
+        //MAIN
+        InMainBranchingModule_evalragraphnode2 mainBranch = new InMainBranchingModule_evalragraphnode2();
+        mainBranch.setName("CORE");
+        mainBranch.setInit(init);
+        mainBranch.setAwareness(interest);
+        mainBranch.setFeasibility(feasibility);
+        mainBranch.setDecision(nextDecisionDecider);
+        mainBranch.setImpeded(actions);
+        mainBranch.setAdopted(actions);
+
+        InPhaseLoggingModule_evalragraphnode2 phaseLogger = new InPhaseLoggingModule_evalragraphnode2();
+        phaseLogger.setName("PHASE_LOGGER");
+        phaseLogger.setInput(mainBranch);
+
+        InPhaseUpdateModule_evalragraphnode2 phaseUpdater = new InPhaseUpdateModule_evalragraphnode2();
+        phaseUpdater.setName("PHASE_UPDATER");
+        phaseUpdater.setInput(phaseLogger);
+
+        //PROCESS MODEL
+        InRunUntilFailureModule_evalgraphnode2 startModule = new InRunUntilFailureModule_evalgraphnode2();
+        startModule.setName("START");
+        startModule.setInput(phaseUpdater);
+
+        InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
+        processModel.setName(name);
+        processModel.setStartModule(startModule);
+
+        //NEW PRODUCT
+        processModel.addNewProductHandlers(
+                getDefaultPVactFileBasedWeightedInitialAdopter()
+        );
+
+        //START OF YEAR
+        InImpededResetter impededResetter = new InImpededResetter();
+        impededResetter.setName("IMPEDED_RESETTER");
+
+        processModel.addStartOfYearReevaluators(
+                impededResetter
+        );
+
+        //MID OF YEAR
+        InConstructionRenovationUpdater constructionRenovationUpdater = new InConstructionRenovationUpdater();
+        constructionRenovationUpdater.setName("CONSTRUCTION_RENOVATION_UPDATER");
+
+        processModel.addMidOfYearReevaluators(
+                constructionRenovationUpdater
+        );
+
+        //END OF YEAR
+        InPhaseLoggingModule_evalragraphnode2 decisionReevalPhaseLogger = new InPhaseLoggingModule_evalragraphnode2();
+        decisionReevalPhaseLogger.setName("PHASE_REEVAL_LOGGER");
+        decisionReevalPhaseLogger.setInput(nextDecisionDecider);
+
+        InPhaseUpdateModule_evalragraphnode2 decisionReevalPhaseUpdater = new InPhaseUpdateModule_evalragraphnode2();
+        decisionReevalPhaseUpdater.setName("PHASE_REEVAL_UPDATER");
+        decisionReevalPhaseUpdater.setInput(decisionReevalPhaseLogger);
+
+        InAnnualInterestLogger annualInterestLogger = new InAnnualInterestLogger();
+        annualInterestLogger.setName("ANNUAL_INTEREST_LOGGER");
+        InDecisionMakingReevaluator decisionMakingReevaluator = new InDecisionMakingReevaluator();
+        decisionMakingReevaluator.setName("DECISION_REEVALUATOR");
+        decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
+
+        InReevaluatorModuleLinker endOfYearLinker = new InReevaluatorModuleLinker();
+        endOfYearLinker.setName("END_OF_YEAR_LINKER");
+        endOfYearLinker.setModules(
+                npvReevaluator,
+                envReevaluator,
+                novReevaluator,
+                socialReevaluator,
+                localReevaluator
+        );
+
+        processModel.addEndOfYearReevaluator(
+                annualInterestLogger,
+                decisionMakingReevaluator,
+                endOfYearLinker
+        );
+
+        //===
+        return processModel;
+    }
+
 
     public InUnitStepDiscreteTimeModel createOneWeekTimeModel(String name) {
         InUnitStepDiscreteTimeModel timeModel = new InUnitStepDiscreteTimeModel();

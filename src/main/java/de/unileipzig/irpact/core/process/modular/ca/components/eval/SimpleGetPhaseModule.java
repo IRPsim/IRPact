@@ -58,7 +58,7 @@ public class SimpleGetPhaseModule extends AbstractConsumerAgentModule implements
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData input, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData input, List<PostAction> postActions) throws Throwable {
         return getValidAdoptionResult();
     }
 }

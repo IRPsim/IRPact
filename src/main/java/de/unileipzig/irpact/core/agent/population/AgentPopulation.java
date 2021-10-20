@@ -15,7 +15,15 @@ public interface AgentPopulation {
 
     int total();
 
+    void setCoverage(double coverage);
+
+    boolean hasCoverage();
+
+    double getCoverage();
+
     void setMaximumPossibleSize(int size);
+
+    boolean hasMaximumPossibleSize();
 
     int getMaximumPossibleSize();
 

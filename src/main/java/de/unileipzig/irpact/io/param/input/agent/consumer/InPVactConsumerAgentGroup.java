@@ -455,7 +455,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         cagAttr.setName(name);
         cagAttr.setArtificial(false);
         cagAttr.setDistribution(dist);
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' ('{}') to group '{}'", cagAttr.getName(), cagAttr.getName(), jcag.getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add ConsumerAgentGroupAttribute '{}' to group '{}'", cagAttr.getName(), jcag.getName());
         jcag.addGroupAttribute(cagAttr);
     }
 

@@ -166,7 +166,7 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
     }
 
     @Override
-    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+    public ProcessPlanResult execute(List<PostAction> postActions) throws Throwable {
         if(currentStage() == Stage.PRE_INITIALIZATION) {
             return initPlan(postActions);
         } else {
@@ -174,7 +174,7 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
         }
     }
 
-    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult initPlan(List<PostAction> postActions) throws Throwable {
         if(getAgent().hasAdopted(getProduct())) {
             updateStage(Stage.ADOPTED);
         } else {
@@ -184,7 +184,7 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
         return executePlan(postActions);
     }
 
-    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult executePlan(List<PostAction> postActions) throws Throwable {
         ConsumerAgentEvaluationModule module = getValidModel().getStartModule();
         if(module == null) {
             throw new NullPointerException("ConsumerAgentEvaluationModule");

@@ -32,6 +32,10 @@ public final class TimeUtil {
         return zone;
     }
 
+    public static int getYear(long epochMilli) {
+        return msToTime(epochMilli).getYear();
+    }
+
     public static ZonedDateTime msToTime(long epochMilli) {
         return ZonedDateTime.ofInstant(
                 Instant.ofEpochMilli(epochMilli),

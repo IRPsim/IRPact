@@ -3,7 +3,7 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractUniformCAMultiModule1_2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.RAEvaluationModule2;

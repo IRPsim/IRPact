@@ -160,6 +160,7 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
 
         AgentPopulation population = parser.getEnvironment().getAgents().getInitialAgentPopulation();
         int usedSize = sizes.values().stream().mapToInt(i -> i).sum();
+        population.setCoverage(fileContent.getCoverage());
         population.setMaximumPossibleSize(fileContent.size());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set maximum possible size: {} (used={})", fileContent.size(), usedSize);
         for(Map.Entry<String, Integer> entry: sizes.entrySet()) {

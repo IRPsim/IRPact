@@ -47,6 +47,7 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -67,6 +68,7 @@ public class JadexInputParser implements IRPactInputParser {
 
     private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
+    private MainCommandLineOptions options;
 
     private final MutableInt simulationYear = MutableInt.empty();
     private BasicJadexSimulationEnvironment environment;
@@ -105,6 +107,15 @@ public class JadexInputParser implements IRPactInputParser {
 
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
+    }
+
+    public void setOptions(MainCommandLineOptions options) {
+        this.options = options;
+    }
+
+    @Override
+    public MainCommandLineOptions getOptions() {
+        return options;
     }
 
     @Override

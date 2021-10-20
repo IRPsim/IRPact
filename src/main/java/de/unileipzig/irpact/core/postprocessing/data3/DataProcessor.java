@@ -14,8 +14,8 @@ import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -522,6 +522,11 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logEvaluationData0(EvaluationMode mode, Path target) throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         List<Product> products = getAllProducts();
         if(products.size() != 1) {
             throw new IllegalArgumentException("products");
@@ -724,6 +729,11 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logEvaluation0() throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_CSV);
         Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_XLSX);
 
@@ -817,6 +827,11 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logFinancialComponent0() throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_CSV);
         Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_XLSX);
 
@@ -898,7 +913,7 @@ public class DataProcessor extends PostProcessor {
         if(realAdoptionDataFiles.size() > 1) throw new IllegalArgumentException("too many adoption files");
 
         InRealAdoptionDataFile file = realAdoptionDataFiles.get(0);
-        return getRealAdoptionData(file);
+        return getScaledRealAdoptionData(file);
     }
 
     protected Path getPath(String name) throws IOException {

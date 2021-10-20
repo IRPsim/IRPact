@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.SetSupplier;
 import de.unileipzig.irpact.commons.util.WeightedProgressCalculator;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MapDataStore;
@@ -15,10 +16,10 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.*;
-import de.unileipzig.irpact.core.logging.BasicDataAnalyser;
-import de.unileipzig.irpact.core.logging.BasicDataLogger;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.BasicDataAnalyser;
+import de.unileipzig.irpact.core.logging.data.BasicDataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -39,6 +40,9 @@ import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Daniel Abitz
  */
@@ -52,6 +56,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
 
     protected Rnd rnd;
     protected boolean restored = false;
+
+    protected final Set<CloseableSimulationEntity> CLOSABLE_ENTITIES = SetSupplier.CONCURRENT_HASH.newSet();
 
     protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected final DataStore STORE = newStore();
@@ -158,6 +164,30 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public boolean isRestored() {
         return restored;
+    }
+
+    @Override
+    public void register(CloseableSimulationEntity entity) {
+        CLOSABLE_ENTITIES.add(entity);
+    }
+
+    @Override
+    public boolean unregister(CloseableSimulationEntity entity) {
+        return CLOSABLE_ENTITIES.remove(entity);
+    }
+
+    @Override
+    public void closeEntities() {
+        Set<CloseableSimulationEntity> copy = new HashSet<>(CLOSABLE_ENTITIES);
+        CLOSABLE_ENTITIES.clear();
+        LOGGER.trace("close entities: {}", copy.size());
+        for(CloseableSimulationEntity entity: copy) {
+            try {
+                entity.closeEntity();
+            } catch (Throwable t) {
+                LOGGER.warn("closing '" + entity + "' failed");
+            }
+        }
     }
 
     @Override

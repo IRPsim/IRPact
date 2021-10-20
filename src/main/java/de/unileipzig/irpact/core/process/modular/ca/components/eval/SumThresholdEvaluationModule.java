@@ -80,7 +80,7 @@ public class SumThresholdEvaluationModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         double sum = 0.0;
         for(ConsumerAgentCalculationModule subModule: getSubModules()) {
             sum += subModule.calculate(data);

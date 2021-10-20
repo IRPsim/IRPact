@@ -151,7 +151,7 @@ public class RAModelData implements ChecksumComparable {
     }
 
     public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        return npvDataSupplier.avgNPV(agents, year);
+        return npvDataSupplier.annualAvgAgentNPV(agents, year);
     }
 
     public double getAverageFinancialPurchasePower(Stream<? extends ConsumerAgent> agents) {

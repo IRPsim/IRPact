@@ -94,18 +94,18 @@ public final class NPVDataSupplier {
     }
 
     private Map<Integer, Double> annualAgentAvgNPVCache = new ConcurrentHashMap<>();
-    public double avgNPV(Stream<? extends ConsumerAgent> agents, int year) {
-        return cachedAnnualAgentAvgNPV(agents, year);
+    public double annualAvgAgentNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        return cachedAnnualAvgAgentNPV(agents, year);
     }
-    private double cachedAnnualAgentAvgNPV(Stream<? extends ConsumerAgent> agents, int year) {
+    private double cachedAnnualAvgAgentNPV(Stream<? extends ConsumerAgent> agents, int year) {
         Double avgNPV = annualAgentAvgNPVCache.get(year);
         if(avgNPV == null) {
-            return calcAnnualAgentAvgNPV(agents, year);
+            return calcAnnualAvgAgentNPV(agents, year);
         } else {
             return avgNPV;
         }
     }
-    private synchronized double calcAnnualAgentAvgNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+    private synchronized double calcAnnualAvgAgentNPV(Stream<? extends ConsumerAgent> agents, final int year) {
         if(annualAgentAvgNPVCache.containsKey(year)) {
             return annualAgentAvgNPVCache.get(year);
         } else {

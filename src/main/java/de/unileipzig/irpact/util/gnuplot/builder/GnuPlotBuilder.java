@@ -191,6 +191,18 @@ public class GnuPlotBuilder {
         setStyle("data lines");
     }
 
+    public void setStyleBoxplot() {
+        setStyleBoxplot(7);
+    }
+
+    public void setStyleBoxplot(int outlierPointType) {
+        setStyle("boxplot outliers pointtype", outlierPointType);
+    }
+
+    public void setStyleDataBoxplot() {
+        setStyle("data boxplot");
+    }
+
     public void setStyleDataLinesPoints() {
         setStyle("data linespoints");
     }
@@ -205,6 +217,10 @@ public class GnuPlotBuilder {
 
     public void setStyleHistrogramClustered() {
         setStyle("histogram clustered");
+    }
+
+    public void setFillSolid025() {
+        setStyle("fill solid 0.25 border -1");
     }
 
     public void setFillSolid() {

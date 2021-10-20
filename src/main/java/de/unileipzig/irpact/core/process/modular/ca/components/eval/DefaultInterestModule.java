@@ -38,7 +38,7 @@ public class DefaultInterestModule extends AbstractActionModule implements Consu
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         trace("[{}] handle interest", data.getAgent().getName());
 
         if(isInterested(data.getAgent(), data.getProduct())) {

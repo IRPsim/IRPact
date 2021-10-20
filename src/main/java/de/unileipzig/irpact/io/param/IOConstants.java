@@ -60,6 +60,19 @@ public final class IOConstants {
     public static final String PROCESS_MODULAR2_COMPONENTS_CALC = "process_modular2_components_calc";
     public static final String PROCESS_MODULAR2_COMPONENTS_EVAL = "process_modular2_components_eval";
 
+    public static final String PROCESS_MODEL2 = "process_model2";
+    public static final String PROCESS_MODULAR3 = "process_modular3";
+    public static final String PROCESS_MODULAR3_MODEL = "process_modular3_PV_model";
+    public static final String PROCESS_MODULAR3_REEVAL = "process_modular3_PV_reeval";
+    public static final String PROCESS_MODULAR3_MODULES = "process_modular3_PV_modules";
+    public static final String PROCESS_MODULAR3_MODULES_ACTION = "process_modular3_PV_modules_action";
+    public static final String PROCESS_MODULAR3_MODULES_BOOL = "process_modular3_PV_modules_bool";
+    public static final String PROCESS_MODULAR3_MODULES_CALC = "process_modular3_PV_modules_calc";
+    public static final String PROCESS_MODULAR3_MODULES_INPUT = "process_modular3_PV_modules_input";
+    public static final String PROCESS_MODULAR3_MODULES_EVAL = "process_modular3_PV_modules_eval";
+    public static final String PROCESS_MODULAR3_MODULES_EVALRA = "process_modular3_PV_modules_evalra";
+    public static final String PROCESS_MODULAR3_MODULES_REEVAL = "process_modular3_PV_modules_reeval";
+
     public static final String SPATIAL = "spatial";
     public static final String SPATIAL_MODEL = "spatial_model";
     public static final String SPATIAL_MODEL_DIST = "spatial_model_dist";

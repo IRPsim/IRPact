@@ -7,8 +7,8 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
@@ -28,6 +28,12 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     //=========================
 
     boolean isRestored();
+
+    void register(CloseableSimulationEntity entity);
+
+    boolean unregister(CloseableSimulationEntity entity);
+
+    void closeEntities();
 
     //=========================
     //InitalizablePart extra

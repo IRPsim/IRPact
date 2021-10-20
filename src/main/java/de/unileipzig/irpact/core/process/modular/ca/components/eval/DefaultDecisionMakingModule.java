@@ -247,7 +247,7 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     //=========================
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         doSelfActionAndAllowAttention(data.getAgent());
         return evaluate0(data);
     }
