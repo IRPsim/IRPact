@@ -36,7 +36,7 @@
         :heading "Kantenbedeutung"
       } 
       :nodes {
-        :set "set_InConsumerAgentModule" 
+        :set "set_InModule2" 
         :color {
           :type :subsets 
           :groups [

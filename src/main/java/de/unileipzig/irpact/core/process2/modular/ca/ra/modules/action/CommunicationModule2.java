@@ -203,6 +203,11 @@ public class CommunicationModule2
     }
 
     protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, String attrName) {
+        if(true) {
+            trace("[{}] SKIP RELATIVE AGREEMENT", source.getName());
+            return;
+        }
+
         ConsumerAgentAttribute opinionThis = source.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertaintyCache().getUncertainty(source);
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
