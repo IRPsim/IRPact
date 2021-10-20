@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.ProcessPlanResult2;
 import de.unileipzig.irpact.core.process2.modular.MapBasedSharedModuleData;
@@ -110,7 +111,7 @@ public class BasicCAModularProcessModel2
     @Override
     public ModularProcessPlan2 newPlan2(Agent agent, Need need, Product product) {
         ConsumerAgent consumerAgent = validateAgent(agent);
-        createUncertainty(consumerAgent);
+        getUncertaintyCache().createUncertainty(consumerAgent, getUncertaintyManager());
         BasicConsumerAgentData2 plan = new BasicConsumerAgentData2(
                 environment,
                 this,
@@ -121,13 +122,6 @@ public class BasicCAModularProcessModel2
         );
         plans.add(plan);
         return plan;
-    }
-
-    protected void createUncertainty(ConsumerAgent agent) {
-        getUncertaintyCache().createUncertainty(
-                agent,
-                getUncertaintyManager()
-        );
     }
 
     @Override
