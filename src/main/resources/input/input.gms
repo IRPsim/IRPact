@@ -3350,6 +3350,10 @@ PARAMETER par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule
 * - type: String
 SET set_InMainBranchingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 
+* - identifier: colorPlaceholder
+* - type: Float
+PARAMETER par_InMainBranchingModule_evalragraphnode2_colorPlaceholder(set_InMainBranchingModule_evalragraphnode2)
+
 * - description: todo
 * - identifier: init
 * - type: Boolean
