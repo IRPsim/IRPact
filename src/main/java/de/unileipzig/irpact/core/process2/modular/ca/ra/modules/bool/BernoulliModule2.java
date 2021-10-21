@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class IfThresholdModule2
+public class BernoulliModule2
         extends AbstractUniformCAMultiModule1_2<Boolean, Number, CalculationModule2<ConsumerAgentData2>>
         implements BooleanModule2<ConsumerAgentData2>, RAHelperAPI2 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(IfThresholdModule2.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BernoulliModule2.class);
 
     @Override
     public IRPLogger getDefaultLogger() {

@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
-import de.unileipzig.irpact.core.process2.modular.modules.bool.GenericIfThresholdModule2;
+import de.unileipzig.irpact.core.process2.modular.modules.bool.ThresholdReachedModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.Module2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -37,7 +37,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {BOOL_GRAPHNODE}
         )
 )
-public class InGeneralIfThresholdModule_boolgraphnode2 implements InConsumerAgentBoolModule2 {
+public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentBoolModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -110,28 +110,28 @@ public class InGeneralIfThresholdModule_boolgraphnode2 implements InConsumerAgen
         this.threshold_graphedge2 = new InConsumerAgentCalculationModule2[]{threshold};
     }
 
-    public InGeneralIfThresholdModule_boolgraphnode2() {
+    public InThresholdReachedModule_boolgraphnode2() {
     }
 
     @Override
-    public InGeneralIfThresholdModule_boolgraphnode2 copy(CopyCache cache) {
+    public InThresholdReachedModule_boolgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InGeneralIfThresholdModule_boolgraphnode2 newCopy(CopyCache cache) {
-        InGeneralIfThresholdModule_boolgraphnode2 copy = new InGeneralIfThresholdModule_boolgraphnode2();
+    public InThresholdReachedModule_boolgraphnode2 newCopy(CopyCache cache) {
+        InThresholdReachedModule_boolgraphnode2 copy = new InThresholdReachedModule_boolgraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public GenericIfThresholdModule2<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
+    public ThresholdReachedModule2<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        GenericIfThresholdModule2<ConsumerAgentData2> module = new GenericIfThresholdModule2<>();
+        ThresholdReachedModule2<ConsumerAgentData2> module = new ThresholdReachedModule2<>();
         module.setName(getName());
         module.setPriority(getPriority());
         module.setDrawModule(parser.parseEntityTo(getDraw()));

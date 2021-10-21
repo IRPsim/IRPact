@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -21,7 +22,6 @@ import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
-import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.CALC_EDGE_COLOR;
 
 /**
  * @author Daniel Abitz
@@ -52,8 +52,9 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_DECISIONDECIDER);
         setShapeColorBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_BORDER);
 
-        addEntryWithDefault(res, thisClass(), "threshold", VALUE_0);
-        addEntry(res, thisClass(), "input_graphedge2");
+        addEntry(res, thisClass(), "finCheck_graphedge2");
+        addEntry(res, thisClass(), "threshold_graphedge2");
+        addEntry(res, thisClass(), "utility_graphedge2");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -67,13 +68,20 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
         this._name = name;
     }
 
-    @FieldDefinition
-    public double threshold;
-    public double getThreshold() {
-        return threshold;
+    @FieldDefinition(
+            graphEdge = @GraphEdge(
+                    id = MODULAR_GRAPH,
+                    label = BOOL_EDGE_LABEL,
+                    color = BOOL_EDGE_COLOR,
+                    tags = {"InDecisionMakingDeciderModule2 finCheck"}
+            )
+    )
+    public InConsumerAgentBoolModule2[] finCheck_graphedge2;
+    public InConsumerAgentBoolModule2 getFinCheck() throws ParsingException {
+        return ParamUtil.getInstance(finCheck_graphedge2, "finCheck");
     }
-    public void setThreshold(double threshold) {
-        this.threshold = threshold;
+    public void setFinCheck(InConsumerAgentBoolModule2 finCheck) {
+        this.finCheck_graphedge2 = new InConsumerAgentBoolModule2[]{finCheck};
     }
 
     @FieldDefinition(
@@ -81,15 +89,31 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InDecisionMakingDeciderModule2 input"}
+                    tags = {"InDecisionMakingDeciderModule2 threshold"}
             )
     )
-    public InConsumerAgentCalculationModule2[] input_graphedge2;
-    public InConsumerAgentCalculationModule2 getInput() throws ParsingException {
-        return ParamUtil.getInstance(input_graphedge2, "input");
+    public InConsumerAgentCalculationModule2[] threshold_graphedge2;
+    public InConsumerAgentCalculationModule2 getThreshold() throws ParsingException {
+        return ParamUtil.getInstance(threshold_graphedge2, "threshold");
     }
-    public void setInput(InConsumerAgentCalculationModule2 first) {
-        this.input_graphedge2 = new InConsumerAgentCalculationModule2[]{first};
+    public void setThreshold(InConsumerAgentCalculationModule2 threshold) {
+        this.threshold_graphedge2 = new InConsumerAgentCalculationModule2[]{threshold};
+    }
+
+    @FieldDefinition(
+            graphEdge = @GraphEdge(
+                    id = MODULAR_GRAPH,
+                    label = CALC_EDGE_LABEL,
+                    color = CALC_EDGE_COLOR,
+                    tags = {"InDecisionMakingDeciderModule2 utility"}
+            )
+    )
+    public InConsumerAgentCalculationModule2[] utility_graphedge2;
+    public InConsumerAgentCalculationModule2 getUtility() throws ParsingException {
+        return ParamUtil.getInstance(utility_graphedge2, "utility");
+    }
+    public void setUtility(InConsumerAgentCalculationModule2 utility) {
+        this.utility_graphedge2 = new InConsumerAgentCalculationModule2[]{utility};
     }
 
     public InDecisionMakingDeciderModule2_evalragraphnode2() {
@@ -115,8 +139,9 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
 
         DecisionMakingDeciderModule2 module = new DecisionMakingDeciderModule2();
         module.setName(getName());
-        module.setThreshold(getThreshold());
-        module.setSubmodule(parser.parseEntityTo(getInput()));
+        module.setFinancialCheckModule(parser.parseEntityTo(getFinCheck()));
+        module.setThresholdModule(parser.parseEntityTo(getThreshold()));
+        module.setDecisionMakingModule(parser.parseEntityTo(getUtility()));
 
         return module;
     }

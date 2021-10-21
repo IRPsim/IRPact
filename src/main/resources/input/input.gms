@@ -2950,25 +2950,25 @@ SET set_InConsumerAgentBoolModule2(set_InConsumerAgentModule2)
 
 * - color: LightSlateGrey
 * - shape: gear
-* - identifier: InGeneralIfThresholdModule_boolgraphnode2
+* - identifier: InThresholdReachedModule_boolgraphnode2
 * - type: String
-SET set_InGeneralIfThresholdModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
+SET set_InThresholdReachedModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
 
 * - default: 5
 * - description: todo
 * - identifier: Priorität
 * - type: Integer
-PARAMETER par_InGeneralIfThresholdModule_boolgraphnode2_priority(set_InGeneralIfThresholdModule_boolgraphnode2)
+PARAMETER par_InThresholdReachedModule_boolgraphnode2_priority(set_InThresholdReachedModule_boolgraphnode2)
 
 * - description: todo
 * - identifier: Vergleichswertmodul
 * - type: Boolean
-PARAMETER par_link_InGeneralIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2(set_InGeneralIfThresholdModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2(set_InThresholdReachedModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: Grenzwertmodul
 * - type: Boolean
-PARAMETER par_link_InGeneralIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2(set_InGeneralIfThresholdModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2(set_InThresholdReachedModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - color: LightSlateGrey
 * - shape: gear
@@ -2994,20 +2994,20 @@ PARAMETER par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentActionModule
 
 * - color: LightSlateGrey
 * - shape: gear
-* - identifier: InIfThresholdModule_boolgraphnode2
+* - identifier: InBernoulliModule_boolgraphnode2
 * - type: String
-SET set_InIfThresholdModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
+SET set_InBernoulliModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
 
 * - default: 5
 * - description: todo
 * - identifier: Priorität
 * - type: Integer
-PARAMETER par_InIfThresholdModule_boolgraphnode2_priority(set_InIfThresholdModule_boolgraphnode2)
+PARAMETER par_InBernoulliModule_boolgraphnode2_priority(set_InBernoulliModule_boolgraphnode2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InIfThresholdModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InBernoulliModule_boolgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InBernoulliModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - color: Green
 * - shape: square
@@ -3048,22 +3048,6 @@ PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InCsvValue
 * - identifier: Eingabemodul
 * - type: Boolean
 PARAMETER par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
-
-* - color: Green
-* - shape: square
-* - identifier: InDecisionMakingModule_calcgraphnode2
-* - type: String
-SET set_InDecisionMakingModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
-
-* - description: todo
-* - identifier: Finanz Testmodul
-* - type: Boolean
-PARAMETER par_link_InDecisionMakingModule_calcgraphnode2_InConsumerAgentBoolModule2_financialCheck_graphedge2(set_InDecisionMakingModule_calcgraphnode2,set_InConsumerAgentBoolModule2)
-
-* - description: todo
-* - identifier: Eingabemodule
-* - type: Boolean
-PARAMETER par_link_InDecisionMakingModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InDecisionMakingModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - color: Green
 * - shape: square
@@ -3278,16 +3262,20 @@ SET set_InConsumerAgentEvalRAModule2(set_InConsumerAgentModule2)
 * - type: String
 SET set_InDecisionMakingDeciderModule2_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 
-* - default: 0
 * - description: todo
-* - identifier: Grenzwert
-* - type: Float
-PARAMETER par_InDecisionMakingDeciderModule2_evalragraphnode2_threshold(set_InDecisionMakingDeciderModule2_evalragraphnode2)
+* - identifier: Finanz-Testmodul
+* - type: Boolean
+PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentBoolModule2_finCheck_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentBoolModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: Grenzwertmodul
 * - type: Boolean
-PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
+
+* - description: todo
+* - identifier: Utilitymodul
+* - type: Boolean
+PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_utility_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - color: #7012FE
 * - shape: circle

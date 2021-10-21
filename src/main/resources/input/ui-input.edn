@@ -97,12 +97,12 @@
         :tags [["graphedge2"]] 
         :groups [
           {
-            :tags [["InStopAfterSuccessfulTaskModule" "input"] ["InIfDoActionModule" "ifInput"] ["InDecisionMakingModule" "financialCheck"]] 
+            :tags [["InStopAfterSuccessfulTaskModule" "input"] ["InIfDoActionModule" "ifInput"] ["InDecisionMakingDeciderModule2" "finCheck"]] 
             :label "Entscheidungskante" 
             :color "LightSlateGrey"
           } 
           {
-            :tags [["InGeneralIfThresholdModule" "draw"] ["InGeneralIfThresholdModule" "threshold"] ["InIfThresholdModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InDecisionMakingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "input"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
+            :tags [["InGeneralIfThresholdModule" "draw"] ["InGeneralIfThresholdModule" "threshold"] ["InIfThresholdModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
             :label "Berechnungskante" 
             :color "Green"
           } 
@@ -1174,16 +1174,16 @@
                 :description "todo" 
                 :sections [
                   {
-                    :label "IfThresholdModule" 
-                    :set "set_InIfThresholdModule_boolgraphnode2" 
+                    :label "BernoulliModule" 
+                    :set "set_InBernoulliModule_boolgraphnode2" 
                     :description "todo" 
-                    :tags [["InIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InBernoulliModule" "boolgraphnode2" "priority"] ["link" "InBernoulliModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   } 
                   {
-                    :label "GeneralIfThresholdModule" 
-                    :set "set_InGeneralIfThresholdModule_boolgraphnode2" 
+                    :label "ThresholdReachedModule" 
+                    :set "set_InThresholdReachedModule_boolgraphnode2" 
                     :description "todo" 
-                    :tags [["InGeneralIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "draw" "graphedge2"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"]]
+                    :tags [["InThresholdReachedModule" "boolgraphnode2" "priority"] ["link" "InThresholdReachedModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "draw" "graphedge2"] ["link" "InThresholdReachedModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"]]
                   } 
                   {
                     :label "IfDoActionModule" 
@@ -1232,12 +1232,6 @@
                     :set "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
                     :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
-                  } 
-                  {
-                    :label "DecisionMakingModule" 
-                    :set "set_InDecisionMakingModule_calcgraphnode2" 
-                    :description "todo" 
-                    :tags [["link" "InDecisionMakingModule" "calcgraphnode2" "InConsumerAgentBoolModule2" "financialCheck" "graphedge2"] ["link" "InDecisionMakingModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   }
                 ]
               } 
@@ -1357,7 +1351,7 @@
                     :label "DecisionMakingDeciderModule" 
                     :set "set_InDecisionMakingDeciderModule2_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["InDecisionMakingDeciderModule2" "evalragraphnode2" "threshold"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentBoolModule2" "finCheck" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "utility" "graphedge2"]]
                   }
                 ]
               } 

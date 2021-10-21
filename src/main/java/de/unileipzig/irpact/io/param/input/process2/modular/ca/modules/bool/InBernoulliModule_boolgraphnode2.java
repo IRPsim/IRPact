@@ -1,14 +1,15 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc;
+package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.DecisionMakingModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.bool.BernoulliModule2;
+import de.unileipzig.irpact.core.process2.modular.modules.core.Module2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -28,14 +29,14 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
 @Definition(
         graphNode = @GraphNode(
                 id = MODULAR_GRAPH,
-                label = CALC_LABEL,
-                shape = CALC_SHAPE,
-                color = CALC_COLOR,
-                border = CALC_BORDER,
-                tags = {CALC_GRAPHNODE}
+                label = BOOL_LABEL,
+                shape = BOOL_SHAPE,
+                color = BOOL_COLOR,
+                border = BOOL_BORDER,
+                tags = {BOOL_GRAPHNODE}
         )
 )
-public class InDecisionMakingModule_calcgraphnode2 implements InConsumerAgentCalculationModule2 {
+public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -48,10 +49,10 @@ public class InDecisionMakingModule_calcgraphnode2 implements InConsumerAgentCal
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_DECISION);
-        setShapeColorBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_BORDER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH);
+        setShapeColorBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_BORDER);
 
-        addEntry(res, thisClass(), "financialCheck_graphedge2");
+        addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));
         addEntry(res, thisClass(), "input_graphedge2");
     }
 
@@ -66,20 +67,13 @@ public class InDecisionMakingModule_calcgraphnode2 implements InConsumerAgentCal
         this._name = name;
     }
 
-    @FieldDefinition(
-            graphEdge = @GraphEdge(
-                    id = MODULAR_GRAPH,
-                    label = BOOL_EDGE_LABEL,
-                    color = BOOL_EDGE_COLOR,
-                    tags = {"InDecisionMakingModule financialCheck"}
-            )
-    )
-    public InConsumerAgentBoolModule2[] financialCheck_graphedge2;
-    public InConsumerAgentBoolModule2 getFinancialCheckComponent() throws ParsingException {
-        return ParamUtil.getInstance(financialCheck_graphedge2, "financialCheck");
+    @FieldDefinition
+    public int priority = Module2.NORM_PRIORITY;
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
-    public void setFinancialCheckComponent(InConsumerAgentBoolModule2 first) {
-        this.financialCheck_graphedge2 = new InConsumerAgentBoolModule2[]{first};
+    public int getPriority() {
+        return priority;
     }
 
     @FieldDefinition(
@@ -87,44 +81,42 @@ public class InDecisionMakingModule_calcgraphnode2 implements InConsumerAgentCal
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InDecisionMakingModule input"}
+                    tags = {"InIfThresholdModule input"}
             )
     )
     public InConsumerAgentCalculationModule2[] input_graphedge2;
-    public InConsumerAgentCalculationModule2[] getInput() throws ParsingException {
-        return ParamUtil.getNonNullArray(input_graphedge2, "input");
+    public InConsumerAgentCalculationModule2 getInput() throws ParsingException {
+        return ParamUtil.getInstance(input_graphedge2, "input");
     }
-    public void setInput(InConsumerAgentCalculationModule2... input) {
-        this.input_graphedge2 = input;
+    public void setInput(InConsumerAgentCalculationModule2 first) {
+        this.input_graphedge2 = new InConsumerAgentCalculationModule2[]{first};
     }
 
-    public InDecisionMakingModule_calcgraphnode2() {
+    public InBernoulliModule_boolgraphnode2() {
     }
 
     @Override
-    public InDecisionMakingModule_calcgraphnode2 copy(CopyCache cache) {
+    public InBernoulliModule_boolgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDecisionMakingModule_calcgraphnode2 newCopy(CopyCache cache) {
-        InDecisionMakingModule_calcgraphnode2 copy = new InDecisionMakingModule_calcgraphnode2();
+    public InBernoulliModule_boolgraphnode2 newCopy(CopyCache cache) {
+        InBernoulliModule_boolgraphnode2 copy = new InBernoulliModule_boolgraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public DecisionMakingModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public BernoulliModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        DecisionMakingModule2 module = new DecisionMakingModule2();
+        BernoulliModule2 module = new BernoulliModule2();
         module.setName(getName());
-        module.setFinancialCheckComponent(parser.parseEntityTo(getFinancialCheckComponent()));
-        for(InConsumerAgentCalculationModule2 submodule: getInput()) {
-            module.add(parser.parseEntityTo(submodule));
-        }
+        module.setPriority(getPriority());
+        module.setSubmodule(parser.parseEntityTo(getInput()));
 
         return module;
     }

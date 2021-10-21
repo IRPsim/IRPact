@@ -2116,18 +2116,14 @@ process_modular3_PV_modules_bool:
   edn_label: "Entscheidungsmodule"
   edn_description: "todo"
 
-# TODO !!!
-InGeneralIfThresholdModule_boolgraphnode2:
-  edn_label: "GeneralIfThresholdModule"
+InBernoulliModule_boolgraphnode2:
+  edn_label: "BernoulliModule"
   edn_description: "todo"
-InGeneralIfThresholdModule_boolgraphnode2_priority:
+InBernoulliModule_boolgraphnode2_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
-InGeneralIfThresholdModule_boolgraphnode2_draw_graphedge2:
-  gams_identifier: "Vergleichswertmodul"
-  gams_description: "todo"
-InGeneralIfThresholdModule_boolgraphnode2_threshold_graphedge2:
-  gams_identifier: "Grenzwertmodul"
+InBernoulliModule_boolgraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
 InIfDoActionModule_boolgraphnode2:
@@ -2143,15 +2139,17 @@ InIfDoActionModule_boolgraphnode2_taskInput_graphedge2:
   gams_identifier: "TaskModule"
   gams_description: "todo"
 
-# TODO !!!
-InIfThresholdModule_boolgraphnode2:
-  edn_label: "IfThresholdModule"
+InThresholdReachedModule_boolgraphnode2:
+  edn_label: "ThresholdReachedModule"
   edn_description: "todo"
-InIfThresholdModule_boolgraphnode2_priority:
+InThresholdReachedModule_boolgraphnode2_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
-InIfThresholdModule_boolgraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
+InThresholdReachedModule_boolgraphnode2_draw_graphedge2:
+  gams_identifier: "Vergleichswertmodul"
+  gams_description: "todo"
+InThresholdReachedModule_boolgraphnode2_threshold_graphedge2:
+  gams_identifier: "Grenzwertmodul"
   gams_description: "todo"
 
 # double
@@ -2177,16 +2175,6 @@ InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
   gams_description: "todo"
 InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
-InDecisionMakingModule_calcgraphnode2:
-  edn_label: "DecisionMakingModule"
-  edn_description: "todo"
-InDecisionMakingModule_calcgraphnode2_financialCheck_graphedge2:
-  gams_identifier: "Finanz Testmodul"
-  gams_description: "todo"
-InDecisionMakingModule_calcgraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodule"
   gams_description: "todo"
 
 InLogisticModule_calcgraphnode2:
@@ -2323,11 +2311,14 @@ process_modular3_PV_modules_evalra:
 InDecisionMakingDeciderModule2_evalragraphnode2:
   edn_label: "DecisionMakingDeciderModule"
   edn_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_threshold:
-  gams_identifier: "Grenzwert"
+InDecisionMakingDeciderModule2_evalragraphnode2_finCheck_graphedge2:
+  gams_identifier: "Finanz-Testmodul"
   gams_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
+InDecisionMakingDeciderModule2_evalragraphnode2_threshold_graphedge2:
+  gams_identifier: "Grenzwertmodul"
+  gams_description: "todo"
+InDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
+  gams_identifier: "Utilitymodul"
   gams_description: "todo"
 
 InFeasibilityModule_evalragraphnode2:
