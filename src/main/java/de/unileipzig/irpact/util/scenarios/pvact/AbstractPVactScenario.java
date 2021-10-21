@@ -20,7 +20,7 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
@@ -33,6 +33,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRu
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -564,6 +565,17 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setStartModule(startModule);
 
         //INIT
+        InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
+        novScaler.setName("NOV_SCALER");
+        novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+        InAgentAttributeScaler envScaler = new InAgentAttributeScaler();
+        envScaler.setName("ENV_SCALER");
+        envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+
+        processModel.addInitializationHandlers(
+                novScaler,
+                envScaler
+        );
 
         //NEW PRODUCT
         processModel.addNewProductHandlers(

@@ -49,7 +49,7 @@ public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEv
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_MAINBRANCH);
-        setShapeColorBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_BORDER);
+        setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
         addEntry(res, thisClass(), "init_graphedge2");
         addEntry(res, thisClass(), "awareness_graphedge2");

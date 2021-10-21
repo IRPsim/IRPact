@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.DecisionMakingDeciderModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.NewDecisionMakingDeciderModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
@@ -22,6 +23,7 @@ import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
+import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.EVALRA_EDGE_COLOR;
 
 /**
  * @author Daniel Abitz
@@ -36,7 +38,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {EVALRA_GRAPHNODE}
         )
 )
-public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
+public class InNewDecisionMakingDeciderModule2_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -49,12 +51,11 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_DECISIONDECIDER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_NEWDECISIONDECIDER);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
         addEntryWithDefaultAndDomain(res, thisClass(), "forceEvaluation", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "finCheck_graphedge2");
-        addEntry(res, thisClass(), "threshold_graphedge2");
         addEntry(res, thisClass(), "utility_graphedge2");
     }
 
@@ -83,7 +84,7 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
                     id = MODULAR_GRAPH,
                     label = BOOL_EDGE_LABEL,
                     color = BOOL_EDGE_COLOR,
-                    tags = {"InDecisionMakingDeciderModule2 finCheck"}
+                    tags = {"InNewDecisionMakingDeciderModule2 finCheck"}
             )
     )
     public InConsumerAgentBoolModule2[] finCheck_graphedge2;
@@ -97,62 +98,45 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
     @FieldDefinition(
             graphEdge = @GraphEdge(
                     id = MODULAR_GRAPH,
-                    label = CALC_EDGE_LABEL,
-                    color = CALC_EDGE_COLOR,
-                    tags = {"InDecisionMakingDeciderModule2 threshold"}
+                    label = EVALRA_EDGE_LABEL,
+                    color = EVALRA_EDGE_COLOR,
+                    tags = {"InNewDecisionMakingDeciderModule2 utility"}
             )
     )
-    public InConsumerAgentCalculationModule2[] threshold_graphedge2;
-    public InConsumerAgentCalculationModule2 getThreshold() throws ParsingException {
-        return ParamUtil.getInstance(threshold_graphedge2, "threshold");
-    }
-    public void setThreshold(InConsumerAgentCalculationModule2 threshold) {
-        this.threshold_graphedge2 = new InConsumerAgentCalculationModule2[]{threshold};
-    }
-
-    @FieldDefinition(
-            graphEdge = @GraphEdge(
-                    id = MODULAR_GRAPH,
-                    label = CALC_EDGE_LABEL,
-                    color = CALC_EDGE_COLOR,
-                    tags = {"InDecisionMakingDeciderModule2 utility"}
-            )
-    )
-    public InConsumerAgentCalculationModule2[] utility_graphedge2;
-    public InConsumerAgentCalculationModule2 getUtility() throws ParsingException {
+    public InConsumerAgentEvalRAModule2[] utility_graphedge2;
+    public InConsumerAgentEvalRAModule2 getUtility() throws ParsingException {
         return ParamUtil.getInstance(utility_graphedge2, "utility");
     }
-    public void setUtility(InConsumerAgentCalculationModule2 utility) {
-        this.utility_graphedge2 = new InConsumerAgentCalculationModule2[]{utility};
+    public void setUtility(InConsumerAgentEvalRAModule2 utility) {
+        this.utility_graphedge2 = new InConsumerAgentEvalRAModule2[]{utility};
     }
 
-    public InDecisionMakingDeciderModule2_evalragraphnode2() {
+    public InNewDecisionMakingDeciderModule2_evalragraphnode2() {
     }
 
     @Override
-    public InDecisionMakingDeciderModule2_evalragraphnode2 copy(CopyCache cache) {
+    public InNewDecisionMakingDeciderModule2_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDecisionMakingDeciderModule2_evalragraphnode2 newCopy(CopyCache cache) {
-        InDecisionMakingDeciderModule2_evalragraphnode2 copy = new InDecisionMakingDeciderModule2_evalragraphnode2();
+    public InNewDecisionMakingDeciderModule2_evalragraphnode2 newCopy(CopyCache cache) {
+        InNewDecisionMakingDeciderModule2_evalragraphnode2 copy = new InNewDecisionMakingDeciderModule2_evalragraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public DecisionMakingDeciderModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public NewDecisionMakingDeciderModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        DecisionMakingDeciderModule2 module = new DecisionMakingDeciderModule2();
+        NewDecisionMakingDeciderModule2 module = new NewDecisionMakingDeciderModule2();
         module.setName(getName());
         module.setForceEvaluation(isForceEvaluation());
         module.setFinancialCheckModule(parser.parseEntityTo(getFinCheck()));
-        module.setThresholdModule(parser.parseEntityTo(getThreshold()));
-        module.setDecisionMakingModule(parser.parseEntityTo(getUtility()));
+        module.setUtilityModule(parser.parseEntityTo(getUtility()));
 
         return module;
     }

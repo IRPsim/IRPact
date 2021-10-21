@@ -48,7 +48,7 @@ public class InNaNModule_inputgraphnode2 implements InConsumerAgentInputModule2 
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_INPUT_NAN);
-        setShapeColorBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_BORDER);
+        setShapeColorFillBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_COLOR, INPUT_BORDER);
 
         addEntryWithDefault(res, thisClass(), "placeholder", VALUE_0);
     }

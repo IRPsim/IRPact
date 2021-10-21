@@ -48,7 +48,7 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_YEARBASED);
-        setShapeColorBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_BORDER);
+        setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
         addEntry(res, thisClass(), "input_graphedge2");
     }

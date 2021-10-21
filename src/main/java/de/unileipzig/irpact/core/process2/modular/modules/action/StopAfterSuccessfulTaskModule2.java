@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.action;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModuleN_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.BooleanModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.VoidModule2;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class StopAfterSuccessfulTaskModule2<I>
         extends AbstractUniformMultiModuleN_2<I, Void, I, Boolean, BooleanModule2<I>>
-        implements VoidModule2<I>, RAHelperAPI2 {
+        implements VoidModule2<I>, HelperAPI2 {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(StopAfterSuccessfulTaskModule2.class);
 

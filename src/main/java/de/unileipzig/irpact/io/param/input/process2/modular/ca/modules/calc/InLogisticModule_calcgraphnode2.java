@@ -49,7 +49,7 @@ public class InLogisticModule_calcgraphnode2 implements InConsumerAgentCalculati
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_LOGISTIC);
-        setShapeColorBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_BORDER);
+        setShapeColorFillBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_FILL, CALC_BORDER);
 
         addEntryWithDefault(res, thisClass(), "valueL", VALUE_1);
         addEntryWithDefault(res, thisClass(), "valueK", VALUE_1);

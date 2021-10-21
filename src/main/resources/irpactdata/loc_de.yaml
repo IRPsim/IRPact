@@ -354,7 +354,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.15.0"
+  edn_description: "IRPact v1.16.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2053,6 +2053,10 @@ InAgentAttributeScaler_attribute:
   gams_identifier: "Attribut"
   gams_description: "todo"
 
+process_modular3_PV_handler_newproduct:
+  edn_label: "Neue Produkte"
+  edn_description: "todo"
+
 # Module
 process_modular3_PV_modules:
   edn_label: "Module"
@@ -2097,6 +2101,19 @@ InCommunicationModule_actiongraphnode2_uncertainties:
   gams_identifier: "uncertainties"
   gams_description: "todo"
 
+InIfElseActionModule_actiongraphnode2:
+  edn_label: "IfElseActionModule"
+  edn_description: "todo"
+InCommunicationModule_actiongraphnode2_test_graphedge2:
+  gams_identifier: "test"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_onTrue_graphedge2:
+  gams_identifier: "onTrue"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_onFalse_graphedge2:
+  gams_identifier: "onFalse"
+  gams_description: "todo"
+
 InRewireModule_actiongraphnode2:
   edn_label: "Rewiremodul"
   edn_description: "todo"
@@ -2109,6 +2126,13 @@ InStopAfterSuccessfulTaskModule_actiongraphnode2:
   edn_description: "todo"
 InStopAfterSuccessfulTaskModule_actiongraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+NOP_actiongraphnode2:
+  edn_label: "IfElseActionModule"
+  edn_description: "todo"
+NOP_actiongraphnode2_placeholder:
+  gams_identifier: "---"
   gams_description: "todo"
 
 # boolean
@@ -2311,6 +2335,9 @@ process_modular3_PV_modules_evalra:
 InDecisionMakingDeciderModule2_evalragraphnode2:
   edn_label: "DecisionMakingDeciderModule"
   edn_description: "todo"
+InDecisionMakingDeciderModule2_evalragraphnode2_forceEvaluation:
+  gams_identifier: "forceEvaluation"
+  gams_description: "todo"
 InDecisionMakingDeciderModule2_evalragraphnode2_finCheck_graphedge2:
   gams_identifier: "Finanz-Testmodul"
   gams_description: "todo"
@@ -2364,6 +2391,19 @@ InMainBranchingModule_evalragraphnode2_impeded_graphedge2:
   gams_identifier: "impeded"
   gams_description: "todo"
 
+InNewDecisionMakingDeciderModule2_evalragraphnode2:
+  edn_label: "NewDecisionMakingDeciderModule"
+  edn_description: "todo"
+InNewDecisionMakingDeciderModule2_evalragraphnode2_finCheck_forceEvaluation:
+  gams_identifier: "forceEvaluation"
+  gams_description: "todo"
+InNewDecisionMakingDeciderModule2_evalragraphnode2_finCheck_graphedge2:
+  gams_identifier: "finCheck"
+  gams_description: "todo"
+InNewDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
+  gams_identifier: "utility"
+  gams_description: "todo"
+
 InPhaseLoggingModule_evalragraphnode2:
   edn_label: "PhaseLoggingModule"
   edn_description: "todo"
@@ -2376,6 +2416,16 @@ InPhaseUpdateModule_evalragraphnode2:
   edn_description: "todo"
 InPhaseUpdateModule_evalragraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InUtilityEvaluatorModule2_evalragraphnode2:
+  edn_label: "InUtilityEvaluatorModule2"
+  edn_description: "todo"
+InUtilityEvaluatorModule2_evalragraphnode2_threshold_graphedge2:
+  gams_identifier: "threshold"
+  gams_description: "todo"
+InUtilityEvaluatorModule2_evalragraphnode2_utility_graphedge2:
+  gams_identifier: "utility"
   gams_description: "todo"
 
 InYearBasedAdoptionDeciderModule_evalragraphnode2:

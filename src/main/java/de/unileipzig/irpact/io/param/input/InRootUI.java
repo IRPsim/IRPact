@@ -23,10 +23,8 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InBasicCAModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
@@ -237,14 +235,15 @@ public class InRootUI {
 
     public static final EdnPath PROCESS_MODULAR3_HANDLER = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_HANDLER).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_INIT).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR = PROCESS_MODULAR3_HANDLER.resolve(InAgentAttributeScaler.thisName()).addTo(PATHS);
-
-
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR = PROCESS_MODULAR3_HANDLER_INIT.resolve(InAgentAttributeScaler.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_NEWPRODUCT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_NEWPRODUCT).addTo(PATHS);
 
     public static final EdnPath PROCESS_MODULAR3_MODULES = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODULES).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_ACTION).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_COMMU = PROCESS_MODULAR3_MODULES_ACTION.resolve(InCommunicationModule_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_STOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(InStopAfterSuccessfulTaskModule_actiongraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_IFELSE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InIfElseActionModule_actiongraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_NOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(NOP_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_REWIRE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InRewireModule_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_BOOL).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH = PROCESS_MODULAR3_MODULES_BOOL.resolve(InBernoulliModule_boolgraphnode2.thisName()).addTo(PATHS);
@@ -277,6 +276,8 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_PHASELOGGER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InPhaseLoggingModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_MAINBRANCH = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InMainBranchingModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_DECISIONDECIDER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_NEWDECISIONDECIDER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InNewDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_UTILITYEVAL = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InUtilityEvaluatorModule2_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_REEVAL).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_CSV = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InCsvValueReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_MINICSV = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InMinimalCsvValueReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);

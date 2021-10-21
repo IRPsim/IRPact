@@ -50,7 +50,7 @@ public class InRunUntilFailureModule_evalgraphnode2 implements InConsumerAgentEv
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVAL_UNTILFAIL);
-        setShapeColorBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_BORDER);
+        setShapeColorFillBorder(res, thisClass(), EVAL_SHAPE, EVAL_COLOR, EVAL_FILL, EVAL_BORDER);
 
         addEntry(res, thisClass(), "input_graphedge2");
     }

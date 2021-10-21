@@ -21,6 +21,7 @@ import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
+import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.CALCLOG_COLOR;
 
 /**
  * @author Daniel Abitz
@@ -28,10 +29,10 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
 @Definition(
         graphNode = @GraphNode(
                 id = MODULAR_GRAPH,
-                label = LOG_LABEL,
-                shape = LOG_SHAPE,
-                color = LOG_COLOR,
-                border = LOG_BORDER,
+                label = CALCLOG_LABEL,
+                shape = CALCLOG_SHAPE,
+                color = CALCLOG_COLOR,
+                border = CALCLOG_BORDER,
                 tags = {CALCLOG_GRAPHNODE}
         )
 )
@@ -49,7 +50,7 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_CSV);
-        setShapeColorBorder(res, thisClass(), LOG_SHAPE, LOG_COLOR, LOG_BORDER);
+        setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
 
         addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge2");
