@@ -12,6 +12,7 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.ProcessPlanResult2;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
 import de.unileipzig.irpact.core.process2.modular.MapBasedSharedModuleData;
 import de.unileipzig.irpact.core.process2.modular.ModularProcessPlan2;
 import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
@@ -41,6 +42,7 @@ public class BasicCAModularProcessModel2
     protected static final long WEEK27 = 27;
 
     protected List<NewProductHandler> newProductHandlers = new ArrayList<>();
+    protected List<InitializationHandler> initializationHandlers = new ArrayList<>();
     protected SharedModuleData sharedData = new MapBasedSharedModuleData();
     protected SimulationEnvironment environment;
     protected PlanEvaluationModule2<ConsumerAgentData2> startModule;
@@ -66,6 +68,10 @@ public class BasicCAModularProcessModel2
 
     public void addNewProductHandler(NewProductHandler handler) {
         newProductHandlers.add(handler);
+    }
+
+    public void addInitializationHandler(InitializationHandler handler) {
+        initializationHandlers.add(handler);
     }
 
     public void addStartOfYearTask(Reevaluator<ConsumerAgentData2> reevaluator) {
@@ -184,7 +190,22 @@ public class BasicCAModularProcessModel2
 
     @Override
     public void postAgentCreation() throws MissingDataException, InitializationException {
+        runInitializationHandler();
         initModules();
+    }
+
+    protected void runInitializationHandler() throws InitializationException {
+        trace("run initialization handler: {}", initializationHandlers.size());
+        for(InitializationHandler handler: initializationHandlers) {
+            try {
+                trace("run '{}'", handler.getName());
+                handler.initalize(environment);
+            } catch(InitializationException e) {
+                throw e;
+            } catch (Throwable e) {
+                throw new InitializationException(e);
+            }
+        }
     }
 
     protected void initModules() throws InitializationException, MissingDataException {

@@ -48,6 +48,8 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
@@ -920,7 +922,6 @@ public class InRoot implements RootClass {
             InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             InMulScalarModule_calcgraphnode2.class,
             InProductModule_calcgraphnode2.class,
-            InScaledWeightModule_calcgraphnode2.class,
             InSumModule_calcgraphnode2.class,
             //input
             InAttributeInputModule_inputgraphnode2.class,
@@ -957,6 +958,9 @@ public class InRoot implements RootClass {
             InReevaluatorModuleLinker.class,
             //reeval-general
             InReevaluator2.class,
+            //handler-init
+            InAgentAttributeScaler.class,
+            InInitializationHandler.class,
             //===
 
             //special

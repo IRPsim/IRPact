@@ -7,6 +7,8 @@ import de.unileipzig.irpact.io.param.ParamUtil;
  */
 public final class MPM2Settings {
 
+    public static final String NODE_SET = "set_InModule2";
+
     public static final String MODULAR_GRAPH = "modulargraph2";
     public static final String GRAPH_EDGE = "graphedge2";
     public static final String GRAPH_ICON = "fas fa-share-alt";
@@ -38,14 +40,14 @@ public final class MPM2Settings {
     public static final String CALCLOG_GRAPHNODE = "calcloggraphnode2";
     public static final String LOG_LABEL = "Loggingmodul";
     public static final String LOG_SHAPE = ParamUtil.SHAPE_DIAMOND;
-    public static final String LOG_COLOR = ParamUtil.COLOR_GREEN;
-    public static final String LOG_BORDER = ParamUtil.COLOR_GREEN;
+    public static final String LOG_COLOR = ParamUtil.COLOR_HEX_FEAF12;
+    public static final String LOG_BORDER = ParamUtil.COLOR_HEX_FEAF12;
 
     public static final String INPUT_GRAPHNODE = "inputgraphnode2";
     public static final String INPUT_LABEL = "Eingabemodul";
-    public static final String INPUT_SHAPE = ParamUtil.SHAPE_SQUARE;
-    public static final String INPUT_COLOR = ParamUtil.COLOR_RED;
-    public static final String INPUT_BORDER = ParamUtil.COLOR_RED;
+    public static final String INPUT_SHAPE = ParamUtil.SHAPE_FLOWER;
+    public static final String INPUT_COLOR = ParamUtil.COLOR_HEX_CAFE12;
+    public static final String INPUT_BORDER = ParamUtil.COLOR_HEX_CAFE12;
 
     public static final String EVAL_GRAPHNODE = "evalgraphnode2";
     public static final String EVAL_LABEL = "Planauswertungsmodul";
@@ -58,16 +60,14 @@ public final class MPM2Settings {
     public static final String EVALRA_GRAPHNODE = "evalragraphnode2";
     public static final String EVALRA_LABEL = "PVact-Auswerungsmodul";
     public static final String EVALRA_SHAPE = ParamUtil.SHAPE_CIRCLE;
-    public static final String EVALRA_COLOR = ParamUtil.COLOR_YELLOW;
-    public static final String EVALRA_BORDER = ParamUtil.COLOR_YELLOW;
+    public static final String EVALRA_COLOR = ParamUtil.COLOR_HEX_7012FE;
+    public static final String EVALRA_BORDER = ParamUtil.COLOR_HEX_7012FE;
     public static final String EVALRA_EDGE_LABEL = "PVact-Auswerungskante";
-    public static final String EVALRA_EDGE_COLOR = ParamUtil.COLOR_YELLOW;
+    public static final String EVALRA_EDGE_COLOR = ParamUtil.COLOR_HEX_7012FE;
 
     public static final String REEVAL_GRAPHNODE = "reevalgraphnode2";
     public static final String REEVAL_LABEL = "Evaluierungsmodul";
-    public static final String REEVAL_SHAPE = ParamUtil.SHAPE_CIRCLE;
+    public static final String REEVAL_SHAPE = ParamUtil.SHAPE_TRIANGLE_DOWN;
     public static final String REEVAL_COLOR = ParamUtil.COLOR_MAGENTA;
     public static final String REEVAL_BORDER = ParamUtil.COLOR_MAGENTA;
-    public static final String REEVAL_EDGE_LABEL = "Evaluierungskante";
-    public static final String REEVAL_EDGE_COLOR = ParamUtil.COLOR_MAGENTA;
 }

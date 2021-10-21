@@ -10,6 +10,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -43,6 +44,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODEL_BASIC);
 
         addEntry(res, thisClass(), "startModule");
+        addEntry(res, thisClass(), "initializationHandlers");
         addEntry(res, thisClass(), "newProductHandlers");
         addEntry(res, thisClass(), "startOfYearReevaluators");
         addEntry(res, thisClass(), "midOfYearReevaluators");
@@ -67,6 +69,24 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
     public InConsumerAgentEvalModule2 getStartModule() throws ParsingException {
         return ParamUtil.getInstance(startModule, "startModule");
+    }
+
+    @FieldDefinition
+    public InInitializationHandler[] initializationHandlers = new InInitializationHandler[0];
+    public void setInitializationHandlers(InInitializationHandler[] initializationHandlers) {
+        this.initializationHandlers = initializationHandlers;
+    }
+    public void setInitializationHandlers(Collection<? extends InInitializationHandler> initializationHandlers) {
+        setInitializationHandlers(initializationHandlers.toArray(new InInitializationHandler[0]));
+    }
+    public void addInitializationHandlers(InInitializationHandler... initializationHandlers) {
+        this.initializationHandlers = addAll(this.initializationHandlers, initializationHandlers);
+    }
+    public InInitializationHandler[] getInitializationHandlers() {
+        return initializationHandlers;
+    }
+    public boolean hasInitializationHandlers() {
+        return len(initializationHandlers) > 0;
     }
 
     @FieldDefinition

@@ -2822,6 +2822,11 @@ SET set_InBasicCAModularProcessModel(set_InModularProcessModel2)
 PARAMETER par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule(set_InBasicCAModularProcessModel,set_InConsumerAgentEvalModule2)
 
 * - description: todo
+* - identifier: Konfiguratoren für die Initialisierung
+* - type: Boolean
+PARAMETER par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers(set_InBasicCAModularProcessModel,set_InInitializationHandler)
+
+* - description: todo
 * - identifier: Konfiguratoren für neue Produkte
 * - type: Boolean
 PARAMETER par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers(set_InBasicCAModularProcessModel,set_InNewProductHandler)
@@ -3026,7 +3031,7 @@ PARAMETER par_link_InAddScalarModule_calcgraphnode2_InConsumerAgentCalculationMo
 * - type: String
 SET set_InConsumerAgentCalculationModule2(set_InConsumerAgentModule2)
 
-* - color: Green
+* - color: #FEAF12
 * - shape: diamond
 * - identifier: InCsvValueLoggingModule_calcloggraphnode2
 * - type: String
@@ -3088,7 +3093,7 @@ PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationMod
 * - type: Boolean
 PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2(set_InLogisticModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
 
-* - color: Green
+* - color: #FEAF12
 * - shape: diamond
 * - identifier: InMinimalCsvValueLoggingModule_calcloggraphnode2
 * - type: String
@@ -3136,26 +3141,6 @@ PARAMETER par_link_InProductModule_calcgraphnode2_InConsumerAgentCalculationModu
 
 * - color: Green
 * - shape: square
-* - identifier: InScaledWeightModule_calcgraphnode2
-* - type: String
-SET set_InScaledWeightModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
-
-* - identifier: initialWeight
-* - type: Float
-PARAMETER par_InScaledWeightModule_calcgraphnode2_initialWeight(set_InScaledWeightModule_calcgraphnode2)
-
-* - description: todo
-* - identifier: Attributname
-* - type: Boolean
-PARAMETER par_link_InScaledWeightModule_calcgraphnode2_InAttributeName_attribute(set_InScaledWeightModule_calcgraphnode2,set_InAttributeName)
-
-* - description: todo
-* - identifier: Eingabemodule
-* - type: Boolean
-PARAMETER par_link_InScaledWeightModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InScaledWeightModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
-
-* - color: Green
-* - shape: square
 * - identifier: InSumModule_calcgraphnode2
 * - type: String
 SET set_InSumModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
@@ -3165,8 +3150,8 @@ SET set_InSumModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
 * - type: Boolean
 PARAMETER par_link_InSumModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InSumModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InAttributeInputModule_inputgraphnode2
 * - type: String
 SET set_InAttributeInputModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3176,8 +3161,8 @@ SET set_InAttributeInputModule_inputgraphnode2(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute(set_InAttributeInputModule_inputgraphnode2,set_InAttributeName)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InAvgFinModule_inputgraphnode2
 * - type: String
 SET set_InAvgFinModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3192,8 +3177,8 @@ PARAMETER par_InAvgFinModule_inputgraphnode2_placeholder(set_InAvgFinModule_inpu
 * - type: String
 SET set_InConsumerAgentInputModule2(set_InConsumerAgentCalculationModule2)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InGlobalAvgNPVModule_inputgraphnode2
 * - type: String
 SET set_InGlobalAvgNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3203,8 +3188,8 @@ SET set_InGlobalAvgNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InGlobalAvgNPVModule_inputgraphnode2_InPVFile_pvFile(set_InGlobalAvgNPVModule_inputgraphnode2,set_InPVFile)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InLocalShareOfAdopterModule_inputgraphnode2
 * - type: String
 SET set_InLocalShareOfAdopterModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3220,8 +3205,8 @@ PARAMETER par_InLocalShareOfAdopterModule_inputgraphnode2_maxToStore(set_InLocal
 * - type: Boolean
 PARAMETER par_link_InLocalShareOfAdopterModule_inputgraphnode2_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule_inputgraphnode2,set_InRAProcessPlanNodeFilterScheme)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InNaNModule_inputgraphnode2
 * - type: String
 SET set_InNaNModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3232,8 +3217,8 @@ SET set_InNaNModule_inputgraphnode2(set_InConsumerAgentInputModule2)
 * - type: Float
 PARAMETER par_InNaNModule_inputgraphnode2_placeholder(set_InNaNModule_inputgraphnode2)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InNPVModule_inputgraphnode2
 * - type: String
 SET set_InNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3243,8 +3228,8 @@ SET set_InNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InNPVModule_inputgraphnode2_InPVFile_pvFile(set_InNPVModule_inputgraphnode2,set_InPVFile)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InSocialShareOfAdopterModule_inputgraphnode2
 * - type: String
 SET set_InSocialShareOfAdopterModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3254,8 +3239,8 @@ SET set_InSocialShareOfAdopterModule_inputgraphnode2(set_InConsumerAgentInputMod
 * - type: Float
 PARAMETER par_InSocialShareOfAdopterModule_inputgraphnode2_placeholder(set_InSocialShareOfAdopterModule_inputgraphnode2)
 
-* - color: Red
-* - shape: square
+* - color: #CAFE12
+* - shape: flower
 * - identifier: InValueModule_inputgraphnode2
 * - type: String
 SET set_InValueModule_inputgraphnode2(set_InConsumerAgentInputModule2)
@@ -3287,7 +3272,7 @@ PARAMETER par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2
 * - type: String
 SET set_InConsumerAgentEvalRAModule2(set_InConsumerAgentModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InDecisionMakingDeciderModule2_evalragraphnode2
 * - type: String
@@ -3304,7 +3289,7 @@ PARAMETER par_InDecisionMakingDeciderModule2_evalragraphnode2_threshold(set_InDe
 * - type: Boolean
 PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InFeasibilityModule_evalragraphnode2
 * - type: String
@@ -3315,7 +3300,7 @@ SET set_InFeasibilityModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 * - type: Boolean
 PARAMETER par_link_InFeasibilityModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2(set_InFeasibilityModule_evalragraphnode2,set_InConsumerAgentActionModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InInitializationModule_evalragraphnode2
 * - type: String
@@ -3326,7 +3311,7 @@ SET set_InInitializationModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2
 * - type: Float
 PARAMETER par_InInitializationModule_evalragraphnode2_placeholder(set_InInitializationModule_evalragraphnode2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InInterestModule_evalragraphnode2
 * - type: String
@@ -3337,43 +3322,43 @@ SET set_InInterestModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 * - type: Boolean
 PARAMETER par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2(set_InInterestModule_evalragraphnode2,set_InConsumerAgentActionModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InMainBranchingModule_evalragraphnode2
 * - type: String
 SET set_InMainBranchingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: init
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_init_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: awareness
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_awareness_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: feasiblity
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_feasibility_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: decision
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_decision_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: adopted
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentActionModule2_adopted_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentActionModule2)
 
 * - description: todo
-* - identifier: Eingabemodul
+* - identifier: impeded
 * - type: Boolean
 PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentActionModule2_impeded_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentActionModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InPhaseLoggingModule_evalragraphnode2
 * - type: String
@@ -3384,7 +3369,7 @@ SET set_InPhaseLoggingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 * - type: Boolean
 PARAMETER par_link_InPhaseLoggingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseLoggingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InPhaseUpdateModule_evalragraphnode2
 * - type: String
@@ -3395,7 +3380,7 @@ SET set_InPhaseUpdateModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 * - type: Boolean
 PARAMETER par_link_InPhaseUpdateModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseUpdateModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
-* - color: Yellow
+* - color: #7012FE
 * - shape: circle
 * - identifier: InYearBasedAdoptionDeciderModule_evalragraphnode2
 * - type: String
@@ -3420,7 +3405,7 @@ PARAMETER par_link_InYearBasedAdoptionDeciderModule_evalragraphnode2_InConsumerA
 SET set_InConsumerAgentReevaluationModule2(set_InModule2)
 
 * - color: Magenta
-* - shape: circle
+* - shape: triangle-down
 * - identifier: InCsvValueReevaluatorModule_reevalgraphnode2
 * - type: String
 SET set_InCsvValueReevaluatorModule_reevalgraphnode2(set_InConsumerAgentReevaluationModule2)
@@ -3438,7 +3423,7 @@ PARAMETER par_InCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx(set_InCsvVa
 PARAMETER par_link_InCsvValueReevaluatorModule_reevalgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InCsvValueReevaluatorModule_reevalgraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - color: Magenta
-* - shape: circle
+* - shape: triangle-down
 * - identifier: InMinimalCsvValueReevaluatorModule_reevalgraphnode2
 * - type: String
 SET set_InMinimalCsvValueReevaluatorModule_reevalgraphnode2(set_InConsumerAgentReevaluationModule2)
@@ -3504,6 +3489,20 @@ PARAMETER par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_
 * - hidden: 1
 * - type: String
 SET set_InReevaluator2(*)
+
+* - identifier: InAgentAttributeScaler
+* - type: String
+SET set_InAgentAttributeScaler(set_InReevaluator2)
+
+* - description: todo
+* - identifier: Attribut
+* - type: Boolean
+PARAMETER par_link_InAgentAttributeScaler_InAttributeName_attribute(set_InAgentAttributeScaler,set_InAttributeName)
+
+* - identifier: InInitializationHandler
+* - hidden: 1
+* - type: String
+SET set_InInitializationHandler(*)
 
 * - default: 0
 * - domain: [0|1]

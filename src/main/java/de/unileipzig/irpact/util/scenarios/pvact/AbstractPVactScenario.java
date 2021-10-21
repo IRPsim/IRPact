@@ -404,7 +404,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         npvLogger.setName(LazyData2FileLinker.NPV_LOGGER);
         npvLogger.setInput(logisticNPV);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 npvReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        npvReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
+        npvReevaluator.setName(LazyData2FileLinker.NPV_REEVAL);
         npvReevaluator.setInput(logisticNPV);
         npvReevaluator.setStoreXlsx(true);
 
@@ -441,14 +441,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         envLogger.setName(LazyData2FileLinker.ENV_LOGGER);
         envLogger.setInput(envAttr);
-        InScaledWeightModule_calcgraphnode2 envWeight = new InScaledWeightModule_calcgraphnode2();
+        InMulScalarModule_calcgraphnode2 envWeight = new InMulScalarModule_calcgraphnode2();
         envWeight.setName("ENV_WEIGHT");
-        envWeight.setInitialWeight(RealData.WEIGHT_EK);
-        envWeight.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+        envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 envReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
         envReevaluator.setName(LazyData2FileLinker.ENV_REEVAL);
-        envReevaluator.setInput(envAttr);
+        envReevaluator.setInput(envWeight);
         envReevaluator.setStoreXlsx(true);
 
         //nov comp
@@ -458,14 +457,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         novLogger.setName(LazyData2FileLinker.NOV_LOGGER);
         novLogger.setInput(novAttr);
-        InScaledWeightModule_calcgraphnode2 novWeight = new InScaledWeightModule_calcgraphnode2();
+        InMulScalarModule_calcgraphnode2 novWeight = new InMulScalarModule_calcgraphnode2();
         novWeight.setName("NOV_WEIGHT");
-        novWeight.setInitialWeight(RealData.WEIGHT_NS);
-        novWeight.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+        novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 novReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
         novReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
-        novReevaluator.setInput(novAttr);
+        novReevaluator.setInput(novWeight);
         novReevaluator.setStoreXlsx(true);
 
         //soc
@@ -560,6 +558,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName(name);
         processModel.setStartModule(startModule);
+
+        //INIT
 
         //NEW PRODUCT
         processModel.addNewProductHandlers(

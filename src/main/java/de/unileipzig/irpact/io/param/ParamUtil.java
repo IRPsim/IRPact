@@ -45,6 +45,13 @@ public final class ParamUtil {
     public static final String SHAPE_SQUARE = "square";
     public static final String SHAPE_PENTAGON = "pentagon";
     public static final String SHAPE_CIRCLE = "circle";
+    public static final String SHAPE_RECTAGNLE = "rectangle";
+    public static final String SHAPE_ELLIPSE = "ellipse";
+    public static final String SHAPE_HEXAGON = "hexagon";
+    public static final String SHAPE_FLOWER = "flower";
+    public static final String SHAPE_CROSS = "cross";
+    public static final String SHAPE_TRIANGLE_DOWN = "triangle-down";
+    public static final String SHAPE_TRIANGLE_UP = "triangle-up";
 
     public static final String COLOR_DARK_CYAN = "DarkCyan";
     public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
@@ -53,6 +60,10 @@ public final class ParamUtil {
     public static final String COLOR_BLUE = "Blue";
     public static final String COLOR_YELLOW = "Yellow";
     public static final String COLOR_MAGENTA = "Magenta";
+
+    public static final String COLOR_HEX_CAFE12 = "#CAFE12";
+    public static final String COLOR_HEX_7012FE = "#7012FE";
+    public static final String COLOR_HEX_FEAF12 = "#FEAF12";
 
     public static final String UNIT_PIXEL = "[Pixel]";
 

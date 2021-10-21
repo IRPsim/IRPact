@@ -120,6 +120,7 @@
       "set_InAffinityEntry" : {
         "TRA_TRA" : { }
       },
+      "set_InAgentAttributeScaler" : { },
       "set_InAgentPopulation" : {
         "PopulationSize" : { }
       },
@@ -380,13 +381,14 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_10_20_T_14_59_33" : {
+        "CT_D_2021_10_21_T_07_20_06" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
           "par_InInformation_placeholder" : 0.0
         }
       },
+      "set_InInitializationHandler" : { },
       "set_InInitializationModule_evalragraphnode2" : { },
       "set_InInterestModule_evalragraphnode2" : { },
       "set_InInverse" : { },
@@ -520,9 +522,8 @@
       "set_InRewireModule_actiongraphnode2" : { },
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
-      "set_InScaledWeightModule_calcgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_14_1" : {
+        "v1_15_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -632,9 +633,11 @@
           "TRA_TRA" : 1.0
         }
       },
+      "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : { },
+      "par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevaluators" : { },
@@ -933,8 +936,6 @@
       "par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules" : { },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2_input_graphedge2" : { },
-      "par_link_InScaledWeightModule_calcgraphnode2_InAttributeName_attribute" : { },
-      "par_link_InScaledWeightModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },

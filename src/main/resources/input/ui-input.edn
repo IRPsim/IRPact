@@ -23,7 +23,7 @@
       :nodes {
         :set "set_InConsumerAgentModule" 
         :color {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["calcgraphnode"]] 
@@ -44,7 +44,7 @@
           :heading "Fuellfarbe"
         } 
         :border {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["calcgraphnode"]] 
@@ -65,7 +65,7 @@
           :heading "Rahmenfarbe"
         } 
         :shape {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["calcgraphnode"]] 
@@ -102,7 +102,7 @@
             :color "LightSlateGrey"
           } 
           {
-            :tags [["InGeneralIfThresholdModule" "draw"] ["InGeneralIfThresholdModule" "threshold"] ["InIfThresholdModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InDecisionMakingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InScaledWeightModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "input"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
+            :tags [["InGeneralIfThresholdModule" "draw"] ["InGeneralIfThresholdModule" "threshold"] ["InIfThresholdModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InDecisionMakingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "input"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
             :label "Berechnungskante" 
             :color "Green"
           } 
@@ -119,7 +119,7 @@
           {
             :tags [["InFeasibilityModule" "input"] ["InInterestModule" "input"] ["InMainBranchingModule" "init"] ["InMainBranchingModule" "awareness"] ["InMainBranchingModule" "feasibility"] ["InMainBranchingModule" "decision"] ["InMainBranchingModule" "adopted"] ["InMainBranchingModule" "impeded"] ["InPhaseLoggingModule" "input"] ["InPhaseUpdateModule" "input"] ["InYearBasedAdoptionDeciderModule" "input"]] 
             :label "PVact-Auswerungskante" 
-            :color "Yellow"
+            :color "#7012FE"
           }
         ] 
         :heading "Kantenbedeutung"
@@ -127,7 +127,7 @@
       :nodes {
         :set "set_InModule2" 
         :color {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -147,12 +147,12 @@
             {
               :tags [["calcloggraphnode2"]] 
               :label "Loggingmodul" 
-              :value "Green"
+              :value "#FEAF12"
             } 
             {
               :tags [["inputgraphnode2"]] 
               :label "Eingabemodul" 
-              :value "Red"
+              :value "#CAFE12"
             } 
             {
               :tags [["evalgraphnode2"]] 
@@ -162,7 +162,7 @@
             {
               :tags [["evalragraphnode2"]] 
               :label "PVact-Auswerungsmodul" 
-              :value "Yellow"
+              :value "#7012FE"
             } 
             {
               :tags [["reevalgraphnode2"]] 
@@ -173,7 +173,7 @@
           :heading "Fuellfarbe"
         } 
         :border {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -193,12 +193,12 @@
             {
               :tags [["calcloggraphnode2"]] 
               :label "Loggingmodul" 
-              :value "Green"
+              :value "#FEAF12"
             } 
             {
               :tags [["inputgraphnode2"]] 
               :label "Eingabemodul" 
-              :value "Red"
+              :value "#CAFE12"
             } 
             {
               :tags [["evalgraphnode2"]] 
@@ -208,7 +208,7 @@
             {
               :tags [["evalragraphnode2"]] 
               :label "PVact-Auswerungsmodul" 
-              :value "Yellow"
+              :value "#7012FE"
             } 
             {
               :tags [["reevalgraphnode2"]] 
@@ -219,7 +219,7 @@
           :heading "Rahmenfarbe"
         } 
         :shape {
-          :type :subsets 
+          :type :fix 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -244,7 +244,7 @@
             {
               :tags [["inputgraphnode2"]] 
               :label "Eingabemodul" 
-              :value "square"
+              :value "flower"
             } 
             {
               :tags [["evalgraphnode2"]] 
@@ -259,7 +259,7 @@
             {
               :tags [["reevalgraphnode2"]] 
               :label "Evaluierungsmodul" 
-              :value "circle"
+              :value "triangle-down"
             }
           ] 
           :heading "Form"
@@ -280,7 +280,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.14.1" 
+        :description "IRPact v1.15.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -1089,8 +1089,14 @@
                 :label "Standardprozessmodell" 
                 :set "set_InBasicCAModularProcessModel" 
                 :description "todo" 
-                :tags [["link" "InBasicCAModularProcessModel" "InConsumerAgentEvalModule2" "startModule"] ["link" "InBasicCAModularProcessModel" "InNewProductHandler" "newProductHandlers"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "startOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "midOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "endOfYearReevaluators"]]
-              } 
+                :tags [["link" "InBasicCAModularProcessModel" "InConsumerAgentEvalModule2" "startModule"] ["link" "InBasicCAModularProcessModel" "InInitializationHandler" "initializationHandlers"] ["link" "InBasicCAModularProcessModel" "InNewProductHandler" "newProductHandlers"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "startOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "midOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "endOfYearReevaluators"]]
+              }
+            ]
+          } 
+          {
+            :label "Reevaluierung" 
+            :description "todo" 
+            :sections [
               {
                 :label "ReevaluatorModuleLinker" 
                 :set "set_InReevaluatorModuleLinker" 
@@ -1120,6 +1126,18 @@
                 :set "set_InImpededResetter" 
                 :description "todo" 
                 :tags [["InImpededResetter" "placeholder"]]
+              }
+            ]
+          } 
+          {
+            :label "Konfiguratoren" 
+            :description "todo" 
+            :sections [
+              {
+                :label "Agentattributskalierer" 
+                :set "set_InAgentAttributeScaler" 
+                :description "newValue = (oldValue - min) " 
+                :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
               }
             ]
           } 
@@ -1159,7 +1177,13 @@
                     :label "IfThresholdModule" 
                     :set "set_InIfThresholdModule_boolgraphnode2" 
                     :description "todo" 
-                    :tags [["InGeneralIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "draw" "graphedge2"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"] ["InIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                  } 
+                  {
+                    :label "GeneralIfThresholdModule" 
+                    :set "set_InGeneralIfThresholdModule_boolgraphnode2" 
+                    :description "todo" 
+                    :tags [["InGeneralIfThresholdModule" "boolgraphnode2" "priority"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "draw" "graphedge2"] ["link" "InGeneralIfThresholdModule" "boolgraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"]]
                   } 
                   {
                     :label "IfDoActionModule" 
@@ -1180,12 +1204,6 @@
                     :tags [["InMulScalarModule" "calcgraphnode2" "scalar"] ["link" "InMulScalarModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   } 
                   {
-                    :label "ScaledWeightModule" 
-                    :set "set_InScaledWeightModule_calcgraphnode2" 
-                    :description "todo" 
-                    :tags [["InScaledWeightModule" "calcgraphnode2" "initialWeight"] ["link" "InScaledWeightModule" "calcgraphnode2" "InAttributeName" "attribute"] ["link" "InScaledWeightModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
-                  } 
-                  {
                     :label "AddScalarModule" 
                     :set "set_InAddScalarModule_calcgraphnode2" 
                     :description "todo" 
@@ -1193,9 +1211,9 @@
                   } 
                   {
                     :label "LogisticModule" 
-                    :set "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" 
+                    :set "set_InLogisticModule_calcgraphnode2" 
                     :description "L" 
-                    :tags [["InLogisticModule" "calcgraphnode2" "valueL"] ["InLogisticModule" "calcgraphnode2" "valueK"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "xinput" "graphedge2"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "x0input" "graphedge2"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InLogisticModule" "calcgraphnode2" "valueL"] ["InLogisticModule" "calcgraphnode2" "valueK"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "xinput" "graphedge2"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "x0input" "graphedge2"]]
                   } 
                   {
                     :label "SumModule" 
@@ -1208,6 +1226,12 @@
                     :set "set_InCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
                     :tags [["InCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                  } 
+                  {
+                    :label "MinimalCsvValueLoggingModule" 
+                    :set "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" 
+                    :description "todo" 
+                    :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   } 
                   {
                     :label "DecisionMakingModule" 
@@ -1324,7 +1348,7 @@
                     :tags [["link" "InPhaseLoggingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "input" "graphedge2"]]
                   } 
                   {
-                    :label "DecisionMakingModule" 
+                    :label "MainBranchingModule" 
                     :set "set_InMainBranchingModule_evalragraphnode2" 
                     :description "todo" 
                     :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
