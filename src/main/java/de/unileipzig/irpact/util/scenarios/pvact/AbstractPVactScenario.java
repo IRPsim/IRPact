@@ -24,9 +24,9 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InBasicCA
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InGeneralIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
@@ -325,7 +325,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         commuAttrWeight.setName("FACTOR_COMMUNICATION");
         commuAttrWeight.setScalar(1.0);
         commuAttrWeight.setInput(commuAttr);
-        InIfThresholdModule_boolgraphnode2 commuIf = new InIfThresholdModule_boolgraphnode2();
+        InBernoulliModule_boolgraphnode2 commuIf = new InBernoulliModule_boolgraphnode2();
         commuIf.setName("IF_COMMUNICATION");
         commuIf.setInput(commuAttrWeight);
         InCommunicationModule_actiongraphnode2 commuAction = new InCommunicationModule_actiongraphnode2();
@@ -353,7 +353,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         rewireAttrWeight.setName("REWIRE_COMMUNICATION");
         rewireAttrWeight.setScalar(1.0);
         rewireAttrWeight.setInput(rewireAttr);
-        InIfThresholdModule_boolgraphnode2 rewireIf = new InIfThresholdModule_boolgraphnode2();
+        InBernoulliModule_boolgraphnode2 rewireIf = new InBernoulliModule_boolgraphnode2();
         rewireIf.setName("IF_REWIRE");
         rewireIf.setInput(rewireAttrWeight);
         InRewireModule_actiongraphnode2 rewireAction = new InRewireModule_actiongraphnode2();
@@ -404,7 +404,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         npvLogger.setName(LazyData2FileLinker.NPV_LOGGER);
         npvLogger.setInput(logisticNPV);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 npvReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        npvReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
+        npvReevaluator.setName(LazyData2FileLinker.NPV_REEVAL);
         npvReevaluator.setInput(logisticNPV);
         npvReevaluator.setStoreXlsx(true);
 
@@ -441,14 +441,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         envLogger.setName(LazyData2FileLinker.ENV_LOGGER);
         envLogger.setInput(envAttr);
-        InScaledWeightModule_calcgraphnode2 envWeight = new InScaledWeightModule_calcgraphnode2();
+        InMulScalarModule_calcgraphnode2 envWeight = new InMulScalarModule_calcgraphnode2();
         envWeight.setName("ENV_WEIGHT");
-        envWeight.setInitialWeight(RealData.WEIGHT_EK);
-        envWeight.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+        envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 envReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
         envReevaluator.setName(LazyData2FileLinker.ENV_REEVAL);
-        envReevaluator.setInput(envAttr);
+        envReevaluator.setInput(envWeight);
         envReevaluator.setStoreXlsx(true);
 
         //nov comp
@@ -458,14 +457,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         novLogger.setName(LazyData2FileLinker.NOV_LOGGER);
         novLogger.setInput(novAttr);
-        InScaledWeightModule_calcgraphnode2 novWeight = new InScaledWeightModule_calcgraphnode2();
+        InMulScalarModule_calcgraphnode2 novWeight = new InMulScalarModule_calcgraphnode2();
         novWeight.setName("NOV_WEIGHT");
-        novWeight.setInitialWeight(RealData.WEIGHT_NS);
-        novWeight.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+        novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
         InMinimalCsvValueReevaluatorModule_reevalgraphnode2 novReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
         novReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
-        novReevaluator.setInput(novAttr);
+        novReevaluator.setInput(novWeight);
         novReevaluator.setStoreXlsx(true);
 
         //soc
@@ -508,14 +506,17 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         finThreshold.setName("FIN_THRESHOLD");
         finThreshold.setAttribute(getAttribute(RAConstants.FINANCIAL_THRESHOLD));
 
-        InGeneralIfThresholdModule_boolgraphnode2 finCheck = new InGeneralIfThresholdModule_boolgraphnode2();
+        InThresholdReachedModule_boolgraphnode2 finCheck = new InThresholdReachedModule_boolgraphnode2();
         finCheck.setName("FIN_CHECK");
         finCheck.setDraw(pp);
         finCheck.setThreshold(finThreshold);
 
-        InDecisionMakingModule_calcgraphnode2 decision = new InDecisionMakingModule_calcgraphnode2();
-        decision.setName("DECISION_MAKING");
-        decision.setFinancialCheckComponent(finCheck);
+        InAttributeInputModule_inputgraphnode2 adoptThreshold = new InAttributeInputModule_inputgraphnode2();
+        adoptThreshold.setName("ADOPT_THRESHOLD");
+        adoptThreshold.setAttribute(getAttribute(RAConstants.ADOPTION_THRESHOLD));
+
+        InSumModule_calcgraphnode2 decision = new InSumModule_calcgraphnode2();
+        decision.setName("UTILITY_SUM");
         decision.setInput(
                 finComp,
                 envWeight,
@@ -523,16 +524,17 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 socComp
         );
 
-        InDecisionMakingDeciderModule2_evalragraphnode2 decisionDecider = new InDecisionMakingDeciderModule2_evalragraphnode2();
-        decisionDecider.setName("DECISION_DECIDER");
-        decisionDecider.setThreshold(0.0);
-        decisionDecider.setInput(decision);
+        InDecisionMakingDeciderModule2_evalragraphnode2 decisionMaking = new InDecisionMakingDeciderModule2_evalragraphnode2();
+        decisionMaking.setName("DECISION_MAKING");
+        decisionMaking.setFinCheck(finCheck);
+        decisionMaking.setThreshold(adoptThreshold);
+        decisionMaking.setUtility(decision);
 
         InYearBasedAdoptionDeciderModule_evalragraphnode2 nextDecisionDecider = new InYearBasedAdoptionDeciderModule_evalragraphnode2();
-        nextDecisionDecider.setName("DECISION_DECIDER");
+        nextDecisionDecider.setName("REALLY_ADOPT_TEST");
         nextDecisionDecider.setBase(1);
         nextDecisionDecider.setFactor(0);
-        nextDecisionDecider.setInput(decisionDecider);
+        nextDecisionDecider.setInput(decisionMaking);
 
         //MAIN
         InMainBranchingModule_evalragraphnode2 mainBranch = new InMainBranchingModule_evalragraphnode2();
@@ -560,6 +562,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName(name);
         processModel.setStartModule(startModule);
+
+        //INIT
 
         //NEW PRODUCT
         processModel.addNewProductHandlers(

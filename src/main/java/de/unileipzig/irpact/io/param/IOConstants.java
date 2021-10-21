@@ -64,6 +64,8 @@ public final class IOConstants {
     public static final String PROCESS_MODULAR3 = "process_modular3";
     public static final String PROCESS_MODULAR3_MODEL = "process_modular3_PV_model";
     public static final String PROCESS_MODULAR3_REEVAL = "process_modular3_PV_reeval";
+    public static final String PROCESS_MODULAR3_HANDLER = "process_modular3_PV_handler";
+    public static final String PROCESS_MODULAR3_HANDLER_INIT = "process_modular3_PV_handler_init";
     public static final String PROCESS_MODULAR3_MODULES = "process_modular3_PV_modules";
     public static final String PROCESS_MODULAR3_MODULES_ACTION = "process_modular3_PV_modules_action";
     public static final String PROCESS_MODULAR3_MODULES_BOOL = "process_modular3_PV_modules_bool";

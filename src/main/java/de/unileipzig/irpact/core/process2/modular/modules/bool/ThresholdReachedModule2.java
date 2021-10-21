@@ -14,11 +14,11 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class GenericIfThresholdModule2<I>
+public class ThresholdReachedModule2<I>
         extends AbstractUniformMultiModule2_2<I, Boolean, I, Number, CalculationModule2<I>>
         implements BooleanModule2<I>, HelperAPI2 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(GenericIfThresholdModule2.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ThresholdReachedModule2.class);
 
     @Override
     public IRPLogger getDefaultLogger() {
@@ -55,8 +55,8 @@ public class GenericIfThresholdModule2<I>
 
         double draw = getDrawModule().calculate(input, actions);
         double threshold = getThresholdModule().calculate(input, actions);
-        boolean valid = draw < threshold;
-        trace("[{}] @ [{}] {} ({} < {})", getName(), printName(input), valid, draw, threshold);
+        boolean valid = threshold <= draw;
+        trace("[{}] @ [{}] {} ({} <= {})", getName(), printName(input), valid, threshold, draw);
         return valid;
     }
 }

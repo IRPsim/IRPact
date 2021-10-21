@@ -200,6 +200,14 @@ public final class AttributeHelper extends SimulationEntityBase {
         return getDoubleValue(agent.getEnvironment(), attribute);
     }
 
+    public void setDoubleValue(ConsumerAgent agent, String name, double value) throws IRPactNoSuchElementException {
+        ConsumerAgentAttribute attribute = agent.getAttribute(name);
+        if(attribute == null) {
+            handleMissingAttribute(agent, name);
+        }
+        setDoubleValue(attribute, value);
+    }
+
     public String findStringValue(ConsumerAgent agent, String name) throws IRPactNoSuchElementException {
         Attribute attribute = agent.findAttribute(name);
         if(attribute == null) {

@@ -36,9 +36,9 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InGeneralIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfThresholdModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
@@ -48,6 +48,8 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
@@ -908,19 +910,17 @@ public class InRoot implements RootClass {
             InStopAfterSuccessfulTaskModule_actiongraphnode2.class,
             //bool
             InConsumerAgentBoolModule2.class,
-            InGeneralIfThresholdModule_boolgraphnode2.class,
+            InThresholdReachedModule_boolgraphnode2.class,
             InIfDoActionModule_boolgraphnode2.class,
-            InIfThresholdModule_boolgraphnode2.class,
+            InBernoulliModule_boolgraphnode2.class,
             //calc
             InAddScalarModule_calcgraphnode2.class,
             InConsumerAgentCalculationModule2.class,
             InCsvValueLoggingModule_calcloggraphnode2.class,
-            InDecisionMakingModule_calcgraphnode2.class,
             InLogisticModule_calcgraphnode2.class,
             InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             InMulScalarModule_calcgraphnode2.class,
             InProductModule_calcgraphnode2.class,
-            InScaledWeightModule_calcgraphnode2.class,
             InSumModule_calcgraphnode2.class,
             //input
             InAttributeInputModule_inputgraphnode2.class,
@@ -957,6 +957,9 @@ public class InRoot implements RootClass {
             InReevaluatorModuleLinker.class,
             //reeval-general
             InReevaluator2.class,
+            //handler-init
+            InAgentAttributeScaler.class,
+            InInitializationHandler.class,
             //===
 
             //special

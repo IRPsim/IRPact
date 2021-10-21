@@ -120,6 +120,7 @@
       "set_InAffinityEntry" : {
         "TRA_TRA" : { }
       },
+      "set_InAgentAttributeScaler" : { },
       "set_InAgentPopulation" : {
         "PopulationSize" : { }
       },
@@ -132,6 +133,7 @@
       "set_InBasicProductGroup" : { },
       "set_InBasicProductGroupAttribute" : { },
       "set_InBernoulliDistribution" : { },
+      "set_InBernoulliModule_boolgraphnode2" : { },
       "set_InBooleanDistribution" : { },
       "set_InBoundedNormalDistribution" : { },
       "set_InBoundedUniformDoubleDistribution" : { },
@@ -207,7 +209,6 @@
       "set_InCsvValueLoggingModule_calcloggraphnode2" : { },
       "set_InCsvValueReevaluatorModule_reevalgraphnode2" : { },
       "set_InDecisionMakingDeciderModule2_evalragraphnode2" : { },
-      "set_InDecisionMakingModule_calcgraphnode2" : { },
       "set_InDecisionMakingReevaluator" : { },
       "set_InDefaultActionModule_evalgraphnode" : { },
       "set_InDefaultDecisionMakingModule_evalgraphnode" : { },
@@ -262,7 +263,6 @@
       "set_InGeneralConsumerAgentAnnualGroupAttribute" : { },
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
-      "set_InGeneralIfThresholdModule_boolgraphnode2" : { },
       "set_InGenericOutputImage" : {
         "Interessensentwicklung" : {
           "par_InGenericOutputImage_useGnuplot" : 1,
@@ -375,18 +375,18 @@
       },
       "set_InGroupBasedDeffuantUncertainty" : { },
       "set_InIfDoActionModule_boolgraphnode2" : { },
-      "set_InIfThresholdModule_boolgraphnode2" : { },
       "set_InImpededResetter" : { },
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_10_20_T_14_59_33" : {
+        "CT_D_2021_10_21_T_08_17_22" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
           "par_InInformation_placeholder" : 0.0
         }
       },
+      "set_InInitializationHandler" : { },
       "set_InInitializationModule_evalragraphnode2" : { },
       "set_InInterestModule_evalragraphnode2" : { },
       "set_InInverse" : { },
@@ -520,9 +520,8 @@
       "set_InRewireModule_actiongraphnode2" : { },
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
-      "set_InScaledWeightModule_calcgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_14_1" : {
+        "v1_15_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -565,6 +564,7 @@
       "set_InSumThresholdEvaluationModule_evalgraphnode" : { },
       "set_InTestData" : { },
       "set_InThresholdEvaluationModule_evalgraphnode" : { },
+      "set_InThresholdReachedModule_boolgraphnode2" : { },
       "set_InTimeModel" : {
         "DiscreteUnitStep" : { }
       },
@@ -632,9 +632,11 @@
           "TRA_TRA" : 1.0
         }
       },
+      "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : { },
+      "par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevaluators" : { },
@@ -642,6 +644,7 @@
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },
       "par_link_InBasicProductGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
+      "par_link_InBernoulliModule_boolgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge" : { },
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onAdoptModule_graphedge" : { },
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge" : { },
@@ -702,9 +705,9 @@
       "par_link_InConsumerAgentMPMWithAdoptionHandler_InNewProductHandler_newProductHandlers" : { },
       "par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InCsvValueReevaluatorModule_reevalgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
-      "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
-      "par_link_InDecisionMakingModule_calcgraphnode2_InConsumerAgentBoolModule2_financialCheck_graphedge2" : { },
-      "par_link_InDecisionMakingModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
+      "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentBoolModule2_finCheck_graphedge2" : { },
+      "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2" : { },
+      "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_utility_graphedge2" : { },
       "par_link_InDecisionMakingReevaluator_InConsumerAgentModule2_modules" : { },
       "par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile" : { },
@@ -765,8 +768,6 @@
       "par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
-      "par_link_InGeneralIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2" : { },
-      "par_link_InGeneralIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2" : { },
       "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
         "Interessensentwicklung" : {
           "PV_Diffusion_Leipzig" : 0.0
@@ -795,7 +796,6 @@
       "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentActionModule2_taskInput_graphedge2" : { },
       "par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentBoolModule2_ifInput_graphedge2" : { },
-      "par_link_InIfThresholdModule_boolgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2" : { },
       "par_link_InLocalShareOfAdopterModule_inputgraphnode2_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2" : { },
@@ -933,8 +933,6 @@
       "par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules" : { },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2_input_graphedge2" : { },
-      "par_link_InScaledWeightModule_calcgraphnode2_InAttributeName_attribute" : { },
-      "par_link_InScaledWeightModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
@@ -950,6 +948,8 @@
       "par_link_InSumThresholdComponent_InValueComponent_components" : { },
       "par_link_InSumThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
       "par_link_InThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
+      "par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2" : { },
+      "par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2" : { },
       "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge" : { },
       "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge" : { },
       "par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },

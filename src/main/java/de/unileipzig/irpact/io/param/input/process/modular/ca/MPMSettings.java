@@ -15,6 +15,8 @@ import java.util.Objects;
  */
 public final class MPMSettings {
 
+    public static final String NODE_SET = "set_InConsumerAgentModule";
+
     public static final String MPM_GRAPH = "modulargraph";
 
     //node

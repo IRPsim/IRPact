@@ -1,15 +1,15 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc;
+package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
-import de.unileipzig.irpact.core.process2.modular.modules.calc.ScalingWeightingModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.bool.BernoulliModule2;
+import de.unileipzig.irpact.core.process2.modular.modules.core.Module2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -29,14 +29,14 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
 @Definition(
         graphNode = @GraphNode(
                 id = MODULAR_GRAPH,
-                label = CALC_LABEL,
-                shape = CALC_SHAPE,
-                color = CALC_COLOR,
-                border = CALC_BORDER,
-                tags = {CALC_GRAPHNODE}
+                label = BOOL_LABEL,
+                shape = BOOL_SHAPE,
+                color = BOOL_COLOR,
+                border = BOOL_BORDER,
+                tags = {BOOL_GRAPHNODE}
         )
 )
-public class InScaledWeightModule_calcgraphnode2 implements InConsumerAgentCalculationModule2 {
+public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -49,11 +49,10 @@ public class InScaledWeightModule_calcgraphnode2 implements InConsumerAgentCalcu
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_SCALINGWEIGHTING);
-        setShapeColorBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_BORDER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH);
+        setShapeColorBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_BORDER);
 
-        addEntryWithDefault(res, thisClass(), "scalar", VALUE_1);
-        addEntry(res, thisClass(), "attribute");
+        addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));
         addEntry(res, thisClass(), "input_graphedge2");
     }
 
@@ -69,24 +68,12 @@ public class InScaledWeightModule_calcgraphnode2 implements InConsumerAgentCalcu
     }
 
     @FieldDefinition
-    public double initialWeight;
-    public void setInitialWeight(double initialWeight) {
-        this.initialWeight = initialWeight;
+    public int priority = Module2.NORM_PRIORITY;
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
-    public double getInitialWeight() {
-        return initialWeight;
-    }
-
-    @FieldDefinition
-    public InAttributeName[] attribute;
-    public void setAttribute(InAttributeName attribute) {
-        this.attribute = new InAttributeName[]{attribute};
-    }
-    public InAttributeName getAttribute() throws ParsingException {
-        return ParamUtil.getInstance(attribute, "attribute");
-    }
-    public String getAttributeName() throws ParsingException {
-        return getAttribute().getName();
+    public int getPriority() {
+        return priority;
     }
 
     @FieldDefinition(
@@ -94,7 +81,7 @@ public class InScaledWeightModule_calcgraphnode2 implements InConsumerAgentCalcu
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InScaledWeightModule input"}
+                    tags = {"InIfThresholdModule input"}
             )
     )
     public InConsumerAgentCalculationModule2[] input_graphedge2;
@@ -105,31 +92,30 @@ public class InScaledWeightModule_calcgraphnode2 implements InConsumerAgentCalcu
         this.input_graphedge2 = new InConsumerAgentCalculationModule2[]{first};
     }
 
-    public InScaledWeightModule_calcgraphnode2() {
+    public InBernoulliModule_boolgraphnode2() {
     }
 
     @Override
-    public InScaledWeightModule_calcgraphnode2 copy(CopyCache cache) {
+    public InBernoulliModule_boolgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InScaledWeightModule_calcgraphnode2 newCopy(CopyCache cache) {
-        InScaledWeightModule_calcgraphnode2 copy = new InScaledWeightModule_calcgraphnode2();
+    public InBernoulliModule_boolgraphnode2 newCopy(CopyCache cache) {
+        InBernoulliModule_boolgraphnode2 copy = new InBernoulliModule_boolgraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public ScalingWeightingModule2<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
+    public BernoulliModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        ScalingWeightingModule2<ConsumerAgentData2> module = new ScalingWeightingModule2<>();
+        BernoulliModule2 module = new BernoulliModule2();
         module.setName(getName());
-        module.setInitialWeight(getInitialWeight());
-        module.setAttributeName(getAttributeName());
+        module.setPriority(getPriority());
         module.setSubmodule(parser.parseEntityTo(getInput()));
 
         return module;
