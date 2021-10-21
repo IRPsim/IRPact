@@ -1,94 +1,5 @@
 [
   {
-    :label "[TEST] Graph - Modulares Prozessmodell" 
-    :icon "fas fa-share-alt" 
-    :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
-    :graph {
-      :edges {
-        :tags [["graphedge"]] 
-        :groups [
-          {
-            :tags [["InAddModule" "first"] ["InAddModule" "second"] ["InLogisticModule" "input"] ["InSumModule" "first"] ["InWeightedAddModule" "first"] ["InWeightedAddModule" "second"] ["InWeightedModule" "input"] ["InSumThresholdEvaluationModule" "input"] ["InThresholdEvaluationModule" "input"]] 
-            :label "Berechnungskante" 
-            :color "DarkCyan"
-          } 
-          {
-            :tags [["InBranchModule" "inputModule"] ["InBranchModule" "onAdoptModule"] ["InBranchModule" "onImpededModule"] ["InBranchModule" "onInProcessModule"] ["InDoNothingModule" "inputModule"] ["InFilterModule" "inputModule"] ["InFilterModule" "taskModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
-            :label "Evaluierungskante" 
-            :color "LightSlateGrey"
-          }
-        ] 
-        :heading "Kantenbedeutung"
-      } 
-      :nodes {
-        :set "set_InConsumerAgentModule" 
-        :color {
-          :type :subsets 
-          :groups [
-            {
-              :tags [["calcgraphnode"]] 
-              :label "Berechnungsmodul" 
-              :value "Blue"
-            } 
-            {
-              :tags [["inputgraphnode"]] 
-              :label "Eingabemodul" 
-              :value "Green"
-            } 
-            {
-              :tags [["evalgraphnode"]] 
-              :label "Evaluierungsmodul" 
-              :value "Red"
-            }
-          ] 
-          :heading "Fuellfarbe"
-        } 
-        :border {
-          :type :subsets 
-          :groups [
-            {
-              :tags [["calcgraphnode"]] 
-              :label "Berechnungsmodul" 
-              :value "Blue"
-            } 
-            {
-              :tags [["inputgraphnode"]] 
-              :label "Eingabemodul" 
-              :value "Green"
-            } 
-            {
-              :tags [["evalgraphnode"]] 
-              :label "Evaluierungsmodul" 
-              :value "Red"
-            }
-          ] 
-          :heading "Rahmenfarbe"
-        } 
-        :shape {
-          :type :subsets 
-          :groups [
-            {
-              :tags [["calcgraphnode"]] 
-              :label "Berechnungsmodul" 
-              :value "gear"
-            } 
-            {
-              :tags [["inputgraphnode"]] 
-              :label "Eingabemodul" 
-              :value "square"
-            } 
-            {
-              :tags [["evalgraphnode"]] 
-              :label "Evaluierungsmodul" 
-              :value "diamond"
-            }
-          ] 
-          :heading "Form"
-        }
-      }
-    }
-  } 
-  {
     :label "[TEST] Graph - Modulares Prozessmodell v3" 
     :icon "fas fa-share-alt" 
     :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
@@ -127,95 +38,13 @@
       :nodes {
         :set "set_InModule2" 
         :color {
-          :type :subsets 
-          :groups [
-            {
-              :tags [["actiongraphnode2"]] 
-              :label "Aktionsmodul" 
-              :value "DarkCyan"
-            } 
-            {
-              :tags [["boolgraphnode2"]] 
-              :label "Entscheidungsmodul" 
-              :value "LightSlateGrey"
-            } 
-            {
-              :tags [["calcgraphnode2"]] 
-              :label "Berechnungsmodul" 
-              :value "Green"
-            } 
-            {
-              :tags [["calcloggraphnode2"]] 
-              :label "Loggingmodul" 
-              :value "#FEAF12"
-            } 
-            {
-              :tags [["inputgraphnode2"]] 
-              :label "Eingabemodul" 
-              :value "#CAFE12"
-            } 
-            {
-              :tags [["evalgraphnode2"]] 
-              :label "Planauswertungsmodul" 
-              :value "Blue"
-            } 
-            {
-              :tags [["evalragraphnode2"]] 
-              :label "PVact-Auswerungsmodul" 
-              :value "#7012FE"
-            } 
-            {
-              :tags [["reevalgraphnode2"]] 
-              :label "Evaluierungsmodul" 
-              :value "Magenta"
-            }
-          ] 
+          :type :parameter 
+          :tags [["colorPlaceholder"]] 
           :heading "Fuellfarbe"
         } 
         :border {
-          :type :subsets 
-          :groups [
-            {
-              :tags [["actiongraphnode2"]] 
-              :label "Aktionsmodul" 
-              :value "DarkCyan"
-            } 
-            {
-              :tags [["boolgraphnode2"]] 
-              :label "Entscheidungsmodul" 
-              :value "LightSlateGrey"
-            } 
-            {
-              :tags [["calcgraphnode2"]] 
-              :label "Berechnungsmodul" 
-              :value "Green"
-            } 
-            {
-              :tags [["calcloggraphnode2"]] 
-              :label "Loggingmodul" 
-              :value "#FEAF12"
-            } 
-            {
-              :tags [["inputgraphnode2"]] 
-              :label "Eingabemodul" 
-              :value "#CAFE12"
-            } 
-            {
-              :tags [["evalgraphnode2"]] 
-              :label "Planauswertungsmodul" 
-              :value "Blue"
-            } 
-            {
-              :tags [["evalragraphnode2"]] 
-              :label "PVact-Auswerungsmodul" 
-              :value "#7012FE"
-            } 
-            {
-              :tags [["reevalgraphnode2"]] 
-              :label "Evaluierungsmodul" 
-              :value "Magenta"
-            }
-          ] 
+          :type :parameter 
+          :tags [["colorPlaceholder"]] 
           :heading "Rahmenfarbe"
         } 
         :shape {
@@ -252,7 +81,7 @@
               :value "pentagon"
             } 
             {
-              :tags [["evalragraphnode2"]] 
+              :tags [["evalragraphnode2"] ["colorPlaceholder"]] 
               :label "PVact-Auswerungsmodul" 
               :value "circle"
             } 
@@ -1351,7 +1180,7 @@
                     :label "MainBranchingModule" 
                     :set "set_InMainBranchingModule_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
+                    :tags [["InMainBranchingModule" "evalragraphnode2" "colorPlaceholder"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
                   } 
                   {
                     :label "DecisionMakingDeciderModule" 

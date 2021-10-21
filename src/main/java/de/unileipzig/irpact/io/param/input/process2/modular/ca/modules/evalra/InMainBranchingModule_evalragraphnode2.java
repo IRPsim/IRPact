@@ -9,10 +9,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InConsumerAgentActionModule2;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
-import de.unileipzig.irptools.defstructure.annotation.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -32,7 +29,10 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 shape = EVALRA_SHAPE,
                 color = EVALRA_COLOR,
                 border = EVALRA_BORDER,
-                tags = {EVALRA_GRAPHNODE}
+                //tags = {EVALRA_GRAPHNODE}
+                tags = {"colorPlaceholder"},
+                colorMode = NodeMode.PARAMETER,
+                borderMode = NodeMode.PARAMETER
         )
 )
 public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
@@ -69,6 +69,9 @@ public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEv
     public void setName(String name) {
         this._name = name;
     }
+
+    @FieldDefinition
+    public double colorPlaceholder = 0;
 
     @FieldDefinition(
             graphEdge = @GraphEdge(

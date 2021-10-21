@@ -10,10 +10,7 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
-import de.unileipzig.irptools.defstructure.annotation.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -33,7 +30,10 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 shape = EVAL_SHAPE,
                 color = EVAL_COLOR,
                 border = EVAL_BORDER,
-                tags = {EVAL_GRAPHNODE}
+                tags = {EVAL_GRAPHNODE},
+
+                colorMode = NodeMode.PARAMETER,
+                borderMode = NodeMode.PARAMETER
         )
 )
 public class InBranchModule_evalgraphnode implements InConsumerAgentEvaluationModule {
