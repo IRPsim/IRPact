@@ -1,5 +1,94 @@
 [
   {
+    :label "[TEST] Graph - Modulares Prozessmodell" 
+    :icon "fas fa-share-alt" 
+    :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
+    :graph {
+      :edges {
+        :tags [["graphedge"]] 
+        :groups [
+          {
+            :tags [["InAddModule" "first"] ["InAddModule" "second"] ["InLogisticModule" "input"] ["InSumModule" "first"] ["InWeightedAddModule" "first"] ["InWeightedAddModule" "second"] ["InWeightedModule" "input"] ["InSumThresholdEvaluationModule" "input"] ["InThresholdEvaluationModule" "input"]] 
+            :label "Berechnungskante" 
+            :color "DarkCyan"
+          } 
+          {
+            :tags [["InBranchModule" "inputModule"] ["InBranchModule" "onAdoptModule"] ["InBranchModule" "onImpededModule"] ["InBranchModule" "onInProcessModule"] ["InDoNothingModule" "inputModule"] ["InFilterModule" "inputModule"] ["InFilterModule" "taskModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
+            :label "Evaluierungskante" 
+            :color "LightSlateGrey"
+          }
+        ] 
+        :heading "Kantenbedeutung"
+      } 
+      :nodes {
+        :set "set_InConsumerAgentModule" 
+        :color {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
+            }
+          ] 
+          :heading "Fuellfarbe"
+        } 
+        :border {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
+            }
+          ] 
+          :heading "Rahmenfarbe"
+        } 
+        :shape {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "gear"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "square"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "diamond"
+            }
+          ] 
+          :heading "Form"
+        }
+      }
+    }
+  } 
+  {
     :label "[TEST] Graph - Modulares Prozessmodell v3" 
     :icon "fas fa-share-alt" 
     :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
@@ -13,7 +102,7 @@
             :color "LightSlateGrey"
           } 
           {
-            :tags [["InGeneralIfThresholdModule" "draw"] ["InGeneralIfThresholdModule" "threshold"] ["InIfThresholdModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
+            :tags [["InThresholdReachedModule" "draw"] ["InThresholdReachedModule" "threshold"] ["InBernoulliModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMinimalCsvValueLoggingModule" "input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
             :label "Berechnungskante" 
             :color "Green"
           } 
@@ -38,7 +127,7 @@
       :nodes {
         :set "set_InModule2" 
         :color {
-          :type :fix 
+          :type :subsets 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -84,7 +173,7 @@
           :heading "Fuellfarbe"
         } 
         :border {
-          :type :fix 
+          :type :subsets 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -130,7 +219,7 @@
           :heading "Rahmenfarbe"
         } 
         :shape {
-          :type :fix 
+          :type :subsets 
           :groups [
             {
               :tags [["actiongraphnode2"]] 
@@ -191,7 +280,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.15.0" 
+        :description "IRPact v1.16.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -1045,10 +1134,16 @@
             :description "todo" 
             :sections [
               {
-                :label "Agentattributskalierer" 
-                :set "set_InAgentAttributeScaler" 
-                :description "newValue = (oldValue - min) " 
-                :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
+                :label "Initialisierung" 
+                :description "todo" 
+                :sections [
+                  {
+                    :label "Agentattributskalierer" 
+                    :set "set_InAgentAttributeScaler" 
+                    :description "newValue = (oldValue - min) " 
+                    :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
+                  }
+                ]
               }
             ]
           } 
@@ -1262,7 +1357,7 @@
                     :label "DecisionMakingDeciderModule" 
                     :set "set_InDecisionMakingDeciderModule2_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentBoolModule2" "finCheck" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "utility" "graphedge2"]]
+                    :tags [["InDecisionMakingDeciderModule2" "evalragraphnode2" "forceEvaluation"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentBoolModule2" "finCheck" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "threshold" "graphedge2"] ["link" "InDecisionMakingDeciderModule2" "evalragraphnode2" "InConsumerAgentCalculationModule2" "utility" "graphedge2"]]
                   }
                 ]
               } 

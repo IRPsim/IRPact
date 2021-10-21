@@ -46,7 +46,7 @@ public class InRewireModule_actiongraphnode2 implements InConsumerAgentActionMod
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_REWIRE);
-        setShapeColorBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_BORDER);
+        setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
         addEntry(res, thisClass(), "placeholder");
     }

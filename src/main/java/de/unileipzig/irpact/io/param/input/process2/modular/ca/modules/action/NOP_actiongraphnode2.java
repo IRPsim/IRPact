@@ -4,15 +4,12 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
-import de.unileipzig.irpact.core.process2.modular.modules.action.StopAfterSuccessfulTaskModule2;
+import de.unileipzig.irpact.core.process2.modular.modules.action.NOPModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -36,7 +33,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {ACTION_GRAPHNODE}
         )
 )
-public class InStopAfterSuccessfulTaskModule_actiongraphnode2 implements InConsumerAgentActionModule2 {
+public class NOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -49,10 +46,10 @@ public class InStopAfterSuccessfulTaskModule_actiongraphnode2 implements InConsu
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_STOP);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_NOP);
         setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
-        addEntry(res, thisClass(), "input_graphedge2");
+        addEntry(res, thisClass(), "placeholder");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -66,48 +63,32 @@ public class InStopAfterSuccessfulTaskModule_actiongraphnode2 implements InConsu
         this._name = name;
     }
 
-    @FieldDefinition(
-            graphEdge = @GraphEdge(
-                    id = MODULAR_GRAPH,
-                    label = BOOL_EDGE_LABEL,
-                    color = BOOL_EDGE_COLOR,
-                    tags = {"InStopAfterSuccessfulTaskModule input"}
-            )
-    )
-    public InConsumerAgentBoolModule2[] input_graphedge2;
-    public InConsumerAgentBoolModule2[] getInput() throws ParsingException {
-        return ParamUtil.getNonNullArray(input_graphedge2, "input");
-    }
-    public void setInput(InConsumerAgentBoolModule2... input) {
-        this.input_graphedge2 = input;
-    }
+    @FieldDefinition
+    public double placeholder = 0;
 
-    public InStopAfterSuccessfulTaskModule_actiongraphnode2() {
+    public NOP_actiongraphnode2() {
     }
 
     @Override
-    public InStopAfterSuccessfulTaskModule_actiongraphnode2 copy(CopyCache cache) {
+    public NOP_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InStopAfterSuccessfulTaskModule_actiongraphnode2 newCopy(CopyCache cache) {
-        InStopAfterSuccessfulTaskModule_actiongraphnode2 copy = new InStopAfterSuccessfulTaskModule_actiongraphnode2();
+    public NOP_actiongraphnode2 newCopy(CopyCache cache) {
+        NOP_actiongraphnode2 copy = new NOP_actiongraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public StopAfterSuccessfulTaskModule2<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
+    public NOPModule2<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        StopAfterSuccessfulTaskModule2<ConsumerAgentData2> module = new StopAfterSuccessfulTaskModule2<>();
+        NOPModule2<ConsumerAgentData2> module = new NOPModule2<>();
         module.setName(getName());
-        for(InConsumerAgentBoolModule2 submodule: getInput()) {
-            module.add(parser.parseEntityTo(submodule));
-        }
 
         return module;
     }

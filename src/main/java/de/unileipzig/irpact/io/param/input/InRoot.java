@@ -29,7 +29,7 @@ import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InConsumerAgentActionModule2;

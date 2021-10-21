@@ -50,7 +50,7 @@ public class InCsvValueReevaluatorModule_reevalgraphnode2 implements InConsumerA
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_REEVAL_CSV);
-        setShapeColorBorder(res, thisClass(), REEVAL_SHAPE, REEVAL_COLOR, REEVAL_BORDER);
+        setShapeColorFillBorder(res, thisClass(), REEVAL_SHAPE, REEVAL_COLOR, REEVAL_FILL, REEVAL_BORDER);
 
         addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge2");

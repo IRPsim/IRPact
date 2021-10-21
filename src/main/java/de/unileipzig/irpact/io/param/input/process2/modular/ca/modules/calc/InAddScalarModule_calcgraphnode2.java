@@ -49,7 +49,7 @@ public class InAddScalarModule_calcgraphnode2 implements InConsumerAgentCalculat
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_ADDSCALAR);
-        setShapeColorBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_BORDER);
+        setShapeColorFillBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_FILL, CALC_BORDER);
 
         addEntryWithDefault(res, thisClass(), "scalar", VALUE_1);
         addEntry(res, thisClass(), "input_graphedge2");

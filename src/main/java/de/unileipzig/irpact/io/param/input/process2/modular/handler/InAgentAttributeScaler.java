@@ -25,7 +25,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InAgentAttributeScaler implements InReevaluator2 {
+public class InAgentAttributeScaler implements InInitializationHandler {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {

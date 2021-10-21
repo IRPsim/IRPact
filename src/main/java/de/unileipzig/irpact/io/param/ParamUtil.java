@@ -540,9 +540,18 @@ public final class ParamUtil {
     public static void setColor(
             TreeAnnotationResource res,
             Class<?> c,
-            String icon) {
-        if(icon != null) {
-            computeEntryBuilderIfAbsent(res, c).setGamsColor(icon);
+            String color) {
+        if(color != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsColor(color);
+        }
+    }
+
+    public static void setFill(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String fill) {
+        if(fill != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsFill(fill);
         }
     }
 
@@ -550,9 +559,9 @@ public final class ParamUtil {
             TreeAnnotationResource res,
             Class<?> c,
             String field,
-            String icon) {
-        if(icon != null) {
-            computeEntryBuilderIfAbsent(res, c, field).setGamsColor(icon);
+            String color) {
+        if(color != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsColor(color);
         }
     }
 
@@ -592,6 +601,19 @@ public final class ParamUtil {
             String border) {
         setShape(res, c, shape);
         setColor(res, c, color);
+        //setBorder(res, c, border); //NOT SUPPORTED
+    }
+
+    public static void setShapeColorFillBorder(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String shape,
+            String color,
+            String fill,
+            String border) {
+        setShape(res, c, shape);
+        setColor(res, c, color);
+        setFill(res, c, fill);
         //setBorder(res, c, border); //NOT SUPPORTED
     }
 

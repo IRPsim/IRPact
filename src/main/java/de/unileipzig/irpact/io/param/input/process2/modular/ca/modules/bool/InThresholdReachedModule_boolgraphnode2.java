@@ -51,7 +51,7 @@ public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentB
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_GENERICIFTHRESH);
-        setShapeColorBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_BORDER);
+        setShapeColorFillBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_FILL, BOOL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));
         addEntry(res, thisClass(), "draw_graphedge2");
@@ -83,7 +83,7 @@ public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentB
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InGeneralIfThresholdModule draw"}
+                    tags = {"InThresholdReachedModule draw"}
             )
     )
     public InConsumerAgentCalculationModule2[] draw_graphedge2;
@@ -99,7 +99,7 @@ public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentB
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InGeneralIfThresholdModule threshold"}
+                    tags = {"InThresholdReachedModule threshold"}
             )
     )
     public InConsumerAgentCalculationModule2[] threshold_graphedge2;

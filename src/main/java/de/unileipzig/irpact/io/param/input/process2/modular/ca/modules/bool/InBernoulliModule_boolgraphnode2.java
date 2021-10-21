@@ -50,7 +50,7 @@ public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModu
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH);
-        setShapeColorBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_BORDER);
+        setShapeColorFillBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_FILL, BOOL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));
         addEntry(res, thisClass(), "input_graphedge2");
@@ -81,7 +81,7 @@ public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModu
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InIfThresholdModule input"}
+                    tags = {"InBernoulliModule input"}
             )
     )
     public InConsumerAgentCalculationModule2[] input_graphedge2;

@@ -3,12 +3,12 @@ package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.InterestModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.UtilityEvaluatorModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InConsumerAgentActionModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -35,7 +35,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {EVALRA_GRAPHNODE}
         )
 )
-public class InInterestModule_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
+public class InUtilityEvaluatorModule2_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -48,10 +48,11 @@ public class InInterestModule_evalragraphnode2 implements InConsumerAgentEvalRAM
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_INTEREST);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_UTILITYEVAL);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
-        addEntry(res, thisClass(), "input_graphedge2");
+        addEntry(res, thisClass(), "threshold_graphedge2");
+        addEntry(res, thisClass(), "utility_graphedge2");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -68,43 +69,60 @@ public class InInterestModule_evalragraphnode2 implements InConsumerAgentEvalRAM
     @FieldDefinition(
             graphEdge = @GraphEdge(
                     id = MODULAR_GRAPH,
-                    label = EVALRA_EDGE_LABEL,
-                    color = EVALRA_EDGE_COLOR,
-                    tags = {"InInterestModule input"}
+                    label = CALC_EDGE_LABEL,
+                    color = CALC_EDGE_COLOR,
+                    tags = {"InUtilityEvaluatorModule2 threshold"}
             )
     )
-    public InConsumerAgentActionModule2[] input_graphedge2;
-    public InConsumerAgentActionModule2 getInput() throws ParsingException {
-        return ParamUtil.getInstance(input_graphedge2, "input");
+    public InConsumerAgentCalculationModule2[] threshold_graphedge2;
+    public InConsumerAgentCalculationModule2 getThreshold() throws ParsingException {
+        return ParamUtil.getInstance(threshold_graphedge2, "threshold");
     }
-    public void setInput(InConsumerAgentActionModule2 first) {
-        this.input_graphedge2 = new InConsumerAgentActionModule2[]{first};
+    public void setThreshold(InConsumerAgentCalculationModule2 threshold) {
+        this.threshold_graphedge2 = new InConsumerAgentCalculationModule2[]{threshold};
     }
 
-    public InInterestModule_evalragraphnode2() {
+    @FieldDefinition(
+            graphEdge = @GraphEdge(
+                    id = MODULAR_GRAPH,
+                    label = CALC_EDGE_LABEL,
+                    color = CALC_EDGE_COLOR,
+                    tags = {"InUtilityEvaluatorModule2 utility"}
+            )
+    )
+    public InConsumerAgentCalculationModule2[] utility_graphedge2;
+    public InConsumerAgentCalculationModule2 getUtility() throws ParsingException {
+        return ParamUtil.getInstance(utility_graphedge2, "utility");
+    }
+    public void setUtility(InConsumerAgentCalculationModule2 utility) {
+        this.utility_graphedge2 = new InConsumerAgentCalculationModule2[]{utility};
+    }
+
+    public InUtilityEvaluatorModule2_evalragraphnode2() {
     }
 
     @Override
-    public InInterestModule_evalragraphnode2 copy(CopyCache cache) {
+    public InUtilityEvaluatorModule2_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InInterestModule_evalragraphnode2 newCopy(CopyCache cache) {
-        InInterestModule_evalragraphnode2 copy = new InInterestModule_evalragraphnode2();
+    public InUtilityEvaluatorModule2_evalragraphnode2 newCopy(CopyCache cache) {
+        InUtilityEvaluatorModule2_evalragraphnode2 copy = new InUtilityEvaluatorModule2_evalragraphnode2();
         return Dev.throwException();
     }
 
     @Override
-    public InterestModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public UtilityEvaluatorModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        InterestModule2 module = new InterestModule2();
+        UtilityEvaluatorModule2 module = new UtilityEvaluatorModule2();
         module.setName(getName());
-        module.setActionModule(parser.parseEntityTo(getInput()));
+        module.setThresholdModule(parser.parseEntityTo(getThreshold()));
+        module.setDecisionMakingModule(parser.parseEntityTo(getUtility()));
 
         return module;
     }

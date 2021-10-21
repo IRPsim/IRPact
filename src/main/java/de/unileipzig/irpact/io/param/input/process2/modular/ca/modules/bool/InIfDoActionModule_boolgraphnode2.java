@@ -51,7 +51,7 @@ public class InIfDoActionModule_boolgraphnode2 implements InConsumerAgentBoolMod
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_IFDO);
-        setShapeColorBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_BORDER);
+        setShapeColorFillBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_FILL, BOOL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));
         addEntry(res, thisClass(), "ifInput_graphedge2");

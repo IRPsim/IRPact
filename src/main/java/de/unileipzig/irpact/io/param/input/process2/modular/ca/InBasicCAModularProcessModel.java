@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules;
+package de.unileipzig.irpact.io.param.input.process2.modular.ca;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;

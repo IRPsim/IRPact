@@ -51,7 +51,7 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_COMMU);
-        setShapeColorBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_BORDER);
+        setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
         addEntryWithDefault(res, thisClass(), "adopterPoints", asValue(RAModelData.DEFAULT_ADOPTER_POINTS));
         addEntryWithDefault(res, thisClass(), "interestedPoints", asValue(RAModelData.DEFAULT_INTERESTED_POINTS));
