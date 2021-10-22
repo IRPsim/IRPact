@@ -231,6 +231,7 @@
       "set_InDistanceEvaluator" : { },
       "set_InDoNothingComponent" : { },
       "set_InDoNothingModule_evalgraphnode" : { },
+      "set_InDummyColor" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
       "set_InEnvironmentalConcernModule_inputgraphnode" : { },
       "set_InEvaluableComponent" : { },
@@ -379,7 +380,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_10_21_T_15_23_39" : {
+        "CT_D_2021_10_22_T_09_49_32" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -807,6 +808,7 @@
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_decision_graphedge2" : { },
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_feasibility_graphedge2" : { },
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_init_graphedge2" : { },
+      "par_link_InMainBranchingModule_evalragraphnode2_InDummyColor_colorPlaceholder" : { },
       "par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InMinimalCsvValueReevaluatorModule_reevalgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent" : { },
