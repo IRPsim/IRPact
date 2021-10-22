@@ -81,7 +81,7 @@
               :value "pentagon"
             } 
             {
-              :tags [["evalragraphnode2"] ["colorPlaceholder"]] 
+              :tags [["evalragraphnode2"]]
               :label "PVact-Auswerungsmodul" 
               :value "circle"
             } 
@@ -101,6 +101,11 @@
     :icon "fa fa-spinner" 
     :description "Agentennetzwerk in IRPact" 
     :image "agentGraph"
+  } 
+  {
+    :label "set_InDummyColor" 
+    :set "set_InDummyColor" 
+    :tags [["InDummyColor" "placeholder"]]
   } 
   {
     :label "Informationen" 
@@ -1180,7 +1185,7 @@
                     :label "MainBranchingModule" 
                     :set "set_InMainBranchingModule_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["InMainBranchingModule" "evalragraphnode2" "colorPlaceholder"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
+                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
                   } 
                   {
                     :label "DecisionMakingDeciderModule" 

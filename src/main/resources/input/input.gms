@@ -2846,6 +2846,14 @@ PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevalua
 * - type: Boolean
 PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators(set_InBasicCAModularProcessModel,set_InReevaluator2)
 
+* - identifier: InDummyColor
+* - type: String
+SET set_InDummyColor(set_InModularProcessModel2)
+
+* - identifier: placeholder
+* - type: Float
+PARAMETER par_InDummyColor_placeholder(set_InDummyColor)
+
 * - identifier: InConsumerAgentModule2
 * - hidden: 1
 * - type: String
@@ -3351,8 +3359,8 @@ PARAMETER par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule
 SET set_InMainBranchingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
 
 * - identifier: colorPlaceholder
-* - type: Float
-PARAMETER par_InMainBranchingModule_evalragraphnode2_colorPlaceholder(set_InMainBranchingModule_evalragraphnode2)
+* - type: Boolean
+PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InDummyColor_colorPlaceholder(set_InMainBranchingModule_evalragraphnode2,set_InDummyColor)
 
 * - description: todo
 * - identifier: init
