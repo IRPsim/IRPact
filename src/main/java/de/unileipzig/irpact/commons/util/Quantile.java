@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util;
 
 import java.util.*;
 import java.util.function.ToDoubleFunction;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -26,6 +27,10 @@ public class Quantile<T> {
 
     public void clear() {
         sorted.clear();
+    }
+
+    public int size() {
+        return sorted.size();
     }
 
     @SafeVarargs
@@ -69,12 +74,73 @@ public class Quantile<T> {
         }
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public double average() {
-        checkNotEmpty();
-        return sorted.stream()
+    public double average(double ifMissing) {
+        OptionalDouble avg = stream()
                 .mapToDouble(this::toDouble)
-                .average()
-                .getAsDouble();
+                .average();
+        if(avg.isPresent()) {
+            return avg.getAsDouble();
+        } else {
+            return ifMissing;
+        }
+    }
+
+    public double average(double lower, double upper, double ifMissing) {
+        OptionalDouble avg = streamRange(lower, upper)
+                .mapToDouble(this::toDouble)
+                .average();
+        if(avg.isPresent()) {
+            return avg.getAsDouble();
+        } else {
+            return ifMissing;
+        }
+    }
+
+    public Stream<T> stream() {
+        return sorted.stream();
+    }
+
+    public Stream<T> streamLess(double p) {
+        final double q = calculate(p);
+        return stream()
+                .filter(t -> {
+                    double v = toDouble(t);
+                    return v < q;
+                });
+    }
+
+    public Stream<T> streamGreaterEquals(double p) {
+        final double q = calculate(p);
+        return stream()
+                .filter(t -> {
+                    double v = toDouble(t);
+                    return v >= q;
+                });
+    }
+
+    public Stream<T> streamRange(double lower, double upper) {
+        if(lower == 0) {
+            if(upper == 1) {
+                return stream();
+            } else {
+                return streamLess(upper);
+            }
+        } else {
+            if(upper == 1) {
+                return streamGreaterEquals(lower);
+            } else {
+                final double lowerQ = calculate(lower);
+                final double upperQ = calculate(upper);
+                return stream()
+                        .filter(t -> {
+                            double v = toDouble(t);
+                            return v >= lowerQ && v < upperQ;
+                        });
+            }
+        }
+    }
+
+    public long count(double lower, double upper) {
+        return streamRange(lower, upper).count();
     }
 }

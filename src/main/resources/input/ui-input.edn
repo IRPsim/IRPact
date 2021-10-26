@@ -8,19 +8,19 @@
         :tags [["graphedge2"]] 
         :groups [
           {
-            :tags [["InStopAfterSuccessfulTaskModule" "input"] ["InIfDoActionModule" "ifInput"] ["InDecisionMakingDeciderModule2" "finCheck"]] 
+            :tags [["InIfElseActionModule" "test"] ["InStopAfterSuccessfulTaskModule" "input"] ["InIfDoActionModule" "ifInput"] ["InDecisionMakingDeciderModule2" "finCheck"]] 
             :label "Entscheidungskante" 
             :color "LightSlateGrey"
           } 
           {
-            :tags [["InThresholdReachedModule" "draw"] ["InThresholdReachedModule" "threshold"] ["InBernoulliModule" "input"] ["InAddScalarModule" "input"] ["InCsvValueLoggingModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMinimalCsvValueLoggingModule" "input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
-            :label "Berechnungskante" 
-            :color "Green"
-          } 
-          {
-            :tags [["InIfDoActionModule" "taskInput"]] 
+            :tags [["InIfElseActionModule" "onTrue"] ["InIfElseActionModule" "onFalse"] ["InIfDoActionModule" "taskInput"]] 
             :label "Aktionskante" 
             :color "DarkCyan"
+          } 
+          {
+            :tags [["InThresholdReachedModule" "draw"] ["InThresholdReachedModule" "threshold"] ["InBernoulliModule" "input"] ["InAddScalarModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InCsvValueLoggingModule" "input"] ["InMinimalCsvValueLoggingModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
+            :label "Berechnungskante" 
+            :color "Green"
           } 
           {
             :tags [["InRunUntilFailureModule" "input"]] 
@@ -28,7 +28,7 @@
             :color "Blue"
           } 
           {
-            :tags [["InFeasibilityModule" "input"] ["InInterestModule" "input"] ["InMainBranchingModule" "init"] ["InMainBranchingModule" "awareness"] ["InMainBranchingModule" "feasibility"] ["InMainBranchingModule" "decision"] ["InMainBranchingModule" "adopted"] ["InMainBranchingModule" "impeded"] ["InPhaseLoggingModule" "input"] ["InPhaseUpdateModule" "input"] ["InYearBasedAdoptionDeciderModule" "input"]] 
+            :tags [["InFeasibilityModule" "input"] ["InInterestModule" "input"] ["InMainBranchingModule" "init"] ["InMainBranchingModule" "awareness"] ["InMainBranchingModule" "feasibility"] ["InMainBranchingModule" "decision"] ["InMainBranchingModule" "adopted"] ["InMainBranchingModule" "impeded"] ["InPhaseUpdateModule" "input"] ["InYearBasedAdoptionDeciderModule" "input"] ["InPhaseLoggingModule" "input"]] 
             :label "PVact-Auswerungskante" 
             :color "#7012FE"
           }
@@ -38,13 +38,95 @@
       :nodes {
         :set "set_InModule2" 
         :color {
-          :type :parameter 
-          :tags [["colorPlaceholder"]] 
+          :type :subsets 
+          :groups [
+            {
+              :tags [["actiongraphnode2"]] 
+              :label "Aktionsmodul" 
+              :value "DarkCyan"
+            } 
+            {
+              :tags [["boolgraphnode2"]] 
+              :label "Entscheidungsmodul" 
+              :value "LightSlateGrey"
+            } 
+            {
+              :tags [["calcgraphnode2"]] 
+              :label "Berechnungsmodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["inputgraphnode2"]] 
+              :label "Eingabemodul" 
+              :value "#CAFE12"
+            } 
+            {
+              :tags [["calcloggraphnode2"]] 
+              :label "Loggingmodul" 
+              :value "#FEAF12"
+            } 
+            {
+              :tags [["evalgraphnode2"]] 
+              :label "Planauswertungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["evalragraphnode2"]] 
+              :label "PVact-Auswerungsmodul" 
+              :value "#7012FE"
+            } 
+            {
+              :tags [["reevalgraphnode2"]] 
+              :label "Evaluierungsmodul" 
+              :value "Magenta"
+            }
+          ] 
           :heading "Fuellfarbe"
         } 
         :border {
-          :type :parameter 
-          :tags [["colorPlaceholder"]] 
+          :type :subsets 
+          :groups [
+            {
+              :tags [["actiongraphnode2"]] 
+              :label "Aktionsmodul" 
+              :value "DarkCyan"
+            } 
+            {
+              :tags [["boolgraphnode2"]] 
+              :label "Entscheidungsmodul" 
+              :value "LightSlateGrey"
+            } 
+            {
+              :tags [["calcgraphnode2"]] 
+              :label "Berechnungsmodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["inputgraphnode2"]] 
+              :label "Eingabemodul" 
+              :value "#CAFE12"
+            } 
+            {
+              :tags [["calcloggraphnode2"]] 
+              :label "Loggingmodul" 
+              :value "#FEAF12"
+            } 
+            {
+              :tags [["evalgraphnode2"]] 
+              :label "Planauswertungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["evalragraphnode2"]] 
+              :label "PVact-Auswerungsmodul" 
+              :value "#7012FE"
+            } 
+            {
+              :tags [["reevalgraphnode2"]] 
+              :label "Evaluierungsmodul" 
+              :value "Magenta"
+            }
+          ] 
           :heading "Rahmenfarbe"
         } 
         :shape {
@@ -66,14 +148,14 @@
               :value "square"
             } 
             {
-              :tags [["calcloggraphnode2"]] 
-              :label "Loggingmodul" 
-              :value "diamond"
-            } 
-            {
               :tags [["inputgraphnode2"]] 
               :label "Eingabemodul" 
               :value "flower"
+            } 
+            {
+              :tags [["calcloggraphnode2"]] 
+              :label "Loggingmodul" 
+              :value "diamond"
             } 
             {
               :tags [["evalgraphnode2"]] 
@@ -81,7 +163,7 @@
               :value "pentagon"
             } 
             {
-              :tags [["evalragraphnode2"]]
+              :tags [["evalragraphnode2"]] 
               :label "PVact-Auswerungsmodul" 
               :value "circle"
             } 
@@ -114,7 +196,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.16.0" 
+        :description "IRPact v1.17.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -180,6 +262,32 @@
             :set "set_InROutputImage" 
             :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
             :tags [["InROutputImage" "annualZip"] ["InROutputImage" "annualZipWithReal"] ["InROutputImage" "annualZipWithRealTotal"] ["InROutputImage" "cumulativeAnnualPhase"] ["InROutputImage" "cumulativeAnnualPhase2"] ["InROutputImage" "annualInterest2D"] ["InROutputImage" "annualPhaseOverview"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "imageWidth"] ["InROutputImage" "imageHeight"] ["InROutputImage" "linewidth"] ["link" "InROutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
+          }
+        ]
+      } 
+      {
+        :label "Ergebnisvisualisierung2" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Benutzerdefinierte Quantilbereiche" 
+            :set "set_InCustomAverageQuantilRangeImage" 
+            :description "todo" 
+            :tags [["InCustomAverageQuantilRangeImage" "useGnuplot"] ["InCustomAverageQuantilRangeImage" "useR"] ["InCustomAverageQuantilRangeImage" "storeScript"] ["InCustomAverageQuantilRangeImage" "storeData"] ["InCustomAverageQuantilRangeImage" "storeImage"] ["InCustomAverageQuantilRangeImage" "printAverage"] ["InCustomAverageQuantilRangeImage" "imageWidth"] ["InCustomAverageQuantilRangeImage" "imageHeight"] ["InCustomAverageQuantilRangeImage" "linewidth"] ["link" "InCustomAverageQuantilRangeImage" "InQuantileRange" "ranges"] ["link" "InCustomAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]] 
+            :sections [
+              {
+                :label "Quantilbereich" 
+                :set "set_InQuantileRange" 
+                :description "todo" 
+                :tags [["InQuantileRange" "lowerBound"] ["InQuantileRange" "upperBound"]]
+              }
+            ]
+          } 
+          {
+            :label "Spezielle Quantilbereiche" 
+            :set "set_InSpecialAverageQuantilRangeImage" 
+            :description "todo" 
+            :tags [["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
           }
         ]
       } 
@@ -1002,6 +1110,18 @@
                     :tags [["link" "InStopAfterSuccessfulTaskModule" "actiongraphnode2" "InConsumerAgentBoolModule2" "input" "graphedge2"]]
                   } 
                   {
+                    :label "IfElseActionModule" 
+                    :set "set_InIfElseActionModule_actiongraphnode2" 
+                    :description "todo" 
+                    :tags [["link" "InIfElseActionModule" "actiongraphnode2" "InConsumerAgentBoolModule2" "test" "graphedge2"] ["link" "InIfElseActionModule" "actiongraphnode2" "InConsumerAgentActionModule2" "onTrue" "graphedge2"] ["link" "InIfElseActionModule" "actiongraphnode2" "InConsumerAgentActionModule2" "onFalse" "graphedge2"]]
+                  } 
+                  {
+                    :label "NOP" 
+                    :set "set_InNOP_actiongraphnode2" 
+                    :description "todo" 
+                    :tags [["InNOP" "actiongraphnode2" "placeholder"]]
+                  } 
+                  {
                     :label "Rewiremodul" 
                     :set "set_InRewireModule_actiongraphnode2" 
                     :description "todo" 
@@ -1185,7 +1305,7 @@
                     :label "MainBranchingModule" 
                     :set "set_InMainBranchingModule_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
+                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InDummyColor" "colorPlaceholder"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
                   } 
                   {
                     :label "DecisionMakingDeciderModule" 

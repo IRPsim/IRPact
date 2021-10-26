@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
+import de.unileipzig.irpact.core.process2.modular.modules.action.StopAfterSuccessfulTaskModule2;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -20,17 +21,19 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
@@ -50,6 +53,8 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 
 import java.time.temporal.ChronoUnit;
@@ -163,6 +168,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     public InSpatialTableFile getSpatialFile() {
         if(spatialTableFile == null) {
             spatialTableFile = new InSpatialTableFile(getSpatialFileName());
+            spatialTableFile.setCoverage(1.0);
         }
         return spatialTableFile;
     }
@@ -300,11 +306,21 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return uncertainty;
     }
 
+    public InRAProcessPlanMaxDistanceFilterScheme createNodeFilterScheme(double distance) {
+        InRAProcessPlanMaxDistanceFilterScheme scheme = new InRAProcessPlanMaxDistanceFilterScheme();
+        scheme.setName("MAX_DISTANCE_SCHEME");
+        scheme.setMaxDistance(distance);
+        return scheme;
+    }
+
     public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
+        return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
+    }
+
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence, InRAProcessPlanNodeFilterScheme scheme) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
         processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(null);
         processModel.setPvFile(getPVFile());
         processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(speedOfConvergence);
@@ -313,10 +329,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         processModel.setForceEvaluate(true);
         processModel.setAdoptionCertaintyBase(1.0);
         processModel.setAdoptionCertaintyFactor(1.0);
+        processModel.setNodeFilterScheme(scheme);
         return processModel;
     }
 
-    public InBasicCAModularProcessModel createDefaultModularProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
+    public InBasicCAModularProcessModel createDefaultModularProcessModel(
+            String name,
+            InUncertainty uncertainty,
+            double speedOfConvergence,
+            InRAProcessPlanNodeFilterScheme scheme,
+            List<InOutputImage2> images) {
 
         //ACTION
         InAttributeInputModule_inputgraphnode2 commuAttr = new InAttributeInputModule_inputgraphnode2();
@@ -341,11 +363,6 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
         commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
         commuAction.setUncertainty(uncertainty);
-        InIfDoActionModule_boolgraphnode2 commuDo = new InIfDoActionModule_boolgraphnode2();
-        commuDo.setName("COMMU");
-        commuDo.setPriority(1);
-        commuDo.setIfInput(commuIf);
-        commuDo.setTaskInput(commuAction);
 
         InAttributeInputModule_inputgraphnode2 rewireAttr = new InAttributeInputModule_inputgraphnode2();
         rewireAttr.setName("ATTR_REWIRE");
@@ -359,16 +376,21 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         rewireIf.setInput(rewireAttrWeight);
         InRewireModule_actiongraphnode2 rewireAction = new InRewireModule_actiongraphnode2();
         rewireAction.setName("REWIRE_ACTION");
-        InIfDoActionModule_boolgraphnode2 rewireDo = new InIfDoActionModule_boolgraphnode2();
-        rewireDo.setName("REWIRE");
-        rewireDo.setPriority(2);
-        rewireDo.setIfInput(rewireIf);
-        rewireDo.setTaskInput(rewireAction);
 
+        InNOP_actiongraphnode2 nop = new InNOP_actiongraphnode2();
+        nop.setName("NOP");
 
-        InStopAfterSuccessfulTaskModule_actiongraphnode2 actions = new InStopAfterSuccessfulTaskModule_actiongraphnode2();
-        actions.setName("ACTIONS");
-        actions.setInput(commuDo, rewireDo);
+        InIfElseActionModule_actiongraphnode2 ifElseRewire = new InIfElseActionModule_actiongraphnode2();
+        ifElseRewire.setName("IF_ELSE_REWIRE");
+        ifElseRewire.setTestModule(rewireIf);
+        ifElseRewire.setOnTrueModule(rewireAction);
+        ifElseRewire.setOnFalseModule(nop);
+
+        InIfElseActionModule_actiongraphnode2 ifElseCommu = new InIfElseActionModule_actiongraphnode2();
+        ifElseCommu.setName("IF_ELSE_COMMU");
+        ifElseCommu.setTestModule(commuIf);
+        ifElseCommu.setOnTrueModule(commuAction);
+        ifElseCommu.setOnFalseModule(ifElseRewire);
 
         //INIT
         InInitializationModule_evalragraphnode2 init = new InInitializationModule_evalragraphnode2();
@@ -377,12 +399,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //INTEREST
         InInterestModule_evalragraphnode2 interest = new InInterestModule_evalragraphnode2();
         interest.setName("INTEREST");
-        interest.setInput(actions);
+        interest.setInput(ifElseCommu);
 
         //FEASIBILITY
         InFeasibilityModule_evalragraphnode2 feasibility = new InFeasibilityModule_evalragraphnode2();
         feasibility.setName("FEASIBITLITY");
-        feasibility.setInput(actions);
+        feasibility.setInput(ifElseCommu);
 
         //===
         //DECISION
@@ -471,7 +493,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InLocalShareOfAdopterModule_inputgraphnode2 localShare = new InLocalShareOfAdopterModule_inputgraphnode2();
         localShare.setName("LOCAL_SHARE");
         localShare.setMaxToStore(2000);
-        localShare.setNodeFilterScheme(null);
+        localShare.setNodeFilterScheme(scheme);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         localLogger.setName(LazyData2FileLinker.LOCAL_LOGGER);
         localLogger.setInput(localShare);
@@ -544,8 +566,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         mainBranch.setAwareness(interest);
         mainBranch.setFeasibility(feasibility);
         mainBranch.setDecision(nextDecisionDecider);
-        mainBranch.setImpeded(actions);
-        mainBranch.setAdopted(actions);
+        mainBranch.setImpeded(ifElseCommu);
+        mainBranch.setAdopted(ifElseCommu);
 
         InPhaseLoggingModule_evalragraphnode2 phaseLogger = new InPhaseLoggingModule_evalragraphnode2();
         phaseLogger.setName("PHASE_LOGGER");
@@ -628,6 +650,27 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 decisionMakingReevaluator,
                 endOfYearLinker
         );
+
+        //logging
+        InSpecialAverageQuantilRangeImage novQuantile = InSpecialAverageQuantilRangeImage.NOV;
+        novQuantile.setLoggingModule(novLogger);
+        images.add(novQuantile);
+
+        InSpecialAverageQuantilRangeImage envQuantile = InSpecialAverageQuantilRangeImage.ENV;
+        envQuantile.setLoggingModule(envLogger);
+        images.add(envQuantile);
+
+        InSpecialAverageQuantilRangeImage npvQuantile = InSpecialAverageQuantilRangeImage.NPV;
+        npvQuantile.setLoggingModule(npvLogger);
+        images.add(npvQuantile);
+
+        InSpecialAverageQuantilRangeImage socialQuantil = InSpecialAverageQuantilRangeImage.SOCIAL;
+        socialQuantil.setLoggingModule(socialLogger);
+        images.add(socialQuantil);
+
+        InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL;
+        localQuantil.setLoggingModule(localLogger);
+        images.add(localQuantil);
 
         //===
         return processModel;

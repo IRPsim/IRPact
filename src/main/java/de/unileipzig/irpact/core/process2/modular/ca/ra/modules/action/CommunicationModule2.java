@@ -111,6 +111,8 @@ public class CommunicationModule2
         if(getSharedData().contains(UNCERTAINTY)) {
             throw new IllegalStateException("uncertainty already exists");
         } else {
+            trace("initalize uncertainty handler");
+            uncertaintyHandler.initalize();
             getSharedData().put(UNCERTAINTY, uncertaintyHandler);
         }
         setInitalized();
@@ -203,10 +205,6 @@ public class CommunicationModule2
     }
 
     protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, String attrName) {
-        if(true) {
-            trace("[{}] SKIP RELATIVE AGREEMENT", source.getName());
-            return;
-        }
 
         ConsumerAgentAttribute opinionThis = source.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertaintyCache().getUncertainty(source);

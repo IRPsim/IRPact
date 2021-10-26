@@ -39,6 +39,8 @@ public abstract class PostProcessor implements LoggingHelper {
     protected final Map<InRealAdoptionDataFile, RealAdoptionData> adoptionDataCache = new HashMap<>();
     protected static final FallbackAdoptionData PLACEHOLDER_REAL_DATA = new FallbackAdoptionData(0);
 
+    protected final Map<Object, Object> DATA_CACHE = new HashMap<>();
+
     protected MetaData metaData;
     protected MainCommandLineOptions clOptions;
     protected InRoot inRoot;
@@ -250,5 +252,26 @@ public abstract class PostProcessor implements LoggingHelper {
         return environment.getAgents().getInitialAgentPopulation().hasScale()
                 ? environment.getAgents().getInitialAgentPopulation().getScale()
                 : 1.0;
+    }
+
+    public boolean isCached(Object key) {
+        return DATA_CACHE.containsKey(key);
+    }
+
+    public void storeInCache(Object key, Object value) {
+        DATA_CACHE.put(key, value);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <R> R retrieveFromCache(Object key) {
+        return (R) DATA_CACHE.get(key);
+    }
+
+    public void removeFromCache(String key) {
+        DATA_CACHE.remove(key);
+    }
+
+    public void clearCache() {
+        DATA_CACHE.clear();
     }
 }

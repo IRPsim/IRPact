@@ -32,19 +32,21 @@ import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InDummyColor;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InConsumerAgentActionModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InStopAfterSuccessfulTaskModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InConsumerAgentReevaluationModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
@@ -68,6 +70,7 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
@@ -309,7 +312,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InOutputImage[] images = new InOutputImage[0];
-
     public boolean hasImages() {
         return images != null && images.length > 0;
     }
@@ -321,6 +323,21 @@ public class InRoot implements RootClass {
     }
     public void setImages(Collection<? extends InOutputImage> images) {
         this.images = images.toArray(new InOutputImage[0]);
+    }
+
+    @FieldDefinition
+    public InOutputImage2[] images2 = new InOutputImage2[0];
+    public boolean hasImages2() {
+        return images2 != null && images2.length > 0;
+    }
+    public InOutputImage2[] getImages2() throws ParsingException {
+        return getNonNullArray(images2, "images2");
+    }
+    public void setImages2(InOutputImage2... images2) {
+        this.images2 = images2;
+    }
+    public void setImages2(Collection<? extends InOutputImage2> images) {
+        this.images2 = images.toArray(new InOutputImage2[0]);
     }
 
     //=========================
@@ -813,6 +830,12 @@ public class InRoot implements RootClass {
             InOutputImage.class,
             InROutputImage.class,
 
+            InCustomAverageQuantilRangeImage.class,
+            InQuantileRange.class,
+            InLoggingResultImage2.class,
+            InOutputImage2.class,
+            InSpecialAverageQuantilRangeImage.class,
+
             InProductGroupThresholdEntry.class,
             InProductInterestSupplyScheme.class,
             InProductThresholdInterestSupplyScheme.class,
@@ -908,6 +931,8 @@ public class InRoot implements RootClass {
             //action
             InCommunicationModule_actiongraphnode2.class,
             InConsumerAgentActionModule2.class,
+            InIfElseActionModule_actiongraphnode2.class,
+            InNOP_actiongraphnode2.class,
             InRewireModule_actiongraphnode2.class,
             InStopAfterSuccessfulTaskModule_actiongraphnode2.class,
             //bool
@@ -918,13 +943,11 @@ public class InRoot implements RootClass {
             //calc
             InAddScalarModule_calcgraphnode2.class,
             InConsumerAgentCalculationModule2.class,
-            InCsvValueLoggingModule_calcloggraphnode2.class,
             InLogisticModule_calcgraphnode2.class,
-            InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             InMulScalarModule_calcgraphnode2.class,
             InProductModule_calcgraphnode2.class,
             InSumModule_calcgraphnode2.class,
-            //input
+            //calc-input
             InAttributeInputModule_inputgraphnode2.class,
             InAvgFinModule_inputgraphnode2.class,
             InConsumerAgentInputModule2.class,
@@ -934,6 +957,10 @@ public class InRoot implements RootClass {
             InNPVModule_inputgraphnode2.class,
             InSocialShareOfAdopterModule_inputgraphnode2.class,
             InValueModule_inputgraphnode2.class,
+            //calc-logging
+            InConsumerAgentCalculationLoggingModule2.class,
+            InCsvValueLoggingModule_calcloggraphnode2.class,
+            InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             //eval
             InConsumerAgentEvalModule2.class,
             InRunUntilFailureModule_evalgraphnode2.class,
@@ -944,13 +971,15 @@ public class InRoot implements RootClass {
             InInitializationModule_evalragraphnode2.class,
             InInterestModule_evalragraphnode2.class,
             InMainBranchingModule_evalragraphnode2.class,
-            InPhaseLoggingModule_evalragraphnode2.class,
             InPhaseUpdateModule_evalragraphnode2.class,
             InYearBasedAdoptionDeciderModule_evalragraphnode2.class,
             //reeval-modules
             InConsumerAgentReevaluationModule2.class,
             InCsvValueReevaluatorModule_reevalgraphnode2.class,
             InMinimalCsvValueReevaluatorModule_reevalgraphnode2.class,
+            //reeval-modules logging
+            InConsumerAgentEvalRALoggingModule2.class,
+            InPhaseLoggingModule_evalragraphnode2.class,
             //reeval-ca
             InAnnualInterestLogger.class,
             InConstructionRenovationUpdater.class,

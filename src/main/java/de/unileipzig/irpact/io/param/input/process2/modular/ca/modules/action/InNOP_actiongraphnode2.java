@@ -33,7 +33,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {ACTION_GRAPHNODE}
         )
 )
-public class NOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
+public class InNOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -66,16 +66,16 @@ public class NOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
     @FieldDefinition
     public double placeholder = 0;
 
-    public NOP_actiongraphnode2() {
+    public InNOP_actiongraphnode2() {
     }
 
     @Override
-    public NOP_actiongraphnode2 copy(CopyCache cache) {
+    public InNOP_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public NOP_actiongraphnode2 newCopy(CopyCache cache) {
-        NOP_actiongraphnode2 copy = new NOP_actiongraphnode2();
+    public InNOP_actiongraphnode2 newCopy(CopyCache cache) {
+        InNOP_actiongraphnode2 copy = new InNOP_actiongraphnode2();
         return Dev.throwException();
     }
 

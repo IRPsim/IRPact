@@ -28,6 +28,13 @@ public class Map3<A, B, C> {
         );
     }
 
+    public static <A, B, C> Map3<A, B, C> newLinkedHashMap() {
+        return new Map3<>(
+                a -> new LinkedHashMap<>(),
+                new LinkedHashMap<>()
+        );
+    }
+
     public static <A, B, C> Map3<A, B, C> newConcurrentHashMap() {
         return new Map3<>(
                 a -> new ConcurrentHashMap<>(),
@@ -49,6 +56,10 @@ public class Map3<A, B, C> {
 
     public C put(A a, B b, C c) {
         return getMap0(a).put(b, c);
+    }
+
+    public void putAll(A a, Map<? extends B, ? extends C> m) {
+        getMap0(a).putAll(m);
     }
 
     public Map<B, C> get(A a) {
@@ -110,6 +121,15 @@ public class Map3<A, B, C> {
         return map0 == null
                 ? Collections.emptySet()
                 : map0.keySet();
+    }
+
+    public boolean getAllKeysSetsB(Set<B> set) {
+        boolean changed = false;
+        for(A a: keySet()) {
+            Set<B> bset = keySet(a);
+            changed |= set.addAll(bset);
+        }
+        return changed;
     }
 
     public Set<Map.Entry<B, C>> entrySet(A a) {

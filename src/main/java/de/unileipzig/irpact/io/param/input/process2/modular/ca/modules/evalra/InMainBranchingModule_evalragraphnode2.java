@@ -30,10 +30,10 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 shape = EVALRA_SHAPE,
                 color = EVALRA_COLOR,
                 border = EVALRA_BORDER,
-                //tags = {EVALRA_GRAPHNODE}
-                tags = {"colorPlaceholder"},
-                colorMode = NodeMode.PARAMETER,
-                borderMode = NodeMode.PARAMETER
+                tags = {EVALRA_GRAPHNODE}
+//                tags = {"colorPlaceholder"},
+//                colorMode = NodeMode.PARAMETER,
+//                borderMode = NodeMode.PARAMETER
         )
 )
 public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {

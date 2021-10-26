@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc;
+package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -18,6 +19,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
@@ -36,7 +39,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {CALCLOG_GRAPHNODE}
         )
 )
-public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgentCalculationModule2 {
+public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgentCalculationLoggingModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -65,6 +68,11 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
     public void setName(String name) {
         this._name = name;
+    }
+
+    @Override
+    public String getBaseName() {
+        return getName();
     }
 
     @FieldDefinition
@@ -125,5 +133,30 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         module.setSubmodule(parser.parseEntityTo(getInput()));
 
         return module;
+    }
+
+    @Override
+    public int getAgentIndex() {
+        return CsvValueLoggingModule2.AGENT_INDEX;
+    }
+
+    @Override
+    public int getTimeIndex() {
+        return CsvValueLoggingModule2.TIME_INDEX;
+    }
+
+    @Override
+    public int getProductIndex() {
+        return CsvValueLoggingModule2.PRODUCT_INDEX;
+    }
+
+    @Override
+    public int getValueIndex() {
+        return CsvValueLoggingModule2.VALUE_INDEX;
+    }
+
+    @Override
+    public LocalDateTime toTime(String input) {
+        return CsvValueLoggingModule2.toTime(input);
     }
 }

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process2.modular.reevaluate;
 
 import de.unileipzig.irpact.core.process2.PostAction2;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.util.List;
 
@@ -17,6 +18,11 @@ public class ReevaluatorWrapper<I> extends AbstractReevaluator<I> {
 
     public Reevaluator<I> getReevaluator() {
         return reevaluator;
+    }
+
+    @Override
+    public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
+        reevaluator.initializeReevaluator(environment);
     }
 
     @Override

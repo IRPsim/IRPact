@@ -1115,6 +1115,199 @@ PARAMETER par_InROutputImage_linewidth(set_InROutputImage)
 * - type: Boolean
 PARAMETER par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile(set_InROutputImage,set_InRealAdoptionDataFile)
 
+* - identifier: InCustomAverageQuantilRangeImage
+* - type: String
+SET set_InCustomAverageQuantilRangeImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 1, par_InCustomAverageQuantilRangeImage_useR = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 1)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_useGnuplot(set_InCustomAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 1, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_useR(set_InCustomAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_storeScript(set_InCustomAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_storeData(set_InCustomAverageQuantilRangeImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_storeImage(set_InCustomAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InCustomAverageQuantilRangeImage_printAverage(set_InCustomAverageQuantilRangeImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InCustomAverageQuantilRangeImage_imageWidth(set_InCustomAverageQuantilRangeImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InCustomAverageQuantilRangeImage_imageHeight(set_InCustomAverageQuantilRangeImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - type: Float
+PARAMETER par_InCustomAverageQuantilRangeImage_linewidth(set_InCustomAverageQuantilRangeImage)
+
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_link_InCustomAverageQuantilRangeImage_InQuantileRange_ranges(set_InCustomAverageQuantilRangeImage,set_InQuantileRange)
+
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_link_InCustomAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules(set_InCustomAverageQuantilRangeImage,set_InConsumerAgentCalculationLoggingModule2)
+
+* - identifier: InQuantileRange
+* - type: String
+SET set_InQuantileRange(*)
+
+* - default: 0
+* - domain: [0,1]
+* - description: todo
+* - identifier: InQuantileRange_lowerBound
+* - type: Float
+PARAMETER par_InQuantileRange_lowerBound(set_InQuantileRange)
+
+* - default: 1
+* - domain: [0,1]
+* - description: todo
+* - identifier: upperBound
+* - type: Float
+PARAMETER par_InQuantileRange_upperBound(set_InQuantileRange)
+
+* - identifier: InLoggingResultImage2
+* - hidden: 1
+* - type: String
+SET set_InLoggingResultImage2(set_InOutputImage2)
+
+* - identifier: InOutputImage2
+* - hidden: 1
+* - type: String
+SET set_InOutputImage2(*)
+
+* - identifier: InSpecialAverageQuantilRangeImage
+* - type: String
+SET set_InSpecialAverageQuantilRangeImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 1, par_InSpecialAverageQuantilRangeImage_useR = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 1)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_useGnuplot(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 1, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_useR(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_storeScript(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_storeData(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_storeImage(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InSpecialAverageQuantilRangeImage_printAverage(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InSpecialAverageQuantilRangeImage_imageWidth(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InSpecialAverageQuantilRangeImage_imageHeight(set_InSpecialAverageQuantilRangeImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: useGnuplot
+* - type: Float
+PARAMETER par_InSpecialAverageQuantilRangeImage_linewidth(set_InSpecialAverageQuantilRangeImage)
+
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_link_InSpecialAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules(set_InSpecialAverageQuantilRangeImage,set_InConsumerAgentCalculationLoggingModule2)
+
 * - identifier: InProductGroupThresholdEntry
 * - type: String
 SET set_InProductGroupThresholdEntry(*)
@@ -2933,6 +3126,40 @@ SET set_InConsumerAgentActionModule2(set_InConsumerAgentModule2)
 * - fill: DarkCyan
 * - color: DarkCyan
 * - shape: octagon
+* - identifier: InIfElseActionModule_actiongraphnode2
+* - type: String
+SET set_InIfElseActionModule_actiongraphnode2(set_InConsumerAgentActionModule2)
+
+* - description: todo
+* - identifier: test
+* - type: Boolean
+PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentBoolModule2_test_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentBoolModule2)
+
+* - description: todo
+* - identifier: onTrue
+* - type: Boolean
+PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onTrue_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentActionModule2)
+
+* - description: todo
+* - identifier: onFalse
+* - type: Boolean
+PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onFalse_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentActionModule2)
+
+* - fill: DarkCyan
+* - color: DarkCyan
+* - shape: octagon
+* - identifier: InNOP_actiongraphnode2
+* - type: String
+SET set_InNOP_actiongraphnode2(set_InConsumerAgentActionModule2)
+
+* - description: todo
+* - identifier: ---
+* - type: Float
+PARAMETER par_InNOP_actiongraphnode2_placeholder(set_InNOP_actiongraphnode2)
+
+* - fill: DarkCyan
+* - color: DarkCyan
+* - shape: octagon
 * - identifier: InRewireModule_actiongraphnode2
 * - type: String
 SET set_InRewireModule_actiongraphnode2(set_InConsumerAgentActionModule2)
@@ -3046,25 +3273,6 @@ PARAMETER par_link_InAddScalarModule_calcgraphnode2_InConsumerAgentCalculationMo
 * - type: String
 SET set_InConsumerAgentCalculationModule2(set_InConsumerAgentModule2)
 
-* - fill: #FEAF12
-* - color: #FEAF12
-* - shape: diamond
-* - identifier: InCsvValueLoggingModule_calcloggraphnode2
-* - type: String
-SET set_InCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationModule2)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Als xlsx speichern?
-* - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InCsvValueLoggingModule_calcloggraphnode2)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
-
 * - fill: Green
 * - color: Green
 * - shape: square
@@ -3093,25 +3301,6 @@ PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationMod
 * - identifier: x0 Modul
 * - type: Boolean
 PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2(set_InLogisticModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
-
-* - fill: #FEAF12
-* - color: #FEAF12
-* - shape: diamond
-* - identifier: InMinimalCsvValueLoggingModule_calcloggraphnode2
-* - type: String
-SET set_InMinimalCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationModule2)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Als xlsx speichern?
-* - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InMinimalCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
 
 * - fill: Green
 * - color: Green
@@ -3264,6 +3453,49 @@ SET set_InValueModule_inputgraphnode2(set_InConsumerAgentInputModule2)
 * - type: Float
 PARAMETER par_InValueModule_inputgraphnode2_value(set_InValueModule_inputgraphnode2)
 
+* - identifier: InConsumerAgentCalculationLoggingModule2
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentCalculationLoggingModule2(set_InConsumerAgentCalculationModule2)
+
+* - fill: #FEAF12
+* - color: #FEAF12
+* - shape: diamond
+* - identifier: InCsvValueLoggingModule_calcloggraphnode2
+* - type: String
+SET set_InCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als xlsx speichern?
+* - type: Boolean
+PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InCsvValueLoggingModule_calcloggraphnode2)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
+
+* - fill: #FEAF12
+* - color: #FEAF12
+* - shape: diamond
+* - identifier: InMinimalCsvValueLoggingModule_calcloggraphnode2
+* - type: String
+SET set_InMinimalCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als xlsx speichern?
+* - type: Boolean
+PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InMinimalCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
+
 * - identifier: InConsumerAgentEvalModule2
 * - hidden: 1
 * - type: String
@@ -3395,18 +3627,6 @@ PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentActionM
 * - fill: #7012FE
 * - color: #7012FE
 * - shape: circle
-* - identifier: InPhaseLoggingModule_evalragraphnode2
-* - type: String
-SET set_InPhaseLoggingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InPhaseLoggingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseLoggingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
-
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
 * - identifier: InPhaseUpdateModule_evalragraphnode2
 * - type: String
 SET set_InPhaseUpdateModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
@@ -3478,6 +3698,23 @@ PARAMETER par_InMinimalCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx(set_
 * - identifier: Eingabemodul
 * - type: Boolean
 PARAMETER par_link_InMinimalCsvValueReevaluatorModule_reevalgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InMinimalCsvValueReevaluatorModule_reevalgraphnode2,set_InConsumerAgentCalculationModule2)
+
+* - identifier: InConsumerAgentEvalRALoggingModule2
+* - hidden: 1
+* - type: String
+SET set_InConsumerAgentEvalRALoggingModule2(set_InConsumerAgentEvalRAModule2)
+
+* - fill: #7012FE
+* - color: #7012FE
+* - shape: circle
+* - identifier: InPhaseLoggingModule_evalragraphnode2
+* - type: String
+SET set_InPhaseLoggingModule_evalragraphnode2(set_InConsumerAgentEvalRALoggingModule2)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InPhaseLoggingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseLoggingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
 
 * - identifier: InAnnualInterestLogger
 * - type: String

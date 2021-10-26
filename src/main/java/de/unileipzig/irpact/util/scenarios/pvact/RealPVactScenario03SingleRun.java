@@ -14,9 +14,11 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
 import de.unileipzig.irpact.util.pvact.Milieu;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,7 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
     @Override
     public List<InRoot> createInRootsOLD() {
         RealData realData = new RealData(this::createAgentGroup);
+        getSpatialFile().setCoverage(RealData.CONVERAGE);
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
         realData.CAGS.forEach(cag -> cag.setSpatialDistribution(spatialDist));
@@ -125,7 +128,14 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
-        InProcessModel processModel = createDefaultModularProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        List<InOutputImage2> outputImages2 = new ArrayList<>();
+        InProcessModel processModel = createDefaultModularProcessModel(
+                "Process",
+                uncertainty,
+                RAConstants.DEFAULT_SPEED_OF_CONVERGENCE,
+                createNodeFilterScheme(2),
+                outputImages2
+        );
 
         InSpace2D space2D = createSpace2D("Space2D");
 
@@ -174,6 +184,7 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
         setColors(root, realData.CAGS.cags());
 
         setupGeneral(root.getGeneral());
+        root.setImages2(outputImages2);
 
         return Collections.singletonList(root);
     }

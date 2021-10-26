@@ -275,6 +275,91 @@ InROutputImage_realAdoptionDataFile:
   gams_description: "Legt die realen zu nutzenden Adoptionsdaten fest."
 
 
+result_visualisation2:
+  edn_label: "Ergebnisvisualisierung2"
+  edn_description: "todo"
+
+InCustomAverageQuantilRangeImage:
+  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_description: "todo"
+InCustomAverageQuantilRangeImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_useR:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeScript:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeData:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeImage:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_printAverage:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_imageWidth:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_imageHeight:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_linewidth:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_ranges:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_loggingModules:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+
+InQuantileRange:
+  edn_label: "Quantilbereich"
+  edn_description: "todo"
+InQuantileRange_lowerBound:
+  gams_identifier: "InQuantileRange_lowerBound"
+  gams_description: "todo"
+InQuantileRange_upperBound:
+  gams_identifier: "upperBound"
+  gams_description: "todo"
+
+InSpecialAverageQuantilRangeImage:
+  edn_label: "Spezielle Quantilbereiche"
+  edn_description: "todo"
+InSpecialAverageQuantilRangeImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_useR:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeScript:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeData:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeImage:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_printAverage:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_imageWidth:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_imageHeight:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_linewidth:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_loggingModules:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+
 network_visualisation:
   edn_label: "Netzwerkvisualisierung"
   edn_description: "Hier kann die Netzwerkvisualisierung konfiguriert werden."
@@ -354,7 +439,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.16.0"
+  edn_description: "IRPact v1.17.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2104,14 +2189,21 @@ InCommunicationModule_actiongraphnode2_uncertainties:
 InIfElseActionModule_actiongraphnode2:
   edn_label: "IfElseActionModule"
   edn_description: "todo"
-InCommunicationModule_actiongraphnode2_test_graphedge2:
+InIfElseActionModule_actiongraphnode2_test_graphedge2:
   gams_identifier: "test"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_onTrue_graphedge2:
+InIfElseActionModule_actiongraphnode2_onTrue_graphedge2:
   gams_identifier: "onTrue"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_onFalse_graphedge2:
+InIfElseActionModule_actiongraphnode2_onFalse_graphedge2:
   gams_identifier: "onFalse"
+  gams_description: "todo"
+
+InNOP_actiongraphnode2:
+  edn_label: "NOP"
+  edn_description: "todo"
+InNOP_actiongraphnode2_placeholder:
+  gams_identifier: "---"
   gams_description: "todo"
 
 InRewireModule_actiongraphnode2:
@@ -2126,13 +2218,6 @@ InStopAfterSuccessfulTaskModule_actiongraphnode2:
   edn_description: "todo"
 InStopAfterSuccessfulTaskModule_actiongraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodule"
-  gams_description: "todo"
-
-NOP_actiongraphnode2:
-  edn_label: "IfElseActionModule"
-  edn_description: "todo"
-NOP_actiongraphnode2_placeholder:
-  gams_identifier: "---"
   gams_description: "todo"
 
 # boolean
@@ -2191,16 +2276,6 @@ InAddScalarModule_calcgraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
-InCsvValueLoggingModule_calcloggraphnode2:
-  edn_label: "CsvValueLoggingModule"
-  edn_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
-  gams_identifier: "Als xlsx speichern?"
-  gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
 InLogisticModule_calcgraphnode2:
   edn_label: "LogisticModule"
   edn_description: "L/(1+e^(-k*(x-x0)))"
@@ -2215,16 +2290,6 @@ InLogisticModule_calcgraphnode2_xinput_graphedge2:
   gams_description: "todo"
 InLogisticModule_calcgraphnode2_x0input_graphedge2:
   gams_identifier: "x0 Modul"
-  gams_description: "todo"
-
-InMinimalCsvValueLoggingModule_calcloggraphnode2:
-  edn_label: "MinimalCsvValueLoggingModule"
-  edn_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
-  gams_identifier: "Als xlsx speichern?"
-  gams_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
 InMulScalarModule_calcgraphnode2:
@@ -2313,6 +2378,27 @@ InValueModule_inputgraphnode2:
   edn_description: "todo"
 InValueModule_inputgraphnode2_value:
   gams_identifier: "Rückgabewert"
+  gams_description: "todo"
+
+#double logging
+InCsvValueLoggingModule_calcloggraphnode2:
+  edn_label: "CsvValueLoggingModule"
+  edn_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InMinimalCsvValueLoggingModule_calcloggraphnode2:
+  edn_label: "MinimalCsvValueLoggingModule"
+  edn_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
 # plan
@@ -2404,13 +2490,6 @@ InNewDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
   gams_identifier: "utility"
   gams_description: "todo"
 
-InPhaseLoggingModule_evalragraphnode2:
-  edn_label: "PhaseLoggingModule"
-  edn_description: "todo"
-InPhaseLoggingModule_evalragraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
 InPhaseUpdateModule_evalragraphnode2:
   edn_label: "PhaseUpdateModule"
   edn_description: "todo"
@@ -2441,6 +2520,15 @@ InYearBasedAdoptionDeciderModule_evalragraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
+# stage logging
+InPhaseLoggingModule_evalragraphnode2:
+  edn_label: "PhaseLoggingModule"
+  edn_description: "todo"
+InPhaseLoggingModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+# reeval
 InCsvValueReevaluatorModule_reevalgraphnode2:
   edn_label: "CsvValueReevaluatorModule"
   edn_description: "todo"
@@ -2464,6 +2552,7 @@ InMinimalCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx:
 InMinimalCsvValueReevaluatorModule_reevalgraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+
 
 ##########################
 #

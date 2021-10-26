@@ -10,7 +10,6 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.need.Need;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.ProcessPlanResult2;
 import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
@@ -117,7 +116,7 @@ public class BasicCAModularProcessModel2
     @Override
     public ModularProcessPlan2 newPlan2(Agent agent, Need need, Product product) {
         ConsumerAgent consumerAgent = validateAgent(agent);
-        getUncertaintyCache().createUncertainty(consumerAgent, getUncertaintyManager());
+        createUncertainty(consumerAgent);
         BasicConsumerAgentData2 plan = new BasicConsumerAgentData2(
                 environment,
                 this,
@@ -128,6 +127,18 @@ public class BasicCAModularProcessModel2
         );
         plans.add(plan);
         return plan;
+    }
+
+    protected void createUncertainty(ConsumerAgent agent) {
+        trace("create uncertainty for agent '{}'", agent.getName());
+        getUncertaintyCache().createUncertainty(
+                agent,
+                getUncertaintyManager()
+        );
+        trace("uncertainty for agent '{}': {}", agent.getName(), getUncertaintyCache().getUncertainty(agent));
+        if(getUncertaintyCache().getUncertainty(agent) == null) {
+            throw new NullPointerException("missing uncertainty for agent '" + agent.getName() + "'");
+        }
     }
 
     @Override
@@ -186,6 +197,7 @@ public class BasicCAModularProcessModel2
     public void postAgentCreation() throws MissingDataException, InitializationException {
         runInitializationHandler();
         initModules();
+        initReevaluator();
     }
 
     protected void runInitializationHandler() throws InitializationException {
@@ -228,6 +240,27 @@ public class BasicCAModularProcessModel2
             startModule.setSharedData(sharedData);
             trace("start module initialization");
             startModule.initialize(environment);
+        } catch (MissingDataException | InitializationException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new InitializationException(e);
+        }
+    }
+
+    protected void initReevaluator() throws InitializationException, MissingDataException {
+        try {
+            trace("initalize startOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: startOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
+            trace("initalize midOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: midOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
+            trace("initalize endOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: endOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
         } catch (MissingDataException | InitializationException e) {
             throw e;
         } catch (Throwable e) {

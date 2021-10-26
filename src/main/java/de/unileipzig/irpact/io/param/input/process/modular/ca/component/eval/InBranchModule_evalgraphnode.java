@@ -30,10 +30,10 @@ import static de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings
                 shape = EVAL_SHAPE,
                 color = EVAL_COLOR,
                 border = EVAL_BORDER,
-                tags = {EVAL_GRAPHNODE},
+                tags = {EVAL_GRAPHNODE}
 
-                colorMode = NodeMode.PARAMETER,
-                borderMode = NodeMode.PARAMETER
+//                colorMode = NodeMode.PARAMETER,
+//                borderMode = NodeMode.PARAMETER
         )
 )
 public class InBranchModule_evalgraphnode implements InConsumerAgentEvaluationModule {

@@ -232,8 +232,8 @@ public final class AttributeHelper extends SimulationEntityBase {
     //or product
     //=========================
 
-    public double tryGetDoubleValue(ConsumerAgent agent, Product product, String name) throws IRPactNoSuchElementException {
-        ConsumerAgentAttribute attribute = agent.getAttribute(name);
+    public double tryFindDoubleValue(ConsumerAgent agent, Product product, String name) throws IRPactNoSuchElementException {
+        Attribute attribute = agent.findAttribute(name);
         if(attribute == null) {
             return getDoubleValue(agent, product, name);
         } else {

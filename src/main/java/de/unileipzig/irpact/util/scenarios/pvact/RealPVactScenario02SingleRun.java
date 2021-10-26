@@ -8,7 +8,6 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
-import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
@@ -70,6 +69,7 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
     @Override
     public List<InRoot> createInRootsOLD() {
         RealData realData = new RealData(this::createAgentGroup);
+        getSpatialFile().setCoverage(RealData.CONVERAGE);
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
         realData.CAGS.forEach(cag -> cag.setSpatialDistribution(spatialDist));
@@ -126,7 +126,12 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
-        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        InRAProcessModel processModel = createDefaultProcessModel(
+                "Process",
+                uncertainty,
+                RAConstants.DEFAULT_SPEED_OF_CONVERGENCE,
+                createNodeFilterScheme(2)
+        );
         processModel.setAdoptionCertaintyBase(1);
         processModel.setAdoptionCertaintyFactor(1);
         processModel.setDefaultValues();

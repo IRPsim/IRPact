@@ -65,6 +65,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
 
             trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", firstYear, lastYear);
             dataSupplier = new NPVDataSupplier();
+            dataSupplier.setAttributeHelper(environment.getAttributeHelper());
             for(int y = firstYear; y <= lastYear; y++) {
                 trace("calculate year '{}'", y);
                 NPVMatrix matrix = new NPVMatrix();
@@ -249,11 +250,11 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //=========================
 
     default double getDoubleValue(ConsumerAgentData2 input, String key) {
-        return getDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
+        return tryFindDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
     }
 
-    default double tryGetDoubleValue(ConsumerAgentData2 input, String key) {
-        return tryGetDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
+    default double tryFindDoubleValue(ConsumerAgentData2 input, String key) {
+        return tryFindDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
     }
 
     default double getInitialAdopter(ConsumerAgentData2 input) {
@@ -292,7 +293,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return getDoubleValue(input, RAConstants.PURCHASE_POWER_EUR);
     }
     default double getPurchasePower(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return getDoubleValue(environment, agent, product, RAConstants.PURCHASE_POWER_EUR);
+        return tryFindDoubleValue(environment, agent, product, RAConstants.PURCHASE_POWER_EUR);
     }
 
     default double getNoveltySeeking(ConsumerAgentData2 input) {
@@ -381,8 +382,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         synchronized (NODE_FILTER) {
             NodeFilter filter = (NodeFilter) input.get(NODE_FILTER);
             if(filter == null) {
-                //filter = scheme.createFilter(input);
-                if(true) throw new RuntimeException("TODO");
+                filter = scheme.createFilter(input.getPlan());
                 input.put(NODE_FILTER, filter);
             }
             return filter;

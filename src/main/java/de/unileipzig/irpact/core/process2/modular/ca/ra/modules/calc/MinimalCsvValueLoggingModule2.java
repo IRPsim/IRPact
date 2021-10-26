@@ -17,6 +17,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -28,10 +29,20 @@ public class MinimalCsvValueLoggingModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(MinimalCsvValueLoggingModule2.class);
 
+    public static final int AGENT_INDEX = 0;
+    public static final int PRODUCT_INDEX = 1;
+    public static final int TIME_INDEX = 2;
+    public static final int VALUE_INDEX = 3;
+
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
     protected boolean storeXlsx;
+
+    public static LocalDateTime toTime(String input) {
+        long ms = Long.parseLong(input);
+        return TimeUtil.msToTime(ms).toLocalDateTime();
+    }
 
     public void setValueLogger(SimplifiedLogger valueLogger) {
         this.valueLogger = valueLogger;
@@ -125,15 +136,21 @@ public class MinimalCsvValueLoggingModule2
     }
 
     @Override
+    public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
+        initialize(environment);
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
+        double logValue = Double.isNaN(value) ? 0 : value;
         Timestamp now = input.now();
         getValueLogger().log(
                 "{};{};{};{}",
                 input.getAgentName(),
                 input.getProductName(),
                 now.getEpochMilli(),
-                value
+                logValue
         );
         return value;
     }

@@ -43,6 +43,12 @@ public class CountMap1D<T> {
         return counter.getOrDefault(key, 0);
     }
 
+    public int getAndUpdate(T key) {
+        int current = getCount(key);
+        update(key);
+        return current;
+    }
+
     public void add(CountMap1D<T> other) {
         for(Map.Entry<T, Integer> entry: other.counter.entrySet()) {
             update(entry.getKey(), entry.getValue());

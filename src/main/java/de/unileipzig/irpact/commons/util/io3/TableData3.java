@@ -28,7 +28,7 @@ public class TableData3<T> {
         return null;
     }
 
-    public List<List<T>> list() {
+    public List<List<T>> getRows() {
         return rows;
     }
 
@@ -63,7 +63,7 @@ public class TableData3<T> {
         int columnCount = getNumberOfColumns();
         for(int i = 0; i < columnCount; i++) {
             boolean empty = true;
-            for(List<T> row: list()) {
+            for(List<T> row: getRows()) {
                 if(row != null && i < row.size() && row.get(i) != null) {
                     empty = false;
                     break;
@@ -107,7 +107,7 @@ public class TableData3<T> {
 
     public int getNumberOfColumns() {
         int count = 0;
-        for(List<T> row: list()) {
+        for(List<T> row: getRows()) {
             if(row != null && row.size() > count) {
                 count = row.size();
             }
@@ -117,7 +117,7 @@ public class TableData3<T> {
 
     public List<T> getColumn(int index) {
         List<T> column = new ArrayList<>(getNumberOfRows());
-        for(List<T> row: list()) {
+        for(List<T> row: getRows()) {
             if(row == null || row.size() < index) {
                 column.add(null);
             } else {
@@ -191,7 +191,7 @@ public class TableData3<T> {
             List<T> row = getRow(i);
             if(row == null) {
                 row = rowSupplier.get();
-                list().set(i, row);
+                getRows().set(i, row);
             }
             while(row.size() < columnCount) {
                 row.add(nullValue);
@@ -204,7 +204,7 @@ public class TableData3<T> {
             throw new NullPointerException("updater");
         }
 
-        for(List<T> row: list()) {
+        for(List<T> row: getRows()) {
             if(row == null) {
                 continue;
             }

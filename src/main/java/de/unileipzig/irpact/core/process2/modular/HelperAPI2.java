@@ -63,8 +63,8 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
         return environment.getAttributeHelper().getDoubleValue(agent, product, key);
     }
 
-    default double tryGetDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, Product product, String key) {
-        return environment.getAttributeHelper().tryGetDoubleValue(agent, product, key);
+    default double tryFindDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, Product product, String key) {
+        return environment.getAttributeHelper().tryFindDoubleValue(agent, product, key);
     }
 
     default boolean getBooleanValue(SimulationEnvironment environment, ConsumerAgent agent, String key) {
