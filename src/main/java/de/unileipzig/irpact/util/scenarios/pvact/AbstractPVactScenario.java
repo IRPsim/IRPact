@@ -349,7 +349,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         commuAttrWeight.setScalar(1.0);
         commuAttrWeight.setInput(commuAttr);
         InBernoulliModule_boolgraphnode2 commuIf = new InBernoulliModule_boolgraphnode2();
-        commuIf.setName("IF_COMMUNICATION");
+        commuIf.setName("TEST_COMMUNICATION");
         commuIf.setInput(commuAttrWeight);
         InCommunicationModule_actiongraphnode2 commuAction = new InCommunicationModule_actiongraphnode2();
         commuAction.setName("COMMU_ACTION");
@@ -368,11 +368,11 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         rewireAttr.setName("ATTR_REWIRE");
         rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
         InMulScalarModule_calcgraphnode2 rewireAttrWeight = new InMulScalarModule_calcgraphnode2();
-        rewireAttrWeight.setName("REWIRE_COMMUNICATION");
+        rewireAttrWeight.setName("FACTOR_REWIRE");
         rewireAttrWeight.setScalar(1.0);
         rewireAttrWeight.setInput(rewireAttr);
         InBernoulliModule_boolgraphnode2 rewireIf = new InBernoulliModule_boolgraphnode2();
-        rewireIf.setName("IF_REWIRE");
+        rewireIf.setName("TEST_REWIRE");
         rewireIf.setInput(rewireAttrWeight);
         InRewireModule_actiongraphnode2 rewireAction = new InRewireModule_actiongraphnode2();
         rewireAction.setName("REWIRE_ACTION");
