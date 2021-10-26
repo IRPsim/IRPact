@@ -21,6 +21,7 @@ public class IfElseActionModule2<I>
     protected BooleanModule2<I> test;
     protected VoidModule2<I> onTrue;
     protected VoidModule2<I> onFalse;
+    protected boolean usePostactions = true;
 
     public void setTest(BooleanModule2<I> test) {
         this.test = test;
@@ -84,6 +85,38 @@ public class IfElseActionModule2<I>
     public void run(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall();
 
+        if(usePostactions) {
+            if(actions == null) {
+                run0(input);
+            } else {
+                PostAction2 action = runAsAction(input);
+                trace("[{}] new post action '{}'", action.getName());
+                actions.add(action);
+            }
+        } else {
+            run0(input, actions);
+        }
+    }
+
+    protected PostAction2 runAsAction(I input) {
+        return new PostAction2() {
+            @Override
+            public String getName() {
+                return "PostAction@" + IfElseActionModule2.this.getName() + "@" + printName(input);
+            }
+
+            @Override
+            public void execute2() throws Throwable {
+                run0(input);
+            }
+        };
+    }
+
+    protected void run0(I input) throws Throwable {
+        run0(input, null);
+    }
+
+    protected void run0(I input, List<PostAction2> actions) throws Throwable {
         if(test.test(input, actions)) {
             onTrue.run(input, actions);
         } else {

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.need.Need;
+import de.unileipzig.irpact.core.process2.ProcessPlan2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.InputData2;
 import de.unileipzig.irpact.core.product.Product;
@@ -53,6 +54,8 @@ public interface ConsumerAgentData2 extends InputData2 {
     void setStage(RAStage2 stage);
 
     SimulationEnvironment getEnvironment();
+
+    ProcessPlan2 getPlan();
 
     default Stream<? extends ConsumerAgent> streamConsumerAgents() {
         return getEnvironment().getAgents().streamConsumerAgents();

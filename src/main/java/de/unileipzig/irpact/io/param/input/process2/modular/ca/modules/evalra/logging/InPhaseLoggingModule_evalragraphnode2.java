@@ -1,14 +1,14 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra;
+package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.PhaseLoggingModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.PhaseUpdaterModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.InConsumerAgentEvalRAModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -35,7 +35,7 @@ import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settin
                 tags = {EVALRA_GRAPHNODE}
         )
 )
-public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEvalRAModule2 {
+public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEvalRALoggingModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -63,6 +63,11 @@ public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEva
     }
     public void setName(String name) {
         this._name = name;
+    }
+
+    @Override
+    public String getBaseName() {
+        return getName();
     }
 
     @FieldDefinition(

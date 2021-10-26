@@ -52,6 +52,43 @@
             :image "JaehrlicheAdoptionenVergleich.png"
           }
         ]
+      } 
+      {
+        :label "Quantile" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "NPV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NPV_Quantile.png"
+          } 
+          {
+            :label "ENV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "ENV_Quantile.png"
+          } 
+          {
+            :label "NOV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NOV_Quantile.png"
+          } 
+          {
+            :label "SOCIAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "SOCIAL_Quantile.png"
+          } 
+          {
+            :label "LOCAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "LOCAL_Quantile.png"
+          }
+        ]
       }
     ]
   } 

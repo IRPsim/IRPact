@@ -54,6 +54,7 @@ public class LocalShareOfAdopterModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        trace("use node filter: {}", nodeFilterScheme);
     }
 
     @Override

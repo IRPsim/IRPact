@@ -30,8 +30,11 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIf
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
@@ -60,6 +63,9 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InCustomAverageQuantilRangeImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InQuantileRange;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.ArrayList;
@@ -90,6 +96,12 @@ public class InRootUI {
     public static final EdnPath SETT_VISURESULT_GENERIC = SETT_VISURESULT.resolve(InGenericOutputImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT_GNU = SETT_VISURESULT.resolve(InGnuPlotOutputImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT_R = SETT_VISURESULT.resolve(InROutputImage.thisName()).addTo(PATHS);
+
+    public static final EdnPath SETT_VISURESULT2 = SETT.resolve(IOConstants.RESULT_VISUALISATION2).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL = SETT_VISURESULT2.resolve(InCustomAverageQuantilRangeImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE = SETT_VISURESULT2_CUSTOMAVGQUANTIL.resolve(InQuantileRange.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_SPECIALAVGQUANTIL = SETT_VISURESULT2.resolve(InSpecialAverageQuantilRangeImage.thisName()).addTo(PATHS);
+
     public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
@@ -243,7 +255,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_COMMU = PROCESS_MODULAR3_MODULES_ACTION.resolve(InCommunicationModule_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_STOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(InStopAfterSuccessfulTaskModule_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_IFELSE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InIfElseActionModule_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_NOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(NOP_actiongraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_NOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(InNOP_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_REWIRE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InRewireModule_actiongraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_BOOL).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH = PROCESS_MODULAR3_MODULES_BOOL.resolve(InBernoulliModule_boolgraphnode2.thisName()).addTo(PATHS);

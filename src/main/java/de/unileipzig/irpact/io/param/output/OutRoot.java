@@ -198,7 +198,8 @@ public class OutRoot implements RootClass {
         imageSection.setIcon(IRPact.ICON_IMAGES);
         imageSection.getSections().addAll(
                 buildNetworkImageSection(1),
-                buildAdoptionSection(2)
+                buildAdoptionSection(2),
+                buildQuantilSection(3)
         );
         return imageSection;
     }
@@ -256,7 +257,7 @@ public class OutRoot implements RootClass {
         image5.setPriority(5);
         image5.setLabel("Phasenuebersicht");
         image5.setIcon(IRPact.ICON_IMAGE);
-        image5.setImage(IRPact.IMAGE_PHASE_OVERVIEW_JPG);
+        image5.setImage(IRPact.IMAGE_PHASE_OVERVIEW_PNG);
         image5.setDescription("Zeigt die Entwicklung der Phasen an.");
 
         Section image6 = new Section();
@@ -267,6 +268,56 @@ public class OutRoot implements RootClass {
         image6.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
 
         adoptionSections.addAll(image1, image2, image3, image4, image5, image6);
+
+        return adoptionSection;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected Section buildQuantilSection(int priority) {
+        Section adoptionSection = new Section();
+        adoptionSection.setPriority(priority);
+        adoptionSection.setLabel("Quantile");
+        adoptionSection.setDescription("todo");
+        adoptionSection.setIcon(IRPact.ICON_IMAGES);
+
+        Sections adoptionSections = adoptionSection.getSections();
+
+        Section image1 = new Section();
+        image1.setPriority(1);
+        image1.setLabel("NPV");
+        image1.setIcon(IRPact.ICON_IMAGE);
+        image1.setImage(IRPact.IMAGE_QUANTILE_NPV_PNG);
+        image1.setDescription("todo");
+
+        Section image2 = new Section();
+        image2.setPriority(2);
+        image2.setLabel("ENV");
+        image2.setIcon(IRPact.ICON_IMAGE);
+        image2.setImage(IRPact.IMAGE_QUANTILE_ENV_PNG);
+        image2.setDescription("todo");
+
+        Section image3 = new Section();
+        image3.setPriority(3);
+        image3.setLabel("NOV");
+        image3.setIcon(IRPact.ICON_IMAGE);
+        image3.setImage(IRPact.IMAGE_QUANTILE_NOV_PNG);
+        image3.setDescription("todo");
+
+        Section image4 = new Section();
+        image4.setPriority(4);
+        image4.setLabel("SOCIAL");
+        image4.setIcon(IRPact.ICON_IMAGE);
+        image4.setImage(IRPact.IMAGE_QUANTILE_SOCIAL_PNG);
+        image4.setDescription("todo");
+
+        Section image5 = new Section();
+        image5.setPriority(5);
+        image5.setLabel("LOCAL");
+        image5.setIcon(IRPact.ICON_IMAGE);
+        image5.setImage(IRPact.IMAGE_QUANTILE_LOCAL_PNG);
+        image5.setDescription("todo");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5);
 
         return adoptionSection;
     }

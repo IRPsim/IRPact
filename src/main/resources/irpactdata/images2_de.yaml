@@ -1,0 +1,25 @@
+#########################
+# Deutsche Lokalisierung für die Plots.
+#########################
+---
+GNUPLOT:
+  CUSTOM_AVERAGE_QUANTILE_RANGE:
+    title: "aqr"
+    xlab: "Jahre"
+    ylab: ""
+    sep: ";"
+    years: "Jahre"
+    avg: "avg"
+  SPECIAL_AVERAGE_QUANTILE_RANGE:
+    title: "saqr"
+    xlab: "Jahre"
+    ylab: ""
+    sep: ";"
+    years: "Jahre"
+    avg: "avg"
+    q0: "avg QB 0 - 10"
+    q1: "avg QB 10 - 25"
+    q2: "avg QB 25 - 50"
+    q3: "avg QB 50 - 75"
+    q4: "avg QB 75 - 90"
+    q5: "avg QB 90 - 100"

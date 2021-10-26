@@ -40,7 +40,7 @@ public class XlsxSheetWriter3<T> {
             Path target,
             String sheetName,
             TableData3<T> rows) throws IOException {
-        return write(target, sheetName, rows.list());
+        return write(target, sheetName, rows.getRows());
     }
 
     public XSSFWorkbook write(
@@ -81,7 +81,7 @@ public class XlsxSheetWriter3<T> {
             XSSFWorkbook book,
             String sheetName,
             TableData3<T> rows) {
-        return write(book, sheetName, rows.list());
+        return write(book, sheetName, rows.getRows());
     }
 
     public XSSFSheet write(
@@ -105,7 +105,7 @@ public class XlsxSheetWriter3<T> {
     public void write(
             XSSFSheet sheet,
             TableData3<T> rows) {
-        write(sheet, rows.list());
+        write(sheet, rows.getRows());
     }
 
     public void write(

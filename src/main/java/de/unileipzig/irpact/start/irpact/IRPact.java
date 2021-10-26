@@ -86,7 +86,7 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "16";
+    private static final String MINOR_STRING = "17";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -125,7 +125,22 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
 
     public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
-    public static final String IMAGE_PHASE_OVERVIEW_JPG = IMAGE_PHASE_OVERVIEW + ".png";
+    public static final String IMAGE_PHASE_OVERVIEW_PNG = IMAGE_PHASE_OVERVIEW + ".png";
+
+    public static final String IMAGE_QUANTILE_NPV = "NPV_Quantile";
+    public static final String IMAGE_QUANTILE_NPV_PNG = IMAGE_QUANTILE_NPV + ".png";
+
+    public static final String IMAGE_QUANTILE_ENV = "ENV_Quantile";
+    public static final String IMAGE_QUANTILE_ENV_PNG = IMAGE_QUANTILE_ENV + ".png";
+
+    public static final String IMAGE_QUANTILE_NOV = "NOV_Quantile";
+    public static final String IMAGE_QUANTILE_NOV_PNG = IMAGE_QUANTILE_NOV + ".png";
+
+    public static final String IMAGE_QUANTILE_SOCIAL = "SOCIAL_Quantile";
+    public static final String IMAGE_QUANTILE_SOCIAL_PNG = IMAGE_QUANTILE_SOCIAL + ".png";
+
+    public static final String IMAGE_QUANTILE_LOCAL = "LOCAL_Quantile";
+    public static final String IMAGE_QUANTILE_LOCAL_PNG = IMAGE_QUANTILE_LOCAL + ".png";
 
     private static final String ALL_EVAL_BASENAME = "Komplette_Evaluierungen";
     public static final String ALL_EVAL_CSV = ALL_EVAL_BASENAME + ".csv";

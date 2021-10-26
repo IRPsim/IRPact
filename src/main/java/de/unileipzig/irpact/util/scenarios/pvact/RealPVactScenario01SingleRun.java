@@ -70,6 +70,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
     @Override
     public List<InRoot> createInRootsOLD() {
         RealData realData = new RealData(this::createAgentGroup);
+        getSpatialFile().setCoverage(RealData.CONVERAGE);
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
         realData.CAGS.forEach(cag -> cag.setSpatialDistribution(spatialDist));
@@ -126,7 +127,12 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
 
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
-        InRAProcessModel processModel = createDefaultProcessModel("Process", uncertainty, RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+        InRAProcessModel processModel = createDefaultProcessModel(
+                "Process",
+                uncertainty,
+                RAConstants.DEFAULT_SPEED_OF_CONVERGENCE,
+                createNodeFilterScheme(2)
+        );
         processModel.setDefaultValues();
         processModel.setA(1);
         processModel.setB(RealData.WEIGHT_NEP);

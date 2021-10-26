@@ -110,6 +110,14 @@ public class CsvPrinter<T> {
         }
     }
 
+    public void write(Path path, Charset charset, TableData3<T> data) throws IOException {
+        write(path, charset, null, null, data.getRows());
+    }
+
+    public void write(Writer writer, TableData3<T> data) throws IOException {
+        write(writer, null, data.getRows());
+    }
+
     public void write(Path path, Charset charset, String[] header, Iterable<? extends Iterable<? extends T>> rows) throws IOException {
         write(path, charset, null, header, rows);
     }
@@ -174,6 +182,10 @@ public class CsvPrinter<T> {
     }
 
     protected void writeHeader(Writer writer, boolean newline) throws IOException {
+        if(header == null || header.length == 0) {
+            return;
+        }
+
         boolean first = true;
         for(String h: header) {
             if(!first) {

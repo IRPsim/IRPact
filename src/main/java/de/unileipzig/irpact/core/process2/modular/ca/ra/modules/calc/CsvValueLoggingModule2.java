@@ -16,6 +16,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -27,10 +30,25 @@ public class CsvValueLoggingModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(CsvValueLoggingModule2.class);
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    public static final int AGENT_INDEX = 0;
+    public static final int PRODUCT_INDEX = 2;
+    public static final int TIME_INDEX = 4;
+    public static final int VALUE_INDEX = 6;
+
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
     protected boolean storeXlsx;
+
+
+    public static LocalDateTime toTime(String input) {
+        return LocalDateTime.parse(input, FORMATTER);
+    }
+
+    public static String fromTime(ZonedDateTime time) {
+        return time.toLocalDateTime().format(FORMATTER);
+    }
 
     public void setValueLogger(SimplifiedLogger valueLogger) {
         this.valueLogger = valueLogger;
@@ -124,15 +142,21 @@ public class CsvValueLoggingModule2
     }
 
     @Override
+    public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
+        initialize(environment);
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
+        double logValue = Double.isNaN(value) ? 0 : value;
         Timestamp now = input.now();
         getValueLogger().log(
                 "{};{};{};{};{};{};{}",
                 input.getAgentName(), input.getAgentGroupName(),
                 input.getProductName(), input.getProductGroupName(),
-                now, now.getYear(),
-                value
+                fromTime(now.getTime()), now.getYear(),
+                logValue
         );
         return value;
     }

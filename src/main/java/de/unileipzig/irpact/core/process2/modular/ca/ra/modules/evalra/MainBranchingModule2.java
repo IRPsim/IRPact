@@ -115,6 +115,7 @@ public class MainBranchingModule2
                 return feasibilityModule.apply(input, actions);
 
             case DECISION_MAKING:
+                doSelfActionAndAllowAttention(input);
                 return decisionModule.apply(input, actions);
 
             case ADOPTED:

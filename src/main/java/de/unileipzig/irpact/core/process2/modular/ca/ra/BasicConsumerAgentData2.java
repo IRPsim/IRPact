@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.util.data.map.Map3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process2.PostAction2;
+import de.unileipzig.irpact.core.process2.ProcessPlan2;
 import de.unileipzig.irpact.core.process2.ProcessPlanResult2;
 import de.unileipzig.irpact.core.process2.modular.ca.CAModularProcessModel2;
 import de.unileipzig.irpact.core.process2.modular.ca.CAModularProcessPlan2;
@@ -131,6 +132,11 @@ public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerA
     @Override
     public SimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    @Override
+    public ProcessPlan2 getPlan() {
+        return this;
     }
 
     @Override

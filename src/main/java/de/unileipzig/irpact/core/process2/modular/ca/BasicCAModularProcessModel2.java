@@ -130,10 +130,15 @@ public class BasicCAModularProcessModel2
     }
 
     protected void createUncertainty(ConsumerAgent agent) {
+        trace("create uncertainty for agent '{}'", agent.getName());
         getUncertaintyCache().createUncertainty(
                 agent,
                 getUncertaintyManager()
         );
+        trace("uncertainty for agent '{}': {}", agent.getName(), getUncertaintyCache().getUncertainty(agent));
+        if(getUncertaintyCache().getUncertainty(agent) == null) {
+            throw new NullPointerException("missing uncertainty for agent '" + agent.getName() + "'");
+        }
     }
 
     @Override
@@ -192,6 +197,7 @@ public class BasicCAModularProcessModel2
     public void postAgentCreation() throws MissingDataException, InitializationException {
         runInitializationHandler();
         initModules();
+        initReevaluator();
     }
 
     protected void runInitializationHandler() throws InitializationException {
@@ -234,6 +240,27 @@ public class BasicCAModularProcessModel2
             startModule.setSharedData(sharedData);
             trace("start module initialization");
             startModule.initialize(environment);
+        } catch (MissingDataException | InitializationException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new InitializationException(e);
+        }
+    }
+
+    protected void initReevaluator() throws InitializationException, MissingDataException {
+        try {
+            trace("initalize startOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: startOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
+            trace("initalize midOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: midOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
+            trace("initalize endOfYearTasks");
+            for(Reevaluator<ConsumerAgentData2> reevaluator: endOfYearTasks) {
+                reevaluator.initializeReevaluator(environment);
+            }
         } catch (MissingDataException | InitializationException e) {
             throw e;
         } catch (Throwable e) {

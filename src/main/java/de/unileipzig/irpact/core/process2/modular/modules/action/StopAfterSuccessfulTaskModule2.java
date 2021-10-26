@@ -82,7 +82,7 @@ public class StopAfterSuccessfulTaskModule2<I>
     protected void run0(I input, List<PostAction2> actions) throws Throwable {
         for(BooleanModule2<I> submodule: MODULES) {
             boolean success = submodule.test(input, actions);
-            trace("[{}] @ [{}] submodule '{}' result: {}", getName(), input, submodule.getName(), success);
+            trace("[{}]@[{}] submodule '{}' result: {}", getName(), printName(input), submodule.getName(), success);
             if(success) {
                 break;
             }

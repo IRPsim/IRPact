@@ -48,6 +48,6 @@ public class AttributeModule2
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        return tryGetDoubleValue(input, attributeName);
+        return tryFindDoubleValue(input, attributeName);
     }
 }
