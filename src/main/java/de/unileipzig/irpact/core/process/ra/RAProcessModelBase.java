@@ -342,7 +342,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 //        double pp = getPurchasePower(agent);
 //        double ns = getNoveltySeeking(agent);
 //        return pp;
-        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
+        return helper.getDouble(agent, RAConstants.PURCHASE_POWER_EUR, true);
     }
 
     //=========================
@@ -354,7 +354,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
         if(info.hasId()) {
             return info.getId();
         } else {
-            return getAttributeHelper().findLongValue(agent, RAConstants.ID);
+            return getAttributeHelper().getLong(agent, RAConstants.ID, true);
         }
     }
 
@@ -363,23 +363,23 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     public double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
+        return getAttributeHelper().getDouble(agent, RAConstants.PURCHASE_POWER_EUR, true);
     }
 
     public boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+        return getAttributeHelper().getBoolean(agent, RAConstants.SHARE_1_2_HOUSE, true);
     }
 
     public void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
+        getAttributeHelper().setBoolean(agent, RAConstants.SHARE_1_2_HOUSE, value, true);
     }
 
     public boolean isHouseOwner(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+        return getAttributeHelper().getBoolean(agent, RAConstants.HOUSE_OWNER, true);
     }
 
     public void setHouseOwner(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
+        getAttributeHelper().setBoolean(agent, RAConstants.HOUSE_OWNER, value, true);
     }
 
     //=========================
@@ -387,31 +387,31 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     //=========================
 
     public double getCommunicationFrequencySN(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
+        return getAttributeHelper().getDouble(agent, RAConstants.COMMUNICATION_FREQUENCY_SN, true);
     }
 
     public double getRewiringRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.REWIRING_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.REWIRING_RATE, true);
     }
 
     public double getNoveltySeeking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
+        return getAttributeHelper().getDouble(agent, RAConstants.NOVELTY_SEEKING, true);
     }
 
     public double getDependentJudgmentMaking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        return getAttributeHelper().getDouble(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING, true);
     }
 
     public double getEnvironmentalConcern(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
+        return getAttributeHelper().getDouble(agent, RAConstants.ENVIRONMENTAL_CONCERN, true);
     }
 
     public double getConstructionRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.CONSTRUCTION_RATE, true);
     }
 
     public double getRenovationRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.RENOVATION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.RENOVATION_RATE, true);
     }
 
     //=========================
@@ -419,22 +419,22 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     //=========================
 
     public double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.FINANCIAL_THRESHOLD, true);
     }
 
     public double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.ADOPTION_THRESHOLD, true);
     }
 
     public double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS, true);
     }
 
     public double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST, true);
     }
 
     public double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_ADOPTER, true);
     }
 }

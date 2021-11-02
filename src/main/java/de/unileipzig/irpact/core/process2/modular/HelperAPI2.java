@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public interface HelperAPI2 extends Nameable, LoggingHelper {
 
+    Object REEVALUATOR_CALL = new Object();
+
     //=========================
     //general
     //=========================
@@ -43,31 +45,35 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
         }
     }
 
+    default void startReevaluatorCall() {
+        getSharedData().put(REEVALUATOR_CALL, Boolean.TRUE);
+    }
+
+    default void finishReevaluatorCall() {
+        getSharedData().remove(REEVALUATOR_CALL);
+    }
+
+    default boolean isReevaluatorCall() {
+        return getSharedData().contains(REEVALUATOR_CALL);
+    }
+
     //=========================
     //Attribute
     //=========================
 
-    default int getFirstSimulationYear(SimulationEnvironment environment) {
-        return environment.getSettings().getFirstSimulationYear();
+    default double getDouble(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName) {
+        return environment.getAttributeHelper().getDouble(agent, product, attributeName, true);
     }
 
-    default double getDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, String key) {
-        return environment.getAttributeHelper().findDoubleValue(agent, key);
+    default void setDouble(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName, double value) {
+        environment.getAttributeHelper().setDouble(agent, product, attributeName, value, true);
     }
 
-    default double getDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, String key, int year) {
-        return environment.getAttributeHelper().getDoubleValue(agent, key, year);
+    default boolean getBoolean(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName) {
+        return environment.getAttributeHelper().getBoolean(agent, product, attributeName, true);
     }
 
-    default double getDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, Product product, String key) {
-        return environment.getAttributeHelper().getDoubleValue(agent, product, key);
-    }
-
-    default double tryFindDoubleValue(SimulationEnvironment environment, ConsumerAgent agent, Product product, String key) {
-        return environment.getAttributeHelper().tryFindDoubleValue(agent, product, key);
-    }
-
-    default boolean getBooleanValue(SimulationEnvironment environment, ConsumerAgent agent, String key) {
-        return environment.getAttributeHelper().findBooleanValue(agent, key);
+    default void setBoolean(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName, boolean value) {
+        environment.getAttributeHelper().setBoolean(agent, product, attributeName, value, true);
     }
 }

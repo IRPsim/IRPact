@@ -39,15 +39,19 @@ public class CsvValueLoggingModule2
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
+    protected boolean skipReevaluatorCall;
     protected boolean storeXlsx;
-
 
     public static LocalDateTime toTime(String input) {
         return LocalDateTime.parse(input, FORMATTER);
     }
 
     public static String fromTime(ZonedDateTime time) {
-        return time.toLocalDateTime().format(FORMATTER);
+        return fromTime(time.toLocalDateTime());
+    }
+
+    public static String fromTime(LocalDateTime time) {
+        return time.format(FORMATTER);
     }
 
     public void setValueLogger(SimplifiedLogger valueLogger) {
@@ -72,6 +76,14 @@ public class CsvValueLoggingModule2
 
     public String getBaseName() {
         return baseName;
+    }
+
+    public void setSkipReevaluatorCall(boolean skipReevaluatorCall) {
+        this.skipReevaluatorCall = skipReevaluatorCall;
+    }
+
+    public boolean isSkipReevaluatorCall() {
+        return skipReevaluatorCall;
     }
 
     public void setStoreXlsx(boolean storeXlsx) {
@@ -149,15 +161,19 @@ public class CsvValueLoggingModule2
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
-        double logValue = Double.isNaN(value) ? 0 : value;
-        Timestamp now = input.now();
-        getValueLogger().log(
-                "{};{};{};{};{};{};{}",
-                input.getAgentName(), input.getAgentGroupName(),
-                input.getProductName(), input.getProductGroupName(),
-                fromTime(now.getTime()), now.getYear(),
-                logValue
-        );
+        if(!(isReevaluatorCall() && isSkipReevaluatorCall())) {
+            double logValue = Double.isNaN(value) ? 0 : value;
+            Timestamp now = input.now();
+            getValueLogger().log(
+                    "{};{};{};{};{};{};{}",
+                    input.getAgentName(), input.getAgentGroupName(),
+                    input.getProductName(), input.getProductGroupName(),
+                    fromTime(now.getTime()), now.getYear(),
+                    logValue
+            );
+        } else {
+            trace("[{}] skip reevaluator call", getName());
+        }
         return value;
     }
 

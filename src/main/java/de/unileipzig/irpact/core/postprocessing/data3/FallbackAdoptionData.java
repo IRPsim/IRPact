@@ -36,6 +36,11 @@ public class FallbackAdoptionData implements ScaledRealAdoptionData {
     }
 
     @Override
+    public boolean hasYear(int year) {
+        return true;
+    }
+
+    @Override
     public void getValidZips(Collection<? extends String> input, Collection<? super String> output) {
         output.addAll(input);
     }

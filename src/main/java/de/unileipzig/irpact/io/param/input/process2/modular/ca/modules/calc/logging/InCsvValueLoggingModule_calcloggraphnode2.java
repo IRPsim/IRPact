@@ -20,7 +20,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
@@ -55,6 +54,7 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_CSV);
         setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
 
+        addEntryWithDefaultAndDomain(res, thisClass(), "skipReevaluatorCall", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge2");
     }
@@ -73,6 +73,16 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     @Override
     public String getBaseName() {
         return getName();
+    }
+
+    @FieldDefinition
+    public boolean skipReevaluatorCall = true;
+    public void setSkipReevaluatorCall(boolean skipReevaluatorCall) {
+        this.skipReevaluatorCall = skipReevaluatorCall;
+    }
+    @Override
+    public boolean isSkipReevaluatorCall() {
+        return skipReevaluatorCall;
     }
 
     @FieldDefinition
@@ -125,6 +135,7 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         module.setName(getName());
         module.setBaseName(getName());
         module.setStoreXlsx(isStoreXlsx());
+        module.setSkipReevaluatorCall(isSkipReevaluatorCall());
         try {
             module.setDir(parser.getOptions().getCreatedDownloadDir());
         } catch (IOException e) {

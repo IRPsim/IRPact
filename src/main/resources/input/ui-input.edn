@@ -1,5 +1,94 @@
 [
   {
+    :label "[TEST] Graph - Modulares Prozessmodell" 
+    :icon "fas fa-share-alt" 
+    :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
+    :graph {
+      :edges {
+        :tags [["graphedge"]] 
+        :groups [
+          {
+            :tags [["InAddModule" "first"] ["InAddModule" "second"] ["InLogisticModule" "input"] ["InSumModule" "first"] ["InWeightedAddModule" "first"] ["InWeightedAddModule" "second"] ["InWeightedModule" "input"] ["InSumThresholdEvaluationModule" "input"] ["InThresholdEvaluationModule" "input"]] 
+            :label "Berechnungskante" 
+            :color "DarkCyan"
+          } 
+          {
+            :tags [["InBranchModule" "inputModule"] ["InBranchModule" "onAdoptModule"] ["InBranchModule" "onImpededModule"] ["InBranchModule" "onInProcessModule"] ["InDoNothingModule" "inputModule"] ["InFilterModule" "inputModule"] ["InFilterModule" "taskModule"] ["InStageEvaluationModule" "awarenessModule"] ["InStageEvaluationModule" "feasibilityModule"] ["InStageEvaluationModule" "decisionMakingModule"] ["InStageEvaluationModule" "adoptedModule"] ["InStageEvaluationModule" "impededModule"]] 
+            :label "Evaluierungskante" 
+            :color "LightSlateGrey"
+          }
+        ] 
+        :heading "Kantenbedeutung"
+      } 
+      :nodes {
+        :set "set_InConsumerAgentModule" 
+        :color {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
+            }
+          ] 
+          :heading "Fuellfarbe"
+        } 
+        :border {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "Blue"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "Green"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "Red"
+            }
+          ] 
+          :heading "Rahmenfarbe"
+        } 
+        :shape {
+          :type :subsets 
+          :groups [
+            {
+              :tags [["calcgraphnode"]] 
+              :label "Berechnungsmodul" 
+              :value "gear"
+            } 
+            {
+              :tags [["inputgraphnode"]] 
+              :label "Eingabemodul" 
+              :value "square"
+            } 
+            {
+              :tags [["evalgraphnode"]] 
+              :label "Evaluierungsmodul" 
+              :value "diamond"
+            }
+          ] 
+          :heading "Form"
+        }
+      }
+    }
+  } 
+  {
     :label "[TEST] Graph - Modulares Prozessmodell v3" 
     :icon "fas fa-share-alt" 
     :description "[TEST] Interaktiver Graph fuer das modulare Prozessmodell." 
@@ -18,12 +107,12 @@
             :color "DarkCyan"
           } 
           {
-            :tags [["InThresholdReachedModule" "draw"] ["InThresholdReachedModule" "threshold"] ["InBernoulliModule" "input"] ["InAddScalarModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InCsvValueLoggingModule" "input"] ["InMinimalCsvValueLoggingModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"] ["InCsvValueReevaluatorModule" "input"] ["InMinimalCsvValueReevaluatorModule" "input"]] 
+            :tags [["InThresholdReachedModule" "draw"] ["InThresholdReachedModule" "threshold"] ["InBernoulliModule" "input"] ["InAddScalarModule" "input"] ["InLogisticModule" "xinput"] ["InLogisticModule" "x0input"] ["InMulScalarModule" "input"] ["InProductModule" "input"] ["InSumModule" "input"] ["InCsvValueLoggingModule" "input"] ["InMinimalCsvValueLoggingModule" "input"] ["InDecisionMakingDeciderModule2" "threshold"] ["InDecisionMakingDeciderModule2" "utility"]] 
             :label "Berechnungskante" 
             :color "Green"
           } 
           {
-            :tags [["InRunUntilFailureModule" "input"]] 
+            :tags [["InRunUntilFailureModule" "input"] ["InReevaluatorModule" "input"]] 
             :label "Planauswertungskante" 
             :color "Blue"
           } 
@@ -196,7 +285,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.17.1" 
+        :description "IRPact v1.18.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -266,14 +355,32 @@
         ]
       } 
       {
+        :label "Datenanalyse2" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Standardprozessmodell" 
+            :set "set_InBucketAnalyser" 
+            :description "todo" 
+            :tags [["InBucketAnalyser" "enabled"] ["InBucketAnalyser" "storeCsv"] ["InBucketAnalyser" "storeXlsx"] ["InBucketAnalyser" "bucketRange"] ["link" "InBucketAnalyser" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
+          }
+        ]
+      } 
+      {
         :label "Ergebnisvisualisierung2" 
         :description "todo" 
         :sections [
           {
-            :label "Benutzerdefinierte Quantilbereiche" 
-            :set "set_InCustomAverageQuantilRangeImage" 
+            :label "Spezielle Quantilbereiche" 
+            :set "set_InSpecialAverageQuantilRangeImage" 
             :description "todo" 
-            :tags [["InCustomAverageQuantilRangeImage" "useGnuplot"] ["InCustomAverageQuantilRangeImage" "useR"] ["InCustomAverageQuantilRangeImage" "storeScript"] ["InCustomAverageQuantilRangeImage" "storeData"] ["InCustomAverageQuantilRangeImage" "storeImage"] ["InCustomAverageQuantilRangeImage" "printAverage"] ["InCustomAverageQuantilRangeImage" "imageWidth"] ["InCustomAverageQuantilRangeImage" "imageHeight"] ["InCustomAverageQuantilRangeImage" "linewidth"] ["link" "InCustomAverageQuantilRangeImage" "InQuantileRange" "ranges"] ["link" "InCustomAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]] 
+            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "showUnscaled"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"] ["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "showUnscaled"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"] ["InSpecialAverageQuantilRangeImage" "enabled"] ["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["InSpecialAverageQuantilRangeImage" "customImageId"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
+          } 
+          {
+            :label "Benutzerdefinierte Quantilbereiche" 
+            :set "set_InProcessPhaseOverviewImage" 
+            :description "todo" 
+            :tags [["InAdoptionPhaseOverviewImage" "enabled"] ["InAdoptionPhaseOverviewImage" "useGnuplot"] ["InAdoptionPhaseOverviewImage" "useR"] ["InAdoptionPhaseOverviewImage" "storeScript"] ["InAdoptionPhaseOverviewImage" "storeData"] ["InAdoptionPhaseOverviewImage" "storeImage"] ["InAdoptionPhaseOverviewImage" "imageWidth"] ["InAdoptionPhaseOverviewImage" "imageHeight"] ["InAdoptionPhaseOverviewImage" "boxWidth"] ["InAdoptionPhaseOverviewImage" "customImageId"] ["InCustomAverageQuantilRangeImage" "enabled"] ["InCustomAverageQuantilRangeImage" "useGnuplot"] ["InCustomAverageQuantilRangeImage" "useR"] ["InCustomAverageQuantilRangeImage" "storeScript"] ["InCustomAverageQuantilRangeImage" "storeData"] ["InCustomAverageQuantilRangeImage" "storeImage"] ["InCustomAverageQuantilRangeImage" "printAverage"] ["InCustomAverageQuantilRangeImage" "imageWidth"] ["InCustomAverageQuantilRangeImage" "imageHeight"] ["InCustomAverageQuantilRangeImage" "linewidth"] ["InCustomAverageQuantilRangeImage" "customImageId"] ["link" "InCustomAverageQuantilRangeImage" "InQuantileRange" "ranges"] ["link" "InCustomAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"] ["InInterestOverviewImage" "enabled"] ["InInterestOverviewImage" "useGnuplot"] ["InInterestOverviewImage" "useR"] ["InInterestOverviewImage" "storeScript"] ["InInterestOverviewImage" "storeData"] ["InInterestOverviewImage" "storeImage"] ["InInterestOverviewImage" "imageWidth"] ["InInterestOverviewImage" "imageHeight"] ["InInterestOverviewImage" "boxWidth"] ["InInterestOverviewImage" "customImageId"] ["InProcessPhaseOverviewImage" "enabled"] ["InProcessPhaseOverviewImage" "useGnuplot"] ["InProcessPhaseOverviewImage" "useR"] ["InProcessPhaseOverviewImage" "storeScript"] ["InProcessPhaseOverviewImage" "storeData"] ["InProcessPhaseOverviewImage" "storeImage"] ["InProcessPhaseOverviewImage" "imageWidth"] ["InProcessPhaseOverviewImage" "imageHeight"] ["InProcessPhaseOverviewImage" "boxWidth"] ["InProcessPhaseOverviewImage" "customImageId"]] 
             :sections [
               {
                 :label "Quantilbereich" 
@@ -282,12 +389,6 @@
                 :tags [["InQuantileRange" "lowerBound"] ["InQuantileRange" "upperBound"]]
               }
             ]
-          } 
-          {
-            :label "Spezielle Quantilbereiche" 
-            :set "set_InSpecialAverageQuantilRangeImage" 
-            :description "todo" 
-            :tags [["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
           }
         ]
       } 
@@ -1185,13 +1286,13 @@
                     :label "CsvValueLoggingModule" 
                     :set "set_InCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
-                    :tags [["InCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InCsvValueLoggingModule" "calcloggraphnode2" "skipReevaluatorCall"] ["InCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   } 
                   {
                     :label "MinimalCsvValueLoggingModule" 
                     :set "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
-                    :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "skipReevaluatorCall"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   }
                 ]
               } 
@@ -1320,16 +1421,10 @@
                 :description "todo" 
                 :sections [
                   {
-                    :label "CsvValueReevaluatorModule" 
-                    :set "set_InCsvValueReevaluatorModule_reevalgraphnode2" 
+                    :label "InReevaluatorModule" 
+                    :set "set_InReevaluatorModule_reevalgraphnode2" 
                     :description "todo" 
-                    :tags [["InCsvValueReevaluatorModule" "reevalgraphnode2" "storeXlsx"] ["link" "InCsvValueReevaluatorModule" "reevalgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
-                  } 
-                  {
-                    :label "MinimalCsvValueReevaluatorModule" 
-                    :set "set_InMinimalCsvValueReevaluatorModule_reevalgraphnode2" 
-                    :description "todo" 
-                    :tags [["InMinimalCsvValueReevaluatorModule" "reevalgraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueReevaluatorModule" "reevalgraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["link" "InReevaluatorModule" "reevalgraphnode2" "InConsumerAgentModule2" "input" "graphedge2"]]
                   }
                 ]
               }

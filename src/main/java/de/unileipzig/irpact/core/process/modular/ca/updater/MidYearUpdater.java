@@ -69,26 +69,26 @@ public class MidYearUpdater extends SimulationEntityBase implements ConsumerAgen
     }
 
     protected double getRenovationRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.RENOVATION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.RENOVATION_RATE, true);
     }
 
     protected double getConstructionRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.CONSTRUCTION_RATE, true);
     }
 
     protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+        return getAttributeHelper().getBoolean(agent, RAConstants.SHARE_1_2_HOUSE, true);
     }
 
     protected void setShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, true);
+        getAttributeHelper().setBoolean(agent, RAConstants.SHARE_1_2_HOUSE, true, true);
     }
 
     protected boolean isHouseOwner(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+        return getAttributeHelper().getBoolean(agent, RAConstants.HOUSE_OWNER, true);
     }
 
     public void setHouseOwner(ConsumerAgent agent) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, true);
+        getAttributeHelper().setBoolean(agent, RAConstants.HOUSE_OWNER, true, true);
     }
 }

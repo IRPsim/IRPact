@@ -12,14 +12,13 @@ import de.unileipzig.irpact.commons.util.fio2.xlsx2.StandardCellValueConverter2;
 import de.unileipzig.irpact.commons.util.fio2.xlsx2.XlsxSheetParser2;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.awt.*;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -85,6 +84,18 @@ public final class ParamUtil {
     public static final Object[] VALUE_0_1 = {"0.1"};
 
     private ParamUtil() {
+    }
+
+    public static String closedOpenDomain(int lower, int upper) {
+        return "[" + lower + "," + upper + ")";
+    }
+
+    public static String closedClosedDomain(int lower, int upper) {
+        return "[" + lower + "," + upper + "]";
+    }
+
+    public static String customImageDomain() {
+        return closedClosedDomain(0, IRPact.CUSTOM_IMAGE_SECTION_SIZE);
     }
 
     @SuppressWarnings("unchecked")

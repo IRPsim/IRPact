@@ -249,58 +249,58 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //Attribute
     //=========================
 
-    default double getDoubleValue(ConsumerAgentData2 input, String key) {
-        return tryFindDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
+    default double getDouble(ConsumerAgentData2 input, String attributeName) {
+        return getDouble(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName);
     }
 
-    default double tryFindDoubleValue(ConsumerAgentData2 input, String key) {
-        return tryFindDoubleValue(input.getEnvironment(), input.getAgent(), input.getProduct(), key);
+    default void setDouble(ConsumerAgentData2 input, String attributeName, double value) {
+        setDouble(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName, value);
     }
 
-    default double getInitialAdopter(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.INITIAL_ADOPTER);
+    default boolean getBoolean(ConsumerAgentData2 input, String attributeName) {
+        return getBoolean(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName);
     }
 
-    default boolean getBooleanValue(ConsumerAgentData2 input, String key) {
-        return getBooleanValue(input.getEnvironment(), input.getAgent(), key);
+    default void setBoolean(ConsumerAgentData2 input, String attributeName, boolean value) {
+        setBoolean(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName, value);
     }
 
     default double getRenovationRate(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.RENOVATION_RATE);
+        return getDouble(input, RAConstants.RENOVATION_RATE);
     }
 
     default double getConstructionRate(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.CONSTRUCTION_RATE);
+        return getDouble(input, RAConstants.CONSTRUCTION_RATE);
     }
 
     default boolean isShareOf1Or2FamilyHouse(ConsumerAgentData2 input) {
-        return getBooleanValue(input, RAConstants.SHARE_1_2_HOUSE);
+        return getBoolean(input, RAConstants.SHARE_1_2_HOUSE);
     }
 
     default void setShareOf1Or2FamilyHouse(ConsumerAgentData2 input) {
-        input.getEnvironment().getAttributeHelper().findAndSetBooleanValue(input.getAgent(), RAConstants.SHARE_1_2_HOUSE, true);
+        setBoolean(input, RAConstants.SHARE_1_2_HOUSE, true);
     }
 
     default boolean isHouseOwner(ConsumerAgentData2 input) {
-        return getBooleanValue(input, RAConstants.HOUSE_OWNER);
+        return getBoolean(input, RAConstants.HOUSE_OWNER);
     }
 
     default void setHouseOwner(ConsumerAgentData2 input) {
-        input.getEnvironment().getAttributeHelper().findAndSetBooleanValue(input.getAgent(), RAConstants.HOUSE_OWNER, true);
+        setBoolean(input, RAConstants.HOUSE_OWNER, true);
     }
 
     default double getPurchasePower(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.PURCHASE_POWER_EUR);
+        return getDouble(input, RAConstants.PURCHASE_POWER_EUR);
     }
     default double getPurchasePower(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return tryFindDoubleValue(environment, agent, product, RAConstants.PURCHASE_POWER_EUR);
+        return getDouble(environment, agent, product, RAConstants.PURCHASE_POWER_EUR);
     }
 
     default double getNoveltySeeking(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.NOVELTY_SEEKING);
+        return getDouble(input, RAConstants.NOVELTY_SEEKING);
     }
     default double getNoveltySeeking(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return getDoubleValue(environment, agent, product, RAConstants.NOVELTY_SEEKING);
+        return getDouble(environment, agent, product, RAConstants.NOVELTY_SEEKING);
     }
 
     default double getFinancialPurchasePower(ConsumerAgentData2 input) {
@@ -342,15 +342,15 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     }
 
     default double getFinancialThreshold(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.FINANCIAL_THRESHOLD);
+        return getDouble(input, RAConstants.FINANCIAL_THRESHOLD);
     }
 
     default double getAdoptionThreshold(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.ADOPTION_THRESHOLD);
+        return getDouble(input, RAConstants.ADOPTION_THRESHOLD);
     }
 
     default double getEnvironmentalConcern(ConsumerAgentData2 input) {
-        return getDoubleValue(input, RAConstants.ENVIRONMENTAL_CONCERN);
+        return getDouble(input, RAConstants.ENVIRONMENTAL_CONCERN);
     }
 
     //=========================

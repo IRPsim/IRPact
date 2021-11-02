@@ -115,7 +115,7 @@ public class BasicRelativeAgreementAlgorithm extends AbstractRelativeAgreementAl
                     ? uj - tempUj
                     : uj + tempUj;
 
-            AttributeHelper.setDoubleValue(currentYear, ojAttr, newOj);
+            AttributeHelper.setDouble(currentYear, null, ojAttr, newOj);
             ujAttr.updateUncertainty(ojAttr, newUj);
 
             logRelativeAgreementSuccess(logger, section, level, reverse, namei, namej, ojAttr.getName(), oi, ui, oj, uj, mj, hij, ra, newOj, newUj);

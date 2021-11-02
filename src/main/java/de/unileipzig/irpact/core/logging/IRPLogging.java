@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.NoSuchElementException;
 
 /**
@@ -44,6 +46,8 @@ public final class IRPLogging {
     private static IRPLogger resultLogger;
     private static boolean initalized = false;
 
+    private static final EnumSet<IRPSection> FORCED_SECTIONS = EnumSet.noneOf(IRPSection.class);
+
     private IRPLogging() {
     }
 
@@ -73,6 +77,10 @@ public final class IRPLogging {
         IRPtools.setLoggingFilter(null);
         IRPSection.removeSectionsFromTools();
         CONTROLLER.stopWriting();
+    }
+
+    public static void addForcesLoggingSection(IRPSection... sections) {
+        Collections.addAll(FORCED_SECTIONS, sections);
     }
 
     public static void disableTools() {
@@ -140,7 +148,7 @@ public final class IRPLogging {
     }
 
     public static void setFilter(SectionLoggingFilter filter) {
-        FILTER.setBacked(filter);
+        FILTER.setBacked(filter, FORCED_SECTIONS);
     }
 
     public static void removeFilter() {
@@ -182,11 +190,12 @@ public final class IRPLogging {
             enabled = false;
         }
 
-        private void setBacked(SectionLoggingFilter backed) {
+        private void setBacked(SectionLoggingFilter backed, EnumSet<IRPSection> forcedSections) {
             if(this.backed != null) {
                 throw new IllegalArgumentException("filter aready set");
             }
             this.backed = backed;
+            this.backed.linkForcedSections(forcedSections);
         }
 
         private void removeBacked() {

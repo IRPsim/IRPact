@@ -54,6 +54,12 @@ public interface InOutputImage2 extends InIRPactEntity {
         }
     }
 
+    boolean isEnabled();
+
+    default boolean isDisabled() {
+        return !isEnabled();
+    }
+
     boolean isUseGnuplot();
 
     boolean isUseR();
@@ -68,11 +74,13 @@ public interface InOutputImage2 extends InIRPactEntity {
 
     int getImageHeight();
 
-    default boolean isEnabled() {
+    int getCustomImageId();
+
+    default boolean hasSomethingToStore() {
         return isStoreData() || isStoreScript() || isStoreImage();
     }
 
-    default boolean isDisabled() {
-        return !isEnabled();
+    default boolean hasNothingToStore() {
+        return !hasSomethingToStore();
     }
 }

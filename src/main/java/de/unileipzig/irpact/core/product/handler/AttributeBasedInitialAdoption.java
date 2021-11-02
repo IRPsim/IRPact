@@ -59,6 +59,6 @@ public class AttributeBasedInitialAdoption extends NameableBase implements NewPr
     }
 
     protected double getInitialAdopter(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return environment.getAttributeHelper().getDoubleValue(agent, product, getAttributeName());
+        return environment.getAttributeHelper().getDouble(agent, product, getAttributeName(), true);
     }
 }

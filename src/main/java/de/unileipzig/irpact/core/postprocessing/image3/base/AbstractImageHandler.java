@@ -1,7 +1,10 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
+import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
+import de.unileipzig.irpact.core.postprocessing.image3.ImageHandler;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
 
 import java.io.IOException;
@@ -33,6 +36,18 @@ public abstract class AbstractImageHandler<I extends InOutputImage2> implements 
 
     protected Path getTargetFile(String name) {
         return getTargetDir().resolve(name);
+    }
+
+    protected SimulationEnvironment getEnvironment() {
+        return processor.getEnvironment();
+    }
+
+    protected DataStore getGlobalData() {
+        return getEnvironment().getGlobalData();
+    }
+
+    protected boolean hasValidScale() {
+        return getEnvironment().getAgents().getInitialAgentPopulation().hasValidScale();
     }
 
     protected abstract SupportedEngine getSupportedEngine();

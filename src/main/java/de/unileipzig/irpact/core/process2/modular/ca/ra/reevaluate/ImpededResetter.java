@@ -3,7 +3,6 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
@@ -26,11 +25,6 @@ public class ImpededResetter
     public IRPLogger getDefaultLogger() {
 
         return LOGGER;
-    }
-
-    @Override
-    public SharedModuleData getSharedData() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

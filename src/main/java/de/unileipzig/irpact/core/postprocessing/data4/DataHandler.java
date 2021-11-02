@@ -1,9 +1,9 @@
-package de.unileipzig.irpact.core.postprocessing.image3.base;
+package de.unileipzig.irpact.core.postprocessing.data4;
 
 /**
  * @author Daniel Abitz
  */
-public interface ImageHandler {
+public interface DataHandler {
 
     void init() throws Throwable;
 

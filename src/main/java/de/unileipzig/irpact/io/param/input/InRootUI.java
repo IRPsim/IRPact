@@ -18,6 +18,7 @@ import de.unileipzig.irpact.io.param.input.distribution.*;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
+import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
@@ -35,8 +36,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logg
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.product.*;
@@ -64,6 +64,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InCustomAverageQuantilRangeImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InProcessPhaseOverviewImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InQuantileRange;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -97,10 +98,14 @@ public class InRootUI {
     public static final EdnPath SETT_VISURESULT_GNU = SETT_VISURESULT.resolve(InGnuPlotOutputImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT_R = SETT_VISURESULT.resolve(InROutputImage.thisName()).addTo(PATHS);
 
+    public static final EdnPath SETT_RESULT2 = SETT.resolve(IOConstants.RESULT_DATA2).addTo(PATHS);
+    public static final EdnPath SETT_RESULT2_BUCKET = SETT_RESULT2.resolve(InBucketAnalyser.thisName()).addTo(PATHS);
+
     public static final EdnPath SETT_VISURESULT2 = SETT.resolve(IOConstants.RESULT_VISUALISATION2).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL = SETT_VISURESULT2.resolve(InCustomAverageQuantilRangeImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE = SETT_VISURESULT2_CUSTOMAVGQUANTIL.resolve(InQuantileRange.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_SPECIALAVGQUANTIL = SETT_VISURESULT2.resolve(InSpecialAverageQuantilRangeImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_PHASELOG = SETT_VISURESULT2.resolve(InProcessPhaseOverviewImage.thisName()).addTo(PATHS);
 
     public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
@@ -291,8 +296,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_NEWDECISIONDECIDER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InNewDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_UTILITYEVAL = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InUtilityEvaluatorModule2_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_REEVAL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_CSV = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InCsvValueReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_MINICSV = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InMinimalCsvValueReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_MODULE = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
 
 
     public static final EdnPath PROCESS_FILTER = PROCESS.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);

@@ -13,8 +13,7 @@ public class AnnualEnumeratedConsumerGroups extends AnnualEnumeratedAdoptionData
     }
 
     @Override
-    public void update(ConsumerAgent ca, AdoptedProduct ap) {
-        int year = ap.isInitial() ? INITIAL_YEAR : ap.getYear();
+    protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
         data.update(year, ap.getProduct(), ca.getGroup());
     }
 

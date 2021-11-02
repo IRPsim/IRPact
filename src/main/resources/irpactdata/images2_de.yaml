@@ -23,3 +23,59 @@ GNUPLOT:
     q3: "avg QB 50 - 75"
     q4: "avg QB 75 - 90"
     q5: "avg QB 90 - 100"
+  COMPARED_ANNUAL_ZIP:
+    title: |-
+      Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keytitle0: "Reale Daten"
+    keytitle1: "PLZ"
+    dashtype0lab: "nein"
+    dashtype1lab: "ja"
+    sep: ";"
+    simuSuffix: "-Simulation"
+    realSuffix: "-Real"
+    realScaledSuffix: "-Real-Skaliert"
+    realUnscaledSuffix: "-Real-Unskaliert"
+  COMPARED_ANNUAL:
+    title: "Jährliche Adoptionen im Vergleich zu realen Daten"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    reallab: "Real"
+    simulab: "Simuliert"
+    sep: ";"
+    simu: "Simulation"
+    real: "Real"
+    realScaled: "Real-Skaliert"
+    realUnscaled: "Real-Unskaliert"
+  ADOPTION_PHASE_OVERVIEW:
+    title: |-
+      Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
+      (initiale Adopter: {0})
+    xlab: "Jahre"
+    ylab: "Adoptionen (kumuliert)"
+    filllab: "Adoptionsphase"
+    sep: ";"
+    initial: "initial"
+    startMid: "startMid"
+    midEnd: "midEnd"
+    endStart: "endStart"
+  PROCESS_PHASE_OVERVIEW:
+    title: "t"
+    xlab: "x"
+    ylab: "y"
+    filllab: "fill"
+    sep: ";"
+    phase0: "p0"
+    phase1: "p1"
+    phase2: "p2"
+    phase3: "p3"
+    phase4: "p4"
+  INTEREST_OVERVIEW:
+    title: "t"
+    xlab: "x"
+    ylab: "y"
+    filllab: "fill"
+    sep: ";"
+

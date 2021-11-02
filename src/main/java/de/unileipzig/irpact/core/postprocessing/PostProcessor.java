@@ -1,9 +1,17 @@
 package de.unileipzig.irpact.core.postprocessing;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.attribute.Attribute;
+import de.unileipzig.irpact.commons.resource.JsonResource;
+import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.data.DataStore;
+import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.io3.csv.CsvPrinter;
+import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
@@ -26,7 +34,11 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,7 +48,9 @@ import java.util.stream.IntStream;
  */
 public abstract class PostProcessor implements LoggingHelper {
 
-    protected final Map<InRealAdoptionDataFile, RealAdoptionData> adoptionDataCache = new HashMap<>();
+    protected static final String RPLOTS_PDF = "Rplots.pdf";
+
+    //protected static final Map<InRealAdoptionDataFile, RealAdoptionData> globalAdoptionDataCache = new HashMap<>();
     protected static final FallbackAdoptionData PLACEHOLDER_REAL_DATA = new FallbackAdoptionData(0);
 
     protected final Map<Object, Object> DATA_CACHE = new HashMap<>();
@@ -45,6 +59,7 @@ public abstract class PostProcessor implements LoggingHelper {
     protected MainCommandLineOptions clOptions;
     protected InRoot inRoot;
     protected SimulationEnvironment environment;
+    protected JsonResource localizedData;
 
     public PostProcessor(
             MetaData metaData,
@@ -66,6 +81,27 @@ public abstract class PostProcessor implements LoggingHelper {
     }
 
     public abstract void execute();
+
+    protected void cleanUp() {
+        deleteRplotsPdf();
+    }
+
+    protected void deleteRplotsPdf() {
+        delete(Paths.get(RPLOTS_PDF));
+        delete(clOptions.getOutputDir().resolve(RPLOTS_PDF));
+        delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
+    }
+
+    protected void delete(Path path) {
+        try {
+            if(Files.exists(path)) {
+                Files.deleteIfExists(path);
+                trace("deleted: '{}'", path);
+            }
+        } catch (IOException e) {
+            error("deleting '" + path + "' failed", e);
+        }
+    }
 
     protected Settings getSettings() {
         return environment.getSettings();
@@ -93,6 +129,10 @@ public abstract class PostProcessor implements LoggingHelper {
                     .collect(Collectors.toList());
         }
         return years;
+    }
+
+    public int getFirstSimulationYear() {
+        return metaData.getOldestRunInfo().getFirstSimulationYear();
     }
 
     protected double getLargestInterestThreshold(Product product) {
@@ -168,6 +208,15 @@ public abstract class PostProcessor implements LoggingHelper {
         return products;
     }
 
+    public Product getSingletonProduct() {
+        List<Product> products = getAllProducts();
+        if(products.size() == 1) {
+            return products.get(0);
+        } else {
+            throw new IllegalStateException("product count mismatch: " + products);
+        }
+    }
+
     protected ObjectNode tryLoadYaml(String baseName, String extension) throws IOException {
         ObjectNode root = tryLoadExternalYaml(baseName, extension);
         if(root != null) return root;
@@ -209,19 +258,24 @@ public abstract class PostProcessor implements LoggingHelper {
         return PLACEHOLDER_REAL_DATA;
     }
 
+    protected DataStore getGlobalData() {
+        return environment.getGlobalData();
+    }
+
     public RealAdoptionData getRealAdoptionData(InRealAdoptionDataFile file) {
-        if(adoptionDataCache.containsKey(file)) {
-            return adoptionDataCache.get(file);
+        DataStore globalData = getGlobalData();
+        if(globalData.contains(file)) {
+            return globalData.getAuto(file);
         } else {
             try {
                 getDefaultLogger().warn("try loading '{}'", file.getFileNameWithoutExtension());
                 RealAdoptionData adoptionData = file.parse(environment.getResourceLoader());
-                adoptionDataCache.put(file, adoptionData);
+                globalData.put(file, adoptionData);
                 return adoptionData;
             } catch (Throwable t) {
                 getDefaultLogger().warn("loading '{}' failed, use fallback data, cause: {}", file.getFileNameWithoutExtension(), StringUtil.printStackTrace(t));
                 RealAdoptionData adoptionData = getFallbackAdoptionData();
-                adoptionDataCache.put(file, adoptionData);
+                globalData.put(file, adoptionData);
                 return adoptionData;
             }
         }
@@ -273,5 +327,44 @@ public abstract class PostProcessor implements LoggingHelper {
 
     public void clearCache() {
         DATA_CACHE.clear();
+    }
+
+    protected void loadLocalizedData(String baseName, String extension) throws IOException {
+        ObjectNode root = tryLoadYaml(baseName, extension);
+        if(root == null) {
+            throw new IOException("missing resource: " + LocaleUtil.buildName(baseName, metaData.getLocale(), extension));
+        }
+        localizedData = new JsonResource(root);
+    }
+
+    public JsonResource getLocalizedData(String baseName, String extension) throws UncheckedIOException {
+        if(localizedData == null) {
+            try {
+                loadLocalizedData(baseName, extension);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return localizedData;
+    }
+
+    public JsonTableData3 loadCsv(Path path, Charset charset, String delimiter) throws IOException {
+        CsvParser<JsonNode> parser = new CsvParser<>();
+        parser.setValueGetter(CsvParser.forJson());
+        parser.setDelimiter(delimiter);
+        return new JsonTableData3(parser.parseToList(path, charset));
+    }
+
+    public void storeCsv(Path path, Charset charset, String delimiter, JsonTableData3 data) throws IOException {
+        CsvPrinter<JsonNode> printer = new CsvPrinter<>();
+        printer.setValueSetter(CsvPrinter.forJson);
+        printer.setDelimiter(delimiter);
+        printer.write(path, charset, data);
+    }
+
+    public void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        writer.write(path, sheetData);
     }
 }

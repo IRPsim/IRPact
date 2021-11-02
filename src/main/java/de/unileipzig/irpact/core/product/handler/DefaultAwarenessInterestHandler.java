@@ -96,10 +96,10 @@ public class DefaultAwarenessInterestHandler extends NameableBase implements New
     }
 
     protected double getInitialProductAwareness(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return environment.getAttributeHelper().getDoubleValue(agent, product, getAwarenessAttributeName());
+        return environment.getAttributeHelper().getDouble(agent, product, getAwarenessAttributeName(), true);
     }
 
     protected double getInitialProductInterest(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
-        return environment.getAttributeHelper().getDoubleValue(agent, product, getInterestAttributeName());
+        return environment.getAttributeHelper().getDouble(agent, product, getInterestAttributeName(), true);
     }
 }

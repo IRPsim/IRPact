@@ -33,6 +33,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_SPECIALAVGQUANTIL);
+        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
@@ -42,6 +43,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
         addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
         addEntry(res, thisClass(), "loggingModules");
 
         setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
@@ -57,6 +59,9 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     public static InSpecialAverageQuantilRangeImage LOCAL = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_LOCAL);
 
     public String _name;
+
+    @FieldDefinition
+    public boolean enabled = true;
 
     @FieldDefinition
     public boolean useGnuplot = true;
@@ -83,21 +88,26 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     public int imageHeight = 720;
 
     @FieldDefinition
-    public double linewidth = 1;
+    public int linewidth = 1;
+
+    @FieldDefinition
+    public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
     @FieldDefinition
     public InConsumerAgentCalculationLoggingModule2[] loggingModules = new InConsumerAgentCalculationLoggingModule2[0];
 
     public InSpecialAverageQuantilRangeImage() {
-    }
-
-    public InSpecialAverageQuantilRangeImage(String name) {
-        setName(name);
         setEngine(SupportedEngine.GNUPLOT);
         setStoreImage(true);
         setStoreScript(true);
         setStoreData(true);
         setPrintAverage(true);
+        disableCustomImageId();
+    }
+
+    public InSpecialAverageQuantilRangeImage(String name) {
+        this();
+        setName(name);
     }
 
     public void setEngine(SupportedEngine engine) {
@@ -134,6 +144,15 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     @Override
     public String getName() {
         return _name;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setUseGnuplot(boolean useGnuplot) {
@@ -205,6 +224,27 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     @Override
     public int getImageHeight() {
         return imageHeight;
+    }
+
+    public void setLinewidth(int linewidth) {
+        this.linewidth = linewidth;
+    }
+
+    public int getLinewidth() {
+        return linewidth;
+    }
+
+    public void disableCustomImageId() {
+        setCustomImageId(IRPact.INVALID_CUSTOM_IMAGE);
+    }
+
+    public void setCustomImageId(int customImageId) {
+        this.customImageId = customImageId;
+    }
+
+    @Override
+    public int getCustomImageId() {
+        return customImageId;
     }
 
     public InConsumerAgentCalculationLoggingModule2 getLoggingModule() throws ParsingException {

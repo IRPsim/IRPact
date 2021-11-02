@@ -196,6 +196,13 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
             }
         }
 
+        if(hasInitializationHandlers()) {
+            for(InInitializationHandler initHandler: getInitializationHandlers()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InitializationHandler '{}'", initHandler.getName());
+                model.addInitializationHandler(parser.parseEntityTo(initHandler));
+            }
+        }
+
         if(hasStartOfYearReevaluators()) {
             for(InReevaluator2 reevaluator: getStartOfYearReevaluators()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse StartOfYear-Reevaluator '{}'", reevaluator.getName());

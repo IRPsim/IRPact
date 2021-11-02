@@ -59,15 +59,15 @@ public final class NPVDataSupplier {
     }
 
     private double getNPV(ConsumerAgent agent) {
-        return attributeHelper.getDoubleValue(agent, RAConstants.NET_PRESENT_VALUE);
+        return attributeHelper.getDouble(agent, RAConstants.NET_PRESENT_VALUE, true);
     }
 
     private int getN(ConsumerAgent agent) {
-        return attributeHelper.findIntValue(agent, RAConstants.SLOPE);
+        return attributeHelper.getInt(agent, RAConstants.SLOPE, true);
     }
 
     private int getA(ConsumerAgent agent) {
-        return attributeHelper.findIntValue(agent, RAConstants.ORIENTATION);
+        return attributeHelper.getInt(agent, RAConstants.ORIENTATION, true);
     }
 
     private double getFinancialPurchasePower(ConsumerAgent agent) {

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -30,6 +31,22 @@ public class JsonTableData3 extends TableData3<JsonNode> {
     public JsonTableData3(JsonNodeCreator creator, List<List<JsonNode>> rows) {
         super(rows);
         this.creator = creator;
+    }
+
+    public JsonTableData3 copy() {
+        return new JsonTableData3(creator, copy2D(rows));
+    }
+
+    protected static List<List<JsonNode>> copy2D(List<List<JsonNode>> input) {
+        return input.stream()
+                .map(JsonTableData3::copy1D)
+                .collect(Collectors.toList());
+    }
+
+    protected static List<JsonNode> copy1D(List<JsonNode> input) {
+        return input.stream()
+                .map(n -> (JsonNode) n.deepCopy())
+                .collect(Collectors.toList());
     }
 
     public JsonNodeCreator getCreator() {

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process2.handler;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -42,11 +43,11 @@ public class AgentAttributScaler
     }
 
     protected double getValue(SimulationEnvironment environment, ConsumerAgent agent) {
-        return environment.getAttributeHelper().findDoubleValue(agent, getAttributeName());
+        return environment.getAttributeHelper().getDouble(agent, null, getAttributeName(), true);
     }
 
     protected void setValue(SimulationEnvironment environment, ConsumerAgent agent, double value) {
-        environment.getAttributeHelper().setDoubleValue(agent, getAttributeName(), value);
+        environment.getAttributeHelper().setDouble(agent, null, getAttributeName(), value, true);
     }
 
     @Override

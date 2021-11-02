@@ -199,7 +199,8 @@ public class OutRoot implements RootClass {
         imageSection.getSections().addAll(
                 buildNetworkImageSection(1),
                 buildAdoptionSection(2),
-                buildQuantilSection(3)
+                buildQuantilSection(3),
+                buildCustomSection(4)
         );
         return imageSection;
     }
@@ -320,6 +321,28 @@ public class OutRoot implements RootClass {
         adoptionSections.addAll(image1, image2, image3, image4, image5);
 
         return adoptionSection;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected Section buildCustomSection(int priority) {
+        Section customSection = new Section();
+        customSection.setPriority(priority);
+        customSection.setLabel("Benutzerdefiniert");
+        customSection.setDescription("todo");
+        customSection.setIcon(IRPact.ICON_IMAGES);
+
+        for(int i = 0; i < IRPact.CUSTOM_IMAGE_SECTION_SIZE; i++) {
+            int imageId = i + 1;
+            Section image = new Section();
+            image.setPriority(i);
+            image.setLabel("Bild " + imageId);
+            image.setIcon(IRPact.ICON_IMAGE);
+            image.setImage(IRPact.getCustomImagePng(imageId));
+            image.setDescription("todo");
+            customSection.getSections().add(image);
+        }
+
+        return customSection;
     }
 
     protected void handleOptAct(Sections sections) {

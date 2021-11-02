@@ -63,7 +63,7 @@ public abstract class AbstractAttributeComponent extends AbstractComponent imple
 
     protected static double findDoubleValue(Agent agent, String attributeName) {
         if(agent instanceof ConsumerAgent) {
-            return AttributeHelper.findDoubleValue2((ConsumerAgent) agent, attributeName);
+            return AttributeHelper.getDouble(-1, null, ((ConsumerAgent) agent).getAttribute(attributeName));
         } else {
             throw new IRPactIllegalArgumentException("agent '{}' is no consumer", agent.getName());
         }

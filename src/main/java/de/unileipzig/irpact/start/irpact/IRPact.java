@@ -86,8 +86,8 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "17";
-    private static final String BUILD_STRING = "1";
+    private static final String MINOR_STRING = "18";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -141,6 +141,20 @@ public final class IRPact implements IRPActAccess {
 
     public static final String IMAGE_QUANTILE_LOCAL = "LOCAL_Quantile";
     public static final String IMAGE_QUANTILE_LOCAL_PNG = IMAGE_QUANTILE_LOCAL + ".png";
+
+    public static final int INVALID_CUSTOM_IMAGE = 0;
+    public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;
+    public static boolean isValidImageId(int id) {
+        return id > 0 && id <= CUSTOM_IMAGE_SECTION_SIZE;
+    }
+
+    private static final String IMAGE_CUSTOM = "CustomImage";
+    public static String getCustomImage(int id) {
+        return IMAGE_CUSTOM + id;
+    }
+    public static String getCustomImagePng(int id) {
+        return getCustomImage(id) + ".png";
+    }
 
     private static final String ALL_EVAL_BASENAME = "Komplette_Evaluierungen";
     public static final String ALL_EVAL_CSV = ALL_EVAL_BASENAME + ".csv";

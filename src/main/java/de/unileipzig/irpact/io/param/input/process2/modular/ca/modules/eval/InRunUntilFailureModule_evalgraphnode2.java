@@ -66,7 +66,6 @@ public class InRunUntilFailureModule_evalgraphnode2 implements InConsumerAgentEv
         this._name = name;
     }
 
-
     @FieldDefinition(
             graphEdge = @GraphEdge(
                     id = MODULAR_GRAPH,
