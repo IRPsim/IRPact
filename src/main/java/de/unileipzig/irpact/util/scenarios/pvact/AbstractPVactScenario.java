@@ -577,10 +577,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         phaseUpdater.setName("PHASE_UPDATER");
         phaseUpdater.setInput(phaseLogger);
 
+        InDoAdoptModule_evalragraphnode2 adoptModule = new InDoAdoptModule_evalragraphnode2();
+        adoptModule.setName("ADOPT");
+        adoptModule.setInput(phaseUpdater);
+
         //PROCESS MODEL
         InRunUntilFailureModule_evalgraphnode2 startModule = new InRunUntilFailureModule_evalgraphnode2();
         startModule.setName("START");
-        startModule.setInput(phaseUpdater);
+        startModule.setInput(adoptModule);
 
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName(name);
