@@ -1,0 +1,19 @@
+#########################
+# Deutsche Lokalisierung für die Ausgabedaten
+#########################
+---
+# CSV
+CSV:
+  BUCKET_ANALYSER:
+    year: "Jahr"
+    bucket: "Bereich"
+    value: "Wert"
+    sep: ";"
+
+# XLSX
+XLSX:
+  BUCKET_ANALYSER:
+    bucket: "Bereich"
+    value: "Wert"
+    sep: ";"
+

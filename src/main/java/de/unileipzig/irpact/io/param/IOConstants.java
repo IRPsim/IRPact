@@ -19,6 +19,7 @@ public final class IOConstants {
     public static final String LOGGING = "logging";
     public static final String SPECIAL_SETTINGS = "special_settings";
     public static final String RESULT_VISUALISATION = "result_visualisation";
+    public static final String RESULT_DATA2 = "result_data2";
     public static final String RESULT_VISUALISATION2 = "result_visualisation2";
     public static final String NETWORK_VISUALISATION = "network_visualisation";
     public static final String DATA_OUTPUT = "data_output";

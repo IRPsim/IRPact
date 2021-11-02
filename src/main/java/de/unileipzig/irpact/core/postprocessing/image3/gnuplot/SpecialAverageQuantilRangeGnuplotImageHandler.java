@@ -70,7 +70,7 @@ public class SpecialAverageQuantilRangeGnuplotImageHandler
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
                 getLocalizedString("sep"),
-                image.getImageWidth(),
+                image.getLinewidth(),
                 image.getImageWidth(), image.getImageHeight()
         );
     }
@@ -98,7 +98,7 @@ public class SpecialAverageQuantilRangeGnuplotImageHandler
                     getLocalizedString("q4"),
                     getLocalizedString("q5")
             );
-            return new CsvJsonTableImageData(data);
+            return new CsvJsonTableImageData(data, getCsvDelimiter());
         } else {
             List<Integer> years = processor.getAllSimulationYears();
             JsonTableData3 data = mapToCsv(getDefaultLogger(), years, avgQuantileValues);
@@ -112,7 +112,7 @@ public class SpecialAverageQuantilRangeGnuplotImageHandler
                     getLocalizedString("q4"),
                     getLocalizedString("q5")
             );
-            return new CsvJsonTableImageData(data);
+            return new CsvJsonTableImageData(data, getCsvDelimiter());
         }
     }
 }

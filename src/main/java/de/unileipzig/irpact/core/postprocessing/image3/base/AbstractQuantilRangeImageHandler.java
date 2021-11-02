@@ -56,7 +56,7 @@ public abstract class AbstractQuantilRangeImageHandler<I extends InOutputImage2>
                     module.getValueIndex(),
                     module::toTime
             );
-            trace("cache processed csv data '{}', key=", loggingFile, key);
+            trace("cache processed csv data '{}', key={}", loggingFile, key);
             processor.storeInCache(key, quantiles);
             return quantiles;
         }

@@ -143,17 +143,6 @@ public class ImageProcessor extends PostProcessor {
         delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
     }
 
-    private static void delete(Path path) {
-        try {
-            if(Files.exists(path)) {
-                Files.deleteIfExists(path);
-                LOGGER.trace(IRPSection.RESULT, "deleted: '{}'", path);
-            }
-        } catch (IOException e) {
-            LOGGER.error("deleting '" + path + "' failed", e);
-        }
-    }
-
     //=========================
     //gnuplot
     //=========================

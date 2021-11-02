@@ -38,6 +38,13 @@ public class CountMap3D<A, B, C> {
         return counter.keySet();
     }
 
+    public Set<B> getSecondKeys(A a) {
+        Map<B, Map<C, Integer>> map = counter.get(a);
+        return map == null
+                ? Collections.emptySet()
+                : map.keySet();
+    }
+
     public Set<B> getAllSecondKeys() {
         Set<B> set = new LinkedHashSet<>();
         getAllSecondsKeys(set);
@@ -50,6 +57,17 @@ public class CountMap3D<A, B, C> {
             changed |= target.addAll(map.keySet());
         }
         return changed;
+    }
+
+    public Set<C> getThirdKeys(A a, B b) {
+        Map<B, Map<C, Integer>> map = counter.get(a);
+        if(map == null) {
+            return Collections.emptySet();
+        }
+        Map<C, Integer> map2 = map.get(b);
+        return map2 == null
+                ? Collections.emptySet()
+                : map2.keySet();
     }
 
     public Set<C> getAllThirdKeys() {

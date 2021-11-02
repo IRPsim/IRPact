@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.postprocessing;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.data3.DataProcessor;
+import de.unileipzig.irpact.core.postprocessing.data4.DataProcessor4;
 import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -35,6 +36,8 @@ public class BasicPostprocessingManager extends PostProcessor implements Postpro
         trace("running post analysis");
         trace("running data");
         new DataProcessor(metaData, clOptions, inRoot, environment).execute();
+        trace("running data4");
+        new DataProcessor4(metaData, clOptions, inRoot, environment).execute();
         trace("running image");
         new ImageProcessor(metaData, clOptions, inRoot, environment).execute();
         trace("running image2");

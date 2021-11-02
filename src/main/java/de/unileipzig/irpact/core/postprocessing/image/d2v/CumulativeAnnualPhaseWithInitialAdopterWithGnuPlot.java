@@ -70,7 +70,6 @@ public class CumulativeAnnualPhaseWithInitialAdopterWithGnuPlot extends Abstract
                 imageProcessor.getDefaultBoxWidth(),
                 image.getImageWidth(), image.getImageHeight(),
                 data.getMinY(), data.getMaxY()
-
         );
     }
 

@@ -47,6 +47,7 @@ public interface InitalizablePart extends ChecksumComparable {
      *
      * @throws MissingDataException something is missing
      */
+    //throw better exception?
     default void preSimulationStart() throws MissingDataException {
     }
 

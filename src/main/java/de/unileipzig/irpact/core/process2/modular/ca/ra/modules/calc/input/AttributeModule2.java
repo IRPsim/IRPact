@@ -46,8 +46,16 @@ public class AttributeModule2
     public void initialize(SimulationEnvironment environment) throws Throwable {
     }
 
+    protected double getValue(ConsumerAgentData2 input) {
+        try {
+            return getDouble(input, attributeName);
+        } catch (Throwable t) {
+            throw new IllegalArgumentException("missing attribute '" + attributeName + "'", t);
+        }
+    }
+
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        return tryFindDoubleValue(input, attributeName);
+        return getValue(input);
     }
 }

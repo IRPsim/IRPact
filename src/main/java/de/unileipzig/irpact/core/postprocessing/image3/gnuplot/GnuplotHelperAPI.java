@@ -1,18 +1,23 @@
 package de.unileipzig.irpact.core.postprocessing.image3.gnuplot;
 
+import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.engine.GnuPlotImageScriptTask;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotFileScript;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
  * @author Daniel Abitz
  */
-public interface GnuplotHelperAPI<I extends InOutputImage2> {
+public interface GnuplotHelperAPI<I extends InOutputImage2> extends LoggingHelper {
 
     Path getTargetDir();
 
@@ -47,6 +52,23 @@ public interface GnuplotHelperAPI<I extends InOutputImage2> {
             task.run(getEngine(), data, fileScript);
         } else {
             task.runWihoutEngine(data, fileScript);
+        }
+        copyImageIfRequired(image, task.getImagePath());
+    }
+
+    default void copyImageIfRequired(I image, Path imagePath) throws IOException {
+        if(IRPact.isValidImageId(image.getCustomImageId())) {
+            if(Files.exists(imagePath)) {
+                Path customImagePath = getTargetDir().resolve(IRPact.getCustomImagePng(image.getCustomImageId()));
+                if(Files.exists(customImagePath)) {
+                    warn("image '{}' already exists, overwrite file", customImagePath);
+                } else {
+                    info("create custom '{}'", customImagePath);
+                }
+                Files.copy(imagePath, customImagePath, StandardCopyOption.REPLACE_EXISTING);
+            } else {
+                warn("file '{}' not found, skip custom image id {}", imagePath, image.getCustomImageId());
+            }
         }
     }
 }

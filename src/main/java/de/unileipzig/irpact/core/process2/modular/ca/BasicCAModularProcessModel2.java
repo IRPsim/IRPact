@@ -195,8 +195,8 @@ public class BasicCAModularProcessModel2
 
     @Override
     public void postAgentCreation() throws MissingDataException, InitializationException {
-        runInitializationHandler();
         initModules();
+        runInitializationHandler();
         initReevaluator();
     }
 
@@ -251,21 +251,26 @@ public class BasicCAModularProcessModel2
         try {
             trace("initalize startOfYearTasks");
             for(Reevaluator<ConsumerAgentData2> reevaluator: startOfYearTasks) {
-                reevaluator.initializeReevaluator(environment);
+                initReevaluator(reevaluator);
             }
             trace("initalize midOfYearTasks");
             for(Reevaluator<ConsumerAgentData2> reevaluator: midOfYearTasks) {
-                reevaluator.initializeReevaluator(environment);
+                initReevaluator(reevaluator);
             }
             trace("initalize endOfYearTasks");
             for(Reevaluator<ConsumerAgentData2> reevaluator: endOfYearTasks) {
-                reevaluator.initializeReevaluator(environment);
+                initReevaluator(reevaluator);
             }
         } catch (MissingDataException | InitializationException e) {
             throw e;
         } catch (Throwable e) {
             throw new InitializationException(e);
         }
+    }
+
+    protected void initReevaluator(Reevaluator<ConsumerAgentData2> reevaluator) throws Throwable {
+        reevaluator.setSharedData(sharedData);
+        reevaluator.initializeReevaluator(environment);
     }
 
     @Override

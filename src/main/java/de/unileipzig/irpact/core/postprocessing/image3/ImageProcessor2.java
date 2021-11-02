@@ -1,22 +1,16 @@
 package de.unileipzig.irpact.core.postprocessing.image3;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.JsonResource;
-import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.core.postprocessing.image3.base.ImageHandler;
-import de.unileipzig.irpact.core.postprocessing.image3.gnuplot.CustomAverageQuantilRangeGnuplotImageHandler;
-import de.unileipzig.irpact.core.postprocessing.image3.gnuplot.SpecialAverageQuantilRangeGnuplotImageHandler;
+import de.unileipzig.irpact.core.postprocessing.image3.gnuplot.*;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InCustomAverageQuantilRangeImage;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.util.R.RscriptEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
@@ -24,9 +18,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author Daniel Abitz
@@ -37,9 +28,6 @@ public class ImageProcessor2 extends PostProcessor {
 
     protected static final String IMAGES_BASENAME = "images2";
     protected static final String IMAGES_EXTENSION = "yaml";
-    protected static final String RPLOTS_PDF = "Rplots.pdf";
-
-    protected JsonResource localizedData;
 
     public ImageProcessor2(
             MetaData metaData,
@@ -117,25 +105,9 @@ public class ImageProcessor2 extends PostProcessor {
         }
     }
 
+    @Override
     protected void cleanUp() {
-        deleteRplotsPdf();
-    }
-
-    protected void deleteRplotsPdf() {
-        delete(Paths.get(RPLOTS_PDF));
-        delete(clOptions.getOutputDir().resolve(RPLOTS_PDF));
-        delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
-    }
-
-    protected void delete(Path path) {
-        try {
-            if(Files.exists(path)) {
-                Files.deleteIfExists(path);
-                trace("deleted: '{}'", path);
-            }
-        } catch (IOException e) {
-            error("deleting '" + path + "' failed", e);
-        }
+        super.cleanUp();
     }
 
     protected void execute0() throws IOException, ParsingException {
@@ -152,30 +124,49 @@ public class ImageProcessor2 extends PostProcessor {
     }
 
     protected void loadLocalizedData() throws IOException {
-        ObjectNode root = tryLoadYaml(IMAGES_BASENAME, IMAGES_EXTENSION);
-        if(root == null) {
-            throw new IOException("missing resource: " + LocaleUtil.buildName(IMAGES_BASENAME, metaData.getLocale(), IMAGES_EXTENSION));
-        }
-        localizedData = new JsonResource(root);
+        loadLocalizedData(IMAGES_BASENAME, IMAGES_EXTENSION);
     }
 
     public JsonResource getLocalizedData() throws UncheckedIOException {
-        if(localizedData == null) {
-            try {
-                loadLocalizedData();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }
-        return localizedData;
+        return getLocalizedData(IMAGES_BASENAME, IMAGES_EXTENSION);
     }
 
     protected void handle(InOutputImage2 image) throws Throwable {
+        if(image == null) {
+            warn("skip null image");
+            return;
+        }
+
+        if(image.isDisabled()) {
+            info("skip disabled image '{}'", image.getName());
+            return;
+        }
+
+        if(image.hasNothingToStore()) {
+            info("skip pointless image '{}' (nothing to store)", image.getName());
+            return;
+        }
+
         if(image instanceof InCustomAverageQuantilRangeImage) {
             handleCustomQuantilRangeImage((InCustomAverageQuantilRangeImage) image);
         }
         else if(image instanceof InSpecialAverageQuantilRangeImage) {
             handleSpecialQuantilRangeImage((InSpecialAverageQuantilRangeImage) image);
+        }
+        else if(image instanceof InComparedAnnualImage) {
+            handleComparedAnnualImage((InComparedAnnualImage) image);
+        }
+        else if(image instanceof InComparedAnnualZipImage) {
+            handleComparedAnnualZipImage((InComparedAnnualZipImage) image);
+        }
+        else if(image instanceof InAdoptionPhaseOverviewImage) {
+            handleAdoptionPhaseOverviewImage((InAdoptionPhaseOverviewImage) image);
+        }
+        else if(image instanceof InInterestOverviewImage) {
+            handleInterestOverviewImage((InInterestOverviewImage) image);
+        }
+        else if(image instanceof InProcessPhaseOverviewImage) {
+            handleProcessPhaseOverviewImage((InProcessPhaseOverviewImage) image);
         }
         else {
             warn("unsupported image: " + image.getName());
@@ -203,6 +194,81 @@ public class ImageProcessor2 extends PostProcessor {
         ImageHandler handler;
         if(image.getEngine() == SupportedEngine.GNUPLOT) {
             handler = new SpecialAverageQuantilRangeGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleComparedAnnualImage(InComparedAnnualImage image) throws Throwable {
+        trace("handle InComparedAnnualImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new ComparedAnnualGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleComparedAnnualZipImage(InComparedAnnualZipImage image) throws Throwable {
+        trace("handle InComparedAnnualZipImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new ComparedAnnualZipGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleAdoptionPhaseOverviewImage(InAdoptionPhaseOverviewImage image) throws Throwable {
+        trace("handle InAdoptionPhaseOverviewImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new AdoptionPhaseOverviewGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleInterestOverviewImage(InInterestOverviewImage image) throws Throwable {
+        trace("handle InInterestOverviewImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new InterestOverviewGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleProcessPhaseOverviewImage(InProcessPhaseOverviewImage image) throws Throwable {
+        trace("handle InProcessPhaseOverviewImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new ProcessPhaseOverviewGnuplotImageHandler(this, image);
         } else {
             warn("R not supported, skip");
             return;

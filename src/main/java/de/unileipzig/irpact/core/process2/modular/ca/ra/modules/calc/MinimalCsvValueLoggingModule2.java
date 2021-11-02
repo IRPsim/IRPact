@@ -2,7 +2,6 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
-import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
@@ -18,6 +17,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class MinimalCsvValueLoggingModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(MinimalCsvValueLoggingModule2.class);
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     public static final int AGENT_INDEX = 0;
     public static final int PRODUCT_INDEX = 1;
     public static final int TIME_INDEX = 2;
@@ -37,11 +39,19 @@ public class MinimalCsvValueLoggingModule2
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
+    protected boolean skipReevaluatorCall;
     protected boolean storeXlsx;
 
     public static LocalDateTime toTime(String input) {
-        long ms = Long.parseLong(input);
-        return TimeUtil.msToTime(ms).toLocalDateTime();
+        return LocalDateTime.parse(input, FORMATTER);
+    }
+
+    public static String fromTime(ZonedDateTime time) {
+        return fromTime(time.toLocalDateTime());
+    }
+
+    public static String fromTime(LocalDateTime time) {
+        return time.format(FORMATTER);
     }
 
     public void setValueLogger(SimplifiedLogger valueLogger) {
@@ -66,6 +76,14 @@ public class MinimalCsvValueLoggingModule2
 
     public String getBaseName() {
         return baseName;
+    }
+
+    public void setSkipReevaluatorCall(boolean skipReevaluatorCall) {
+        this.skipReevaluatorCall = skipReevaluatorCall;
+    }
+
+    public boolean isSkipReevaluatorCall() {
+        return skipReevaluatorCall;
     }
 
     public void setStoreXlsx(boolean storeXlsx) {
@@ -143,15 +161,19 @@ public class MinimalCsvValueLoggingModule2
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
-        double logValue = Double.isNaN(value) ? 0 : value;
-        Timestamp now = input.now();
-        getValueLogger().log(
-                "{};{};{};{}",
-                input.getAgentName(),
-                input.getProductName(),
-                now.getEpochMilli(),
-                logValue
-        );
+        if(!(isReevaluatorCall() && isSkipReevaluatorCall())) {
+            double logValue = Double.isNaN(value) ? 0 : value;
+            Timestamp now = input.now();
+            getValueLogger().log(
+                    "{};{};{};{}",
+                    input.getAgentName(),
+                    input.getProductName(),
+                    fromTime(now.getTime()),
+                    logValue
+            );
+        } else {
+            trace("[{}] skip reevaluator call", getName());
+        }
         return value;
     }
 

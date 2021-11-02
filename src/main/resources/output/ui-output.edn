@@ -89,6 +89,73 @@
             :image "LOCAL_Quantile.png"
           }
         ]
+      } 
+      {
+        :label "Benutzerdefiniert" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Bild 1" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage1.png"
+          } 
+          {
+            :label "Bild 2" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage2.png"
+          } 
+          {
+            :label "Bild 3" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage3.png"
+          } 
+          {
+            :label "Bild 4" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage4.png"
+          } 
+          {
+            :label "Bild 5" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage5.png"
+          } 
+          {
+            :label "Bild 6" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage6.png"
+          } 
+          {
+            :label "Bild 7" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage7.png"
+          } 
+          {
+            :label "Bild 8" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage8.png"
+          } 
+          {
+            :label "Bild 9" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage9.png"
+          } 
+          {
+            :label "Bild 10" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage10.png"
+          }
+        ]
       }
     ]
   } 

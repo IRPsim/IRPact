@@ -4,7 +4,6 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process2.modular.modules.action.StopAfterSuccessfulTaskModule2;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -21,12 +20,13 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
+import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
@@ -34,7 +34,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logg
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
@@ -53,8 +53,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 
 import java.time.temporal.ChronoUnit;
@@ -338,7 +337,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             InUncertainty uncertainty,
             double speedOfConvergence,
             InRAProcessPlanNodeFilterScheme scheme,
-            List<InOutputImage2> images) {
+            List<InOutputImage2> images,
+            List<InPostDataAnalysis> postDatas) {
 
         //ACTION
         InAttributeInputModule_inputgraphnode2 commuAttr = new InAttributeInputModule_inputgraphnode2();
@@ -426,10 +426,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         npvLogger.setName(LazyData2FileLinker.NPV_LOGGER);
         npvLogger.setInput(logisticNPV);
-        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 npvReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        npvReevaluator.setName(LazyData2FileLinker.NPV_REEVAL);
-        npvReevaluator.setInput(logisticNPV);
-        npvReevaluator.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        npvReevalLogger.setName(LazyData2FileLinker.NPV_REEVAL);
+        npvReevalLogger.setInput(logisticNPV);
+        npvReevalLogger.setSkipReevaluatorCall(false);
 
         //pp
         InAttributeInputModule_inputgraphnode2 pp = new InAttributeInputModule_inputgraphnode2();
@@ -468,10 +468,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envWeight.setName("ENV_WEIGHT");
         envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
-        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 envReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        envReevaluator.setName(LazyData2FileLinker.ENV_REEVAL);
-        envReevaluator.setInput(envWeight);
-        envReevaluator.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        envReevalLogger.setName(LazyData2FileLinker.ENV_REEVAL);
+        envReevalLogger.setInput(envWeight);
+        envReevalLogger.setSkipReevaluatorCall(false);
 
         //nov comp
         InAttributeInputModule_inputgraphnode2 novAttr = new InAttributeInputModule_inputgraphnode2();
@@ -484,10 +484,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         novWeight.setName("NOV_WEIGHT");
         novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
-        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 novReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        novReevaluator.setName(LazyData2FileLinker.NOV_REEVAL);
-        novReevaluator.setInput(novWeight);
-        novReevaluator.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        novReevalLogger.setName(LazyData2FileLinker.NOV_REEVAL);
+        novReevalLogger.setInput(novWeight);
+        novReevalLogger.setSkipReevaluatorCall(false);
 
         //soc
         InLocalShareOfAdopterModule_inputgraphnode2 localShare = new InLocalShareOfAdopterModule_inputgraphnode2();
@@ -497,20 +497,20 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         localLogger.setName(LazyData2FileLinker.LOCAL_LOGGER);
         localLogger.setInput(localShare);
-        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 localReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        localReevaluator.setName(LazyData2FileLinker.LOCAL_REEVAL);
-        localReevaluator.setInput(localShare);
-        localReevaluator.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        localReevalLogger.setName(LazyData2FileLinker.LOCAL_REEVAL);
+        localReevalLogger.setInput(localShare);
+        localReevalLogger.setSkipReevaluatorCall(false);
 
         InSocialShareOfAdopterModule_inputgraphnode2 socialShare = new InSocialShareOfAdopterModule_inputgraphnode2();
         socialShare.setName("SOCIAL_SHARE");
         InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         socialLogger.setName(LazyData2FileLinker.SOCIAL_LOGGER);
         socialLogger.setInput(socialShare);
-        InMinimalCsvValueReevaluatorModule_reevalgraphnode2 socialReevaluator = new InMinimalCsvValueReevaluatorModule_reevalgraphnode2();
-        socialReevaluator.setName(LazyData2FileLinker.SOCIAL_REEVAL);
-        socialReevaluator.setInput(socialShare);
-        socialReevaluator.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        socialReevalLogger.setName(LazyData2FileLinker.SOCIAL_REEVAL);
+        socialReevalLogger.setInput(socialShare);
+        socialReevalLogger.setSkipReevaluatorCall(false);
 
         InMulScalarModule_calcgraphnode2 localWeight = new InMulScalarModule_calcgraphnode2();
         localWeight.setName("LOCAL_WEIGHT");
@@ -635,14 +635,20 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         decisionMakingReevaluator.setName("DECISION_REEVALUATOR");
         decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
 
+        InReevaluatorModule_reevalgraphnode2 reevalNode = new InReevaluatorModule_reevalgraphnode2();
+        reevalNode.setName("REEVAL");
+        reevalNode.setInput(
+                npvReevalLogger,
+                envReevalLogger,
+                novReevalLogger,
+                socialReevalLogger,
+                localReevalLogger
+        );
+
         InReevaluatorModuleLinker endOfYearLinker = new InReevaluatorModuleLinker();
         endOfYearLinker.setName("END_OF_YEAR_LINKER");
         endOfYearLinker.setModules(
-                npvReevaluator,
-                envReevaluator,
-                novReevaluator,
-                socialReevaluator,
-                localReevaluator
+                reevalNode
         );
 
         processModel.addEndOfYearReevaluator(
@@ -671,6 +677,63 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL;
         localQuantil.setLoggingModule(localLogger);
         images.add(localQuantil);
+
+        //Custom-Test
+        InQuantileRange qr0 = new InQuantileRange();
+        qr0.setName("QR0");
+        qr0.setLowerBound(0.0);
+        qr0.setUpperBound(0.5);
+        InQuantileRange qr1 = new InQuantileRange();
+        qr1.setName("QR1");
+        qr1.setLowerBound(0.5);
+        qr1.setUpperBound(1.0);
+
+        InCustomAverageQuantilRangeImage customNovQuantile = new InCustomAverageQuantilRangeImage();
+        customNovQuantile.setName("CUSTOM_NOV");
+        customNovQuantile.setCustomImageId(1);
+        customNovQuantile.setQuantileRanges(qr0, qr1);
+        customNovQuantile.setLoggingModule(novLogger);
+        images.add(customNovQuantile);
+
+        //Adoption Phase Overview
+        InAdoptionPhaseOverviewImage adoptionPhaseOverview = new InAdoptionPhaseOverviewImage();
+        adoptionPhaseOverview.setName("ADOPTION_PHASE_OVERVIEW");
+        images.add(adoptionPhaseOverview);
+
+        //Compared Annual
+        InComparedAnnualImage annualImage = new InComparedAnnualImage();
+        annualImage.setName("COMPARED_ANNUAL");
+        annualImage.setRealData(getRealAdoptionDataFile());
+        images.add(annualImage);
+
+        //Compared Annual Zip
+        InComparedAnnualZipImage annualZipImage = new InComparedAnnualZipImage();
+        annualZipImage.setName("COMPARED_ANNUAL");
+        annualZipImage.setRealData(getRealAdoptionDataFile());
+        images.add(annualZipImage);
+
+        //Interest
+        InInterestOverviewImage interestOverview = new InInterestOverviewImage();
+        interestOverview.setName("INTEREST_OVERVIEW");
+        images.add(interestOverview);
+
+        //Process Phase Overview
+        InProcessPhaseOverviewImage processPhaseOverview = new InProcessPhaseOverviewImage();
+        processPhaseOverview.setName("PROCESS_PHASE_OVERVIEW");
+        images.add(processPhaseOverview);
+
+        //bucket
+        InBucketAnalyser novBucket = new InBucketAnalyser();
+        novBucket.setName("NOV_BUCKET");
+        novBucket.setBucketRange(0.1);
+        novBucket.setLoggingModule(novLogger);
+        postDatas.add(novBucket);
+
+        InBucketAnalyser envBucket = new InBucketAnalyser();
+        envBucket.setName("ENV_BUCKET");
+        envBucket.setBucketRange(0.01);
+        envBucket.setLoggingModule(envLogger);
+        postDatas.add(envBucket);
 
         //===
         return processModel;

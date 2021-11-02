@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -32,6 +33,7 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
     }
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_CUSTOMAVGQUANTIL);
+        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
@@ -41,6 +43,7 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
         addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
+        addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
         addEntry(res, thisClass(), "ranges");
         addEntry(res, thisClass(), "loggingModules");
 
@@ -51,6 +54,9 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
     }
 
     public String _name;
+
+    @FieldDefinition
+    public boolean enabled = true;
 
     @FieldDefinition
     public boolean useGnuplot = true;
@@ -77,7 +83,10 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
     public int imageHeight = 720;
 
     @FieldDefinition
-    public double linewidth = 1;
+    public int linewidth = 1;
+
+    @FieldDefinition
+    public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
     @FieldDefinition
     public InQuantileRange[] ranges = new InQuantileRange[0];
@@ -126,6 +135,15 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
 
     public void setUseGnuplot(boolean useGnuplot) {
         this.useGnuplot = useGnuplot;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override
@@ -195,11 +213,28 @@ public class InCustomAverageQuantilRangeImage implements InLoggingResultImage2 {
         return imageHeight;
     }
 
+    public void setLinewidth(int linewidth) {
+        this.linewidth = linewidth;
+    }
+
+    public int getLinewidth() {
+        return linewidth;
+    }
+
+    public void setCustomImageId(int customImageId) {
+        this.customImageId = customImageId;
+    }
+
+    @Override
+    public int getCustomImageId() {
+        return customImageId;
+    }
+
     public InQuantileRange[] getQuantileRanges() throws ParsingException {
         return getNonNullArray(ranges, "ranges");
     }
 
-    public void setQuantileRanges(InQuantileRange[] ranges) {
+    public void setQuantileRanges(InQuantileRange... ranges) {
         this.ranges = ranges;
     }
 

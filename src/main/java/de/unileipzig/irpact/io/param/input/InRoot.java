@@ -16,6 +16,8 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPo
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
+import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
@@ -48,8 +50,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InConsumerAgentReevaluationModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InCsvValueReevaluatorModule_reevalgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InMinimalCsvValueReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
@@ -338,6 +339,21 @@ public class InRoot implements RootClass {
     }
     public void setImages2(Collection<? extends InOutputImage2> images) {
         this.images2 = images.toArray(new InOutputImage2[0]);
+    }
+
+    @FieldDefinition
+    public InPostDataAnalysis[] postData = new InPostDataAnalysis[0];
+    public boolean hasPostData() {
+        return postData != null && postData.length > 0;
+    }
+    public InPostDataAnalysis[] getPostData() throws ParsingException {
+        return getNonNullArray(postData, "postData");
+    }
+    public void setPostData(InPostDataAnalysis... postData) {
+        this.postData = postData;
+    }
+    public void setPostData(Collection<? extends InPostDataAnalysis> postData) {
+        this.postData = postData.toArray(new InPostDataAnalysis[0]);
     }
 
     //=========================
@@ -830,9 +846,17 @@ public class InRoot implements RootClass {
             InOutputImage.class,
             InROutputImage.class,
 
+            InBucketAnalyser.class,
+            InPostDataAnalysis.class,
+
+            InAdoptionPhaseOverviewImage.class,
+            InComparedAnnualImage.class,
+            InComparedAnnualZipImage.class,
             InCustomAverageQuantilRangeImage.class,
-            InQuantileRange.class,
+            InInterestOverviewImage.class,
             InLoggingResultImage2.class,
+            InQuantileRange.class,
+            InProcessPhaseOverviewImage.class,
             InOutputImage2.class,
             InSpecialAverageQuantilRangeImage.class,
 
@@ -975,8 +999,7 @@ public class InRoot implements RootClass {
             InYearBasedAdoptionDeciderModule_evalragraphnode2.class,
             //reeval-modules
             InConsumerAgentReevaluationModule2.class,
-            InCsvValueReevaluatorModule_reevalgraphnode2.class,
-            InMinimalCsvValueReevaluatorModule_reevalgraphnode2.class,
+            InReevaluatorModule_reevalgraphnode2.class,
             //reeval-modules logging
             InConsumerAgentEvalRALoggingModule2.class,
             InPhaseLoggingModule_evalragraphnode2.class,

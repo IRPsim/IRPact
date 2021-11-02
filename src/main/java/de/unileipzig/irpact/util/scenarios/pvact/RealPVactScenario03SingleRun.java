@@ -8,6 +8,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
+import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
@@ -129,12 +130,14 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
         InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
 
         List<InOutputImage2> outputImages2 = new ArrayList<>();
+        List<InPostDataAnalysis> postData = new ArrayList<>();
         InProcessModel processModel = createDefaultModularProcessModel(
                 "Process",
                 uncertainty,
                 RAConstants.DEFAULT_SPEED_OF_CONVERGENCE,
                 createNodeFilterScheme(2),
-                outputImages2
+                outputImages2,
+                postData
         );
 
         InSpace2D space2D = createSpace2D("Space2D");
@@ -185,6 +188,7 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
 
         setupGeneral(root.getGeneral());
         root.setImages2(outputImages2);
+        root.setPostData(postData);
 
         return Collections.singletonList(root);
     }

@@ -29,5 +29,9 @@ public interface AgentPopulation {
 
     boolean hasScale();
 
+    default boolean hasValidScale() {
+        return hasScale() && getScale() != 1.0;
+    }
+
     double getScale();
 }

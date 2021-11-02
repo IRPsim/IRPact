@@ -196,6 +196,11 @@ public class XlsxRealAdoptionData implements RealAdoptionData {
     }
 
     @Override
+    public boolean hasYear(int year) {
+        return getAllYears().contains(year);
+    }
+
+    @Override
     public void getValidZips(Collection<? extends String> input, Collection<? super String> output) {
         for(String zip: input) {
             if(hasZip(zip)) {

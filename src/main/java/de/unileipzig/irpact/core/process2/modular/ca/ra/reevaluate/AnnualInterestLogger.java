@@ -2,7 +2,6 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
-import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.reevaluate.AbstractReevaluator;
@@ -27,11 +26,6 @@ public class AnnualInterestLogger
 
     @Override
     public void initializeReevaluator(SimulationEnvironment environment) {
-    }
-
-    @Override
-    public SharedModuleData getSharedData() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

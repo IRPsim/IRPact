@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.attribute.BasicDoubleAttribute;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.TypedMatrix;
 import de.unileipzig.irpact.commons.util.fio2.Rows;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -80,7 +81,16 @@ public class InRealAdoptionDataFile implements InFile {
 
     @Override
     public XlsxRealAdoptionData parse(IRPactInputParser parser) throws ParsingException {
-        return parse(parser.getResourceLoader());
+        DataStore cache = parser.getEnvironment().getGlobalData();
+        if(cache.contains(this)) {
+            return cache.getAuto(this);
+        } else {
+            LOGGER.trace("load '{}'", getFileNameWithoutExtension());
+            XlsxRealAdoptionData parsed = parse(parser.getResourceLoader());
+            LOGGER.trace("cache '{}'", getFileNameWithoutExtension());
+            cache.put(this, parsed);
+            return parsed;
+        }
     }
 
     public XlsxRealAdoptionData parse(ResourceLoader loader) throws ParsingException {

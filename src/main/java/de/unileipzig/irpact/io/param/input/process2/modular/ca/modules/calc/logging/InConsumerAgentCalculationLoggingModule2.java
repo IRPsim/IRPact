@@ -24,6 +24,8 @@ public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgen
         return getBaseName() + ".csv";
     }
 
+    boolean isSkipReevaluatorCall();
+
     int getAgentIndex();
 
     int getTimeIndex();

@@ -352,55 +352,55 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
     }
 
     protected double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_ADOPTER, true);
     }
 
     protected double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS, true);
     }
 
     protected double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST, true);
     }
 
     protected double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.FINANCIAL_THRESHOLD, true);
     }
 
     protected double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.ADOPTION_THRESHOLD, true);
     }
 
     protected double getCommunicationFrequencySN(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.COMMUNICATION_FREQUENCY_SN, true);
     }
 
     protected double getRewiringRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.REWIRING_RATE);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.REWIRING_RATE, true);
     }
 
     protected double getEnvironmentalConcern(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.ENVIRONMENTAL_CONCERN, true);
     }
 
     protected boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+        return getAttributeHelper().getBoolean(agent, null, RAConstants.SHARE_1_2_HOUSE, true);
     }
 
     protected boolean isHouseOwner(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+        return getAttributeHelper().getBoolean(agent, null, RAConstants.HOUSE_OWNER, true);
     }
 
     protected double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.PURCHASE_POWER_EUR, true);
     }
 
     protected double getNoveltySeeking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.NOVELTY_SEEKING, true);
     }
 
     protected double getDependentJudgmentMaking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        return getAttributeHelper().getDouble(agent, null, RAConstants.DEPENDENT_JUDGMENT_MAKING, true);
     }
 
     protected double getFinancialPurchasePower(ConsumerAgent agent) {

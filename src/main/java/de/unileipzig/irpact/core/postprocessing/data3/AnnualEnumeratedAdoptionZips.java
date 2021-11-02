@@ -6,25 +6,28 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
+
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
  */
-public class AnnualEnumeratedZips extends AnnualEnumeratedAdoptionData<String> {
+public class AnnualEnumeratedAdoptionZips extends AnnualEnumeratedAdoptionData<String> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(AnnualEnumeratedZips.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(AnnualEnumeratedAdoptionZips.class);
 
     public static final String MISSING_ZIP = "MISSING_ZIP";
     public static final String INVALID_ZIP = "INVALID_ZIP";
 
     protected String zipKey;
 
-    public AnnualEnumeratedZips() {
+    public AnnualEnumeratedAdoptionZips() {
         this(RAConstants.ZIP);
     }
 
-    public AnnualEnumeratedZips(String zipKey) {
+    public AnnualEnumeratedAdoptionZips(String zipKey) {
         setZipKey(zipKey);
     }
 
@@ -52,13 +55,12 @@ public class AnnualEnumeratedZips extends AnnualEnumeratedAdoptionData<String> {
     }
 
     @Override
-    public void update(ConsumerAgent ca, AdoptedProduct ap) {
-        int year = ap.isInitial() ? INITIAL_YEAR : ap.getYear();
+    protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
         data.update(year, ap.getProduct(), getZip(ca));
     }
 
     @Override
-    protected AnnualEnumeratedZips newInstance() {
-        return new AnnualEnumeratedZips();
+    protected AnnualEnumeratedAdoptionZips newInstance() {
+        return new AnnualEnumeratedAdoptionZips();
     }
 }
