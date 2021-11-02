@@ -280,7 +280,7 @@ result_data2:
   edn_description: "todo"
 
 InBucketAnalyser:
-  edn_label: "Standardprozessmodell"
+  edn_label: "BucketAnalyser"
   edn_description: "todo"
 InBucketAnalyser_enabled:
   gams_identifier: "enabled"
@@ -304,7 +304,7 @@ result_visualisation2:
   edn_description: "todo"
 
 InAdoptionPhaseOverviewImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "Adoptionsphasenübersicht"
   edn_description: "todo"
 InAdoptionPhaseOverviewImage_enabled:
   gams_identifier: "enabled"
@@ -338,7 +338,7 @@ InAdoptionPhaseOverviewImage_customImageId:
   gams_description: "todo"
 
 InComparedAnnualImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "Adoptionen mit Realdaten"
   edn_description: "todo"
 InComparedAnnualImage_enabled:
   gams_identifier: "enabled"
@@ -384,7 +384,7 @@ InComparedAnnualImage_realData:
   gams_description: "todo"
 
 InComparedAnnualZipImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "PLZ-basierte Adoptionen mit Realdaten"
   edn_description: "todo"
 InComparedAnnualZipImage_enabled:
   gams_identifier: "enabled"
@@ -430,7 +430,7 @@ InComparedAnnualZipImage_realData:
   gams_description: "todo"
 
 InCustomAverageQuantilRangeImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "Benutzerdefinierte Quantilanalyse"
   edn_description: "todo"
 InCustomAverageQuantilRangeImage_enabled:
   gams_identifier: "enabled"
@@ -473,7 +473,7 @@ InCustomAverageQuantilRangeImage_loggingModules:
   gams_description: "todo"
 
 InInterestOverviewImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "Interessensübersicht"
   edn_description: "todo"
 InInterestOverviewImage_enabled:
   gams_identifier: "enabled"
@@ -517,7 +517,7 @@ InQuantileRange_upperBound:
   gams_description: "todo"
 
 InProcessPhaseOverviewImage:
-  edn_label: "Benutzerdefinierte Quantilbereiche"
+  edn_label: "Prozessphasenübersicht"
   edn_description: "todo"
 InProcessPhaseOverviewImage_enabled:
   gams_identifier: "enabled"
@@ -669,7 +669,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.18.0"
+  edn_description: "IRPact v1.18.1"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
