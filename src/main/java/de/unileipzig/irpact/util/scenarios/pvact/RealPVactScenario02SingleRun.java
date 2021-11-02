@@ -88,13 +88,34 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
         InAffinities affinities = realData.buildAffinities("affinities", 0.53);
 
         //NS
-        Map<Milieu, InTruncatedNormalDistribution> ns = RealData.buildTruncNorm("NS", RealData.XLSX_ORDER_ARR, RealData.NS_MEANS, RealData.NS_SD);
+        Map<Milieu, InTruncatedNormalDistribution> ns = RealData.buildTruncNorm(
+                "NS",
+                RealData.XLSX_ORDER_ARR,
+                RealData.NS_MEANS,
+                RealData.NS_SD,
+                RealData.lowerBoundSD(1, 0),
+                RealData.upperBoundSD(1, 1)
+        );
         realData.CAGS.applyMilieus(ns, InPVactConsumerAgentGroup::setNoveltySeeking);
         //DEP
-        Map<Milieu, InTruncatedNormalDistribution> dep = RealData.buildTruncNorm("DEP", RealData.XLSX_ORDER_ARR, RealData.DEP_MEANS, RealData.DEP_SD);
+        Map<Milieu, InTruncatedNormalDistribution> dep = RealData.buildTruncNorm(
+                "DEP",
+                RealData.XLSX_ORDER_ARR,
+                RealData.DEP_MEANS,
+                RealData.DEP_SD,
+                RealData.lowerBound(0),
+                RealData.upperBound(1)
+        );
         realData.CAGS.applyMilieus(dep, InPVactConsumerAgentGroup::setDependentJudgmentMaking);
-        //NS
-        Map<Milieu, InTruncatedNormalDistribution> nep = RealData.buildTruncNorm("NEP", RealData.XLSX_ORDER_ARR, RealData.NEP_MEANS, RealData.NEP_SD);
+        //NEP
+        Map<Milieu, InTruncatedNormalDistribution> nep = RealData.buildTruncNorm(
+                "NEP",
+                RealData.XLSX_ORDER_ARR,
+                RealData.NEP_MEANS,
+                RealData.NEP_SD,
+                RealData.lowerBoundSD(1, 0),
+                RealData.upperBoundSD(1, 1)
+        );
         realData.CAGS.applyMilieus(nep, InPVactConsumerAgentGroup::setEnvironmentalConcern);
         //COMMU
         //Map<Milieu, InBernoulliDistribution> commu = RealData.buildBernoulli("COMMU", RealData.XLSX_ORDER_ARR, RealData.COMMU);

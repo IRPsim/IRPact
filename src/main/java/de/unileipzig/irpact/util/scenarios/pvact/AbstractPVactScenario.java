@@ -662,9 +662,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         );
 
         //logging
-        InSpecialAverageQuantilRangeImage novQuantile = InSpecialAverageQuantilRangeImage.NOV;
-        novQuantile.setLoggingModule(novLogger);
-        images.add(novQuantile);
+        InSpecialAverageQuantilRangeImage novQuantile1 = InSpecialAverageQuantilRangeImage.NOV;
+        novQuantile1.setLoggingModule(novLogger);
+        images.add(novQuantile1);
+        InSpecialAverageQuantilRangeImage novQuantile2 = new InSpecialAverageQuantilRangeImage();
+        novQuantile2.setName("NOV_QUANT2");
+        novQuantile2.setCustomImageId(3);
+        novQuantile2.setLoggingModule(novReevalLogger);
+        images.add(novQuantile2);
 
         InSpecialAverageQuantilRangeImage envQuantile = InSpecialAverageQuantilRangeImage.ENV;
         envQuantile.setLoggingModule(envLogger);
@@ -692,12 +697,19 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         qr1.setLowerBound(0.5);
         qr1.setUpperBound(1.0);
 
-        InCustomAverageQuantilRangeImage customNovQuantile = new InCustomAverageQuantilRangeImage();
-        customNovQuantile.setName("CUSTOM_NOV");
-        customNovQuantile.setCustomImageId(1);
-        customNovQuantile.setQuantileRanges(qr0, qr1);
-        customNovQuantile.setLoggingModule(novLogger);
-        images.add(customNovQuantile);
+        InCustomAverageQuantilRangeImage customNovQuantile1 = new InCustomAverageQuantilRangeImage();
+        customNovQuantile1.setName("CUSTOM_NOV1");
+        customNovQuantile1.setCustomImageId(1);
+        customNovQuantile1.setQuantileRanges(qr0, qr1);
+        customNovQuantile1.setLoggingModule(novLogger);
+        images.add(customNovQuantile1);
+
+        InCustomAverageQuantilRangeImage customNovQuantile2 = new InCustomAverageQuantilRangeImage();
+        customNovQuantile2.setName("CUSTOM_NOV2");
+        customNovQuantile2.setCustomImageId(2);
+        customNovQuantile2.setQuantileRanges(qr0, qr1);
+        customNovQuantile2.setLoggingModule(novReevalLogger);
+        images.add(customNovQuantile2);
 
         //Adoption Phase Overview
         InAdoptionPhaseOverviewImage adoptionPhaseOverview = new InAdoptionPhaseOverviewImage();

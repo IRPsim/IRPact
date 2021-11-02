@@ -87,6 +87,7 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
 
     protected AnnualEnumeratedAdoptionTotal createAnnualEnumeratedAdoptionTotal(BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter) {
         AnnualEnumeratedAdoptionTotal analyser = new AnnualEnumeratedAdoptionTotal();
+        analyser.setInitialYear(imageProcessor.getFirstSimulationYear());
         analyser.setFilter(filter);
         analyser.analyse(imageProcessor.getEnvironment());
         return analyser;

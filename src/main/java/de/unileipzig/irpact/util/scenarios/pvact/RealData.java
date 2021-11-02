@@ -12,6 +12,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistrib
 import de.unileipzig.irpact.util.pvact.Milieu;
 
 import java.util.*;
+import java.util.function.DoubleBinaryOperator;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
 /**
@@ -277,15 +279,33 @@ public final class RealData {
             String name,
             Milieu[] milieus,
             double[] means,
-            double[] sds) {
+            double[] sds,
+            DoubleBinaryOperator lowerBound,
+            DoubleBinaryOperator upperBound) {
         Map<Milieu, InTruncatedNormalDistribution> map = new LinkedHashMap<>();
         for(int i = 0; i < milieus.length; i++) {
             map.put(
                     milieus[i],
-                    new InTruncatedNormalDistribution(name + "_" + milieus[i].print(), sds[i], means[i], 0, 1)
+                    new InTruncatedNormalDistribution(name + "_" + milieus[i].print(), sds[i], means[i], lowerBound.applyAsDouble(sds[i], means[i]), upperBound.applyAsDouble(sds[i], means[i]))
             );
         }
         return map;
+    }
+
+    public static DoubleBinaryOperator lowerBound(double bound) {
+        return (_sd, _mean) -> bound;
+    }
+
+    public static DoubleBinaryOperator lowerBoundSD(double sdMultiple, double min) {
+        return (_sd, _mean) -> Math.max(_mean - (_sd * sdMultiple), min);
+    }
+
+    public static DoubleBinaryOperator upperBoundSD(double sdMultiple, double max) {
+        return (_sd, _mean) -> Math.min(_mean + (_sd * sdMultiple), max);
+    }
+
+    public static DoubleBinaryOperator upperBound(double bound) {
+        return (_sd, _mean) -> bound;
     }
 
     public static Map<Milieu, InBernoulliDistribution> buildBernoulli(
