@@ -387,7 +387,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_02_T_09_02_11" : {
+        "CT_D_2021_11_02_T_09_33_28" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -536,7 +536,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_18_0" : {
+        "v1_18_1" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

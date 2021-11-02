@@ -63,10 +63,7 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InCustomAverageQuantilRangeImage;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InProcessPhaseOverviewImage;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InQuantileRange;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.util.ArrayList;
@@ -105,7 +102,11 @@ public class InRootUI {
     public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL = SETT_VISURESULT2.resolve(InCustomAverageQuantilRangeImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE = SETT_VISURESULT2_CUSTOMAVGQUANTIL.resolve(InQuantileRange.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_SPECIALAVGQUANTIL = SETT_VISURESULT2.resolve(InSpecialAverageQuantilRangeImage.thisName()).addTo(PATHS);
-    public static final EdnPath SETT_VISURESULT2_PHASELOG = SETT_VISURESULT2.resolve(InProcessPhaseOverviewImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_COMPARED = SETT_VISURESULT2.resolve(InComparedAnnualImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_COMPAREDZIP = SETT_VISURESULT2.resolve(InComparedAnnualZipImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_ADOPTIONPHASE = SETT_VISURESULT2.resolve(InAdoptionPhaseOverviewImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_PROCESSPHASE = SETT_VISURESULT2.resolve(InProcessPhaseOverviewImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_INTEREST = SETT_VISURESULT2.resolve(InInterestOverviewImage.thisName()).addTo(PATHS);
 
     public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);

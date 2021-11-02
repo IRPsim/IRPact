@@ -32,7 +32,7 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_SPECIALAVGQUANTIL);
+        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_COMPAREDZIP);
         addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
