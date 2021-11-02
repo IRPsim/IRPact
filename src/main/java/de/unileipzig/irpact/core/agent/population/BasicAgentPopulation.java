@@ -56,6 +56,7 @@ public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable
     @Override
     public void setCoverage(double coverage) {
         this.coverage = coverage;
+        logScale();
     }
 
     @Override
@@ -71,6 +72,7 @@ public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable
     @Override
     public void setMaximumPossibleSize(int size) {
         this.maximumPossibleSize = size;
+        logScale();
     }
 
     @Override
@@ -83,6 +85,38 @@ public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable
         return maximumPossibleSize;
     }
 
+    protected void logScale() {
+        if(hasScale()) {
+            calcScale(true);
+        }
+    }
+
+    protected double calcScale(boolean log) {
+        double scale = 1.0;
+
+        if(hasMaximumPossibleSize()) {
+            int total = total();
+            if(total != maximumPossibleSize) {
+                scale *= (double) total / (double) maximumPossibleSize;
+                if(log) {
+                    LOGGER.trace("updated scale factor (population): {}", scale);
+                }
+            }
+        }
+
+        if(hasCoverage()) {
+            scale *= getCoverage();
+            if(log) {
+                LOGGER.trace("updated scale factor (coverage): {}", scale);
+            }
+        }
+
+        if(log) {
+            LOGGER.trace("scale factor: {}", scale);
+        }
+        return scale;
+    }
+
     @Override
     public boolean hasScale() {
         return hasMaximumPossibleSize() || hasCoverage();
@@ -91,23 +125,7 @@ public class BasicAgentPopulation implements AgentPopulation, ChecksumComparable
     @Override
     public double getScale() {
         if(hasScale()) {
-            double scale = 1.0;
-
-            if(hasMaximumPossibleSize()) {
-                int total = total();
-                if(total != maximumPossibleSize) {
-                    scale *= (double) total / (double) maximumPossibleSize;
-                    LOGGER.trace("updated scale factor (population): {}", scale);
-                }
-            }
-
-            if(hasCoverage()) {
-                scale *= getCoverage();
-                LOGGER.trace("updated scale factor (coverage): {}", scale);
-            }
-
-            LOGGER.trace("scale factor: {}", scale);
-            return scale;
+            return calcScale(false);
         } else {
             return Double.NaN;
         }

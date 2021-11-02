@@ -36,6 +36,7 @@ public abstract class AbstractComparedAnnualZipImageHandler
             return getGlobalData().getAuto(AnnualEnumeratedAdoptionZips.class);
         } else {
             AnnualEnumeratedAdoptionZips data = new AnnualEnumeratedAdoptionZips();
+            data.setInitialYear(processor.getFirstSimulationYear());
             data.analyse(getEnvironment());
             getGlobalData().put(AnnualEnumeratedAdoptionZips.class, data);
             return data;

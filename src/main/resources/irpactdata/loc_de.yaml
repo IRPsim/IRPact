@@ -669,7 +669,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.18.1"
+  edn_description: "IRPact v1.18.2"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2668,6 +2668,13 @@ InDecisionMakingDeciderModule2_evalragraphnode2_threshold_graphedge2:
   gams_description: "todo"
 InDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
   gams_identifier: "Utilitymodul"
+  gams_description: "todo"
+
+InDoAdoptModule_evalragraphnode2:
+  edn_label: "DoAdoptModule"
+  edn_description: "todo"
+InDoAdoptModule_evalragraphnode2_input_graphedge2:
+  gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
 InFeasibilityModule_evalragraphnode2:

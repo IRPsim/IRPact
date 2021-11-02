@@ -289,6 +289,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_YEARBASED = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InYearBasedAdoptionDeciderModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_INTEREST = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InInterestModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_INIT = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InInitializationModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_DOADOPT = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InDoAdoptModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_FEASIBILITY = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InFeasibilityModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_PHASEUPDATER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InPhaseUpdateModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_PHASELOGGER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InPhaseLoggingModule_evalragraphnode2.thisName()).addTo(PATHS);
