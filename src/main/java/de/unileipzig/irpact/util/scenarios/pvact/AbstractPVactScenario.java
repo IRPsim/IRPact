@@ -553,11 +553,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         decisionMaking.setThreshold(adoptThreshold);
         decisionMaking.setUtility(decision);
 
-        InYearBasedAdoptionDeciderModule_evalragraphnode2 nextDecisionDecider = new InYearBasedAdoptionDeciderModule_evalragraphnode2();
-        nextDecisionDecider.setName("REALLY_ADOPT_TEST");
-        nextDecisionDecider.setBase(1);
-        nextDecisionDecider.setFactor(0);
-        nextDecisionDecider.setInput(decisionMaking);
+        InYearBasedAdoptionDeciderModule_evalragraphnode2 reallyDecider = new InYearBasedAdoptionDeciderModule_evalragraphnode2();
+        reallyDecider.setName("REALLY_ADOPT_TEST");
+        reallyDecider.setBase(1);
+        reallyDecider.setFactor(0);
+        reallyDecider.setInput(decisionMaking);
+
+        InDoAdoptModule_evalragraphnode2 adoptModule = new InDoAdoptModule_evalragraphnode2();
+        adoptModule.setName("ADOPT_IF_POSSIBLE");
+        adoptModule.setInput(reallyDecider);
 
         //MAIN
         InMainBranchingModule_evalragraphnode2 mainBranch = new InMainBranchingModule_evalragraphnode2();
@@ -565,7 +569,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         mainBranch.setInit(init);
         mainBranch.setAwareness(interest);
         mainBranch.setFeasibility(feasibility);
-        mainBranch.setDecision(nextDecisionDecider);
+        mainBranch.setDecision(adoptModule);
         mainBranch.setImpeded(ifElseCommu);
         mainBranch.setAdopted(ifElseCommu);
 
@@ -577,14 +581,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         phaseUpdater.setName("PHASE_UPDATER");
         phaseUpdater.setInput(phaseLogger);
 
-        InDoAdoptModule_evalragraphnode2 adoptModule = new InDoAdoptModule_evalragraphnode2();
-        adoptModule.setName("ADOPT");
-        adoptModule.setInput(phaseUpdater);
-
         //PROCESS MODEL
         InRunUntilFailureModule_evalgraphnode2 startModule = new InRunUntilFailureModule_evalgraphnode2();
         startModule.setName("START");
-        startModule.setInput(adoptModule);
+        startModule.setInput(phaseUpdater);
 
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName(name);
@@ -627,7 +627,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //END OF YEAR
         InPhaseLoggingModule_evalragraphnode2 decisionReevalPhaseLogger = new InPhaseLoggingModule_evalragraphnode2();
         decisionReevalPhaseLogger.setName("PHASE_REEVAL_LOGGER");
-        decisionReevalPhaseLogger.setInput(nextDecisionDecider);
+        decisionReevalPhaseLogger.setInput(reallyDecider);
 
         InPhaseUpdateModule_evalragraphnode2 decisionReevalPhaseUpdater = new InPhaseUpdateModule_evalragraphnode2();
         decisionReevalPhaseUpdater.setName("PHASE_REEVAL_UPDATER");
