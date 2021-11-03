@@ -8,7 +8,6 @@ import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.InDummyColor;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InConsumerAgentActionModule2;
 import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
@@ -70,9 +69,6 @@ public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEv
     public void setName(String name) {
         this._name = name;
     }
-
-    @FieldDefinition
-    public InDummyColor[] colorPlaceholder = new InDummyColor[0];
 
     @FieldDefinition(
             graphEdge = @GraphEdge(

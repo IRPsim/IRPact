@@ -23,7 +23,6 @@ public class ImpededResetter
 
     @Override
     public IRPLogger getDefaultLogger() {
-
         return LOGGER;
     }
 

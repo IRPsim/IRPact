@@ -250,14 +250,17 @@ public class BasicCAModularProcessModel2
     protected void initReevaluator() throws InitializationException, MissingDataException {
         try {
             trace("initalize startOfYearTasks");
+            startOfYearTasks.sort(Reevaluator.PRIORITY_COMPARATOR);
             for(Reevaluator<ConsumerAgentData2> reevaluator: startOfYearTasks) {
                 initReevaluator(reevaluator);
             }
             trace("initalize midOfYearTasks");
+            midOfYearTasks.sort(Reevaluator.PRIORITY_COMPARATOR);
             for(Reevaluator<ConsumerAgentData2> reevaluator: midOfYearTasks) {
                 initReevaluator(reevaluator);
             }
             trace("initalize endOfYearTasks");
+            endOfYearTasks.sort(Reevaluator.PRIORITY_COMPARATOR);
             for(Reevaluator<ConsumerAgentData2> reevaluator: endOfYearTasks) {
                 initReevaluator(reevaluator);
             }
@@ -321,12 +324,10 @@ public class BasicCAModularProcessModel2
     }
 
     protected void runStartOfYear() throws Throwable {
-        if(startOfYearTasks.size() > 0) {
-            for(Reevaluator<ConsumerAgentData2> task: startOfYearTasks) {
-                trace("run task '{}'", task.getName());
-                for(BasicConsumerAgentData2 plan: plans) {
-                    task.reevaluate(plan, null);
-                }
+        for(Reevaluator<ConsumerAgentData2> task: startOfYearTasks) {
+            trace("run task '{}'", task.getName());
+            for(BasicConsumerAgentData2 plan: plans) {
+                task.reevaluate(plan, null);
             }
         }
     }
@@ -351,12 +352,10 @@ public class BasicCAModularProcessModel2
     }
 
     protected void runMidOfYear() throws Throwable {
-        if(midOfYearTasks.size() > 0) {
-            for(Reevaluator<ConsumerAgentData2> task: midOfYearTasks) {
-                trace("run task '{}'", task.getName());
-                for(BasicConsumerAgentData2 plan: plans) {
-                    task.reevaluate(plan, null);
-                }
+        for(Reevaluator<ConsumerAgentData2> task: midOfYearTasks) {
+            trace("run task '{}'", task.getName());
+            for(BasicConsumerAgentData2 plan: plans) {
+                task.reevaluate(plan, null);
             }
         }
     }
@@ -382,12 +381,10 @@ public class BasicCAModularProcessModel2
 
     protected void runEndOfYear() throws Throwable {
         yearChange = true;
-        if(endOfYearTasks.size() > 0) {
-            for(Reevaluator<ConsumerAgentData2> task: endOfYearTasks) {
-                trace("run task '{}'", task.getName());
-                for(BasicConsumerAgentData2 plan: plans) {
-                    task.reevaluate(plan, null);
-                }
+        for(Reevaluator<ConsumerAgentData2> task: endOfYearTasks) {
+            trace("run task '{}'", task.getName());
+            for(BasicConsumerAgentData2 plan: plans) {
+                task.reevaluate(plan, null);
             }
         }
         yearChange = false;

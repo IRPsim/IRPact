@@ -51,7 +51,6 @@ public final class IOConstants {
     public static final String PRODUCTS_FINDING_SCHEME = "products_finding_scheme";
     public static final String INITAL_ADOPTERS = "initial_adopters";
 
-
     public static final String PROCESS_MODEL = "process_model";
     public static final String PROCESS_FILTER = "process_filter";
     public static final String PROCESS_MODEL_RA_UNCERT = "process_model_ra_uncert";
@@ -96,6 +95,7 @@ public final class IOConstants {
 
     public static final String DEV = "dev";
     public static final String TEST = "test_data";
+    public static final String DEPRECATED = "deprecated";
 
 
     public static final String EDN_LABEL = "edn_label";

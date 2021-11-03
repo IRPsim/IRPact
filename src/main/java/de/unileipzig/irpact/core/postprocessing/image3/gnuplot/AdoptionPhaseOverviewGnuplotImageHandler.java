@@ -86,7 +86,7 @@ public class AdoptionPhaseOverviewGnuplotImageHandler
     public GnuPlotBuilder getBuilder(InAdoptionPhaseOverviewImage image, CustomImageData data) {
         return GnuPlotFactory.stackedBarChart1(
                 getLocalizedFormattedString("title", data.getInitial()),
-                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("filllab"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
                 getLocalizedString("startMid"), getLocalizedString("midEnd"), getLocalizedString("endStart"),
                 getLocalizedString("sep"),
                 image.getBoxWidth(),

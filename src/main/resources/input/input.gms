@@ -510,7 +510,6 @@ SET set_InSpatialTableFile(set_InFile)
 * - type: Float
 PARAMETER par_InSpatialTableFile_coverage(set_InSpatialTableFile)
 
-* - default: JaehrlicheAdoptionenPLZ, JaehrlicheAdoptionenPLZVergleich, JaehrlicheAdoptionenVergleich, JaehrlicheAdoptionenPhase, Interessensentwicklung, Phasenuebersicht
 * - identifier: InGenericOutputImage
 * - type: String
 SET set_InGenericOutputImage(set_InOutputImage)
@@ -1976,19 +1975,19 @@ PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTop
 * - type: String
 SET set_InGlobalDeffuantUncertainty(set_InUncertainty)
 
-* - default: -1
+* - default: 0.125
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
 PARAMETER par_InGlobalDeffuantUncertainty_extremistParameter(set_InGlobalDeffuantUncertainty)
 
-* - default: 0.35
+* - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InGlobalDeffuantUncertainty_extremistUncertainty(set_InGlobalDeffuantUncertainty)
 
-* - default: 1.4
+* - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2020,19 +2019,19 @@ PARAMETER par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames(se
 * - type: String
 SET set_InGroupBasedDeffuantUncertainty(set_InUncertainty)
 
-* - default: -1
+* - default: 0.125
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
 PARAMETER par_InGroupBasedDeffuantUncertainty_extremistParameter(set_InGroupBasedDeffuantUncertainty)
 
-* - default: 0.35
+* - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InGroupBasedDeffuantUncertainty_extremistUncertainty(set_InGroupBasedDeffuantUncertainty)
 
-* - default: 1.4
+* - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2064,20 +2063,20 @@ PARAMETER par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeName
 * - type: String
 SET set_InPVactGlobalDeffuantUncertainty(set_InUncertainty)
 
-* - default: -1
+* - default: 0.125
 * - domain: [0,1]
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
 PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistParameter(set_InPVactGlobalDeffuantUncertainty)
 
-* - default: 0.35
+* - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistUncertainty(set_InPVactGlobalDeffuantUncertainty)
 
-* - default: 1.4
+* - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2104,19 +2103,19 @@ PARAMETER par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags(se
 * - type: String
 SET set_InPVactGroupBasedDeffuantUncertainty(set_InUncertainty)
 
-* - default: -1
+* - default: 0.125
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
 PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistParameter(set_InPVactGroupBasedDeffuantUncertainty)
 
-* - default: 0.35
+* - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty(set_InPVactGroupBasedDeffuantUncertainty)
 
-* - default: 1.4
+* - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2271,7 +2270,7 @@ PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
 * - type: Float
 PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
 
-* - default: 1.75
+* - default: 0.25
 * - description: attitude gap
 * - identifier: attitude gap
 * - type: Float
@@ -3571,14 +3570,6 @@ PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevalua
 * - type: Boolean
 PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators(set_InBasicCAModularProcessModel,set_InReevaluator2)
 
-* - identifier: InDummyColor
-* - type: String
-SET set_InDummyColor(set_InModularProcessModel2)
-
-* - identifier: placeholder
-* - type: Float
-PARAMETER par_InDummyColor_placeholder(set_InDummyColor)
-
 * - identifier: InConsumerAgentModule2
 * - hidden: 1
 * - type: String
@@ -3621,7 +3612,7 @@ PARAMETER par_InCommunicationModule_actiongraphnode2_unknownPoints(set_InCommuni
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_speedOfConvergence(set_InCommunicationModule_actiongraphnode2)
 
-* - default: 1.75
+* - default: 0.25
 * - description: todo
 * - identifier: attitudeGap
 * - type: Float
@@ -4096,6 +4087,18 @@ PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAge
 * - fill: #7012FE
 * - color: #7012FE
 * - shape: circle
+* - identifier: InDoAdoptModule_evalragraphnode2
+* - type: String
+SET set_InDoAdoptModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InDoAdoptModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InDoAdoptModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+
+* - fill: #7012FE
+* - color: #7012FE
+* - shape: circle
 * - identifier: InFeasibilityModule_evalragraphnode2
 * - type: String
 SET set_InFeasibilityModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
@@ -4135,10 +4138,6 @@ PARAMETER par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule
 * - identifier: InMainBranchingModule_evalragraphnode2
 * - type: String
 SET set_InMainBranchingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
-
-* - identifier: colorPlaceholder
-* - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InDummyColor_colorPlaceholder(set_InMainBranchingModule_evalragraphnode2,set_InDummyColor)
 
 * - description: todo
 * - identifier: init
@@ -4272,6 +4271,21 @@ SET set_InImpededResetter(set_InReevaluator2)
 * - type: Float
 PARAMETER par_InImpededResetter_placeholder(set_InImpededResetter)
 
+* - identifier: InLinearePercentageAgentAttributeUpdater
+* - type: String
+SET set_InLinearePercentageAgentAttributeUpdater(set_InReevaluator2)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InLinearePercentageAgentAttributeUpdater_priority(set_InLinearePercentageAgentAttributeUpdater)
+
+* - description: todo
+* - identifier: scaler
+* - type: Boolean
+PARAMETER par_link_InLinearePercentageAgentAttributeUpdater_InLinearePercentageAgentAttributeScaler_scaler(set_InLinearePercentageAgentAttributeUpdater,set_InLinearePercentageAgentAttributeScaler)
+
 * - identifier: InReevaluatorModuleLinker
 * - type: String
 SET set_InReevaluatorModuleLinker(set_InReevaluator2)
@@ -4299,6 +4313,27 @@ PARAMETER par_link_InAgentAttributeScaler_InAttributeName_attribute(set_InAgentA
 * - hidden: 1
 * - type: String
 SET set_InInitializationHandler(*)
+
+* - identifier: InLinearePercentageAgentAttributeScaler
+* - type: String
+SET set_InLinearePercentageAgentAttributeScaler(set_InInitializationHandler)
+
+* - default: 1
+* - description: todo
+* - identifier: m
+* - type: Float
+PARAMETER par_InLinearePercentageAgentAttributeScaler_mValue(set_InLinearePercentageAgentAttributeScaler)
+
+* - default: 0
+* - description: todo
+* - identifier: n
+* - type: Float
+PARAMETER par_InLinearePercentageAgentAttributeScaler_nValue(set_InLinearePercentageAgentAttributeScaler)
+
+* - description: todo
+* - identifier: Attribut
+* - type: Boolean
+PARAMETER par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute(set_InLinearePercentageAgentAttributeScaler,set_InAttributeName)
 
 * - default: 0
 * - domain: [0|1]

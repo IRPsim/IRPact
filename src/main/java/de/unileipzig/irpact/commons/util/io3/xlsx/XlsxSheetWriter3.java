@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util.io3.xlsx;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.util.io3.TableData3;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -11,8 +12,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
@@ -30,6 +36,10 @@ public class XlsxSheetWriter3<T> {
 
     public void setCellHandler(CellValueSetter<T> cellHandler) {
         this.cellHandler = cellHandler;
+    }
+
+    public XSSFWorkbook newBook() {
+        return new XSSFWorkbook();
     }
 
     //=========================
@@ -54,7 +64,7 @@ public class XlsxSheetWriter3<T> {
             Path target,
             String sheetName,
             Iterator<? extends Iterable<? extends T>> rows) throws IOException {
-        XSSFWorkbook book = new XSSFWorkbook();
+        XSSFWorkbook book = newBook();
         write(book, sheetName, rows);
         write(target, book);
         return book;
@@ -63,12 +73,25 @@ public class XlsxSheetWriter3<T> {
     public XSSFWorkbook write(
             Path target,
             Map<String, ? extends TableData3<T>> sheetData) throws IOException {
-        XSSFWorkbook book = new XSSFWorkbook();
+        XSSFWorkbook book = newBook();
+        write(target, book, sheetData);
+        return book;
+    }
+
+    public void write(
+            XSSFWorkbook book,
+            Map<String, ? extends TableData3<T>> sheetData) throws IOException {
         for(Map.Entry<String, ? extends TableData3<T>> entry: sheetData.entrySet()) {
             write(book, entry.getKey(), entry.getValue());
         }
+    }
+
+    public void write(
+            Path target,
+            XSSFWorkbook book,
+            Map<String, ? extends TableData3<T>> sheetData) throws IOException {
+        write(book, sheetData);
         write(target, book);
-        return book;
     }
 
     public void write(Path target, XSSFWorkbook book) throws IOException {
@@ -121,7 +144,6 @@ public class XlsxSheetWriter3<T> {
     public void write(
         XSSFSheet sheet,
         Iterator<? extends Iterable<? extends T>> rows) {
-
         int rowIndex = 0;
         while(rows.hasNext()) {
             Iterable<? extends T> nextRow = rows.next();
@@ -147,6 +169,118 @@ public class XlsxSheetWriter3<T> {
         return (cell, value) -> {
             if(value == null) {
                 cell.setBlank();
+                return;
+            }
+
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    cell.setCellValue(value.booleanValue());
+                    break;
+
+                case NUMBER:
+                    cell.setCellValue(value.doubleValue());
+                    break;
+
+                case STRING:
+                    cell.setCellValue(value.textValue());
+                    break;
+
+                case NULL:
+                case MISSING:
+                    cell.setBlank();
+                    break;
+                default:
+                    throw new IllegalArgumentException("unsupported node type: " + value.getNodeType());
+            }
+        };
+    }
+
+    public static Predicate<JsonNode> testTime(DateTimeFormatter formatter) {
+        return value -> {
+            if(value != null && value.isTextual()) {
+                try {
+                    LocalDateTime.parse(value.asText(), formatter);
+                    return true;
+                } catch (DateTimeParseException e) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        };
+    }
+
+    public static Function<JsonNode, LocalDateTime> toTime(DateTimeFormatter formatter) {
+        return value -> {
+            if(value != null && value.isTextual()) {
+                return LocalDateTime.parse(value.asText(), formatter);
+            } else {
+                throw new IllegalArgumentException("no text node");
+            }
+        };
+    }
+
+    public static Function<JsonNode, CellStyle> toCellStyle(CellStyle style) {
+        return value -> {
+            if(value != null && value.isTextual()) {
+                return style;
+            } else {
+                throw new IllegalArgumentException("no text node");
+            }
+        };
+    }
+
+    public static CellValueSetter<JsonNode> forJson(
+            Predicate<? super JsonNode> timeTester,
+            Function<? super JsonNode, ? extends LocalDateTime> toTime) {
+        return (cell, value) -> {
+            if(value == null) {
+                cell.setBlank();
+                return;
+            }
+
+            if(timeTester.test(value)) {
+                LocalDateTime ldt = toTime.apply(value);
+                cell.setCellValue(ldt);
+                return;
+            }
+
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    cell.setCellValue(value.booleanValue());
+                    break;
+
+                case NUMBER:
+                    cell.setCellValue(value.doubleValue());
+                    break;
+
+                case STRING:
+                    cell.setCellValue(value.textValue());
+                    break;
+
+                case NULL:
+                case MISSING:
+                    cell.setBlank();
+                    break;
+                default:
+                    throw new IllegalArgumentException("unsupported node type: " + value.getNodeType());
+            }
+        };
+    }
+
+    public static CellValueSetter<JsonNode> forJson(
+            Predicate<? super JsonNode> timeTester,
+            Function<? super JsonNode, ? extends LocalDateTime> toTime,
+            Function<? super JsonNode, ? extends CellStyle> toCellStyle) {
+        return (cell, value) -> {
+            if(value == null) {
+                cell.setBlank();
+                return;
+            }
+
+            if(timeTester.test(value)) {
+                cell.setCellValue(toTime.apply(value));
+                cell.setCellStyle(toCellStyle.apply(value));
                 return;
             }
 

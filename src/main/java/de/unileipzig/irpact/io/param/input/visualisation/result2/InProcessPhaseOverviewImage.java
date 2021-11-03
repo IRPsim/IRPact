@@ -48,6 +48,8 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
+    public static InProcessPhaseOverviewImage DEFAULT = new InProcessPhaseOverviewImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS);
+
     public String _name;
 
     @FieldDefinition

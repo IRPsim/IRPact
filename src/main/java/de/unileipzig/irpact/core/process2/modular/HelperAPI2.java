@@ -1,11 +1,23 @@
 package de.unileipzig.irpact.core.process2.modular;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -20,6 +32,10 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     //=========================
 
     SharedModuleData getSharedData();
+
+    default void traceReevaluatorInitalization() {
+        trace("[{}] initalize reevaluator", getName());
+    }
 
     default void traceModuleInitalization() {
         trace("[{}] initalize module", getName());
@@ -75,5 +91,47 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
 
     default void setBoolean(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName, boolean value) {
         environment.getAttributeHelper().setBoolean(agent, product, attributeName, value, true);
+    }
+
+    //=========================
+    //File
+    //=========================
+
+    default JsonTableData3 loadCsv(Path path, String delimiter) throws IOException {
+        CsvParser<JsonNode> parser = new CsvParser<>();
+        parser.setValueGetter(CsvParser.forJson());
+        parser.setDelimiter(delimiter);
+        return new JsonTableData3(parser.parseToList(path, StandardCharsets.UTF_8));
+    }
+
+    default void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        writer.write(path, sheetData);
+    }
+
+    default void storeXlsxWithTime(
+            Path path,
+            DateTimeFormatter formatter,
+            Map<String, JsonTableData3> sheetData) throws IOException {
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        XSSFWorkbook book = writer.newBook();
+
+        CellStyle dateStyle = book.createCellStyle();
+        CreationHelper helper = book.getCreationHelper();
+        dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy, hh:mm:ss"));
+
+        writer.setCellHandler(
+                XlsxSheetWriter3.forJson(
+                        XlsxSheetWriter3.testTime(formatter),
+                        XlsxSheetWriter3.toTime(formatter),
+                        XlsxSheetWriter3.toCellStyle(dateStyle)
+                )
+        );
+        writer.write(
+                path,
+                book,
+                sheetData
+        );
     }
 }

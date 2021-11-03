@@ -40,6 +40,10 @@ public class MultiReevaluator<I> extends AbstractReevaluator<I> implements Helpe
         return reevaluators;
     }
 
+    protected void sort() {
+        getReevaluators().sort(Reevaluator.PRIORITY_COMPARATOR);
+    }
+
     @Override
     public void setSharedData(SharedModuleData sharedData) {
         super.setSharedData(sharedData);
@@ -51,6 +55,7 @@ public class MultiReevaluator<I> extends AbstractReevaluator<I> implements Helpe
     @Override
     public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
         traceModuleInitalization();
+        sort();
         for(Reevaluator<I> reevaluator: getReevaluators()) {
             reevaluator.initializeReevaluator(environment);
         }
