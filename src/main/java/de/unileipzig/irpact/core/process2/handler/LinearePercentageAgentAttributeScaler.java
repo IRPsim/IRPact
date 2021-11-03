@@ -78,7 +78,7 @@ public class LinearePercentageAgentAttributeScaler
     }
 
     protected double getScaleFactor(SimulationEnvironment environment) {
-        return lin(getFirstYear(environment)) / lin(getLastYear(environment));
+        return lin(getFirstYear(environment)) / lin(getLastYear(environment) + 1);
     }
 
     protected double getGrowth() {
