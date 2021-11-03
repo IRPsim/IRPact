@@ -5,7 +5,6 @@ import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
-import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -56,14 +55,14 @@ public class InGenericOutputImage implements InOutputImage {
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
         addEntry(res, thisClass(), "realAdoptionDataFile");
 
-        setDefault(res, thisClass(), varargs(
-                IRPact.IMAGE_ANNUAL_ADOPTIONS,
-                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP,
-                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS,
-                IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,
-                IRPact.IMAGE_ANNUAL_INTEREST,
-                IRPact.IMAGE_PHASE_OVERVIEW
-        ));
+//        setDefault(res, thisClass(), varargs(
+//                IRPact.IMAGE_ANNUAL_ADOPTIONS,
+//                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP,
+//                IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS,
+//                IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS,
+//                IRPact.IMAGE_ANNUAL_INTEREST,
+//                IRPact.IMAGE_PHASE_OVERVIEW
+//        ));
 
         setRules(res, thisClass(), engineFieldNames, engineBuilder);
         setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
@@ -77,25 +76,27 @@ public class InGenericOutputImage implements InOutputImage {
     //=========================
 
     public static InGenericOutputImage[] createDefaultImages() {
-        return new InGenericOutputImage[] {
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL, null),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
-                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
-        };
+        return new InGenericOutputImage[0];
+//        return new InGenericOutputImage[] {
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+//                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP, DataToVisualize.COMPARED_ANNUAL_ZIP, null),
+//                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL, null),
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
+//                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
+//        };
     }
 
     public static InGenericOutputImage[] createDefaultImages(InRealAdoptionDataFile realAdoptionDataFile) {
-        return new InGenericOutputImage[] {
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
-                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL, realAdoptionDataFile),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
-                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
-                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
-        };
+        return new InGenericOutputImage[0];
+//        return new InGenericOutputImage[] {
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_ADOPTIONS, DataToVisualize.ANNUAL_ZIP, null),
+//                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP, DataToVisualize.COMPARED_ANNUAL_ZIP, realAdoptionDataFile),
+//                new InGenericOutputImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS, DataToVisualize.COMPARED_ANNUAL, realAdoptionDataFile),
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS, DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL, null),
+//                new InGenericOutputImage(IRPact.IMAGE_ANNUAL_INTEREST, DataToVisualize.ANNUAL_INTEREST_2D, null),
+//                new InGenericOutputImage(IRPact.IMAGE_PHASE_OVERVIEW, DataToVisualize.ANNUAL_PHASE_OVERVIEW, null)
+//        };
     }
 
     public static void setEnableAll(boolean enableAll, InGenericOutputImage... images) {

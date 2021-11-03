@@ -117,7 +117,7 @@
             :color "Blue"
           } 
           {
-            :tags [["InFeasibilityModule" "input"] ["InInterestModule" "input"] ["InMainBranchingModule" "init"] ["InMainBranchingModule" "awareness"] ["InMainBranchingModule" "feasibility"] ["InMainBranchingModule" "decision"] ["InMainBranchingModule" "adopted"] ["InMainBranchingModule" "impeded"] ["InPhaseUpdateModule" "input"] ["InYearBasedAdoptionDeciderModule" "input"] ["InPhaseLoggingModule" "input"]] 
+            :tags [["InDoAdoptModule" "input"] ["InFeasibilityModule" "input"] ["InInterestModule" "input"] ["InMainBranchingModule" "init"] ["InMainBranchingModule" "awareness"] ["InMainBranchingModule" "feasibility"] ["InMainBranchingModule" "decision"] ["InMainBranchingModule" "adopted"] ["InMainBranchingModule" "impeded"] ["InPhaseUpdateModule" "input"] ["InYearBasedAdoptionDeciderModule" "input"] ["InPhaseLoggingModule" "input"]] 
             :label "PVact-Auswerungskante" 
             :color "#7012FE"
           }
@@ -285,7 +285,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.18.2" 
+        :description "IRPact v1.18.3" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -1213,7 +1213,7 @@
                   {
                     :label "Agentattributskalierer" 
                     :set "set_InAgentAttributeScaler" 
-                    :description "newValue = (oldValue - min) " 
+                    :description "newValue = (oldValue - min) &#47; (max - min)" 
                     :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
                   }
                 ]
@@ -1303,7 +1303,7 @@
                   {
                     :label "LogisticModule" 
                     :set "set_InLogisticModule_calcgraphnode2" 
-                    :description "L" 
+                    :description "L/(1+e^(-k*(x-x0)))"
                     :tags [["InLogisticModule" "calcgraphnode2" "valueL"] ["InLogisticModule" "calcgraphnode2" "valueK"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "xinput" "graphedge2"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "x0input" "graphedge2"]]
                   } 
                   {
@@ -1413,6 +1413,12 @@
                     :set "set_InInitializationModule_evalragraphnode2" 
                     :description "todo" 
                     :tags [["InInitializationModule" "evalragraphnode2" "placeholder"]]
+                  } 
+                  {
+                    :label "DoAdoptModule" 
+                    :set "set_InDoAdoptModule_evalragraphnode2" 
+                    :description "todo" 
+                    :tags [["link" "InDoAdoptModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "input" "graphedge2"]]
                   } 
                   {
                     :label "FeasibilityModule" 

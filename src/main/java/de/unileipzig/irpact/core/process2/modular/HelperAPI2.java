@@ -1,11 +1,21 @@
 package de.unileipzig.irpact.core.process2.modular;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.io3.xlsx.CellValueSetter;
+import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
+import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetWriter;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -20,6 +30,10 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     //=========================
 
     SharedModuleData getSharedData();
+
+    default void traceReevaluatorInitalization() {
+        trace("[{}] initalize reevaluator", getName());
+    }
 
     default void traceModuleInitalization() {
         trace("[{}] initalize module", getName());
@@ -75,5 +89,26 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
 
     default void setBoolean(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName, boolean value) {
         environment.getAttributeHelper().setBoolean(agent, product, attributeName, value, true);
+    }
+
+    //=========================
+    //File
+    //=========================
+
+    default JsonTableData3 loadCsv(Path path, String delimiter) throws IOException {
+        CsvParser<JsonNode> parser = new CsvParser<>();
+        parser.setValueGetter(CsvParser.forJson());
+        parser.setDelimiter(delimiter);
+        return new JsonTableData3(parser.parseToList(path, StandardCharsets.UTF_8));
+    }
+
+    default void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
+        storeXlsx(path, XlsxSheetWriter3.forJson(), sheetData);
+    }
+
+    default void storeXlsx(Path path, CellValueSetter<JsonNode> setter, Map<String, JsonTableData3> sheetData) throws IOException {
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(setter);
+        writer.write(path, sheetData);
     }
 }

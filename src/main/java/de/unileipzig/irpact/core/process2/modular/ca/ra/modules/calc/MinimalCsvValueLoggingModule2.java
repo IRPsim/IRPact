@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -15,11 +17,14 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -94,8 +99,16 @@ public class MinimalCsvValueLoggingModule2
         return storeXlsx;
     }
 
+    protected static Path getCsvPath(Path dir, String baseName) {
+        return dir.resolve(baseName + ".csv");
+    }
+
+    protected static Path getXlsxPath(Path dir, String baseName) {
+        return dir.resolve(baseName + ".xlsx");
+    }
+
     protected void createCsvLogger(Path dir, String baseName) throws IOException {
-        Path target = dir.resolve(baseName + ".csv");
+        Path target = getCsvPath(dir, baseName);
         trace("create logger '{}', target: {}", baseName, target);
         SimplifiedLogger valueLogger = new SimplifiedFileLogger(
                 baseName + "_LOGGER",
@@ -129,7 +142,37 @@ public class MinimalCsvValueLoggingModule2
     }
 
     protected void storeXlsx0() throws IOException {
-        trace("TODO");
+        Path csvPath = getCsvPath(getDir(), getBaseName());
+        trace("try load '{}'", csvPath);
+        if(Files.exists(csvPath)) {
+            JsonTableData3 csvData = loadCsv(csvPath, ";");
+            Map<String, JsonTableData3> xlsxData = toXlsxData(csvData);
+
+            Path xlsxPath = getXlsxPath(getDir(), getBaseName());
+            trace("try store '{}'", xlsxPath);
+            storeXlsx(
+                    xlsxPath,
+                    XlsxSheetWriter3.forJson(
+                            XlsxSheetWriter3.testTime(FORMATTER),
+                            XlsxSheetWriter3.toTime(FORMATTER)
+                    ),
+                    xlsxData
+            );
+            trace("stored '{}': {}", xlsxPath, Files.exists(xlsxPath));
+        } else {
+            info("file '{}' not found", csvPath);
+        }
+    }
+
+    protected Map<String, JsonTableData3> toXlsxData(JsonTableData3 csvData) {
+        Map<String, JsonTableData3> xlsxSheetData = new HashMap<>();
+
+        JsonTableData3 xlsxData = csvData.copy();
+        xlsxData.mapStringColumnToDouble(VALUE_INDEX, 0, Double::parseDouble);
+
+        xlsxSheetData.put("Data", xlsxData);
+
+        return xlsxSheetData;
     }
 
     @Override

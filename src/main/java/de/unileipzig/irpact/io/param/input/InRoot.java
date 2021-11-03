@@ -32,7 +32,6 @@ import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.InDummyColor;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
@@ -950,7 +949,6 @@ public class InRoot implements RootClass {
             InModule2.class,
             //modules
             InBasicCAModularProcessModel.class,
-            InDummyColor.class,
             InConsumerAgentModule2.class,
             //action
             InCommunicationModule_actiongraphnode2.class,
@@ -991,6 +989,7 @@ public class InRoot implements RootClass {
             //evalra
             InConsumerAgentEvalRAModule2.class,
             InDecisionMakingDeciderModule2_evalragraphnode2.class,
+            InDoAdoptModule_evalragraphnode2.class,
             InFeasibilityModule_evalragraphnode2.class,
             InInitializationModule_evalragraphnode2.class,
             InInterestModule_evalragraphnode2.class,

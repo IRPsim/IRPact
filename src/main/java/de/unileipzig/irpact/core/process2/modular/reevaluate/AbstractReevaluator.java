@@ -9,6 +9,16 @@ import de.unileipzig.irpact.core.process2.modular.SharedModuleData;
 public abstract class AbstractReevaluator<I> extends NameableBase implements Reevaluator<I> {
 
     protected SharedModuleData sharedData;
+    protected int priority = NORM_PRIORITY;
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    @Override
+    public int getPriority() {
+        return priority;
+    }
 
     @Override
     public void setSharedData(SharedModuleData sharedData) {

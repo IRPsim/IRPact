@@ -4096,6 +4096,18 @@ PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAge
 * - fill: #7012FE
 * - color: #7012FE
 * - shape: circle
+* - identifier: InDoAdoptModule_evalragraphnode2
+* - type: String
+SET set_InDoAdoptModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+
+* - description: todo
+* - identifier: Eingabemodul
+* - type: Boolean
+PARAMETER par_link_InDoAdoptModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InDoAdoptModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+
+* - fill: #7012FE
+* - color: #7012FE
+* - shape: circle
 * - identifier: InFeasibilityModule_evalragraphnode2
 * - type: String
 SET set_InFeasibilityModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)

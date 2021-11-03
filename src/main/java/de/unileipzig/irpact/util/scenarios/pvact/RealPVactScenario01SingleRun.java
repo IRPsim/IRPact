@@ -5,7 +5,6 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
-import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
@@ -94,8 +93,8 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
                 RealData.XLSX_ORDER_ARR,
                 RealData.NS_MEANS,
                 RealData.NS_SD,
-                RealData.lowerBoundSD(1, 0),
-                RealData.upperBoundSD(1, 1)
+                RealData.lowerBound(0),
+                RealData.upperBound(1)
         );
         realData.CAGS.applyMilieus(ns, InPVactConsumerAgentGroup::setNoveltySeeking);
         //DEP
@@ -114,8 +113,8 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
                 RealData.XLSX_ORDER_ARR,
                 RealData.NEP_MEANS,
                 RealData.NEP_SD,
-                RealData.lowerBoundSD(1, 0),
-                RealData.upperBoundSD(1, 1)
+                RealData.lowerBound(0),
+                RealData.upperBound(1)
         );
         realData.CAGS.applyMilieus(nep, InPVactConsumerAgentGroup::setEnvironmentalConcern);
         //COMMU

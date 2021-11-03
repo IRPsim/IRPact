@@ -235,6 +235,7 @@
       "set_InDisaggregatedFinancialModule_inputgraphnode" : { },
       "set_InDisaggregatedNPVModule_inputgraphnode" : { },
       "set_InDistanceEvaluator" : { },
+      "set_InDoAdoptModule_evalragraphnode2" : { },
       "set_InDoNothingComponent" : { },
       "set_InDoNothingModule_evalgraphnode" : { },
       "set_InDummyColor" : { },
@@ -387,7 +388,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_02_T_11_05_21" : {
+        "CT_D_2021_11_02_T_12_39_48" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -536,7 +537,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_18_2" : {
+        "v1_18_3" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -737,6 +738,7 @@
       "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InDefaultInterestModule_evalgraphnode_InUncertainty_uncertainties" : { },
       "par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile" : { },
+      "par_link_InDoAdoptModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2" : { },
       "par_link_InDoNothingModule_evalgraphnode_InConsumerAgentModule_inputModule_graphedge" : { },
       "par_link_InFeasibilityModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2" : { },
       "par_link_InFileBasedConsumerAgentPopulation_InAttributeName_selectKey" : { },

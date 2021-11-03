@@ -55,6 +55,8 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
+    public static InComparedAnnualZipImage DEFAULT = new InComparedAnnualZipImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP);
+
     public String _name;
 
     @FieldDefinition

@@ -26,19 +26,19 @@ public abstract class AbstractProcessPhaseOverviewImageHandler
     protected String getNameForPhase(DataAnalyser.Phase phase) {
         switch (phase) {
             case INITIAL_ADOPTED:
-                return getLocalizedString("phase0");
+                return getLocalizedString("initialAdopted");
 
             case AWARENESS:
-                return getLocalizedString("phase1");
+                return getLocalizedString("awareness");
 
             case FEASIBILITY:
-                return getLocalizedString("phase2");
+                return getLocalizedString("feasibility");
 
             case DECISION_MAKING:
-                return getLocalizedString("phase3");
+                return getLocalizedString("decisionMaking");
 
             case ADOPTED:
-                return getLocalizedString("phase4");
+                return getLocalizedString("adopted");
 
             default:
                 throw new IllegalArgumentException("unsupported phase:" + phase);

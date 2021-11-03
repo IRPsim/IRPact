@@ -11,8 +11,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
@@ -147,6 +152,69 @@ public class XlsxSheetWriter3<T> {
         return (cell, value) -> {
             if(value == null) {
                 cell.setBlank();
+                return;
+            }
+
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    cell.setCellValue(value.booleanValue());
+                    break;
+
+                case NUMBER:
+                    cell.setCellValue(value.doubleValue());
+                    break;
+
+                case STRING:
+                    cell.setCellValue(value.textValue());
+                    break;
+
+                case NULL:
+                case MISSING:
+                    cell.setBlank();
+                    break;
+                default:
+                    throw new IllegalArgumentException("unsupported node type: " + value.getNodeType());
+            }
+        };
+    }
+
+    public static Predicate<JsonNode> testTime(DateTimeFormatter formatter) {
+        return value -> {
+            if(value != null && value.isTextual()) {
+                try {
+                    LocalDateTime ldt = LocalDateTime.parse(value.asText(), formatter);
+                    return true;
+                } catch (DateTimeParseException e) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        };
+    }
+
+    public static Function<JsonNode, LocalDateTime> toTime(DateTimeFormatter formatter) {
+        return value -> {
+            if(value != null && value.isTextual()) {
+                return LocalDateTime.parse(value.asText(), formatter);
+            } else {
+                throw new IllegalArgumentException("no text node");
+            }
+        };
+    }
+
+    public static CellValueSetter<JsonNode> forJson(
+            Predicate<? super JsonNode> timeTester,
+            Function<? super JsonNode, ? extends LocalDateTime> toTime) {
+        return (cell, value) -> {
+            if(value == null) {
+                cell.setBlank();
+                return;
+            }
+
+            if(timeTester.test(value)) {
+                LocalDateTime ldt = toTime.apply(value);
+                cell.setCellValue(ldt);
                 return;
             }
 

@@ -93,8 +93,8 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
                 RealData.XLSX_ORDER_ARR,
                 RealData.NS_MEANS,
                 RealData.NS_SD,
-                RealData.lowerBoundSD(1, 0),
-                RealData.upperBoundSD(1, 1)
+                RealData.lowerBound(0),
+                RealData.upperBound(1)
         );
         realData.CAGS.applyMilieus(ns, InPVactConsumerAgentGroup::setNoveltySeeking);
         //DEP
@@ -113,8 +113,8 @@ public class RealPVactScenario02SingleRun extends AbstractPVactScenario {
                 RealData.XLSX_ORDER_ARR,
                 RealData.NEP_MEANS,
                 RealData.NEP_SD,
-                RealData.lowerBoundSD(1, 0),
-                RealData.upperBoundSD(1, 1)
+                RealData.lowerBound(0),
+                RealData.upperBound(1)
         );
         realData.CAGS.applyMilieus(nep, InPVactConsumerAgentGroup::setEnvironmentalConcern);
         //COMMU

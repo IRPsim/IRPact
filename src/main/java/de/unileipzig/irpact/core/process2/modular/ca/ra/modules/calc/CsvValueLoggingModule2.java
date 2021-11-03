@@ -3,6 +3,8 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
 import de.unileipzig.irpact.commons.time.Timestamp;
+import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -15,11 +17,14 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Daniel Abitz
@@ -32,8 +37,11 @@ public class CsvValueLoggingModule2
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     public static final int AGENT_INDEX = 0;
+    public static final int AGENT_GROUP_INDEX = 1;
     public static final int PRODUCT_INDEX = 2;
+    public static final int PRODUCT_GROUP_INDEX = 3;
     public static final int TIME_INDEX = 4;
+    public static final int YEAR_INDEX = 5;
     public static final int VALUE_INDEX = 6;
 
     protected Path dir;
@@ -129,7 +137,38 @@ public class CsvValueLoggingModule2
     }
 
     protected void storeXlsx0() throws IOException {
-        trace("TODO");
+        Path csvPath = getDir().resolve(getBaseName() + ".csv");
+        trace("try load '{}'", csvPath);
+        if(Files.exists(csvPath)) {
+            JsonTableData3 csvData = loadCsv(csvPath, ";");
+            Map<String, JsonTableData3> xlsxData = toXlsxData(csvData);
+
+            Path xlsxPath = getDir().resolve(getBaseName() + ".xlsx");
+            trace("try store '{}'", xlsxPath);
+            storeXlsx(
+                    xlsxPath,
+                    XlsxSheetWriter3.forJson(
+                            XlsxSheetWriter3.testTime(FORMATTER),
+                            XlsxSheetWriter3.toTime(FORMATTER)
+                    ),
+                    xlsxData
+            );
+            trace("stored '{}': {}", xlsxPath, Files.exists(xlsxPath));
+        } else {
+            info("file '{}' not found", csvPath);
+        }
+    }
+
+    protected Map<String, JsonTableData3> toXlsxData(JsonTableData3 csvData) {
+        Map<String, JsonTableData3> xlsxSheetData = new HashMap<>();
+
+        JsonTableData3 xlsxData = csvData.copy();
+        xlsxData.mapStringColumnToInt(YEAR_INDEX, 0, Integer::parseInt);
+        xlsxData.mapStringColumnToDouble(VALUE_INDEX, 0, Double::parseDouble);
+
+        xlsxSheetData.put("Data", xlsxData);
+
+        return xlsxSheetData;
     }
 
     @Override

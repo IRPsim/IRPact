@@ -48,6 +48,8 @@ public class InInterestOverviewImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
+    public static InInterestOverviewImage DEFAULT = new InInterestOverviewImage(IRPact.IMAGE_ANNUAL_INTEREST);
+
     public String _name;
 
     @FieldDefinition

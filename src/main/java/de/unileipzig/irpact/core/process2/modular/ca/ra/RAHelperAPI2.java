@@ -50,7 +50,11 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //=========================
 
     default void traceModuleInfo(ConsumerAgentData2 input) {
-        trace("[{}] call module {}={}", input.getAgentName(), getClass().getSimpleName(), getName());
+        trace("[{}]@[{}] call module ({})", getName(), input.getAgentName(), getClass().getSimpleName());
+    }
+
+    default void traceReevaluatorInfo(ConsumerAgentData2 input) {
+        trace("[{}]@[{}] call reevaluator ({})", getName(), input.getAgentName(), getClass().getSimpleName());
     }
 
     default NPVDataSupplier getNPVDataSupplier(SimulationEnvironment environment, NPVData data) {

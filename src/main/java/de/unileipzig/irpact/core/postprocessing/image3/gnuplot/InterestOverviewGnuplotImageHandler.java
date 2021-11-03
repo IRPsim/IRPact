@@ -66,7 +66,7 @@ public class InterestOverviewGnuplotImageHandler
     public GnuPlotBuilder getBuilder(InInterestOverviewImage image) throws Throwable {
         return GnuPlotFactory.stackedBarChart0(
                 getLocalizedString("title"),
-                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("filllab"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
                 getLocalizedString("sep"),
                 image.getBoxWidth(),
                 image.getImageWidth(), image.getImageHeight()

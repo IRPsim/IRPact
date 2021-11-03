@@ -48,6 +48,8 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
+    public static InAdoptionPhaseOverviewImage DEFAULT = new InAdoptionPhaseOverviewImage(IRPact.IMAGE_PHASE_OVERVIEW);
+
     public String _name;
 
     @FieldDefinition
