@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
-import de.unileipzig.irpact.jadex.time.UnitStepDiscreteTimeModel;
+import de.unileipzig.irpact.jadex.time.FixedUnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -206,11 +206,11 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
     }
 
     @Override
-    public UnitStepDiscreteTimeModel parse(IRPactInputParser parser) throws ParsingException {
-        UnitStepDiscreteTimeModel timeModel = new UnitStepDiscreteTimeModel();
+    public FixedUnitStepDiscreteTimeModel parse(IRPactInputParser parser) throws ParsingException {
+        FixedUnitStepDiscreteTimeModel timeModel = new FixedUnitStepDiscreteTimeModel();
         timeModel.setName(getName());
         timeModel.setEnvironment((JadexSimulationEnvironment) parser.getEnvironment());
-        UnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction func = new UnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction(
+        FixedUnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction func = new FixedUnitStepDiscreteTimeModel.CeilingTimeAdvanceFunction(
                 getAmountOfTime(),
                 getUnit()
         );

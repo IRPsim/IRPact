@@ -271,9 +271,10 @@ public class FixedUnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
         this.nowClockTick = clockTick;
         double tick = clockTick - referenceClockTick + tickModifier;
         double annualTick = clockTick - annualReferenceClockTick + tickModifier;
+        double modifiedClockTick = clockTick + tickModifier;
         JadexTimestamp newNowStamp = new BasicTimestamp(
                 timeAdvanceFunction.moveForward(annualReferenceTime.getTime(), (long) annualTick),
-                clockTick,
+                modifiedClockTick,
                 tick
         );
 

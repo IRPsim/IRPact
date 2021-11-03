@@ -608,8 +608,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
         InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
         envScaler.setName("ENV_SCALER");
-        envScaler.setM(0.006);
-        envScaler.setN(-11.466);
+        envScaler.setM(RAConstants.DEFAULT_M);
+        envScaler.setN(RAConstants.DEFAULT_N);
         envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
 
         InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();

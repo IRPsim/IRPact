@@ -19,6 +19,9 @@ public final class RAConstants {
     public static final double DEFAULT_EXTREMIST_UNCERTAINTY = 0.05;
     public static final double DEFAULT_EXTREMIST_RATE = 0.125;
 
+    public static final double DEFAULT_M = 0.006;
+    public static final double DEFAULT_N = -11.466;
+
     //Agent
     public static final String NOVELTY_SEEKING = "novelty_seeking";                   //A2
     public static final String NOVELTY_SEEKING_UNCERTAINTY = getUncertaintyAttributeName(NOVELTY_SEEKING);
