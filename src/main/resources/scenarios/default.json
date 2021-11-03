@@ -238,7 +238,6 @@
       "set_InDoAdoptModule_evalragraphnode2" : { },
       "set_InDoNothingComponent" : { },
       "set_InDoNothingModule_evalgraphnode" : { },
-      "set_InDummyColor" : { },
       "set_InEntireNetworkNodeFilterScheme" : { },
       "set_InEnvironmentalConcernModule_inputgraphnode" : { },
       "set_InEvaluableComponent" : { },
@@ -271,110 +270,7 @@
       "set_InGeneralConsumerAgentAnnualGroupAttribute" : { },
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
-      "set_InGenericOutputImage" : {
-        "Interessensentwicklung" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 0,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
-          "par_InGenericOutputImage_annualInterest2D" : 1,
-          "par_InGenericOutputImage_annualPhaseOverview" : 0,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        },
-        "JaehrlicheAdoptionenPhase" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 0,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 1,
-          "par_InGenericOutputImage_annualInterest2D" : 0,
-          "par_InGenericOutputImage_annualPhaseOverview" : 0,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        },
-        "JaehrlicheAdoptionenPLZ" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 1,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
-          "par_InGenericOutputImage_annualInterest2D" : 0,
-          "par_InGenericOutputImage_annualPhaseOverview" : 0,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        },
-        "JaehrlicheAdoptionenPLZVergleich" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 0,
-          "par_InGenericOutputImage_annualZipWithReal" : 1,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
-          "par_InGenericOutputImage_annualInterest2D" : 0,
-          "par_InGenericOutputImage_annualPhaseOverview" : 0,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        },
-        "JaehrlicheAdoptionenVergleich" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 0,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 1,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
-          "par_InGenericOutputImage_annualInterest2D" : 0,
-          "par_InGenericOutputImage_annualPhaseOverview" : 0,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        },
-        "Phasenuebersicht" : {
-          "par_InGenericOutputImage_useGnuplot" : 1,
-          "par_InGenericOutputImage_useR" : 0,
-          "par_InGenericOutputImage_annualZip" : 0,
-          "par_InGenericOutputImage_annualZipWithReal" : 0,
-          "par_InGenericOutputImage_annualZipWithRealTotal" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase" : 0,
-          "par_InGenericOutputImage_cumulativeAnnualPhase2" : 0,
-          "par_InGenericOutputImage_annualInterest2D" : 0,
-          "par_InGenericOutputImage_annualPhaseOverview" : 1,
-          "par_InGenericOutputImage_storeScript" : 0,
-          "par_InGenericOutputImage_storeData" : 0,
-          "par_InGenericOutputImage_storeImage" : 1,
-          "par_InGenericOutputImage_imageWidth" : 1280,
-          "par_InGenericOutputImage_imageHeight" : 720,
-          "par_InGenericOutputImage_linewidth" : 1.0
-        }
-      },
+      "set_InGenericOutputImage" : { },
       "set_InGlobalAvgNPVModule_inputgraphnode2" : { },
       "set_InGlobalDeffuantUncertainty" : { },
       "set_InGnuPlotOutputImage" : { },
@@ -388,7 +284,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_02_T_12_39_48" : {
+        "CT_D_2021_11_03_T_11_50_22" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -401,6 +297,8 @@
       "set_InInterestOverviewImage" : { },
       "set_InInverse" : { },
       "set_InIRPactVersion" : { },
+      "set_InLinearePercentageAgentAttributeScaler" : { },
+      "set_InLinearePercentageAgentAttributeUpdater" : { },
       "set_InLocalShareOfAdopterModule_inputgraphnode2" : { },
       "set_InLoggingResultImage2" : { },
       "set_InLogisticModule_calcgraphnode" : { },
@@ -429,14 +327,7 @@
       "set_InNPVModule_inputgraphnode" : { },
       "set_InNPVModule_inputgraphnode2" : { },
       "set_InNumberOfTies" : { },
-      "set_InOutputImage" : {
-        "Interessensentwicklung" : { },
-        "JaehrlicheAdoptionenPhase" : { },
-        "JaehrlicheAdoptionenPLZ" : { },
-        "JaehrlicheAdoptionenPLZVergleich" : { },
-        "JaehrlicheAdoptionenVergleich" : { },
-        "Phasenuebersicht" : { }
-      },
+      "set_InOutputImage" : { },
       "set_InOutputImage2" : { },
       "set_InPhaseLoggingModule_evalragraphnode2" : { },
       "set_InPhaseUpdateModule_evalragraphnode2" : { },
@@ -470,9 +361,9 @@
       "set_InPVactGlobalDeffuantUncertainty" : { },
       "set_InPVactGroupBasedDeffuantUncertainty" : {
         "Unvertainty" : {
-          "par_InPVactGroupBasedDeffuantUncertainty_extremistParameter" : -1.0,
-          "par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty" : 0.35,
-          "par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty" : 1.4,
+          "par_InPVactGroupBasedDeffuantUncertainty_extremistParameter" : 0.125,
+          "par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty" : 0.05,
+          "par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty" : 0.2,
           "par_InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive" : 0,
           "par_InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive" : 0
         }
@@ -502,7 +393,7 @@
           "par_InRAProcessModel_unknownPoints" : 0,
           "par_InRAProcessModel_logisticFactor" : 0.005,
           "par_InRAProcessModel_speedOfConvergence" : 0.0,
-          "par_InRAProcessModel_attitudeGap" : 1.75,
+          "par_InRAProcessModel_attitudeGap" : 0.25,
           "par_InRAProcessModel_chanceNeutral" : 0.5,
           "par_InRAProcessModel_chanceConvergence" : 0.25,
           "par_InRAProcessModel_chanceDivergence" : 0.25,
@@ -537,7 +428,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_18_3" : {
+        "v1_19_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -790,26 +681,7 @@
       "par_link_InGeneralConsumerAgentGroup_InSpatialDistribution_spatialDistribution" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
-      "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : {
-        "Interessensentwicklung" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        },
-        "JaehrlicheAdoptionenPhase" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        },
-        "JaehrlicheAdoptionenPLZ" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        },
-        "JaehrlicheAdoptionenPLZVergleich" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        },
-        "JaehrlicheAdoptionenVergleich" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        },
-        "Phasenuebersicht" : {
-          "PV_Diffusion_Leipzig" : 0.0
-        }
-      },
+      "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InGlobalAvgNPVModule_inputgraphnode2_InPVFile_pvFile" : { },
       "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
       "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
@@ -822,6 +694,8 @@
       "par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onTrue_graphedge2" : { },
       "par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentBoolModule2_test_graphedge2" : { },
       "par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2" : { },
+      "par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute" : { },
+      "par_link_InLinearePercentageAgentAttributeUpdater_InLinearePercentageAgentAttributeScaler_scaler" : { },
       "par_link_InLocalShareOfAdopterModule_inputgraphnode2_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
       "par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2" : { },
       "par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_xinput_graphedge2" : { },
@@ -832,7 +706,6 @@
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_decision_graphedge2" : { },
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_feasibility_graphedge2" : { },
       "par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_init_graphedge2" : { },
-      "par_link_InMainBranchingModule_evalragraphnode2_InDummyColor_colorPlaceholder" : { },
       "par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent" : { },

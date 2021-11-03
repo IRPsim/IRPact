@@ -53,6 +53,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
@@ -1007,12 +1008,14 @@ public class InRoot implements RootClass {
             InConstructionRenovationUpdater.class,
             InDecisionMakingReevaluator.class,
             InImpededResetter.class,
+            InLinearePercentageAgentAttributeUpdater.class,
             InReevaluatorModuleLinker.class,
             //reeval-general
             InReevaluator2.class,
             //handler-init
             InAgentAttributeScaler.class,
             InInitializationHandler.class,
+            InLinearePercentageAgentAttributeScaler.class,
             //===
 
             //special

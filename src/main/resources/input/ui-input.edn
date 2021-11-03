@@ -274,18 +274,13 @@
     :image "agentGraph"
   } 
   {
-    :label "set_InDummyColor" 
-    :set "set_InDummyColor" 
-    :tags [["InDummyColor" "placeholder"]]
-  } 
-  {
     :label "Informationen" 
     :description "Informationen über IRPact und das Szenario" 
     :sections [
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.18.3" 
+        :description "IRPact v1.19.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -331,31 +326,7 @@
         ]
       } 
       {
-        :label "Ergebnisvisualisierung" 
-        :description "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können." 
-        :sections [
-          {
-            :label "Benutzerdefiniert" 
-            :set "set_InGenericOutputImage" 
-            :description "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt" 
-            :tags [["InGenericOutputImage" "useGnuplot"] ["InGenericOutputImage" "useR"] ["InGenericOutputImage" "annualZip"] ["InGenericOutputImage" "annualZipWithReal"] ["InGenericOutputImage" "annualZipWithRealTotal"] ["InGenericOutputImage" "cumulativeAnnualPhase"] ["InGenericOutputImage" "cumulativeAnnualPhase2"] ["InGenericOutputImage" "annualInterest2D"] ["InGenericOutputImage" "annualPhaseOverview"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"] ["InGenericOutputImage" "imageWidth"] ["InGenericOutputImage" "imageHeight"] ["InGenericOutputImage" "linewidth"] ["link" "InGenericOutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
-          } 
-          {
-            :label "gnuplot" 
-            :set "set_InGnuPlotOutputImage" 
-            :description "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InGnuPlotOutputImage" "annualZip"] ["InGnuPlotOutputImage" "annualZipWithReal"] ["InGnuPlotOutputImage" "annualZipWithRealTotal"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase2"] ["InGnuPlotOutputImage" "annualInterest2D"] ["InGnuPlotOutputImage" "annualPhaseOverview"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"] ["InGnuPlotOutputImage" "imageWidth"] ["InGnuPlotOutputImage" "imageHeight"] ["InGnuPlotOutputImage" "linewidth"] ["link" "InGnuPlotOutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
-          } 
-          {
-            :label "R" 
-            :set "set_InROutputImage" 
-            :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
-            :tags [["InROutputImage" "annualZip"] ["InROutputImage" "annualZipWithReal"] ["InROutputImage" "annualZipWithRealTotal"] ["InROutputImage" "cumulativeAnnualPhase"] ["InROutputImage" "cumulativeAnnualPhase2"] ["InROutputImage" "annualInterest2D"] ["InROutputImage" "annualPhaseOverview"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "imageWidth"] ["InROutputImage" "imageHeight"] ["InROutputImage" "linewidth"] ["link" "InROutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
-          }
-        ]
-      } 
-      {
-        :label "Datenanalyse2" 
+        :label "Datenanalyse" 
         :description "todo" 
         :sections [
           {
@@ -367,7 +338,7 @@
         ]
       } 
       {
-        :label "Ergebnisvisualisierung2" 
+        :label "Ergebnisvisualisierung" 
         :description "todo" 
         :sections [
           {
@@ -438,11 +409,6 @@
             :tags [["InConsumerAgentGroupColor" "rgba"] ["link" "InConsumerAgentGroupColor" "InConsumerAgentGroup" "groups"]]
           }
         ]
-      } 
-      {
-        :label "Datenausgabe" 
-        :description "Hier kann die Datenausgabe konfiguriert werden." 
-        :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"] ["InGeneral" "logFinancialComponent"]]
       }
     ]
   } 
@@ -731,7 +697,7 @@
           {
             :label "Inverse Distanz" 
             :set "set_InInverse" 
-            :description "Benutzt 1" 
+            :description "Benutzt 1/distance für die Auswertung." 
             :tags [["InInverse" "placeholderInverse"]]
           }
         ]
@@ -779,12 +745,12 @@
       } 
       {
         :label "Schema für Produktfindung" 
-        :description "Benutzt 1" 
+        :description "Benutzt 1/distance für die Auswertung." 
         :sections [
           {
             :label "Fixproduktschema" 
             :set "set_InFixProductFindingScheme" 
-            :description "distance für die Auswertung." 
+            :description "Dieses Schema basiert auf Fixprodukten." 
             :tags [["link" "InFixProductFindingScheme" "InFixProduct" "refFixProduct"]]
           }
         ]
@@ -817,337 +783,6 @@
   } 
   {
     :label "Prozessmodell" 
-    :description "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren." 
-    :sections [
-      {
-        :label "Unsicherheit" 
-        :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
-        :sections [
-          {
-            :label "Unsicherheit basierend auf allen Agenten" 
-            :set "set_InGlobalDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
-            :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf allen PVact-Agenten" 
-            :set "set_InPVactGlobalDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-            :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf individuellen Agentengruppen" 
-            :set "set_InGroupBasedDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
-            :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
-            :set "set_InPVactGroupBasedDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-            :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
-          }
-        ]
-      } 
-      {
-        :label "Relative Agreement" 
-        :set "set_InRAProcessModel" 
-        :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
-      } 
-      {
-        :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 
-        :set "set_InModularRAProcessModel" 
-        :description "todo" 
-        :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
-        :sections [
-          {
-            :label "Komponenten" 
-            :description "todo" 
-            :sections [
-              {
-                :label "Standard Interest" 
-                :set "set_InDefaultHandleInterestComponent" 
-                :description "todo" 
-                :tags [["InDefaultHandleInterestComponent" "adopterPoints"] ["InDefaultHandleInterestComponent" "interestedPoints"] ["InDefaultHandleInterestComponent" "awarePoints"] ["InDefaultHandleInterestComponent" "unknownPoints"]]
-              } 
-              {
-                :label "Standard Feasibility" 
-                :set "set_InDefaultHandleFeasibilityComponent" 
-                :description "todo" 
-                :tags [["InDefaultHandleFeasibilityComponent" "adopterPoints"] ["InDefaultHandleFeasibilityComponent" "interestedPoints"] ["InDefaultHandleFeasibilityComponent" "awarePoints"] ["InDefaultHandleFeasibilityComponent" "unknownPoints"]]
-              } 
-              {
-                :label "Standard Decision Making" 
-                :set "set_InDefaultHandleDecisionMakingComponent" 
-                :description "todo" 
-                :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
-              } 
-              {
-                :label "Standard Action" 
-                :set "set_InDefaultDoActionComponent" 
-                :description "todo" 
-                :tags [["InDefaultDoActionComponent" "adopterPoints"] ["InDefaultDoActionComponent" "interestedPoints"] ["InDefaultDoActionComponent" "awarePoints"] ["InDefaultDoActionComponent" "unknownPoints"]]
-              } 
-              {
-                :label "Summe über Attribute" 
-                :set "set_InSumAttributeComponent" 
-                :description "todo" 
-                :tags [["InSumAttributeComponent" "weight"] ["link" "InSumAttributeComponent" "InAttributeName" "attributeNames"]]
-              } 
-              {
-                :label "Summe über Komponenten (Zwischenkomponente)" 
-                :set "set_InSumIntermediateComponent" 
-                :description "todo" 
-                :tags [["InSumIntermediateComponent" "weight"] ["link" "InSumIntermediateComponent" "InValueComponent" "components"]]
-              } 
-              {
-                :label "Summe über Komponenten (Evaluierungskomponente)" 
-                :set "set_InSumThresholdComponent" 
-                :description "todo" 
-                :tags [["InSumThresholdComponent" "weight"] ["InSumThresholdComponent" "threshold"] ["link" "InSumThresholdComponent" "InValueComponent" "components"]]
-              } 
-              {
-                :label "Keine Evaluierung" 
-                :set "set_InDoNothingComponent" 
-                :description "todo" 
-                :tags [["InDoNothingComponent" "placeholder"]]
-              }
-            ]
-          }
-        ]
-      } 
-      {
-        :label "Modulares Prozessmodell" 
-        :description "Ermöglicht die Konstruktion von modularen Prozessmodellen. Dabei wird zwischen zwei Modultypen unterschieden: Berechnungsmodule und Evaluierungsmodule. Berechnungsmodule haben als Ergebnis einen Zahlwert. Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
-        :sections [
-          {
-            :label "Modell" 
-            :description "Konfiguration des Modells. Das Modell ist der Schnittpunkt zwischen der Simulation und dem modularem System." 
-            :sections [
-              {
-                :label "Einfaches modulares Modell" 
-                :set "set_InConsumerAgentMPMWithAdoptionHandler" 
-                :description "Das einfache modulare Modell bestitzt exakt ein Startmodul. Es ist zu beachten, dass nur ein Modul ausgewählt ist." 
-                :tags [["link" "InConsumerAgentMPMWithAdoptionHandler" "InConsumerAgentEvaluationModule" "startModule"] ["link" "InConsumerAgentMPMWithAdoptionHandler" "InNewProductHandler" "newProductHandlers"]]
-              }
-            ]
-          } 
-          {
-            :label "Module" 
-            :description "Konfiguration der Module." 
-            :sections [
-              {
-                :label "Berechnungsmodule" 
-                :description "Hier werden die möglichen Berechungsmodule aufgeführt und konfiguriert. Berechnungsmodule haben als Ergebnis einen Zahlwert." 
-                :sections [
-                  {
-                    :label "Addierer" 
-                    :set "set_InAddModule_calcgraphnode" 
-                    :description "Einfacher Addierer, welcher zwei Eingaben addiert und das Ergebnis zusätzlich wichtet: output = (input1 + input2) * weight." 
-                    :tags [["InAddModule" "calcgraphnode" "weight"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
-                  } 
-                  {
-                    :label "Eingabeattribut" 
-                    :set "set_InAttributeInputModule_inputgraphnode" 
-                    :description "Dieses Modul ermöglicht es ein Agentenattribut als Eingabewert zu verwenden und es zusätzlich noch zu wichten. Es darf nur ein Attribut ausgewählt werden." 
-                    :tags [["InAttributeInputModule" "inputgraphnode" "weight"] ["link" "InAttributeInputModule" "inputgraphnode" "InAttributeName" "attribute"]]
-                  } 
-                  {
-                    :label "Disaggregierte Kaufkraft" 
-                    :set "set_InDisaggregatedFinancialModule_inputgraphnode" 
-                    :description "Gibt die disaggregierte Kaufkraft zurück. Dabei handelt es sich nicht um die direkte Kaufkraft, sonden die mittels logistischer Funktion berechnete: output = logistic( logisticFactor * (agentPP - avgPP) ) * weight. Dabei ist \"agentPP\" die eigentliche Kaufkraft des Agenten und \"avgPP\" der Durchschnittswert aller Agenten." 
-                    :tags [["InDisaggregatedFinancialModule" "inputgraphnode" "weight"] ["InDisaggregatedFinancialModule" "inputgraphnode" "logisticFactor"]]
-                  } 
-                  {
-                    :label "Disaggregierter Barwert" 
-                    :set "set_InDisaggregatedNPVModule_inputgraphnode" 
-                    :description "Gibt den disaggregieren Barwert zurück. Dabei handelt es sich nicht um den direkten Barwert, sonden den mittels logistischer Funktion berechneten: output = logistic( logisticFactor * (agentNPV - avgNPV) ) * weight. Dabei ist \"agentNPV\" der eigentliche Barwert des Agenten und \"avgNPV\" der Durchschnittsbarwert aller Agenten." 
-                    :tags [["InDisaggregatedNPVModule" "inputgraphnode" "weight"] ["InDisaggregatedNPVModule" "inputgraphnode" "logisticFactor"] ["link" "InDisaggregatedNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
-                  } 
-                  {
-                    :label "Umweltbewusstsein" 
-                    :set "set_InEnvironmentalConcernModule_inputgraphnode" 
-                    :description "Dieses Modul nutzt das Agentenattribut für Umweltbewusstsein (environmental_concern) als Rückgabewert: output = environmental_concern * weight" 
-                    :tags [["InEnvironmentalConcernModule" "inputgraphnode" "weight"]]
-                  } 
-                  {
-                    :label "Finanzielle Komponente" 
-                    :set "set_InFinancialComponentModule_inputgraphnode" 
-                    :description "Berechnet die finanzielle Komponente bestehend aus Barwert und Kaufkraft: output = ((logistic(logisticFactor * (agentNPV - avgNPV)) * weightNPV) + (logistic(logisticFactor * (agentPP - avgPP) ) * weightPP)) * weight." 
-                    :tags [["InFinancialComponentModule" "inputgraphnode" "weight"] ["InFinancialComponentModule" "inputgraphnode" "weightFT"] ["InFinancialComponentModule" "inputgraphnode" "weightNPV"] ["InFinancialComponentModule" "inputgraphnode" "logisticFactor"] ["link" "InFinancialComponentModule" "inputgraphnode" "InPVFile" "pvFile"]]
-                  } 
-                  {
-                    :label "Logistikfunktion" 
-                    :set "set_InLogisticModule_calcgraphnode" 
-                    :description "Wendet die Logistikfunktion auf die Eingabe an und gibt das Ergebnis gewichtet zurück: output = logistic(input) * weight." 
-                    :tags [["InLogisticModule" "calcgraphnode" "weight"] ["link" "InLogisticModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
-                  } 
-                  {
-                    :label "Novelty seeking" 
-                    :set "set_InNoveltySeekingModule_inputgraphnode" 
-                    :description "Dieses Modul nutzt das Agentenattribut für Novelty seeking (novelty_seeking) als Rückgabewert: output = novelty_seeking * weight" 
-                    :tags [["InNoveltySeekingModule" "inputgraphnode" "weight"]]
-                  } 
-                  {
-                    :label "Barwert" 
-                    :set "set_InNPVModule_inputgraphnode" 
-                    :description "Gibt den eigentlichen Barwert des Agenten zurück: output = agentNPV * weight" 
-                    :tags [["InNPVModule" "inputgraphnode" "weight"] ["link" "InNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
-                  } 
-                  {
-                    :label "Multiplizierer" 
-                    :set "set_InProductModule_calcgraphnode" 
-                    :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = PRODUKT(input) * weight. (\"PRODUKT\" steht hierbei für die Produktfunktion.)" 
-                    :tags [["InProductModule" "calcgraphnode" "weight"] ["link" "InProductModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
-                  } 
-                  {
-                    :label "Kaufkraft" 
-                    :set "set_InPurchasePowerModule_inputgraphnode" 
-                    :description "Dieses Modul nutzt das Agentenattribut für Kaufkraft (KK_Euro) als Rückgabewert: output = KK_Euro * weight" 
-                    :tags [["InPurchasePowerModule" "inputgraphnode" "weight"]]
-                  } 
-                  {
-                    :label "Lokaler Adopteranteil" 
-                    :set "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" 
-                    :description "Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight. Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt." 
-                    :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
-                  } 
-                  {
-                    :label "Sozialer Adopteranteil" 
-                    :set "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" 
-                    :description "Dieses Modul berechnet den Anteil der Adopter im sozialen Netzwerk: output = shareOfAdopter * weight. Im sozialen Netzwerk sind alle Agenten, welche enweder eine Kante zum entsprechenden Agenten besitzen oder dieser zu ihnen." 
-                    :tags [["InShareOfAdopterInSocialNetworkModule" "inputgraphnode" "weight"]]
-                  } 
-                  {
-                    :label "Soziale Komponente" 
-                    :set "set_InSocialComponentModule_inputgraphnode" 
-                    :description "Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk: output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight." 
-                    :tags [["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
-                  } 
-                  {
-                    :label "Summierer" 
-                    :set "set_InSumModule_calcgraphnode" 
-                    :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = SUMME(input) * weight. (\"SUMME\" steht hierbei für die Summenfunktion.)" 
-                    :tags [["InSumModule" "calcgraphnode" "weight"] ["link" "InSumModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
-                  } 
-                  {
-                    :label "Gewichteter Addierer" 
-                    :set "set_InWeightedAddModule_calcgraphnode" 
-                    :description "Addierer, welcher zwei Eingaben separat wichtet und addiert. Anschließend wird das Gesamtergebnis ebenfalls gewichtet: output = ((input1 * weight1) + (input2 * weight2)) * weight." 
-                    :tags [["InWeightedAddModule" "calcgraphnode" "weight"] ["InWeightedAddModule" "calcgraphnode" "weight1"] ["InWeightedAddModule" "calcgraphnode" "weight2"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
-                  } 
-                  {
-                    :label "Wichtung" 
-                    :set "set_InWeightedModule_calcgraphnode" 
-                    :description "Dieses Modul multiplizert die Eingabe mit einem Wichtungsfaktor: output = input * weight." 
-                    :tags [["InWeightedModule" "calcgraphnode" "weight"] ["link" "InWeightedModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
-                  }
-                ]
-              } 
-              {
-                :label "Evaluierungsmodule" 
-                :description "Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
-                :sections [
-                  {
-                    :label "Verzweigungsmodul" 
-                    :set "set_InBranchModule_evalgraphnode" 
-                    :description "Dieses Modul ermöglicht es, je nach Ergebnis des Eingabemoduls, unterschiedliche Folgemodule aufzurufen." 
-                    :tags [["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onAdoptModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onImpededModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onInProcessModule" "graphedge"]]
-                  } 
-                  {
-                    :label "[Standard] Aktion" 
-                    :set "set_InDefaultActionModule_evalgraphnode" 
-                    :description "Dieses Modul implementiert die \"Standardaktionen\" des klassischen PV-Prozessmodells. Dabei handelt es sich um die Aktionen \"Kommunikation\" und \"Rewiring\". Dieses Modul gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                    :tags [["InDefaultActionModule" "evalgraphnode" "adopterPoints"] ["InDefaultActionModule" "evalgraphnode" "interestedPoints"] ["InDefaultActionModule" "evalgraphnode" "awarePoints"] ["InDefaultActionModule" "evalgraphnode" "unknownPoints"] ["InDefaultActionModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultActionModule" "evalgraphnode" "attitudeGap"] ["InDefaultActionModule" "evalgraphnode" "chanceNeutral"] ["InDefaultActionModule" "evalgraphnode" "chanceConvergence"] ["InDefaultActionModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
-                  } 
-                  {
-                    :label "[Standard] Decision Making" 
-                    :set "set_InDefaultDecisionMakingModule_evalgraphnode" 
-                    :description "Dieses Modul implementiert das komplette \"decision making\"-Phase des klassischen PV-Prozessmodells. Dieses Modul gibt als Ergebnis entweder \"adoptiert\" oder \"Adoption nicht möglich\" zurück." 
-                    :tags [["InDefaultDecisionMakingModule" "evalgraphnode" "a"] ["InDefaultDecisionMakingModule" "evalgraphnode" "b"] ["InDefaultDecisionMakingModule" "evalgraphnode" "c"] ["InDefaultDecisionMakingModule" "evalgraphnode" "d"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightFT"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "evalgraphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
-                  } 
-                  {
-                    :label "[Standard] Feasibility" 
-                    :set "set_InDefaultFeasibilityModule_evalgraphnode" 
-                    :description "Dieses Modul implementiert die komplette \"feasibility\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                    :tags [["InDefaultFeasibilityModule" "evalgraphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "awarePoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
-                  } 
-                  {
-                    :label "[Standard] Interesse" 
-                    :set "set_InDefaultInterestModule_evalgraphnode" 
-                    :description "Dieses Modul implementiert die komplette \"interest\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                    :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
-                  } 
-                  {
-                    :label "[TESTMODUL] Testmodul" 
-                    :set "set_InDoNothingModule_evalgraphnode" 
-                    :description "Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer \"Adoption nicht entschieden\" zurück. Alle Arten von Modulen können als Eingabe dienen." 
-                    :tags [["link" "InDoNothingModule" "evalgraphnode" "InConsumerAgentModule" "inputModule" "graphedge"]]
-                  } 
-                  {
-                    :label "Filtermodul" 
-                    :set "set_InFilterModule_evalgraphnode" 
-                    :description "Dieses Modul filtert das Ergebnis des Eingabemodules. Das Folgemodul wird nur aufgerufen, wenn das Eingabemodul \"in process\" zurück gibt." 
-                    :tags [["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "taskModule" "graphedge"]]
-                  } 
-                  {
-                    :label "Direkte Statusrückgabe" 
-                    :set "set_InSimpleGetPhaseModule_evalgraphnode" 
-                    :description "Dieses Modul gibt den gewünschten Status zurück. Es finden keine Berechnungen oder Auswertungen statt. Das Modul kann somit als Platzhalter genutzt werden." 
-                    :tags [["InSimpleGetPhaseModule" "evalgraphnode" "getAdopt"] ["InSimpleGetPhaseModule" "evalgraphnode" "getImpeded"] ["InSimpleGetPhaseModule" "evalgraphnode" "getInProcess"]]
-                  } 
-                  {
-                    :label "Phasengerüst des PV-Prozessmodells" 
-                    :set "set_InStageEvaluationModule_evalgraphnode" 
-                    :description "Dieses Modul implementiert das Grundgerüst des PV-Prozessmodells. Es basiert auf den Prozessphasen: \"awareness\", \"feasibility\", \"decision making\", \"adopted\" und \"impeded\". Aktuell werden diese Phasen nur von den [Standard]-Modulen verändert." 
-                    :tags [["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "awarenessModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "feasibilityModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "decisionMakingModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "adoptedModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "impededModule" "graphedge"]]
-                  } 
-                  {
-                    :label "Summierte grenzwertabhängige Evaluation" 
-                    :set "set_InSumThresholdEvaluationModule_evalgraphnode" 
-                    :description "Dieses Modul summiert die Berechnungswerte der Eingabemodule auf und gibt ein entsprechendes Evaluierungsergebnis aus. Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird. Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis \"adoptiert\" oder \"Adoption nicht entscheiden\" ist. Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis \"impeded\" oder \"Adoption nicht entscheiden\" sein. Es ist zu beachten, dass mindestens eine Eingabemodul existieren muss." 
-                    :tags [["InSumThresholdEvaluationModule" "evalgraphnode" "threshold"] ["InSumThresholdEvaluationModule" "evalgraphnode" "acceptIfBelowThreshold"] ["InSumThresholdEvaluationModule" "evalgraphnode" "adoptIfAccepted"] ["InSumThresholdEvaluationModule" "evalgraphnode" "impededIfFailed"] ["link" "InSumThresholdEvaluationModule" "evalgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
-                  } 
-                  {
-                    :label "Grenzwertabhängige Evaluation" 
-                    :set "set_InThresholdEvaluationModule_evalgraphnode" 
-                    :description "Dieses Modul bestimmt das Evaluierungsergebnis basierend auf einem Grenzwert und dem Wert des Eingabemodules.. Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird. Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis \"adoptiert\" oder \"Adoption nicht entscheiden\" ist. Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis \"impeded\" oder \"Adoption nicht entscheiden\" sein. Es ist zu beachten, dass genau ein Eingabemodul existieren muss." 
-                    :tags [["InThresholdEvaluationModule" "evalgraphnode" "threshold"] ["InThresholdEvaluationModule" "evalgraphnode" "acceptIfBelowThreshold"] ["InThresholdEvaluationModule" "evalgraphnode" "adoptIfAccepted"] ["InThresholdEvaluationModule" "evalgraphnode" "impededIfFailed"] ["link" "InThresholdEvaluationModule" "evalgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      } 
-      {
-        :label "Netzwerkfilter für Prozesse" 
-        :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
-        :sections [
-          {
-            :label "Kein Distanzfilter" 
-            :set "set_InDisabledProcessPlanNodeFilterScheme" 
-            :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
-            :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
-          } 
-          {
-            :label "Gesamtes Netzwerk" 
-            :set "set_InEntireNetworkNodeFilterScheme" 
-            :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
-            :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
-          } 
-          {
-            :label "Maximale Distnz (PVact)" 
-            :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
-            :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
-            :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
-          }
-        ]
-      }
-    ]
-  } 
-  {
-    :label "Prozessmodell2" 
     :description "todo" 
     :sections [
       {
@@ -1199,6 +834,12 @@
                 :set "set_InImpededResetter" 
                 :description "todo" 
                 :tags [["InImpededResetter" "placeholder"]]
+              } 
+              {
+                :label "Fancy Agentenattributaktualisierer" 
+                :set "set_InLinearePercentageAgentAttributeUpdater" 
+                :description "todo" 
+                :tags [["InLinearePercentageAgentAttributeUpdater" "priority"] ["link" "InLinearePercentageAgentAttributeUpdater" "InLinearePercentageAgentAttributeScaler" "scaler"]]
               }
             ]
           } 
@@ -1213,8 +854,14 @@
                   {
                     :label "Agentattributskalierer" 
                     :set "set_InAgentAttributeScaler" 
-                    :description "newValue = (oldValue - min) &#47; (max - min)" 
+                    :description "todo; newValue = (oldValue - min) / (max - min)" 
                     :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
+                  } 
+                  {
+                    :label "Fancy Agentattributskalierer" 
+                    :set "set_InLinearePercentageAgentAttributeScaler" 
+                    :description "todo; y = m * x + n" 
+                    :tags [["InLinearePercentageAgentAttributeScaler" "mValue"] ["InLinearePercentageAgentAttributeScaler" "nValue"] ["link" "InLinearePercentageAgentAttributeScaler" "InAttributeName" "attribute"]]
                   }
                 ]
               }
@@ -1303,7 +950,7 @@
                   {
                     :label "LogisticModule" 
                     :set "set_InLogisticModule_calcgraphnode2" 
-                    :description "L/(1+e^(-k*(x-x0)))"
+                    :description "L/(1+e^(-k*(x-x0)))" 
                     :tags [["InLogisticModule" "calcgraphnode2" "valueL"] ["InLogisticModule" "calcgraphnode2" "valueK"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "xinput" "graphedge2"] ["link" "InLogisticModule" "calcgraphnode2" "InConsumerAgentCalculationModule2" "x0input" "graphedge2"]]
                   } 
                   {
@@ -1442,7 +1089,7 @@
                     :label "MainBranchingModule" 
                     :set "set_InMainBranchingModule_evalragraphnode2" 
                     :description "todo" 
-                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InDummyColor" "colorPlaceholder"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
+                    :tags [["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "init" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "awareness" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "feasibility" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentEvalRAModule2" "decision" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "adopted" "graphedge2"] ["link" "InMainBranchingModule" "evalragraphnode2" "InConsumerAgentActionModule2" "impeded" "graphedge2"]]
                   } 
                   {
                     :label "DecisionMakingDeciderModule" 
@@ -1667,6 +1314,372 @@
             :set "set_InTestData" 
             :description "Testdaten" 
             :tags [["InTestData" "testValue1"] ["InTestData" "testValue2"] ["InTestData" "value01"] ["InTestData" "value02"] ["InTestData" "value11"] ["InTestData" "value12"] ["InTestData" "value13"] ["InTestData" "value14"] ["InTestData" "value21"] ["InTestData" "value22"] ["InTestData" "value23"] ["InTestData" "value24"] ["InTestData" "value25"] ["InTestData" "value26"] ["InTestData" "value27"] ["InTestData" "sensi1"] ["InTestData" "sensi2"] ["InTestData" "sensi3"]]
+          }
+        ]
+      } 
+      {
+        :label "DEPRECATED" 
+        :description "..." 
+        :sections [
+          {
+            :label "ErgebnisvisualisierungOLD" 
+            :description "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können." 
+            :sections [
+              {
+                :label "Benutzerdefiniert" 
+                :set "set_InGenericOutputImage" 
+                :description "Hier kann für die Bilderzeugung das entsprechende Programm mittels 'Visualisierungsprogramm' individuell eingestellt werden. Der Bezeichner wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem für gnuplot Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt. Für R werden Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt" 
+                :tags [["InGenericOutputImage" "useGnuplot"] ["InGenericOutputImage" "useR"] ["InGenericOutputImage" "annualZip"] ["InGenericOutputImage" "annualZipWithReal"] ["InGenericOutputImage" "annualZipWithRealTotal"] ["InGenericOutputImage" "cumulativeAnnualPhase"] ["InGenericOutputImage" "cumulativeAnnualPhase2"] ["InGenericOutputImage" "annualInterest2D"] ["InGenericOutputImage" "annualPhaseOverview"] ["InGenericOutputImage" "storeScript"] ["InGenericOutputImage" "storeData"] ["InGenericOutputImage" "storeImage"] ["InGenericOutputImage" "imageWidth"] ["InGenericOutputImage" "imageHeight"] ["InGenericOutputImage" "linewidth"] ["link" "InGenericOutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
+              } 
+              {
+                :label "gnuplot" 
+                :set "set_InGnuPlotOutputImage" 
+                :description "Die hier definierten Bilder werden mittels gnuplot erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild) erstellt." 
+                :tags [["InGnuPlotOutputImage" "annualZip"] ["InGnuPlotOutputImage" "annualZipWithReal"] ["InGnuPlotOutputImage" "annualZipWithRealTotal"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase"] ["InGnuPlotOutputImage" "cumulativeAnnualPhase2"] ["InGnuPlotOutputImage" "annualInterest2D"] ["InGnuPlotOutputImage" "annualPhaseOverview"] ["InGnuPlotOutputImage" "storeScript"] ["InGnuPlotOutputImage" "storeData"] ["InGnuPlotOutputImage" "storeImage"] ["InGnuPlotOutputImage" "imageWidth"] ["InGnuPlotOutputImage" "imageHeight"] ["InGnuPlotOutputImage" "linewidth"] ["link" "InGnuPlotOutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
+              } 
+              {
+                :label "R" 
+                :set "set_InROutputImage" 
+                :description "Die hier definierten Bilder werden mittels R erstellt. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird beispielsweise eine Visualisierung mit dem Namen 'Ergebnis' definiert, werdem Ergebnis.csv (Daten), Ergebnis.R (Skript) und Ergebnis.png (Bild) erstellt." 
+                :tags [["InROutputImage" "annualZip"] ["InROutputImage" "annualZipWithReal"] ["InROutputImage" "annualZipWithRealTotal"] ["InROutputImage" "cumulativeAnnualPhase"] ["InROutputImage" "cumulativeAnnualPhase2"] ["InROutputImage" "annualInterest2D"] ["InROutputImage" "annualPhaseOverview"] ["InROutputImage" "storeScript"] ["InROutputImage" "storeData"] ["InROutputImage" "storeImage"] ["InROutputImage" "imageWidth"] ["InROutputImage" "imageHeight"] ["InROutputImage" "linewidth"] ["link" "InROutputImage" "InRealAdoptionDataFile" "realAdoptionDataFile"]]
+              }
+            ]
+          } 
+          {
+            :label "Datenausgabe" 
+            :description "Hier kann die Datenausgabe konfiguriert werden." 
+            :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"] ["InGeneral" "logFinancialComponent"]]
+          } 
+          {
+            :label "ProzessmodellALT" 
+            :description "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren." 
+            :sections [
+              {
+                :label "Netzwerkfilter für Prozesse" 
+                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
+                :sections [
+                  {
+                    :label "Kein Distanzfilter" 
+                    :set "set_InDisabledProcessPlanNodeFilterScheme" 
+                    :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
+                    :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
+                  } 
+                  {
+                    :label "Gesamtes Netzwerk" 
+                    :set "set_InEntireNetworkNodeFilterScheme" 
+                    :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
+                    :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
+                  } 
+                  {
+                    :label "Maximale Distnz (PVact)" 
+                    :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
+                    :description "todo" 
+                    :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
+                  }
+                ]
+              } 
+              {
+                :label "Relative Agreement" 
+                :set "set_InRAProcessModel" 
+                :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
+              } 
+              {
+                :label "Unsicherheit" 
+                :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
+                :sections [
+                  {
+                    :label "Unsicherheit basierend auf allen Agenten" 
+                    :set "set_InGlobalDeffuantUncertainty" 
+                    :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
+                    :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+                  } 
+                  {
+                    :label "Unsicherheit basierend auf allen PVact-Agenten" 
+                    :set "set_InPVactGlobalDeffuantUncertainty" 
+                    :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+                    :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+                  } 
+                  {
+                    :label "Unsicherheit basierend auf individuellen Agentengruppen" 
+                    :set "set_InGroupBasedDeffuantUncertainty" 
+                    :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
+                    :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+                  } 
+                  {
+                    :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
+                    :set "set_InPVactGroupBasedDeffuantUncertainty" 
+                    :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+                    :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+                  }
+                ]
+              } 
+              {
+                :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 
+                :set "set_InModularRAProcessModel" 
+                :description "todo" 
+                :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
+                :sections [
+                  {
+                    :label "Komponenten" 
+                    :description "todo" 
+                    :sections [
+                      {
+                        :label "Standard Interest" 
+                        :set "set_InDefaultHandleInterestComponent" 
+                        :description "todo" 
+                        :tags [["InDefaultHandleInterestComponent" "adopterPoints"] ["InDefaultHandleInterestComponent" "interestedPoints"] ["InDefaultHandleInterestComponent" "awarePoints"] ["InDefaultHandleInterestComponent" "unknownPoints"]]
+                      } 
+                      {
+                        :label "Standard Feasibility" 
+                        :set "set_InDefaultHandleFeasibilityComponent" 
+                        :description "todo" 
+                        :tags [["InDefaultHandleFeasibilityComponent" "adopterPoints"] ["InDefaultHandleFeasibilityComponent" "interestedPoints"] ["InDefaultHandleFeasibilityComponent" "awarePoints"] ["InDefaultHandleFeasibilityComponent" "unknownPoints"]]
+                      } 
+                      {
+                        :label "Standard Decision Making" 
+                        :set "set_InDefaultHandleDecisionMakingComponent" 
+                        :description "todo" 
+                        :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                      } 
+                      {
+                        :label "Standard Action" 
+                        :set "set_InDefaultDoActionComponent" 
+                        :description "todo" 
+                        :tags [["InDefaultDoActionComponent" "adopterPoints"] ["InDefaultDoActionComponent" "interestedPoints"] ["InDefaultDoActionComponent" "awarePoints"] ["InDefaultDoActionComponent" "unknownPoints"]]
+                      } 
+                      {
+                        :label "Summe über Attribute" 
+                        :set "set_InSumAttributeComponent" 
+                        :description "todo" 
+                        :tags [["InSumAttributeComponent" "weight"] ["link" "InSumAttributeComponent" "InAttributeName" "attributeNames"]]
+                      } 
+                      {
+                        :label "Summe über Komponenten (Zwischenkomponente)" 
+                        :set "set_InSumIntermediateComponent" 
+                        :description "todo" 
+                        :tags [["InSumIntermediateComponent" "weight"] ["link" "InSumIntermediateComponent" "InValueComponent" "components"]]
+                      } 
+                      {
+                        :label "Summe über Komponenten (Evaluierungskomponente)" 
+                        :set "set_InSumThresholdComponent" 
+                        :description "todo" 
+                        :tags [["InSumThresholdComponent" "weight"] ["InSumThresholdComponent" "threshold"] ["link" "InSumThresholdComponent" "InValueComponent" "components"]]
+                      } 
+                      {
+                        :label "Keine Evaluierung" 
+                        :set "set_InDoNothingComponent" 
+                        :description "todo" 
+                        :tags [["InDoNothingComponent" "placeholder"]]
+                      }
+                    ]
+                  }
+                ]
+              } 
+              {
+                :label "Modulares Prozessmodell" 
+                :description "Ermöglicht die Konstruktion von modularen Prozessmodellen. Dabei wird zwischen zwei Modultypen unterschieden: Berechnungsmodule und Evaluierungsmodule. Berechnungsmodule haben als Ergebnis einen Zahlwert. Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
+                :sections [
+                  {
+                    :label "Modell" 
+                    :description "Konfiguration des Modells. Das Modell ist der Schnittpunkt zwischen der Simulation und dem modularem System." 
+                    :sections [
+                      {
+                        :label "Einfaches modulares Modell" 
+                        :set "set_InConsumerAgentMPMWithAdoptionHandler" 
+                        :description "Das einfache modulare Modell bestitzt exakt ein Startmodul. Es ist zu beachten, dass nur ein Modul ausgewählt ist." 
+                        :tags [["link" "InConsumerAgentMPMWithAdoptionHandler" "InConsumerAgentEvaluationModule" "startModule"] ["link" "InConsumerAgentMPMWithAdoptionHandler" "InNewProductHandler" "newProductHandlers"]]
+                      }
+                    ]
+                  } 
+                  {
+                    :label "Module" 
+                    :description "Konfiguration der Module." 
+                    :sections [
+                      {
+                        :label "Berechnungsmodule" 
+                        :description "Hier werden die möglichen Berechungsmodule aufgeführt und konfiguriert. Berechnungsmodule haben als Ergebnis einen Zahlwert." 
+                        :sections [
+                          {
+                            :label "Addierer" 
+                            :set "set_InAddModule_calcgraphnode" 
+                            :description "Einfacher Addierer, welcher zwei Eingaben addiert und das Ergebnis zusätzlich wichtet: output = (input1 + input2) * weight." 
+                            :tags [["InAddModule" "calcgraphnode" "weight"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
+                          } 
+                          {
+                            :label "Eingabeattribut" 
+                            :set "set_InAttributeInputModule_inputgraphnode" 
+                            :description "Dieses Modul ermöglicht es ein Agentenattribut als Eingabewert zu verwenden und es zusätzlich noch zu wichten. Es darf nur ein Attribut ausgewählt werden." 
+                            :tags [["InAttributeInputModule" "inputgraphnode" "weight"] ["link" "InAttributeInputModule" "inputgraphnode" "InAttributeName" "attribute"]]
+                          } 
+                          {
+                            :label "Disaggregierte Kaufkraft" 
+                            :set "set_InDisaggregatedFinancialModule_inputgraphnode" 
+                            :description "Gibt die disaggregierte Kaufkraft zurück. Dabei handelt es sich nicht um die direkte Kaufkraft, sonden die mittels logistischer Funktion berechnete: output = logistic( logisticFactor * (agentPP - avgPP) ) * weight. Dabei ist \"agentPP\" die eigentliche Kaufkraft des Agenten und \"avgPP\" der Durchschnittswert aller Agenten." 
+                            :tags [["InDisaggregatedFinancialModule" "inputgraphnode" "weight"] ["InDisaggregatedFinancialModule" "inputgraphnode" "logisticFactor"]]
+                          } 
+                          {
+                            :label "Disaggregierter Barwert" 
+                            :set "set_InDisaggregatedNPVModule_inputgraphnode" 
+                            :description "Gibt den disaggregieren Barwert zurück. Dabei handelt es sich nicht um den direkten Barwert, sonden den mittels logistischer Funktion berechneten: output = logistic( logisticFactor * (agentNPV - avgNPV) ) * weight. Dabei ist \"agentNPV\" der eigentliche Barwert des Agenten und \"avgNPV\" der Durchschnittsbarwert aller Agenten." 
+                            :tags [["InDisaggregatedNPVModule" "inputgraphnode" "weight"] ["InDisaggregatedNPVModule" "inputgraphnode" "logisticFactor"] ["link" "InDisaggregatedNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                          } 
+                          {
+                            :label "Umweltbewusstsein" 
+                            :set "set_InEnvironmentalConcernModule_inputgraphnode" 
+                            :description "Dieses Modul nutzt das Agentenattribut für Umweltbewusstsein (environmental_concern) als Rückgabewert: output = environmental_concern * weight" 
+                            :tags [["InEnvironmentalConcernModule" "inputgraphnode" "weight"]]
+                          } 
+                          {
+                            :label "Finanzielle Komponente" 
+                            :set "set_InFinancialComponentModule_inputgraphnode" 
+                            :description "Berechnet die finanzielle Komponente bestehend aus Barwert und Kaufkraft: output = ((logistic(logisticFactor * (agentNPV - avgNPV)) * weightNPV) + (logistic(logisticFactor * (agentPP - avgPP) ) * weightPP)) * weight." 
+                            :tags [["InFinancialComponentModule" "inputgraphnode" "weight"] ["InFinancialComponentModule" "inputgraphnode" "weightFT"] ["InFinancialComponentModule" "inputgraphnode" "weightNPV"] ["InFinancialComponentModule" "inputgraphnode" "logisticFactor"] ["link" "InFinancialComponentModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                          } 
+                          {
+                            :label "Logistikfunktion" 
+                            :set "set_InLogisticModule_calcgraphnode" 
+                            :description "Wendet die Logistikfunktion auf die Eingabe an und gibt das Ergebnis gewichtet zurück: output = logistic(input) * weight." 
+                            :tags [["InLogisticModule" "calcgraphnode" "weight"] ["link" "InLogisticModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                          } 
+                          {
+                            :label "Novelty seeking" 
+                            :set "set_InNoveltySeekingModule_inputgraphnode" 
+                            :description "Dieses Modul nutzt das Agentenattribut für Novelty seeking (novelty_seeking) als Rückgabewert: output = novelty_seeking * weight" 
+                            :tags [["InNoveltySeekingModule" "inputgraphnode" "weight"]]
+                          } 
+                          {
+                            :label "Barwert" 
+                            :set "set_InNPVModule_inputgraphnode" 
+                            :description "Gibt den eigentlichen Barwert des Agenten zurück: output = agentNPV * weight" 
+                            :tags [["InNPVModule" "inputgraphnode" "weight"] ["link" "InNPVModule" "inputgraphnode" "InPVFile" "pvFile"]]
+                          } 
+                          {
+                            :label "Multiplizierer" 
+                            :set "set_InProductModule_calcgraphnode" 
+                            :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = PRODUKT(input) * weight. (\"PRODUKT\" steht hierbei für die Produktfunktion.)" 
+                            :tags [["InProductModule" "calcgraphnode" "weight"] ["link" "InProductModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
+                          } 
+                          {
+                            :label "Kaufkraft" 
+                            :set "set_InPurchasePowerModule_inputgraphnode" 
+                            :description "Dieses Modul nutzt das Agentenattribut für Kaufkraft (KK_Euro) als Rückgabewert: output = KK_Euro * weight" 
+                            :tags [["InPurchasePowerModule" "inputgraphnode" "weight"]]
+                          } 
+                          {
+                            :label "Lokaler Adopteranteil" 
+                            :set "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" 
+                            :description "Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight. Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt." 
+                            :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                          } 
+                          {
+                            :label "Sozialer Adopteranteil" 
+                            :set "set_InShareOfAdopterInSocialNetworkModule_inputgraphnode" 
+                            :description "Dieses Modul berechnet den Anteil der Adopter im sozialen Netzwerk: output = shareOfAdopter * weight. Im sozialen Netzwerk sind alle Agenten, welche enweder eine Kante zum entsprechenden Agenten besitzen oder dieser zu ihnen." 
+                            :tags [["InShareOfAdopterInSocialNetworkModule" "inputgraphnode" "weight"]]
+                          } 
+                          {
+                            :label "Soziale Komponente" 
+                            :set "set_InSocialComponentModule_inputgraphnode" 
+                            :description "Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk: output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight." 
+                            :tags [["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                          } 
+                          {
+                            :label "Summierer" 
+                            :set "set_InSumModule_calcgraphnode" 
+                            :description "Einfacher Summierer, welcher belieb viele Eingaben addiert und das Ergebnis zusätzlich wichtet: output = SUMME(input) * weight. (\"SUMME\" steht hierbei für die Summenfunktion.)" 
+                            :tags [["InSumModule" "calcgraphnode" "weight"] ["link" "InSumModule" "calcgraphnode" "InConsumerAgentCalculationModule" "inputModules" "graphedge"]]
+                          } 
+                          {
+                            :label "Gewichteter Addierer" 
+                            :set "set_InWeightedAddModule_calcgraphnode" 
+                            :description "Addierer, welcher zwei Eingaben separat wichtet und addiert. Anschließend wird das Gesamtergebnis ebenfalls gewichtet: output = ((input1 * weight1) + (input2 * weight2)) * weight." 
+                            :tags [["InWeightedAddModule" "calcgraphnode" "weight"] ["InWeightedAddModule" "calcgraphnode" "weight1"] ["InWeightedAddModule" "calcgraphnode" "weight2"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "first" "graphedge"] ["link" "InWeightedAddModule" "calcgraphnode" "InConsumerAgentCalculationModule" "second" "graphedge"]]
+                          } 
+                          {
+                            :label "Wichtung" 
+                            :set "set_InWeightedModule_calcgraphnode" 
+                            :description "Dieses Modul multiplizert die Eingabe mit einem Wichtungsfaktor: output = input * weight." 
+                            :tags [["InWeightedModule" "calcgraphnode" "weight"] ["link" "InWeightedModule" "calcgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                          }
+                        ]
+                      } 
+                      {
+                        :label "Evaluierungsmodule" 
+                        :description "Evaluierungsmodule haben als Ergebnis einen Adoptionsstatus. Dieser kann sein: adoptiert, Adoption nicht möglich, Adoption nicht entschieden. Der zu letzt genannte Zustand ermöglicht die Weiterführung im nächsten Iterationsschritt." 
+                        :sections [
+                          {
+                            :label "Verzweigungsmodul" 
+                            :set "set_InBranchModule_evalgraphnode" 
+                            :description "Dieses Modul ermöglicht es, je nach Ergebnis des Eingabemoduls, unterschiedliche Folgemodule aufzurufen." 
+                            :tags [["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onAdoptModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onImpededModule" "graphedge"] ["link" "InBranchModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "onInProcessModule" "graphedge"]]
+                          } 
+                          {
+                            :label "[Standard] Aktion" 
+                            :set "set_InDefaultActionModule_evalgraphnode" 
+                            :description "Dieses Modul implementiert die \"Standardaktionen\" des klassischen PV-Prozessmodells. Dabei handelt es sich um die Aktionen \"Kommunikation\" und \"Rewiring\". Dieses Modul gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
+                            :tags [["InDefaultActionModule" "evalgraphnode" "adopterPoints"] ["InDefaultActionModule" "evalgraphnode" "interestedPoints"] ["InDefaultActionModule" "evalgraphnode" "awarePoints"] ["InDefaultActionModule" "evalgraphnode" "unknownPoints"] ["InDefaultActionModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultActionModule" "evalgraphnode" "attitudeGap"] ["InDefaultActionModule" "evalgraphnode" "chanceNeutral"] ["InDefaultActionModule" "evalgraphnode" "chanceConvergence"] ["InDefaultActionModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                          } 
+                          {
+                            :label "[Standard] Decision Making" 
+                            :set "set_InDefaultDecisionMakingModule_evalgraphnode" 
+                            :description "Dieses Modul implementiert das komplette \"decision making\"-Phase des klassischen PV-Prozessmodells. Dieses Modul gibt als Ergebnis entweder \"adoptiert\" oder \"Adoption nicht möglich\" zurück." 
+                            :tags [["InDefaultDecisionMakingModule" "evalgraphnode" "a"] ["InDefaultDecisionMakingModule" "evalgraphnode" "b"] ["InDefaultDecisionMakingModule" "evalgraphnode" "c"] ["InDefaultDecisionMakingModule" "evalgraphnode" "d"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightFT"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "evalgraphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                          } 
+                          {
+                            :label "[Standard] Feasibility" 
+                            :set "set_InDefaultFeasibilityModule_evalgraphnode" 
+                            :description "Dieses Modul implementiert die komplette \"feasibility\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
+                            :tags [["InDefaultFeasibilityModule" "evalgraphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "awarePoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                          } 
+                          {
+                            :label "[Standard] Interesse" 
+                            :set "set_InDefaultInterestModule_evalgraphnode" 
+                            :description "Dieses Modul implementiert die komplette \"interest\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
+                            :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                          } 
+                          {
+                            :label "[TESTMODUL] Testmodul" 
+                            :set "set_InDoNothingModule_evalgraphnode" 
+                            :description "Dieses Modul dient zum Testen der Aufrufe von Submodulen. Es gibt immer \"Adoption nicht entschieden\" zurück. Alle Arten von Modulen können als Eingabe dienen." 
+                            :tags [["link" "InDoNothingModule" "evalgraphnode" "InConsumerAgentModule" "inputModule" "graphedge"]]
+                          } 
+                          {
+                            :label "Filtermodul" 
+                            :set "set_InFilterModule_evalgraphnode" 
+                            :description "Dieses Modul filtert das Ergebnis des Eingabemodules. Das Folgemodul wird nur aufgerufen, wenn das Eingabemodul \"in process\" zurück gibt." 
+                            :tags [["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "inputModule" "graphedge"] ["link" "InFilterModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "taskModule" "graphedge"]]
+                          } 
+                          {
+                            :label "Direkte Statusrückgabe" 
+                            :set "set_InSimpleGetPhaseModule_evalgraphnode" 
+                            :description "Dieses Modul gibt den gewünschten Status zurück. Es finden keine Berechnungen oder Auswertungen statt. Das Modul kann somit als Platzhalter genutzt werden." 
+                            :tags [["InSimpleGetPhaseModule" "evalgraphnode" "getAdopt"] ["InSimpleGetPhaseModule" "evalgraphnode" "getImpeded"] ["InSimpleGetPhaseModule" "evalgraphnode" "getInProcess"]]
+                          } 
+                          {
+                            :label "Phasengerüst des PV-Prozessmodells" 
+                            :set "set_InStageEvaluationModule_evalgraphnode" 
+                            :description "Dieses Modul implementiert das Grundgerüst des PV-Prozessmodells. Es basiert auf den Prozessphasen: \"awareness\", \"feasibility\", \"decision making\", \"adopted\" und \"impeded\". Aktuell werden diese Phasen nur von den [Standard]-Modulen verändert." 
+                            :tags [["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "awarenessModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "feasibilityModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "decisionMakingModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "adoptedModule" "graphedge"] ["link" "InStageEvaluationModule" "evalgraphnode" "InConsumerAgentEvaluationModule" "impededModule" "graphedge"]]
+                          } 
+                          {
+                            :label "Summierte grenzwertabhängige Evaluation" 
+                            :set "set_InSumThresholdEvaluationModule_evalgraphnode" 
+                            :description "Dieses Modul summiert die Berechnungswerte der Eingabemodule auf und gibt ein entsprechendes Evaluierungsergebnis aus. Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird. Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis \"adoptiert\" oder \"Adoption nicht entscheiden\" ist. Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis \"impeded\" oder \"Adoption nicht entscheiden\" sein. Es ist zu beachten, dass mindestens eine Eingabemodul existieren muss." 
+                            :tags [["InSumThresholdEvaluationModule" "evalgraphnode" "threshold"] ["InSumThresholdEvaluationModule" "evalgraphnode" "acceptIfBelowThreshold"] ["InSumThresholdEvaluationModule" "evalgraphnode" "adoptIfAccepted"] ["InSumThresholdEvaluationModule" "evalgraphnode" "impededIfFailed"] ["link" "InSumThresholdEvaluationModule" "evalgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                          } 
+                          {
+                            :label "Grenzwertabhängige Evaluation" 
+                            :set "set_InThresholdEvaluationModule_evalgraphnode" 
+                            :description "Dieses Modul bestimmt das Evaluierungsergebnis basierend auf einem Grenzwert und dem Wert des Eingabemodules.. Dabei kann eingestellt werden, ob der Grenzwert als untere oder obere Grenze gehandhabt wird. Zusätzlich kann noch eingestellt werden, ob bei einer erfolgreichen Evaluierung das das Ergebnis \"adoptiert\" oder \"Adoption nicht entscheiden\" ist. Äquivalent kann bei einer erfolglosen Evaluierung das Ergebnis \"impeded\" oder \"Adoption nicht entscheiden\" sein. Es ist zu beachten, dass genau ein Eingabemodul existieren muss." 
+                            :tags [["InThresholdEvaluationModule" "evalgraphnode" "threshold"] ["InThresholdEvaluationModule" "evalgraphnode" "acceptIfBelowThreshold"] ["InThresholdEvaluationModule" "evalgraphnode" "adoptIfAccepted"] ["InThresholdEvaluationModule" "evalgraphnode" "impededIfFailed"] ["link" "InThresholdEvaluationModule" "evalgraphnode" "InConsumerAgentCalculationModule" "input" "graphedge"]]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }

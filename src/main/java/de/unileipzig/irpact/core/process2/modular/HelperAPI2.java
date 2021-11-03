@@ -4,17 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
-import de.unileipzig.irpact.commons.util.io3.xlsx.CellValueSetter;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
-import de.unileipzig.irpact.commons.util.xlsx.XlsxSheetWriter;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
 
@@ -103,12 +105,33 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     }
 
     default void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
-        storeXlsx(path, XlsxSheetWriter3.forJson(), sheetData);
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        writer.write(path, sheetData);
     }
 
-    default void storeXlsx(Path path, CellValueSetter<JsonNode> setter, Map<String, JsonTableData3> sheetData) throws IOException {
+    default void storeXlsxWithTime(
+            Path path,
+            DateTimeFormatter formatter,
+            Map<String, JsonTableData3> sheetData) throws IOException {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(setter);
-        writer.write(path, sheetData);
+        XSSFWorkbook book = writer.newBook();
+
+        CellStyle dateStyle = book.createCellStyle();
+        CreationHelper helper = book.getCreationHelper();
+        dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy, hh:mm:ss"));
+
+        writer.setCellHandler(
+                XlsxSheetWriter3.forJson(
+                        XlsxSheetWriter3.testTime(formatter),
+                        XlsxSheetWriter3.toTime(formatter),
+                        XlsxSheetWriter3.toCellStyle(dateStyle)
+                )
+        );
+        writer.write(
+                path,
+                book,
+                sheetData
+        );
     }
 }

@@ -11,12 +11,13 @@ public final class RAConstants {
 
     public static final double DEFAULT_LOGISTIC_FACTOR = 0.005;
     public static final double DEFAULT_SPEED_OF_CONVERGENCE = 0.5;
-    public static final double DEFAULT_ATTIDUTE_GAP = 1.75;
+    public static final double DEFAULT_ATTIDUTE_GAP = 0.25;
     public static final double DEFAULT_NEUTRAL_CHANCE = 0.5;
     public static final double DEFAULT_CONVERGENCE_CHANCE = 0.25;
     public static final double DEFAULT_DIVERGENCE_CHANCE = 0.25;
-    public static final double DEFAULT_MODERATE_UNCERTAINTY = 1.4;
-    public static final double DEFAULT_EXTREMIST_UNCERTAINTY = 0.35;
+    public static final double DEFAULT_MODERATE_UNCERTAINTY = 0.2;
+    public static final double DEFAULT_EXTREMIST_UNCERTAINTY = 0.05;
+    public static final double DEFAULT_EXTREMIST_RATE = 0.125;
 
     //Agent
     public static final String NOVELTY_SEEKING = "novelty_seeking";                   //A2

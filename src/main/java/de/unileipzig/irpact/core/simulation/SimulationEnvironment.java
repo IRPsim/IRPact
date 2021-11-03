@@ -31,6 +31,17 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
 
     void register(CloseableSimulationEntity entity);
 
+    boolean isRegistered(CloseableSimulationEntity entity);
+
+    default boolean registerIfNotRegistered(CloseableSimulationEntity entity) {
+        if(isRegistered(entity)) {
+            return false;
+        } else {
+            register(entity);
+            return true;
+        }
+    }
+
     boolean unregister(CloseableSimulationEntity entity);
 
     void closeEntities();

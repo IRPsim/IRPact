@@ -172,6 +172,11 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
+    public boolean isRegistered(CloseableSimulationEntity entity) {
+        return CLOSABLE_ENTITIES.contains(entity);
+    }
+
+    @Override
     public boolean unregister(CloseableSimulationEntity entity) {
         return CLOSABLE_ENTITIES.remove(entity);
     }

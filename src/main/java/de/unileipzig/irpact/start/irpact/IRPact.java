@@ -86,8 +86,8 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "18";
-    private static final String BUILD_STRING = "3";
+    private static final String MINOR_STRING = "19";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 

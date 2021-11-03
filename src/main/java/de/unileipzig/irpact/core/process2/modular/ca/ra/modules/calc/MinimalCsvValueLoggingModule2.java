@@ -150,14 +150,7 @@ public class MinimalCsvValueLoggingModule2
 
             Path xlsxPath = getXlsxPath(getDir(), getBaseName());
             trace("try store '{}'", xlsxPath);
-            storeXlsx(
-                    xlsxPath,
-                    XlsxSheetWriter3.forJson(
-                            XlsxSheetWriter3.testTime(FORMATTER),
-                            XlsxSheetWriter3.toTime(FORMATTER)
-                    ),
-                    xlsxData
-            );
+            storeXlsxWithTime(xlsxPath, FORMATTER, xlsxData);
             trace("stored '{}': {}", xlsxPath, Files.exists(xlsxPath));
         } else {
             info("file '{}' not found", csvPath);
@@ -192,7 +185,7 @@ public class MinimalCsvValueLoggingModule2
 
     @Override
     protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
-        environment.register(this);
+        trace("register on close: {}", environment.registerIfNotRegistered(this));
         createCsvLogger(dir, baseName);
     }
 

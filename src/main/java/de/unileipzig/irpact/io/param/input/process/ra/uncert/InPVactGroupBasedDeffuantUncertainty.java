@@ -49,9 +49,9 @@ public class InPVactGroupBasedDeffuantUncertainty implements InUncertainty {
         addEntry(res, thisClass(), "upperBoundInclusive");
         addEntry(res, thisClass(), "cags");
 
-        setDefault(res, thisClass(), "extremistParameter", VALUE_NEG_ONE);
-        setDefault(res, thisClass(), "extremistUncertainty", varargs(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));
-        setDefault(res, thisClass(), "moderateUncertainty", varargs(RAConstants.DEFAULT_MODERATE_UNCERTAINTY));
+        setDefault(res, thisClass(), "extremistParameter", asValue(RAConstants.DEFAULT_EXTREMIST_RATE));
+        setDefault(res, thisClass(), "extremistUncertainty", asValue(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));
+        setDefault(res, thisClass(), "moderateUncertainty", asValue(RAConstants.DEFAULT_MODERATE_UNCERTAINTY));
         setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_FALSE);
         setDefault(res, thisClass(), "upperBoundInclusive", VALUE_FALSE);
     }
@@ -91,7 +91,7 @@ public class InPVactGroupBasedDeffuantUncertainty implements InUncertainty {
     }
 
     public void setDefaultValues() {
-        setExtremistParameter(-1);
+        setExtremistParameter(RAConstants.DEFAULT_EXTREMIST_RATE);
         setExtremistUncertainty(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY);
         setModerateUncertainty(RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
         setLowerBoundInclusive(false);

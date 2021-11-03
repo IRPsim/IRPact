@@ -127,7 +127,7 @@ VisibleBinaryData_idVisible:
 
 
 result_visualisation:
-  edn_label: "Ergebnisvisualisierung"
+  edn_label: "ErgebnisvisualisierungOLD"
   edn_description: "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können."
 
 InGenericOutputImage:
@@ -276,7 +276,7 @@ InROutputImage_realAdoptionDataFile:
 
 
 result_data2:
-  edn_label: "Datenanalyse2"
+  edn_label: "Datenanalyse"
   edn_description: "todo"
 
 InBucketAnalyser:
@@ -300,7 +300,7 @@ InBucketAnalyser_loggingModule:
 
 
 result_visualisation2:
-  edn_label: "Ergebnisvisualisierung2"
+  edn_label: "Ergebnisvisualisierung"
   edn_description: "todo"
 
 InAdoptionPhaseOverviewImage:
@@ -669,7 +669,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.18.3"
+  edn_description: "IRPact v1.19.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1173,7 +1173,7 @@ InNoDistance_placeholderNoDistance:
 
 InInverse:
   edn_label: "Inverse Distanz"
-  edn_description: "Benutzt 1\/distance für die Auswertung."
+  edn_description: "Benutzt 1\\/distance für die Auswertung."
 InInverse_placeholderInverse:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1238,7 +1238,7 @@ InFixProductAttribute_fixPAvalue:
 
 products_finding_scheme:
   edn_label: "Schema für Produktfindung"
-  edn_description: "Benutzt 1\/distance für die Auswertung."
+  edn_description: "Benutzt 1\\/distance für die Auswertung."
 
 InFixProductFindingScheme:
   edn_label: "Fixproduktschema"
@@ -2373,7 +2373,7 @@ process_modular3_PV_handler_init:
 
 InAgentAttributeScaler:
   edn_label: "Agentattributskalierer"
-  edn_description: "todo; newValue = (oldValue - min) \/ (max - min)"
+  edn_description: "todo; newValue = (oldValue - min) \\/ (max - min)"
 InAgentAttributeScaler_attribute:
   gams_identifier: "Attribut"
   gams_description: "todo"
@@ -2531,7 +2531,7 @@ InAddScalarModule_calcgraphnode2_input_graphedge2:
 
 InLogisticModule_calcgraphnode2:
   edn_label: "LogisticModule"
-  edn_description: "L\/(1+e^(-k*(x-x0)))"
+  edn_description: "L\\/(1+e^(-k*(x-x0)))"
 InLogisticModule_calcgraphnode2_valueL:
   gams_identifier: "L"
   gams_description: "todo"

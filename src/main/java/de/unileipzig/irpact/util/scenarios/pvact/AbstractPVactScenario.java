@@ -37,6 +37,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.lo
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -425,9 +426,11 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
         InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         npvLogger.setName(LazyData2FileLinker.NPV_LOGGER);
+        npvLogger.setStoreXlsx(true);
         npvLogger.setInput(logisticNPV);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         npvReevalLogger.setName(LazyData2FileLinker.NPV_REEVAL);
+        npvReevalLogger.setStoreXlsx(true);
         npvReevalLogger.setInput(logisticNPV);
         npvReevalLogger.setSkipReevaluatorCall(false);
 
@@ -463,6 +466,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
         InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         envLogger.setName(LazyData2FileLinker.ENV_LOGGER);
+        envLogger.setStoreXlsx(true);
         envLogger.setInput(envAttr);
         InMulScalarModule_calcgraphnode2 envWeight = new InMulScalarModule_calcgraphnode2();
         envWeight.setName("ENV_WEIGHT");
@@ -470,6 +474,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envWeight.setInput(envLogger);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         envReevalLogger.setName(LazyData2FileLinker.ENV_REEVAL);
+        envReevalLogger.setStoreXlsx(true);
         envReevalLogger.setInput(envWeight);
         envReevalLogger.setSkipReevaluatorCall(false);
 
@@ -479,6 +484,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
         InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         novLogger.setName(LazyData2FileLinker.NOV_LOGGER);
+        novLogger.setStoreXlsx(true);
         novLogger.setInput(novAttr);
         InMulScalarModule_calcgraphnode2 novWeight = new InMulScalarModule_calcgraphnode2();
         novWeight.setName("NOV_WEIGHT");
@@ -487,6 +493,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         novReevalLogger.setName(LazyData2FileLinker.NOV_REEVAL);
         novReevalLogger.setInput(novWeight);
+        novReevalLogger.setStoreXlsx(true);
         novReevalLogger.setSkipReevaluatorCall(false);
 
         //soc
@@ -496,10 +503,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         localShare.setNodeFilterScheme(scheme);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         localLogger.setName(LazyData2FileLinker.LOCAL_LOGGER);
+        localLogger.setStoreXlsx(true);
         localLogger.setInput(localShare);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         localReevalLogger.setName(LazyData2FileLinker.LOCAL_REEVAL);
         localReevalLogger.setInput(localShare);
+        localReevalLogger.setStoreXlsx(true);
         localReevalLogger.setSkipReevaluatorCall(false);
 
         InSocialShareOfAdopterModule_inputgraphnode2 socialShare = new InSocialShareOfAdopterModule_inputgraphnode2();
@@ -507,10 +516,12 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         socialLogger.setName(LazyData2FileLinker.SOCIAL_LOGGER);
         socialLogger.setInput(socialShare);
+        socialLogger.setStoreXlsx(true);
         InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
         socialReevalLogger.setName(LazyData2FileLinker.SOCIAL_REEVAL);
         socialReevalLogger.setInput(socialShare);
         socialReevalLogger.setSkipReevaluatorCall(false);
+        socialReevalLogger.setStoreXlsx(true);
 
         InMulScalarModule_calcgraphnode2 localWeight = new InMulScalarModule_calcgraphnode2();
         localWeight.setName("LOCAL_WEIGHT");
@@ -594,9 +605,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
         novScaler.setName("NOV_SCALER");
         novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
-        InAgentAttributeScaler envScaler = new InAgentAttributeScaler();
+
+        InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
         envScaler.setName("ENV_SCALER");
+        envScaler.setM(0.006);
+        envScaler.setN(-11.466);
         envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+
+        InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
+        envUpdater.setName("ENV_UPDATER");
+        envUpdater.setScaler(envScaler);
 
         processModel.addInitializationHandlers(
                 novScaler,
@@ -621,7 +639,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         constructionRenovationUpdater.setName("CONSTRUCTION_RENOVATION_UPDATER");
 
         processModel.addMidOfYearReevaluators(
-                constructionRenovationUpdater
+                constructionRenovationUpdater,
+                envUpdater
         );
 
         //END OF YEAR
@@ -712,30 +731,25 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         images.add(customNovQuantile2);
 
         //Adoption Phase Overview
-        InAdoptionPhaseOverviewImage adoptionPhaseOverview = new InAdoptionPhaseOverviewImage();
-        adoptionPhaseOverview.setName("ADOPTION_PHASE_OVERVIEW");
+        InAdoptionPhaseOverviewImage adoptionPhaseOverview = InAdoptionPhaseOverviewImage.DEFAULT;
         images.add(adoptionPhaseOverview);
 
         //Compared Annual
-        InComparedAnnualImage annualImage = new InComparedAnnualImage();
-        annualImage.setName("COMPARED_ANNUAL");
+        InComparedAnnualImage annualImage = InComparedAnnualImage.DEFAULT;
         annualImage.setRealData(getRealAdoptionDataFile());
         images.add(annualImage);
 
         //Compared Annual Zip
-        InComparedAnnualZipImage annualZipImage = new InComparedAnnualZipImage();
-        annualZipImage.setName("COMPARED_ANNUAL");
+        InComparedAnnualZipImage annualZipImage = InComparedAnnualZipImage.DEFAULT;
         annualZipImage.setRealData(getRealAdoptionDataFile());
         images.add(annualZipImage);
 
         //Interest
-        InInterestOverviewImage interestOverview = new InInterestOverviewImage();
-        interestOverview.setName("INTEREST_OVERVIEW");
+        InInterestOverviewImage interestOverview = InInterestOverviewImage.DEFAULT;
         images.add(interestOverview);
 
         //Process Phase Overview
-        InProcessPhaseOverviewImage processPhaseOverview = new InProcessPhaseOverviewImage();
-        processPhaseOverview.setName("PROCESS_PHASE_OVERVIEW");
+        InProcessPhaseOverviewImage processPhaseOverview = InProcessPhaseOverviewImage.DEFAULT;
         images.add(processPhaseOverview);
 
         //bucket
