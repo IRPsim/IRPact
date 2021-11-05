@@ -158,11 +158,23 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
                 isRequiresDesiredTotalSize()
         );
 
+        Map<String, Integer> maxSizes = SpatialUtil.calculateSizes(
+                fileContent.content(),
+                RAConstants.DOM_MILIEU,
+                cagNames,
+                -1,
+                isRequiresDesiredTotalSize()
+        );
+        int totalSize = maxSizes.values()
+                .stream()
+                .mapToInt(i -> i)
+                .sum();
+
         AgentPopulation population = parser.getEnvironment().getAgents().getInitialAgentPopulation();
         int usedSize = sizes.values().stream().mapToInt(i -> i).sum();
         population.setCoverage(fileContent.getCoverage());
-        population.setMaximumPossibleSize(fileContent.size());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set maximum possible size: {} (used={})", fileContent.size(), usedSize);
+        population.setMaximumPossibleSize(totalSize);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set maximum possible size: {} (used={})", totalSize, usedSize);
         for(Map.Entry<String, Integer> entry: sizes.entrySet()) {
             ConsumerAgentGroup cag = getCag(entry.getKey(), cags);
             if(population.has(cag)) {
