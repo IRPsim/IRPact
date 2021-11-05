@@ -23,7 +23,7 @@ import java.util.function.LongConsumer;
  * @author Daniel Abitz
  */
 public class FixedUnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
-
+//TODO -> das andere richtig ersetzen
     private static final IRPLogger LOGGER = IRPLogging.getLogger(FixedUnitStepDiscreteTimeModel.class);
 
     protected static final long DELTA = 1L;
