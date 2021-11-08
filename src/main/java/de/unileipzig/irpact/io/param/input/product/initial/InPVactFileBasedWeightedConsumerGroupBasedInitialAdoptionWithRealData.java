@@ -10,7 +10,6 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.product.handler.WeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -129,7 +128,11 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
         handler.setAdoptionData(adoptionData);
 
         handler.setZipAttributeName(RAConstants.ZIP);
-        handler.setValidationAttributeName(RAConstants.SHARE_1_2_HOUSE);
+        handler.setAgentFilter(ca -> {
+            boolean isShare = ca.findAttribute(RAConstants.SHARE_1_2_HOUSE).asValueAttribute().getBooleanValue();
+            boolean isPrivat = ca.findAttribute(RAConstants.HOUSE_OWNER).asValueAttribute().getBooleanValue();
+            return isShare && isPrivat;
+        });
         handler.setShareAttributeName(RAConstants.INITIAL_ADOPTER);
         handler.setScale(scale);
         handler.setFixError(fixError);

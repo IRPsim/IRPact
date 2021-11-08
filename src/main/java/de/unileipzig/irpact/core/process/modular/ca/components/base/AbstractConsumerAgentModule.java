@@ -79,8 +79,11 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
                 .filter(IS_CONSUMER)
                 .distinct()
                 .forEach(globalNode -> {
-                    totalGlobal.inc();
-                    if(globalNode.getAgent(ConsumerAgent.class).hasAdopted(product)) {
+                    ConsumerAgent ca = globalNode.getAgent(ConsumerAgent.class);
+                    if(isPotentialAdopter(ca)) {
+                        totalGlobal.inc();
+                    }
+                    if(ca.hasAdopted(product)) {
                         adopterGlobal.inc();
                     }
                 });
@@ -90,6 +93,10 @@ public abstract class AbstractConsumerAgentModule extends SimulationEntityBase i
         } else {
             return adopterGlobal.get() / totalGlobal.get();
         }
+    }
+
+    protected boolean isPotentialAdopter(ConsumerAgent ca) {
+        throw new UnsupportedOperationException("TODO");
     }
 
     protected double getShareOfAdopterInLocalNetwork(

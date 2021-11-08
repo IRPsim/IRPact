@@ -56,6 +56,11 @@ public final class TimeUtil {
         return zdt.minusNanos(1);
     }
 
+    public static ZonedDateTime lastDayOfYear(int year) {
+        return LocalDate.of(year, 12, 31)
+                .atStartOfDay(getZone());
+    }
+
     public static ZonedDateTime of(int year, long weeks) {
         ZonedDateTime zdt = startOfYear(year);
         return zdt.plusWeeks(weeks);

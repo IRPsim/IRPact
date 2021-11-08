@@ -669,7 +669,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.19.1"
+  edn_description: "IRPact v1.19.2"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1366,20 +1366,6 @@ InAutoUncertaintyGroupAttribute_placeholderAutoUncert:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
-InDisabledProcessPlanNodeFilterScheme:
-  edn_label: "Kein Distanzfilter"
-  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
-InDisabledProcessPlanNodeFilterScheme_placeholder:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
-
-InEntireNetworkNodeFilterScheme:
-  edn_label: "Gesamtes Netzwerk"
-  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
-InEntireNetworkNodeFilterScheme_placeholder:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
-
 InIndividualAttributeBasedUncertaintyGroupAttribute:
   edn_label: "Attributbezogen"
   edn_description: "Ermöglicht die Festlegung der Unsicherheit für spezielle Konsumergruppenattribute."
@@ -1449,11 +1435,25 @@ InPVactUncertaintyGroupAttribute_cags:
   gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
 
 process_filter:
-  edn_label: "Netzwerkfilter für Prozesse"
-  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+  edn_label: "Peereffektdistanzeinstellung"
+  edn_description: "todo"
+
+InDisabledProcessPlanNodeFilterScheme:
+  edn_label: "Kein Peereffekt"
+  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
+InDisabledProcessPlanNodeFilterScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InEntireNetworkNodeFilterScheme:
+  edn_label: "Peereffekt mit ganzen Gebiet"
+  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
+InEntireNetworkNodeFilterScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
 
 InRAProcessPlanMaxDistanceFilterScheme:
-  edn_label: "Maximale Distnz (PVact)"
+  edn_label: "Maximale Entfernung"
   edn_description: "todo"
 InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
   gams_identifier: "Maximale Entfernung"
@@ -2300,6 +2300,9 @@ InBasicCAModularProcessModel_initializationHandlers:
   gams_description: "todo"
 InBasicCAModularProcessModel_newProductHandlers:
   gams_identifier: "Konfiguratoren für neue Produkte"
+  gams_description: "todo"
+InBasicCAModularProcessModel_initializationReevaluators:
+  gams_identifier: "Reevalueirung zur Initialisierung"
   gams_description: "todo"
 InBasicCAModularProcessModel_startOfYearReevaluators:
   gams_identifier: "Reevalueirung zum Jahresbeginn"

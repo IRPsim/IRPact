@@ -137,12 +137,16 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
         Set<T> values = data.getAllThirdKeys();
         for(Product product: products) {
             for(T value: values) {
-                for(int i = 0; i < years.size() - 1; i++) {
+                for(int i = 0; i < years.size(); i++) {
                     int thisYear = years.get(i);
-                    int nextYear = years.get(i + 1);
                     int thisCount = getCount(thisYear, product, value);
-                    int nextCount = getCount(nextYear, product, value);
-                    cumulated.data.init(thisYear, product, value, thisCount + nextCount);
+                    if(i > 0) {
+                        int preYear = years.get(i - 1);
+                        int preCount = cumulated.getCount(preYear, product, value);
+                        cumulated.data.init(thisYear, product, value, thisCount + preCount);
+                    } else {
+                        cumulated.data.init(thisYear, product, value, thisCount);
+                    }
                 }
             }
         }

@@ -45,6 +45,9 @@ public interface LoggingHelper {
     default void trace(String format, Object... args) {
         IRPLogging.trace(getDefaultLogger(), getDefaultSection(), useDefaultSection(), format, args);
     }
+    default void trace(IRPSection section, String format, Object... args) {
+        getDefaultLogger().trace(section, format, args);
+    }
 
     //=========================
     //trace levels

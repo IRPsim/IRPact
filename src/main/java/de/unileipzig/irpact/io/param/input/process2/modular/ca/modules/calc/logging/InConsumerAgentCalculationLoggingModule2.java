@@ -28,6 +28,8 @@ public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgen
 
     int getAgentIndex();
 
+    int getIdIndex();
+
     int getTimeIndex();
 
     int getProductIndex();

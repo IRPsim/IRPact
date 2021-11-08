@@ -2,9 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
-import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -37,11 +35,11 @@ public class CsvValueLoggingModule2
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     public static final int AGENT_INDEX = 0;
-    public static final int AGENT_GROUP_INDEX = 1;
-    public static final int PRODUCT_INDEX = 2;
-    public static final int PRODUCT_GROUP_INDEX = 3;
-    public static final int TIME_INDEX = 4;
-    public static final int YEAR_INDEX = 5;
+    public static final int ID_INDEX = 1;
+    public static final int AGENT_GROUP_INDEX = 2;
+    public static final int PRODUCT_INDEX = 3;
+    public static final int PRODUCT_GROUP_INDEX = 4;
+    public static final int TIME_INDEX = 5;
     public static final int VALUE_INDEX = 6;
 
     protected Path dir;
@@ -156,8 +154,8 @@ public class CsvValueLoggingModule2
         Map<String, JsonTableData3> xlsxSheetData = new HashMap<>();
 
         JsonTableData3 xlsxData = csvData.copy();
-        xlsxData.mapStringColumnToInt(YEAR_INDEX, 0, Integer::parseInt);
         xlsxData.mapStringColumnToDouble(VALUE_INDEX, 0, Double::parseDouble);
+        xlsxData.mapStringColumnToLong(ID_INDEX, 0, Long::parseLong);
 
         xlsxSheetData.put("Data", xlsxData);
 
@@ -195,18 +193,21 @@ public class CsvValueLoggingModule2
         double value = getNonnullSubmodule().calculate(input, actions);
         if(!(isReevaluatorCall() && isSkipReevaluatorCall())) {
             double logValue = Double.isNaN(value) ? 0 : value;
-            Timestamp now = input.now();
             getValueLogger().log(
                     "{};{};{};{};{};{};{}",
-                    input.getAgentName(), input.getAgentGroupName(),
+                    input.getAgentName(), getId(input), input.getAgentGroupName(),
                     input.getProductName(), input.getProductGroupName(),
-                    fromTime(now.getTime()), now.getYear(),
+                    fromTime(getTime(input)),
                     logValue
             );
         } else {
             trace("[{}] skip reevaluator call", getName());
         }
         return value;
+    }
+
+    protected LocalDateTime getTime(ConsumerAgentData2 input) {
+        return getCurrentSimulationTime(input).toLocalDateTime();
     }
 
     @Override

@@ -152,6 +152,11 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @Override
+    public int getIdIndex() {
+        return CsvValueLoggingModule2.ID_INDEX;
+    }
+
+    @Override
     public int getTimeIndex() {
         return CsvValueLoggingModule2.TIME_INDEX;
     }

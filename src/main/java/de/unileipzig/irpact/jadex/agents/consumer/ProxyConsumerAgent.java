@@ -650,10 +650,15 @@ public class ProxyConsumerAgent extends SpatialInformationAgentBase implements C
 
     @Override
     public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase) {
+        adopt(need, product, stamp, phase, Double.NaN);
+    }
+
+    @Override
+    public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase, double utility) {
         if(isSynced()) {
-            getRealAgent().adopt(need, product, stamp, phase);
+            getRealAgent().adopt(need, product, stamp, phase, utility);
         } else {
-            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
+            BasicAdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase, utility);
             adoptedProducts.put(adoptedProduct.getProduct(), adoptedProduct);
         }
     }

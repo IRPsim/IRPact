@@ -20,7 +20,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
@@ -149,6 +148,11 @@ public class InMinimalCsvValueLoggingModule_calcloggraphnode2 implements InConsu
     @Override
     public int getAgentIndex() {
         return MinimalCsvValueLoggingModule2.AGENT_INDEX;
+    }
+
+    @Override
+    public int getIdIndex() {
+        return MinimalCsvValueLoggingModule2.ID_INDEX;
     }
 
     @Override

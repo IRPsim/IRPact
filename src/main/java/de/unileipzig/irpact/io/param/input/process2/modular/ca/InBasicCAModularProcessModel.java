@@ -46,6 +46,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
         addEntry(res, thisClass(), "startModule");
         addEntry(res, thisClass(), "initializationHandlers");
         addEntry(res, thisClass(), "newProductHandlers");
+        addEntry(res, thisClass(), "initializationReevaluators");
         addEntry(res, thisClass(), "startOfYearReevaluators");
         addEntry(res, thisClass(), "midOfYearReevaluators");
         addEntry(res, thisClass(), "endOfYearReevaluators");
@@ -105,6 +106,24 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
     public boolean hasNewProductHandlers() {
         return len(newProductHandlers) > 0;
+    }
+
+    @FieldDefinition
+    public InReevaluator2[] initializationReevaluators = new InReevaluator2[0];
+    public void setInitializationReevaluators(InReevaluator2[] initializationReevaluators) {
+        this.initializationReevaluators = initializationReevaluators;
+    }
+    public void setInitializationReevaluators(Collection<? extends InReevaluator2> initializationReevaluators) {
+        setInitializationReevaluators(initializationReevaluators.toArray(new InReevaluator2[0]));
+    }
+    public void addInitializationReevaluators(InReevaluator2... initializationReevaluators) {
+        this.initializationReevaluators = addAll(this.initializationReevaluators, initializationReevaluators);
+    }
+    public InReevaluator2[] getInitializationReevaluators() {
+        return initializationReevaluators;
+    }
+    public boolean hasInitializationReevaluators() {
+        return len(initializationReevaluators) > 0;
     }
 
     @FieldDefinition
@@ -200,6 +219,13 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
             for(InInitializationHandler initHandler: getInitializationHandlers()) {
                 LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse InitializationHandler '{}'", initHandler.getName());
                 model.addInitializationHandler(parser.parseEntityTo(initHandler));
+            }
+        }
+
+        if(hasInitializationReevaluators()) {
+            for(InReevaluator2 reevaluator: getInitializationReevaluators()) {
+                LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse Initialization-Reevaluator '{}'", reevaluator.getName());
+                model.addInitializationTask(parser.parseEntityTo(reevaluator));
             }
         }
 

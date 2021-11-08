@@ -40,9 +40,15 @@ public class PhaseLoggingModule2
         RAStage2 currentStage = input.getStage();
         RAStage2 newStage = getNonnullSubmodule().apply(input, actions);
         if(currentStage != RAStage2.PRE_INITIALIZATION && newStage != currentStage) {
-            DataAnalyser.Phase newPhase = getPhase(newStage);
             DataAnalyser.Phase currentPhase = getPhase(currentStage);
+            DataAnalyser.Phase newPhase = getPhase(newStage);
             if(newPhase != currentPhase) {
+                trace(
+                        "[{}]@[{}] log phase transition {} -> {} ({} -> {})",
+                        getName(), input.getAgentName(),
+                        currentPhase, newPhase,
+                        currentStage, newStage
+                );
                 logPhaseTransition(input, input.now(), newPhase);
             }
         }

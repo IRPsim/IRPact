@@ -468,15 +468,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envLogger.setName(LazyData2FileLinker.ENV_LOGGER);
         envLogger.setStoreXlsx(true);
         envLogger.setInput(envAttr);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        envReevalLogger.setName(LazyData2FileLinker.ENV_REEVAL);
+        envReevalLogger.setStoreXlsx(true);
+        envReevalLogger.setInput(envAttr);
+        envReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 envWeight = new InMulScalarModule_calcgraphnode2();
         envWeight.setName("ENV_WEIGHT");
         envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
-        envReevalLogger.setName(LazyData2FileLinker.ENV_REEVAL);
-        envReevalLogger.setStoreXlsx(true);
-        envReevalLogger.setInput(envWeight);
-        envReevalLogger.setSkipReevaluatorCall(false);
 
         //nov comp
         InAttributeInputModule_inputgraphnode2 novAttr = new InAttributeInputModule_inputgraphnode2();
@@ -486,15 +486,15 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         novLogger.setName(LazyData2FileLinker.NOV_LOGGER);
         novLogger.setStoreXlsx(true);
         novLogger.setInput(novAttr);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        novReevalLogger.setName(LazyData2FileLinker.NOV_REEVAL);
+        novReevalLogger.setInput(novAttr);
+        novReevalLogger.setStoreXlsx(true);
+        novReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 novWeight = new InMulScalarModule_calcgraphnode2();
         novWeight.setName("NOV_WEIGHT");
         novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
-        novReevalLogger.setName(LazyData2FileLinker.NOV_REEVAL);
-        novReevalLogger.setInput(novWeight);
-        novReevalLogger.setStoreXlsx(true);
-        novReevalLogger.setSkipReevaluatorCall(false);
 
         //soc
         InLocalShareOfAdopterModule_inputgraphnode2 localShare = new InLocalShareOfAdopterModule_inputgraphnode2();
@@ -549,20 +549,25 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         adoptThreshold.setName("ADOPT_THRESHOLD");
         adoptThreshold.setAttribute(getAttribute(RAConstants.ADOPTION_THRESHOLD));
 
-        InSumModule_calcgraphnode2 decision = new InSumModule_calcgraphnode2();
-        decision.setName("UTILITY_SUM");
-        decision.setInput(
+        InSumModule_calcgraphnode2 utilitySum = new InSumModule_calcgraphnode2();
+        utilitySum.setName("UTILITY_SUM");
+        utilitySum.setInput(
                 finComp,
                 envWeight,
                 novWeight,
                 socComp
         );
 
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityLogger = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        utilityLogger.setName(LazyData2FileLinker.UTILITY_LOGGER);
+        utilityLogger.setStoreXlsx(true);
+        utilityLogger.setInput(utilitySum);
+
         InDecisionMakingDeciderModule2_evalragraphnode2 decisionMaking = new InDecisionMakingDeciderModule2_evalragraphnode2();
         decisionMaking.setName("DECISION_MAKING");
         decisionMaking.setFinCheck(finCheck);
         decisionMaking.setThreshold(adoptThreshold);
-        decisionMaking.setUtility(decision);
+        decisionMaking.setUtility(utilityLogger);
 
         InYearBasedAdoptionDeciderModule_evalragraphnode2 reallyDecider = new InYearBasedAdoptionDeciderModule_evalragraphnode2();
         reallyDecider.setName("REALLY_ADOPT_TEST");
@@ -666,6 +671,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 novReevalLogger,
                 socialReevalLogger,
                 localReevalLogger
+        );
+
+        InReevaluatorModuleLinker initLinker = new InReevaluatorModuleLinker();
+        initLinker.setName("INIT_LINKER");
+        initLinker.setModules(
+                reevalNode
+        );
+
+        processModel.addInitializationReevaluators(
+                initLinker
         );
 
         InReevaluatorModuleLinker endOfYearLinker = new InReevaluatorModuleLinker();

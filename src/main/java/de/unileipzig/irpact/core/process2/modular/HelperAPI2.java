@@ -77,6 +77,10 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     //Attribute
     //=========================
 
+    default long getLong(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName) {
+        return environment.getAttributeHelper().getLong(agent, product, attributeName, true);
+    }
+
     default double getDouble(SimulationEnvironment environment, ConsumerAgent agent, Product product, String attributeName) {
         return environment.getAttributeHelper().getDouble(agent, product, attributeName, true);
     }
@@ -116,10 +120,7 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
             Map<String, JsonTableData3> sheetData) throws IOException {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         XSSFWorkbook book = writer.newBook();
-
-        CellStyle dateStyle = book.createCellStyle();
-        CreationHelper helper = book.getCreationHelper();
-        dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy, hh:mm:ss"));
+        CellStyle dateStyle = XlsxSheetWriter3.createDefaultDateStyle(book);
 
         writer.setCellHandler(
                 XlsxSheetWriter3.forJson(
@@ -128,6 +129,7 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
                         XlsxSheetWriter3.toCellStyle(dateStyle)
                 )
         );
+
         writer.write(
                 path,
                 book,

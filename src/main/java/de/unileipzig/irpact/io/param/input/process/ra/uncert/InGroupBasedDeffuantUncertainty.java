@@ -10,6 +10,7 @@ import de.unileipzig.irpact.core.process.ra.uncert.GroupBasedDeffuantUncertainty
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -20,8 +21,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
-import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL_RA_UNCERT;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
@@ -41,7 +40,7 @@ public class InGroupBasedDeffuantUncertainty implements InUncertainty {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PROCESS_MODEL, PROCESS_MODEL_RA_UNCERT, thisName());
+        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_GBDEFF);
 
         addEntry(res, thisClass(), "extremistParameter");
         addEntry(res, thisClass(), "extremistUncertainty");

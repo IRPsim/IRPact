@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -15,7 +16,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
@@ -36,7 +36,7 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PROCESS_MODEL, PROCESS_FILTER, thisName());
+        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_MAX);
         addEntry(res, thisClass(), "maxDistance");
         addEntry(res, thisClass(), "inclusive");
     }

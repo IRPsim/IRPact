@@ -34,12 +34,12 @@ public class BasicPostprocessingManager extends PostProcessor implements Postpro
     @Override
     public void execute() {
         trace("running post analysis");
-        trace("running data");
-        new DataProcessor(metaData, clOptions, inRoot, environment).execute();
+//        trace("running data");
+//        new DataProcessor(metaData, clOptions, inRoot, environment).execute();
         trace("running data4");
         new DataProcessor4(metaData, clOptions, inRoot, environment).execute();
-        trace("running image");
-        new ImageProcessor(metaData, clOptions, inRoot, environment).execute();
+//        trace("running image");
+//        new ImageProcessor(metaData, clOptions, inRoot, environment).execute();
         trace("running image2");
         new ImageProcessor2(metaData, clOptions, inRoot, environment).execute();
     }

@@ -31,6 +31,16 @@ public abstract class AbstractJadexTimeModel extends NameableBase implements Jad
     }
 
     @Override
+    public boolean hasStarted() {
+        try {
+            JadexTimestamp now = now();
+            return now.getTick() > 0.0;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    @Override
     public int getCurrentYear() {
         return now().getYear();
     }

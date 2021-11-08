@@ -2,9 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
-import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
-import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -37,9 +35,10 @@ public class MinimalCsvValueLoggingModule2
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     public static final int AGENT_INDEX = 0;
-    public static final int PRODUCT_INDEX = 1;
-    public static final int TIME_INDEX = 2;
-    public static final int VALUE_INDEX = 3;
+    public static final int ID_INDEX = 1;
+    public static final int PRODUCT_INDEX = 2;
+    public static final int TIME_INDEX = 3;
+    public static final int VALUE_INDEX = 4;
 
     protected Path dir;
     protected String baseName;
@@ -162,6 +161,7 @@ public class MinimalCsvValueLoggingModule2
 
         JsonTableData3 xlsxData = csvData.copy();
         xlsxData.mapStringColumnToDouble(VALUE_INDEX, 0, Double::parseDouble);
+        xlsxData.mapStringColumnToLong(ID_INDEX, 0, Long::parseLong);
 
         xlsxSheetData.put("Data", xlsxData);
 
@@ -199,18 +199,22 @@ public class MinimalCsvValueLoggingModule2
         double value = getNonnullSubmodule().calculate(input, actions);
         if(!(isReevaluatorCall() && isSkipReevaluatorCall())) {
             double logValue = Double.isNaN(value) ? 0 : value;
-            Timestamp now = input.now();
             getValueLogger().log(
-                    "{};{};{};{}",
+                    "{};{};{};{};{}",
                     input.getAgentName(),
+                    getId(input),
                     input.getProductName(),
-                    fromTime(now.getTime()),
+                    fromTime(getTime(input)),
                     logValue
             );
         } else {
             trace("[{}] skip reevaluator call", getName());
         }
         return value;
+    }
+
+    protected LocalDateTime getTime(ConsumerAgentData2 input) {
+        return getCurrentSimulationTime(input).toLocalDateTime();
     }
 
     @Override

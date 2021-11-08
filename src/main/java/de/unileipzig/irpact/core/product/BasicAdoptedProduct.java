@@ -15,16 +15,22 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     protected Timestamp timestamp;
     protected AdoptionPhase phase;
     protected boolean initial;
+    protected double utility;
 
     public BasicAdoptedProduct() {
-        this(null, null, null, AdoptionPhase.UNKNOWN);
+        this(null, null, null, AdoptionPhase.UNKNOWN, Double.NaN);
     }
 
     public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp, AdoptionPhase phase) {
+        this(need, product, timestamp, phase, Double.NaN);
+    }
+
+    public BasicAdoptedProduct(Need need, Product product, Timestamp timestamp, AdoptionPhase phase, double utility) {
         setNeed(need);
         setProduct(product);
         setTimestamp(timestamp);
         setPhase(phase);
+        setUtility(utility);
     }
 
     public void setNeed(Need need) {
@@ -66,6 +72,20 @@ public class BasicAdoptedProduct implements AdoptedProduct {
     @Override
     public boolean isInitial() {
         return phase == AdoptionPhase.INITIAL;
+    }
+
+    @Override
+    public boolean hasUtility() {
+        return !Double.isNaN(utility);
+    }
+
+    public void setUtility(double utility) {
+        this.utility = utility;
+    }
+
+    @Override
+    public double getUtility() {
+        return utility;
     }
 
     @Override

@@ -31,6 +31,16 @@ public interface ConsumerAgentData2 extends InputData2 {
 
     Object get(Object id);
 
+    @SuppressWarnings("unchecked")
+    default <R> R getAuto(Object id) {
+        return (R) get(id);
+    }
+
+    default <R> R getOr(Object id, R ifMissing) {
+        R value = getAuto(id);
+        return value == null ? ifMissing : value;
+    }
+
     Object put(Object id, Object data);
 
     //=========================

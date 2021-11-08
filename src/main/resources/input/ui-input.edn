@@ -191,7 +191,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.19.1" 
+        :description "IRPact v1.19.2" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -697,6 +697,60 @@
     :description "todo" 
     :sections [
       {
+        :label "Peereffektdistanzeinstellung" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Kein Peereffekt" 
+            :set "set_InDisabledProcessPlanNodeFilterScheme" 
+            :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
+            :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
+          } 
+          {
+            :label "Peereffekt mit ganzen Gebiet" 
+            :set "set_InEntireNetworkNodeFilterScheme" 
+            :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
+            :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
+          } 
+          {
+            :label "Maximale Entfernung" 
+            :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
+            :description "todo" 
+            :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
+          }
+        ]
+      } 
+      {
+        :label "Unsicherheit" 
+        :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
+        :sections [
+          {
+            :label "Unsicherheit basierend auf allen Agenten" 
+            :set "set_InGlobalDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
+            :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InPVactGlobalDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+            :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf individuellen Agentengruppen" 
+            :set "set_InGroupBasedDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
+            :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
+          } 
+          {
+            :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
+            :set "set_InPVactGroupBasedDeffuantUncertainty" 
+            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
+            :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+          }
+        ]
+      } 
+      {
         :label "Modulares Prozessmodell2" 
         :description "todo" 
         :sections [
@@ -708,7 +762,7 @@
                 :label "Standardprozessmodell" 
                 :set "set_InBasicCAModularProcessModel" 
                 :description "todo" 
-                :tags [["link" "InBasicCAModularProcessModel" "InConsumerAgentEvalModule2" "startModule"] ["link" "InBasicCAModularProcessModel" "InInitializationHandler" "initializationHandlers"] ["link" "InBasicCAModularProcessModel" "InNewProductHandler" "newProductHandlers"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "startOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "midOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "endOfYearReevaluators"]]
+                :tags [["link" "InBasicCAModularProcessModel" "InConsumerAgentEvalModule2" "startModule"] ["link" "InBasicCAModularProcessModel" "InInitializationHandler" "initializationHandlers"] ["link" "InBasicCAModularProcessModel" "InNewProductHandler" "newProductHandlers"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "initializationReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "startOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "midOfYearReevaluators"] ["link" "InBasicCAModularProcessModel" "InReevaluator2" "endOfYearReevaluators"]]
               }
             ]
           } 
@@ -1266,63 +1320,9 @@
             :description "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren." 
             :sections [
               {
-                :label "Netzwerkfilter für Prozesse" 
-                :description "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus." 
-                :sections [
-                  {
-                    :label "Kein Distanzfilter" 
-                    :set "set_InDisabledProcessPlanNodeFilterScheme" 
-                    :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
-                    :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
-                  } 
-                  {
-                    :label "Gesamtes Netzwerk" 
-                    :set "set_InEntireNetworkNodeFilterScheme" 
-                    :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
-                    :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
-                  } 
-                  {
-                    :label "Maximale Distnz (PVact)" 
-                    :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
-                    :description "todo" 
-                    :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
-                  }
-                ]
-              } 
-              {
                 :label "Relative Agreement" 
                 :set "set_InRAProcessModel" 
                 :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
-              } 
-              {
-                :label "Unsicherheit" 
-                :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
-                :sections [
-                  {
-                    :label "Unsicherheit basierend auf allen Agenten" 
-                    :set "set_InGlobalDeffuantUncertainty" 
-                    :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
-                    :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-                  } 
-                  {
-                    :label "Unsicherheit basierend auf allen PVact-Agenten" 
-                    :set "set_InPVactGlobalDeffuantUncertainty" 
-                    :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-                    :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
-                  } 
-                  {
-                    :label "Unsicherheit basierend auf individuellen Agentengruppen" 
-                    :set "set_InGroupBasedDeffuantUncertainty" 
-                    :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
-                    :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-                  } 
-                  {
-                    :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
-                    :set "set_InPVactGroupBasedDeffuantUncertainty" 
-                    :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-                    :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
-                  }
-                ]
               } 
               {
                 :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 

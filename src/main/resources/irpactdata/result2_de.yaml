@@ -17,3 +17,25 @@ XLSX:
     value: "Wert"
     sep: ";"
 
+  POPULATION_OVERVIEW:
+    sheet: "Agentendaten"
+    agent: "Agent"
+    id: "Id"
+    milieu: "Milieu"
+    adress: "Adresse"
+    zip: "PLZ"
+    pp: "Kaufkraft_Euro"
+
+  ADOPTION_OVERVIEW:
+    sheet: "Agentendaten"
+    agent: "Agent"
+    id: "Id"
+    milieu: "Milieu"
+    adress: "Adresse"
+    zip: "PLZ"
+    pp: "Kaufkraft_Euro"
+    utility: "Utility"
+    product: "Produkt"
+    time: "Zeitpunkt"
+    phase: "Adoptionsphase"
+

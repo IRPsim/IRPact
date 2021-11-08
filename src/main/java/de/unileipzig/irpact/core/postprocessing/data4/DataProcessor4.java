@@ -24,6 +24,9 @@ public class DataProcessor4 extends PostProcessor {
     protected static final String RESULT_RES_BASENAME = "result2";
     protected static final String RESULT_RES_EXTENSION = "yaml";
 
+    protected static final String POPULATION_OVERVIEW_BASENAME = "Populationsuebersicht";
+    protected static final String ADOPTION_OVERVIEW_BASENAME = "Adoptionsuebersicht";
+
     protected JsonResource localizedData;
 
     public DataProcessor4(
@@ -54,7 +57,8 @@ public class DataProcessor4 extends PostProcessor {
     @Override
     public void execute() {
         try {
-            execute0();
+            executeGeneral();
+            executeSpecific();
         } catch (Throwable t) {
             error("error while executing DataProcessor", t);
         } finally {
@@ -62,7 +66,34 @@ public class DataProcessor4 extends PostProcessor {
         }
     }
 
-    protected void execute0() throws Throwable {
+    protected void executeGeneral() {
+        handlePopulationOverview();
+        handleAdoptionOverview();
+    }
+
+    protected void handlePopulationOverview() {
+        try {
+            trace("handle PopulationOverview '{}'", POPULATION_OVERVIEW_BASENAME);
+            PopulationOverview overview = new PopulationOverview(this, POPULATION_OVERVIEW_BASENAME);
+            overview.init();
+            overview.execute();
+        } catch (Throwable t) {
+            error("unexpected error while handling 'population overview'", t);
+        }
+    }
+
+    protected void handleAdoptionOverview() {
+        try {
+            trace("handle AdoptionOverview '{}'", ADOPTION_OVERVIEW_BASENAME);
+            AdoptionOverview overview = new AdoptionOverview(this, ADOPTION_OVERVIEW_BASENAME);
+            overview.init();
+            overview.execute();
+        } catch (Throwable t) {
+            error("unexpected error while handling 'adoption overview'", t);
+        }
+    }
+
+    protected void executeSpecific() throws Throwable {
         if(inRoot.hasPostData()) {
             loadLocalizedData();
             for(InPostDataAnalysis postData: inRoot.getPostData()) {

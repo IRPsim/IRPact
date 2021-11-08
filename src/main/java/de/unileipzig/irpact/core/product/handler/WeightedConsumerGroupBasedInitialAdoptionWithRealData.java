@@ -19,6 +19,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * @author Daniel Abitz
@@ -28,8 +29,8 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
     private static final IRPLogger LOGGER = IRPLogging.getLogger(WeightedConsumerGroupBasedInitialAdoptionWithRealData.class);
 
     protected String zipAttributeName; //zip
-    protected String validationAttributeName; //hh
     protected String shareAttributeName; //adopter
+    protected Predicate<? super ConsumerAgent> agentFilter;
     protected RealAdoptionData adoptionData;
     protected Rnd rnd;
     protected boolean scale = false;
@@ -64,12 +65,12 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         return zipAttributeName;
     }
 
-    public void setValidationAttributeName(String validationAttributeName) {
-        this.validationAttributeName = validationAttributeName;
+    public void setAgentFilter(Predicate<? super ConsumerAgent> agentFilter) {
+        this.agentFilter = agentFilter;
     }
 
-    public String getValidationAttributeName() {
-        return validationAttributeName;
+    public Predicate<? super ConsumerAgent> getAgentFilter() {
+        return agentFilter;
     }
 
     public void setShareAttributeName(String shareAttributeName) {
@@ -399,14 +400,16 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Namea
         for(ConsumerAgent ca: cag.getAgents()) {
             String agentZIP = getZIP(ca);
             if(zip.equals(agentZIP)) {
-                Attribute validationAttribute = ca.findAttribute(validationAttributeName);
-                if(validationAttribute.asValueAttribute().getBooleanValue()) {
-                    //trace("add valid agent '{}' ({})", ca.getName(), agentZIP);
+                if(isValid(ca)) {
                     agents.add(ca);
                 }
             }
         }
         return agents;
+    }
+
+    protected boolean isValid(ConsumerAgent ca) {
+        return agentFilter == null || agentFilter.test(ca);
     }
 
     protected String getZIP(ConsumerAgent ca) {
