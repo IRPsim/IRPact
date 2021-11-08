@@ -39,6 +39,7 @@ public class PhaseUpdaterModule2
         RAStage2 currentStage = input.getStage();
         RAStage2 newStage = getNonnullSubmodule().apply(input, actions);
         if(currentStage != RAStage2.PRE_INITIALIZATION && newStage != currentStage) {
+            trace("[{}]@[{}] update phase {} -> {}", getName(), input.getAgentName(), currentStage, newStage);
             input.setStage(newStage);
         }
         return newStage;

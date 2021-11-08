@@ -12,6 +12,7 @@ public class LazyData2FileLinker {
     public static final String NOV_LOGGER = "NOV_DATA";
     public static final String SOCIAL_LOGGER = "SOCIAL_DATA";
     public static final String LOCAL_LOGGER = "LOCAL_DATA";
+    public static final String UTILITY_LOGGER = "UTILITY_DATA";
 
     public static final String NPV_REEVAL = "NPV_EVAL";
     public static final String ENV_REEVAL = "ENV_EVAL";

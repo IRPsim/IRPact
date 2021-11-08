@@ -113,6 +113,12 @@ public class CountMap3D<A, B, C> {
         }
     }
 
+    public boolean has(A a, B b, C c) {
+        Map<C, Integer> map = map(a, b);
+        if(map == null) return false;
+        return map.containsKey(c);
+    }
+
     public void init(A a, B b, C c) {
         init(a, b, c, 0);
     }

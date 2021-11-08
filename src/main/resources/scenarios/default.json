@@ -284,7 +284,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_05_T_11_26_31" : {
+        "CT_D_2021_11_08_T_09_06_07" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -428,7 +428,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_19_1" : {
+        "v1_19_2" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -547,6 +547,7 @@
       "par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators" : { },
+      "par_link_InBasicCAModularProcessModel_InReevaluator2_initializationReevaluators" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevaluators" : { },
       "par_link_InBasicCAModularProcessModel_InReevaluator2_startOfYearReevaluators" : { },
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },

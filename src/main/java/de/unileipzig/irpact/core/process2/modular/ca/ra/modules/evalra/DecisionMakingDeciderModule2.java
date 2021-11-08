@@ -109,6 +109,8 @@ public class DecisionMakingDeciderModule2
             if(utility < threshold) {
                 return RAStage2.IMPEDED;
             } else {
+                trace("[{}]@[{}] store utility={} for product={}", getName(), input.getAgentName(), utility, input.getProductName());
+                setUtility(input, utility);
                 return RAStage2.ADOPTED;
             }
         }

@@ -3556,6 +3556,11 @@ PARAMETER par_link_InBasicCAModularProcessModel_InInitializationHandler_initiali
 PARAMETER par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers(set_InBasicCAModularProcessModel,set_InNewProductHandler)
 
 * - description: todo
+* - identifier: Reevalueirung zur Initialisierung
+* - type: Boolean
+PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_initializationReevaluators(set_InBasicCAModularProcessModel,set_InReevaluator2)
+
+* - description: todo
 * - identifier: Reevalueirung zum Jahresbeginn
 * - type: Boolean
 PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_startOfYearReevaluators(set_InBasicCAModularProcessModel,set_InReevaluator2)

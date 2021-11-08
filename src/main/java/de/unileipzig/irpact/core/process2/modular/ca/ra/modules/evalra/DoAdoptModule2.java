@@ -57,7 +57,8 @@ public class DoAdoptModule2
                 warn("[{}] agent '{}' has already adopted '{}', skip adoption", getName(), input.getAgentName(), input.getProductName());
             } else {
                 Timestamp now = input.now();
-                adopt(input, now);
+                double utility = getUtility(input);
+                adopt(input, now, utility);
             }
         }
 

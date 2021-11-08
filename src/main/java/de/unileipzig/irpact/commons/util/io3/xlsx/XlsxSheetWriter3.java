@@ -3,6 +3,8 @@ package de.unileipzig.irpact.commons.util.io3.xlsx;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.util.io3.TableData3;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.FormulaError;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -165,6 +167,13 @@ public class XlsxSheetWriter3<T> {
     //util
     //=========================
 
+    public static CellStyle createDefaultDateStyle(XSSFWorkbook book) {
+        CellStyle dateStyle = book.createCellStyle();
+        CreationHelper helper = book.getCreationHelper();
+        dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy, hh:mm:ss"));
+        return dateStyle;
+    }
+
     public static CellValueSetter<JsonNode> forJson() {
         return (cell, value) -> {
             if(value == null) {
@@ -251,7 +260,12 @@ public class XlsxSheetWriter3<T> {
                     break;
 
                 case NUMBER:
-                    cell.setCellValue(value.doubleValue());
+                    double d = value.doubleValue();
+                    if(Double.isNaN(d)) {
+                        cell.setCellErrorValue(FormulaError.NA.getCode());
+                    } else {
+                        cell.setCellValue(d);
+                    }
                     break;
 
                 case STRING:

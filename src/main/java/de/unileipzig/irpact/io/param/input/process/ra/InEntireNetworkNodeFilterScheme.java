@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.filter.EntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -13,8 +14,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_FILTER;
-import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
@@ -35,7 +34,7 @@ public class InEntireNetworkNodeFilterScheme implements InRAProcessPlanNodeFilte
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PROCESS_MODEL, PROCESS_FILTER, thisName());
+        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_ENTIRE);
         addEntry(res, thisClass(), "placeholder");
     }
 

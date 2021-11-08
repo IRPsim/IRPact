@@ -51,6 +51,7 @@ public class BasicCAModularProcessModel2
     protected boolean yearChange = false;
 
     protected Set<BasicConsumerAgentData2> plans = SetSupplier.CONCURRENT_HASH.newSet();
+    protected List<Reevaluator<ConsumerAgentData2>> initializationTasks = new ArrayList<>();
     protected List<Reevaluator<ConsumerAgentData2>> startOfYearTasks = new ArrayList<>();
     protected List<Reevaluator<ConsumerAgentData2>> midOfYearTasks = new ArrayList<>();
     protected List<Reevaluator<ConsumerAgentData2>> endOfYearTasks = new ArrayList<>();
@@ -72,6 +73,10 @@ public class BasicCAModularProcessModel2
 
     public void addInitializationHandler(InitializationHandler handler) {
         initializationHandlers.add(handler);
+    }
+
+    public void addInitializationTask(Reevaluator<ConsumerAgentData2> reevaluator) {
+        initializationTasks.add(reevaluator);
     }
 
     public void addStartOfYearTask(Reevaluator<ConsumerAgentData2> reevaluator) {
@@ -249,6 +254,11 @@ public class BasicCAModularProcessModel2
 
     protected void initReevaluator() throws InitializationException, MissingDataException {
         try {
+            trace("initalize initializationTasks");
+            initializationTasks.sort(Reevaluator.PRIORITY_COMPARATOR);
+            for(Reevaluator<ConsumerAgentData2> reevaluator: initializationTasks) {
+                initReevaluator(reevaluator);
+            }
             trace("initalize startOfYearTasks");
             startOfYearTasks.sort(Reevaluator.PRIORITY_COMPARATOR);
             for(Reevaluator<ConsumerAgentData2> reevaluator: startOfYearTasks) {
@@ -279,6 +289,14 @@ public class BasicCAModularProcessModel2
     @Override
     public void preSimulationStart() throws MissingDataException {
         setupTasks();
+
+        try {
+            runInitializationTasks();
+        } catch (MissingDataException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new MissingDataException(e);
+        }
     }
 
     protected void setupTasks() {
@@ -388,5 +406,14 @@ public class BasicCAModularProcessModel2
             }
         }
         yearChange = false;
+    }
+
+    protected void runInitializationTasks() throws Throwable {
+        for(Reevaluator<ConsumerAgentData2> task: initializationTasks) {
+            trace("run task '{}'", task.getName());
+            for(BasicConsumerAgentData2 plan: plans) {
+                task.reevaluate(plan, null);
+            }
+        }
     }
 }

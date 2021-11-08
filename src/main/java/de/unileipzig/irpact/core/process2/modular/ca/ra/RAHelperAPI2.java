@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra;
 
+import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
@@ -23,9 +24,12 @@ import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.DecisionMakingDeciderModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.FeasibilityModule2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -42,8 +46,8 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     Object LOCAL_NEIGHBOURS_TOO_LARGE = new Object();
     Object UNCERTAINTY = new Object();
     //individual keys
-    Object STAGE = new Object();
     Object NODE_FILTER = new Object();
+    Object UTILITY = new Object();
 
     //=========================
     //general
@@ -66,11 +70,12 @@ public interface RAHelperAPI2 extends HelperAPI2 {
 
             int firstYear = environment.getTimeModel().getFirstSimulationYear();
             int lastYear = environment.getTimeModel().getLastSimulationYear();
+            int preFirstYear = firstYear - 1;
 
-            trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' to '{}'", firstYear, lastYear);
+            trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' (first={}) to '{}'", preFirstYear, firstYear, lastYear);
             dataSupplier = new NPVDataSupplier();
             dataSupplier.setAttributeHelper(environment.getAttributeHelper());
-            for(int y = firstYear; y <= lastYear; y++) {
+            for(int y = preFirstYear; y <= lastYear; y++) {
                 trace("calculate year '{}'", y);
                 NPVMatrix matrix = new NPVMatrix();
                 matrix.calculate(calculator, y);
@@ -84,8 +89,8 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return dataSupplier;
     }
 
-    default void adopt(ConsumerAgentData2 input, Timestamp now) {
-        input.getAgent().adopt(input.getNeed(), input.getProduct(), now, input.determinePhase(now));
+    default void adopt(ConsumerAgentData2 input, Timestamp now, double utility) {
+        input.getAgent().adopt(input.getNeed(), input.getProduct(), now, input.determinePhase(now), utility);
     }
 
     default int getCurrentYear(ConsumerAgentData2 input) {
@@ -108,6 +113,15 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return input.getAgent().hasInitialAdopted(input.getProduct());
     }
 
+    default ZonedDateTime getCurrentSimulationTime(ConsumerAgentData2 input) {
+        if(input.getEnvironment().getTimeModel().hasStarted()) {
+            return input.getEnvironment().getTimeModel().now().getTime();
+        } else {
+            int firstYear = input.getEnvironment().getTimeModel().getFirstSimulationYear();
+            return TimeUtil.lastDayOfYear(firstYear - 1);
+        }
+    }
+
     @Override
     default String printName(Object obj) {
         if(obj instanceof ConsumerAgentData2) {
@@ -115,6 +129,18 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         } else {
             return HelperAPI2.super.printName(obj);
         }
+    }
+
+    //=========================
+    //Utility
+    //=========================
+
+    default void setUtility(ConsumerAgentData2 input, double utility) {
+        input.put(UTILITY, utility);
+    }
+
+    default double getUtility(ConsumerAgentData2 input) {
+        return input.getOr(UTILITY, Double.NaN);
     }
 
     //=========================
@@ -193,6 +219,10 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //Attribute
     //=========================
 
+    default long getId(ConsumerAgentData2 input) {
+        return getLong(input, RAConstants.ID);
+    }
+
     default boolean isInterested(ConsumerAgentData2 input) {
         return input.getAgent().isInterested(input.getProduct());
     }
@@ -223,15 +253,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         input.getAgent().allowAttention();
     }
 
-    default RAStage2 updateStageAndLog(ConsumerAgentData2 input, Timestamp stamp, RAStage2 newStage, DataAnalyser.Phase phase) {
-        logPhaseTransition(input, stamp, phase);
-        return updateStage(input, newStage);
-    }
-
-    default RAStage2 updateStage(ConsumerAgentData2 input, RAStage2 newStage) {
-        return (RAStage2) input.put(STAGE, newStage);
-    }
-
     default DataAnalyser.Phase getPhase(RAStage2 stage) {
         switch (stage) {
             case AWARENESS:
@@ -252,6 +273,10 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //=========================
     //Attribute
     //=========================
+
+    default long getLong(ConsumerAgentData2 input, String attributeName) {
+        return getLong(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName);
+    }
 
     default double getDouble(ConsumerAgentData2 input, String attributeName) {
         return getDouble(input.getEnvironment(), input.getAgent(), input.getProduct(), attributeName);
@@ -281,6 +306,10 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return getBoolean(input, RAConstants.SHARE_1_2_HOUSE);
     }
 
+    default boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
+        return getBoolean(agent.getEnvironment(), agent, null, RAConstants.SHARE_1_2_HOUSE);
+    }
+
     default void setShareOf1Or2FamilyHouse(ConsumerAgentData2 input) {
         setBoolean(input, RAConstants.SHARE_1_2_HOUSE, true);
     }
@@ -289,12 +318,19 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return getBoolean(input, RAConstants.HOUSE_OWNER);
     }
 
+    default boolean isHouseOwner(ConsumerAgent agent) {
+        return getBoolean(agent.getEnvironment(), agent, null, RAConstants.HOUSE_OWNER);
+    }
+
     default void setHouseOwner(ConsumerAgentData2 input) {
         setBoolean(input, RAConstants.HOUSE_OWNER, true);
     }
 
     default double getPurchasePower(ConsumerAgentData2 input) {
         return getDouble(input, RAConstants.PURCHASE_POWER_EUR);
+    }
+    default double getPurchasePower(ConsumerAgent agent, Product product) {
+        return getPurchasePower(agent.getEnvironment(), agent, product);
     }
     default double getPurchasePower(SimulationEnvironment environment, ConsumerAgent agent, Product product) {
         return getDouble(environment, agent, product, RAConstants.PURCHASE_POWER_EUR);
@@ -347,6 +383,10 @@ public interface RAHelperAPI2 extends HelperAPI2 {
 
     default double getFinancialThreshold(ConsumerAgentData2 input) {
         return getDouble(input, RAConstants.FINANCIAL_THRESHOLD);
+    }
+
+    default double getFinancialThreshold(ConsumerAgent agent, Product product) {
+        return getDouble(agent.getEnvironment(), agent, product, RAConstants.FINANCIAL_THRESHOLD);
     }
 
     default double getAdoptionThreshold(ConsumerAgentData2 input) {
@@ -422,6 +462,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 .filter(node -> node.is(ConsumerAgent.class))
                 .filter(filter)
                 .map(node -> node.getAgent(ConsumerAgent.class))
+                .filter(agent -> isFeasibleNeighbour(agent, input.getProduct()))
                 .forEach(agent -> {
                     totalLocal.inc();
                     if(agent.hasAdopted(input.getProduct())) {
@@ -447,6 +488,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 .filter(node -> node.is(ConsumerAgent.class))
                 .filter(filter)
                 .map(node -> node.getAgent(ConsumerAgent.class))
+                .filter(agent -> isFeasibleNeighbour(agent, input.getProduct()))
                 .forEach(agent -> {
                     totalLocal.inc();
                     if(valid.isTrue()) {
@@ -472,6 +514,16 @@ public interface RAHelperAPI2 extends HelperAPI2 {
             return 0;
         } else {
             return adopterLocal.get() / totalLocal.get();
+        }
+    }
+
+    default boolean isFeasibleNeighbour(ConsumerAgent agent, Product product) {
+        if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
+            double financial = getPurchasePower(agent, product);
+            double threshold = getFinancialThreshold(agent, product);
+            return threshold <= financial;
+        } else {
+            return false;
         }
     }
 

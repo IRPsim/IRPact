@@ -31,6 +31,9 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +42,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -366,5 +370,37 @@ public abstract class PostProcessor implements LoggingHelper {
         XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
         writer.setCellHandler(XlsxSheetWriter3.forJson());
         writer.write(path, sheetData);
+    }
+
+    public void storeXlsx(Path path, String sheetName, JsonTableData3 data) throws IOException {
+        Map<String, JsonTableData3> sheetData = new HashMap<>();
+        sheetData.put(sheetName, data);
+        storeXlsx(path, sheetData);
+    }
+
+    public void storeXlsx(Path path, DateTimeFormatter formatter, Map<String, JsonTableData3> sheetData) throws IOException {
+        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        XSSFWorkbook book = writer.newBook();
+        CellStyle dateStyle = XlsxSheetWriter3.createDefaultDateStyle(book);
+
+        writer.setCellHandler(
+                XlsxSheetWriter3.forJson(
+                        XlsxSheetWriter3.testTime(formatter),
+                        XlsxSheetWriter3.toTime(formatter),
+                        XlsxSheetWriter3.toCellStyle(dateStyle)
+                )
+        );
+
+        writer.write(
+                path,
+                book,
+                sheetData
+        );
+    }
+
+    public void storeXlsx(Path path, DateTimeFormatter formatter, String sheetName, JsonTableData3 data) throws IOException {
+        Map<String, JsonTableData3> sheetData = new HashMap<>();
+        sheetData.put(sheetName, data);
+        storeXlsx(path, formatter, sheetData);
     }
 }

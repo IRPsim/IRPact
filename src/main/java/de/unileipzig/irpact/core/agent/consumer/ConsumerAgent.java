@@ -78,6 +78,8 @@ public interface ConsumerAgent extends SpatialInformationAgent {
 
     void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase);
 
+    void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase, double utility);
+
     boolean linkAccess(AttributeAccess attributeAccess);
 
     boolean unlinkAccess(AttributeAccess attributeAccess);

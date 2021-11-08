@@ -69,6 +69,10 @@ public class JsonTableData3 extends TableData3<JsonNode> {
         set(rowIndex, columnIndex, creator.numberNode(value));
     }
 
+    public void setLong(int rowIndex, int columnIndex, long value) {
+        set(rowIndex, columnIndex, creator.numberNode(value));
+    }
+
     public void setDouble(int rowIndex, int columnIndex, double value) {
         set(rowIndex, columnIndex, creator.numberNode(value));
     }
@@ -82,6 +86,20 @@ public class JsonTableData3 extends TableData3<JsonNode> {
         if(node != null && node.isTextual()) {
             try {
                 setInt(rowIndex, columnIndex, func.applyAsInt(node.textValue()));
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean mapStringToLong(int rowIndex, int columnIndex, ToLongFunction<? super String> func) {
+        JsonNode node = get(rowIndex, columnIndex);
+        if(node != null && node.isTextual()) {
+            try {
+                setLong(rowIndex, columnIndex, func.applyAsLong(node.textValue()));
                 return true;
             } catch (NumberFormatException e) {
                 return false;
@@ -113,6 +131,12 @@ public class JsonTableData3 extends TableData3<JsonNode> {
     public void mapStringColumnToInt(int columnIndex, int from, ToIntFunction<? super String> func) {
         for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
             mapStringToInt(rowIndex, columnIndex, func);
+        }
+    }
+
+    public void mapStringColumnToLong(int columnIndex, int from, ToLongFunction<? super String> func) {
+        for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
+            mapStringToLong(rowIndex, columnIndex, func);
         }
     }
 

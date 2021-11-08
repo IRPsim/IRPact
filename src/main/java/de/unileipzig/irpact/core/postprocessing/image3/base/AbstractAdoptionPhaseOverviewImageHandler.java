@@ -29,6 +29,11 @@ public abstract class AbstractAdoptionPhaseOverviewImageHandler
         } else {
             AnnualEnumeratedAdoptionPhases data = new AnnualEnumeratedAdoptionPhases();
             data.setInitialYear(processor.getFirstSimulationYear());
+            data.initalize(
+                    processor.getAllSimulationYears(),
+                    processor.getAllProducts(),
+                    AdoptionPhase.VALID_PHASES
+            );
             data.analyse(getEnvironment());
             getGlobalData().put(AnnualEnumeratedAdoptionPhases.class, data);
             return data;

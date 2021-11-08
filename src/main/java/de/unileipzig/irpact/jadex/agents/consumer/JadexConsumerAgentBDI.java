@@ -608,8 +608,13 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase) {
+        adopt(need, product, stamp, phase, Double.NaN);
+    }
+
+    @Override
+    public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase, double utility) {
         if(needs.contains(need)) {
-            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
+            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase, utility);
             needs.remove(need);
             addAdoptedProduct(adoptedProduct);
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
