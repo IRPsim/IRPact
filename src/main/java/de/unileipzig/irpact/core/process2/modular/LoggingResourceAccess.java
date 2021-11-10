@@ -56,7 +56,7 @@ public interface LoggingResourceAccess extends LoggingHelper {
                 return cached;
             } else {
                 trace("loading '{}'", internalUrl);
-                InputStream in = loader.getLocalizedExternalAsStream(fileName, locale, fileExtension);
+                InputStream in = loader.getLocalizedInternalAsStream(fileName, locale, fileExtension);
                 JsonResource loaded = load(in);
                 if(loaded != null) {
                     trace("cache '{}'", internalUrl);
