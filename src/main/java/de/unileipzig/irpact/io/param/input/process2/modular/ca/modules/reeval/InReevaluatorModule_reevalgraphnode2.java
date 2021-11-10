@@ -85,6 +85,10 @@ public class InReevaluatorModule_reevalgraphnode2 implements InConsumerAgentReev
     public InReevaluatorModule_reevalgraphnode2() {
     }
 
+    public InReevaluatorModule_reevalgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InReevaluatorModule_reevalgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

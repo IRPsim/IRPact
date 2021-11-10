@@ -112,6 +112,10 @@ public class InMinimalCsvValueLoggingModule_calcloggraphnode2 implements InConsu
     public InMinimalCsvValueLoggingModule_calcloggraphnode2() {
     }
 
+    public InMinimalCsvValueLoggingModule_calcloggraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InMinimalCsvValueLoggingModule_calcloggraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

@@ -83,6 +83,10 @@ public class InDoAdoptModule_evalragraphnode2 implements InConsumerAgentEvalRAMo
     public InDoAdoptModule_evalragraphnode2() {
     }
 
+    public InDoAdoptModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InDoAdoptModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

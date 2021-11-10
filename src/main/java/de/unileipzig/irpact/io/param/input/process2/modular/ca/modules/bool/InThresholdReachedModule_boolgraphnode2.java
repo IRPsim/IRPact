@@ -113,6 +113,10 @@ public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentB
     public InThresholdReachedModule_boolgraphnode2() {
     }
 
+    public InThresholdReachedModule_boolgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InThresholdReachedModule_boolgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

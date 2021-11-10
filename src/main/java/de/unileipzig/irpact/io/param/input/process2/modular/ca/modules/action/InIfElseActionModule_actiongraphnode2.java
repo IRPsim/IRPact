@@ -120,6 +120,10 @@ public class InIfElseActionModule_actiongraphnode2 implements InConsumerAgentAct
     public InIfElseActionModule_actiongraphnode2() {
     }
 
+    public InIfElseActionModule_actiongraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InIfElseActionModule_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

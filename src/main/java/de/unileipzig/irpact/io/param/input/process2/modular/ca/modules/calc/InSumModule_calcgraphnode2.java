@@ -84,6 +84,10 @@ public class InSumModule_calcgraphnode2 implements InConsumerAgentCalculationMod
     public InSumModule_calcgraphnode2() {
     }
 
+    public InSumModule_calcgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InSumModule_calcgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

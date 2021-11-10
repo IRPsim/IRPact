@@ -1,0 +1,22 @@
+#########################
+# Deutsche Lokalisierung fuer Logger
+#########################
+---
+MinimalCsvValueLoggingModule2:
+  agentName: "Agent"
+  agentId: "ID"
+  productName: "Produkt"
+  time: "Datum"
+  value: "Wert"
+
+CsvValueLoggingModule2:
+  agentName: "Agent"
+  agentId: "ID"
+  agentGroupName: "Agentengruppe"
+  productName: "Produkt"
+  productGroupName: "Produktgruppe"
+  time: "Datum"
+  value: "Wert"
+
+
+

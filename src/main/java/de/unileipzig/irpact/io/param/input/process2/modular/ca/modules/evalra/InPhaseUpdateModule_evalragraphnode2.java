@@ -83,6 +83,10 @@ public class InPhaseUpdateModule_evalragraphnode2 implements InConsumerAgentEval
     public InPhaseUpdateModule_evalragraphnode2() {
     }
 
+    public InPhaseUpdateModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InPhaseUpdateModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

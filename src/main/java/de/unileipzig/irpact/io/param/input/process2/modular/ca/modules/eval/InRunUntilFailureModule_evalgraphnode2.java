@@ -85,6 +85,10 @@ public class InRunUntilFailureModule_evalgraphnode2 implements InConsumerAgentEv
     public InRunUntilFailureModule_evalgraphnode2() {
     }
 
+    public InRunUntilFailureModule_evalgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InRunUntilFailureModule_evalgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

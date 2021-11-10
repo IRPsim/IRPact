@@ -84,6 +84,10 @@ public class InInterestModule_evalragraphnode2 implements InConsumerAgentEvalRAM
     public InInterestModule_evalragraphnode2() {
     }
 
+    public InInterestModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InInterestModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

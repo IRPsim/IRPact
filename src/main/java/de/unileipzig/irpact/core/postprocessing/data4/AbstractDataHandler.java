@@ -56,7 +56,7 @@ public abstract class AbstractDataHandler<I extends InPostDataAnalysis> implemen
     }
 
     protected String[] buildKey(FileType type, String key) {
-        return new String[] {getResourceKey(), key};
+        return new String[] {type.name(), getResourceKey(), key};
     }
 
     protected String getLocalizedString(FileType type, String key) {

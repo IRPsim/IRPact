@@ -169,6 +169,10 @@ public class InMainBranchingModule_evalragraphnode2 implements InConsumerAgentEv
     public InMainBranchingModule_evalragraphnode2() {
     }
 
+    public InMainBranchingModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InMainBranchingModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

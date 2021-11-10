@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.MissingNode;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.exception.UnsupportedCellTypeException;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialStringAttribute;
+import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.commons.util.TriConsumer;
-import de.unileipzig.irpact.commons.util.io3.TableData3;
+import de.unileipzig.irpact.commons.util.io3.BasicTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -74,38 +77,38 @@ public class XlsxSheetParser3<T> {
     //parse
     //=========================
 
-    public TableData3<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(Path input) throws ParsingException, IOException, InvalidFormatException {
         return parse(input, 0);
     }
 
-    public TableData3<T> parse(InputStream in, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(InputStream in, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(in, sheetIndex, list);
-        return new TableData3<>(list);
+        return new BasicTableData3<>(list);
     }
 
-    public TableData3<T> parse(InputStream in, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(InputStream in, String sheetName) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(in, sheetName, list);
-        return new TableData3<>(list);
+        return new BasicTableData3<>(list);
     }
 
-    public TableData3<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(Path input, int sheetIndex) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetIndex, list);
-        return new TableData3<>(list);
+        return new BasicTableData3<>(list);
     }
 
-    public TableData3<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(Path input, String sheetName) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(input, sheetName, list);
-        return new TableData3<>(list);
+        return new BasicTableData3<>(list);
     }
 
-    public TableData3<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
+    public BasicTableData3<T> parse(XSSFSheet sheet) throws ParsingException, IOException, InvalidFormatException {
         List<List<T>> list = new ArrayList<>();
         collect(sheet, list);
-        return new TableData3<>(list);
+        return new BasicTableData3<>(list);
     }
 
     public boolean collect(InputStream in, int sheetIndex, Collection<? super List<T>> target) throws ParsingException, IOException, InvalidFormatException {
@@ -295,6 +298,36 @@ public class XlsxSheetParser3<T> {
 
                 case BLANK:
                     return MissingNode.getInstance();
+
+                default:
+                    throw new RuntimeException(unknownCellType(cell));
+            }
+        };
+    }
+
+    public static CellValueGetter<SpatialAttribute> forSpatial() {
+        return cell -> {
+            switch(cell.getCellType()) {
+                case NUMERIC:
+                case FORMULA:
+                    double numValue;
+                    try {
+                        numValue = getFormatedNumericCellValue(cell, true);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return new BasicSpatialDoubleAttribute(null, numValue);
+
+                case BOOLEAN:
+                    boolean boolValue = cell.getBooleanCellValue();
+                    return new BasicSpatialDoubleAttribute(null, boolValue);
+
+                case STRING:
+                    String strValue = cell.getStringCellValue();
+                    return new BasicSpatialStringAttribute(null, strValue);
+
+                case BLANK:
+                    throw new IllegalArgumentException("blank cell not supported");
 
                 default:
                     throw new RuntimeException(unknownCellType(cell));

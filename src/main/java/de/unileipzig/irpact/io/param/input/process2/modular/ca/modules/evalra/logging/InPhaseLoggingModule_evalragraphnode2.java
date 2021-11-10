@@ -89,6 +89,10 @@ public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEva
     public InPhaseLoggingModule_evalragraphnode2() {
     }
 
+    public InPhaseLoggingModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InPhaseLoggingModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

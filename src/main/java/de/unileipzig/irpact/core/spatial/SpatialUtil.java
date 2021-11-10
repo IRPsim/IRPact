@@ -83,6 +83,13 @@ public final class SpatialUtil {
                 .collect(Collectors.toList());
     }
 
+    public static int replaceInt(List<SpatialAttribute> row, String key, int newValue) {
+        SpatialDoubleAttribute attr = secureGet(row, key);
+        int oldValue = attr.getIntValue();
+        attr.setIntValue(newValue);
+        return oldValue;
+    }
+
     public static double replaceDouble(List<SpatialAttribute> row, String key, double newValue) {
         SpatialDoubleAttribute attr = secureGet(row, key);
         double oldValue = attr.getDoubleValue();

@@ -115,6 +115,17 @@ public class SimpleTable<T> implements Table<T> {
     }
 
     @Override
+    public void addColumn(int index, String name) {
+        if(hasColumn(name)) {
+            throw new IllegalArgumentException();
+        }
+        columns.add(index, name);
+        for(List<T> row: rows) {
+            row.add(index, getNullValue());
+        }
+    }
+
+    @Override
     public void addColumns(String... names) {
         for(String name: names) {
             addColumn(name);

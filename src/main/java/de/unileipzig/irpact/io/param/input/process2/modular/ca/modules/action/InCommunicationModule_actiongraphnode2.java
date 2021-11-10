@@ -172,6 +172,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     public InCommunicationModule_actiongraphnode2() {
     }
 
+    public InCommunicationModule_actiongraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InCommunicationModule_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

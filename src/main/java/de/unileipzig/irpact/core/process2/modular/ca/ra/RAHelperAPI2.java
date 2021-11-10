@@ -24,8 +24,6 @@ import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
 import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.DecisionMakingDeciderModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.FeasibilityModule2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -462,7 +460,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 .filter(node -> node.is(ConsumerAgent.class))
                 .filter(filter)
                 .map(node -> node.getAgent(ConsumerAgent.class))
-                .filter(agent -> isFeasibleNeighbour(agent, input.getProduct()))
+                .filter(agent -> isFeasibleAndFinancialNeighbour(agent, input.getProduct()))
                 .forEach(agent -> {
                     totalLocal.inc();
                     if(agent.hasAdopted(input.getProduct())) {
@@ -488,7 +486,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 .filter(node -> node.is(ConsumerAgent.class))
                 .filter(filter)
                 .map(node -> node.getAgent(ConsumerAgent.class))
-                .filter(agent -> isFeasibleNeighbour(agent, input.getProduct()))
+                .filter(agent -> isFeasibleAndFinancialNeighbour(agent, input.getProduct()))
                 .forEach(agent -> {
                     totalLocal.inc();
                     if(valid.isTrue()) {
@@ -517,16 +515,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         }
     }
 
-    default boolean isFeasibleNeighbour(ConsumerAgent agent, Product product) {
-        if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
-            double financial = getPurchasePower(agent, product);
-            double threshold = getFinancialThreshold(agent, product);
-            return threshold <= financial;
-        } else {
-            return false;
-        }
-    }
-
     default double getShareOfAdopterInSocialNetwork(ConsumerAgentData2 input) {
         MutableDouble totalGlobal = MutableDouble.zero();
         MutableDouble adopterGlobal = MutableDouble.zero();
@@ -534,6 +522,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         input.getEnvironment().getNetwork().getGraph()
                 .streamSourcesAndTargets(input.getAgent().getSocialGraphNode(), SocialGraph.Type.COMMUNICATION)
                 .filter(node -> node.is(ConsumerAgent.class))
+                .filter(node -> isFeasibleAndFinancialNeighbour(node.getAgent(ConsumerAgent.class), input.getProduct()))
                 .distinct()
                 .forEach(globalNode -> {
                     totalGlobal.inc();
@@ -546,6 +535,16 @@ public interface RAHelperAPI2 extends HelperAPI2 {
             return 0.0;
         } else {
             return adopterGlobal.get() / totalGlobal.get();
+        }
+    }
+
+    default boolean isFeasibleAndFinancialNeighbour(ConsumerAgent agent, Product product) {
+        if(isShareOf1Or2FamilyHouse(agent) && isHouseOwner(agent)) {
+            double financial = getPurchasePower(agent, product);
+            double threshold = getFinancialThreshold(agent, product);
+            return threshold <= financial;
+        } else {
+            return false;
         }
     }
 }

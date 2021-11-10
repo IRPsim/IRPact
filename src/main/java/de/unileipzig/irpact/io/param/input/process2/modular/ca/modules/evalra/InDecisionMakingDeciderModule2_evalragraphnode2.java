@@ -129,6 +129,10 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
     public InDecisionMakingDeciderModule2_evalragraphnode2() {
     }
 
+    public InDecisionMakingDeciderModule2_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InDecisionMakingDeciderModule2_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

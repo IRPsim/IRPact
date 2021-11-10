@@ -2,9 +2,11 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedFileLogger;
 import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
+import de.unileipzig.irpact.commons.resource.JsonResource;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
+import de.unileipzig.irpact.core.process2.modular.LoggingResourceAccess;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractUniformCAMultiModule1_2;
@@ -29,7 +31,7 @@ import java.util.Map;
  */
 public class MinimalCsvValueLoggingModule2
         extends AbstractUniformCAMultiModule1_2<Number, Number, CalculationModule2<ConsumerAgentData2>>
-        implements CalculationModule2<ConsumerAgentData2>, RAHelperAPI2, CloseableSimulationEntity, Reevaluator<ConsumerAgentData2> {
+        implements CalculationModule2<ConsumerAgentData2>, RAHelperAPI2, CloseableSimulationEntity, Reevaluator<ConsumerAgentData2>, LoggingResourceAccess {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(MinimalCsvValueLoggingModule2.class);
 
@@ -45,6 +47,8 @@ public class MinimalCsvValueLoggingModule2
     protected SimplifiedLogger valueLogger;
     protected boolean skipReevaluatorCall;
     protected boolean storeXlsx;
+
+    protected JsonResource resource;
 
     public static LocalDateTime toTime(String input) {
         return LocalDateTime.parse(input, FORMATTER);
@@ -64,6 +68,16 @@ public class MinimalCsvValueLoggingModule2
 
     public SimplifiedLogger getValueLogger() {
         return valueLogger;
+    }
+
+    @Override
+    public JsonResource getLocalizedData() {
+        return resource;
+    }
+
+    @Override
+    public String getResourceType() {
+        return "MinimalCsvValueLoggingModule2";
     }
 
     public void setDir(Path dir) {
@@ -119,6 +133,17 @@ public class MinimalCsvValueLoggingModule2
         );
         valueLogger.start();
         setValueLogger(valueLogger);
+        writeHeader();
+    }
+
+    protected void writeHeader() {
+        log(
+                getLocalizedString("agentName"),
+                getLocalizedString("agentId"),
+                getLocalizedString("productName"),
+                getLocalizedString("time"),
+                getLocalizedString("value")
+        );
     }
 
     @Override
@@ -160,8 +185,9 @@ public class MinimalCsvValueLoggingModule2
         Map<String, JsonTableData3> xlsxSheetData = new HashMap<>();
 
         JsonTableData3 xlsxData = csvData.copy();
-        xlsxData.mapStringColumnToDouble(VALUE_INDEX, 0, Double::parseDouble);
-        xlsxData.mapStringColumnToLong(ID_INDEX, 0, Long::parseLong);
+        //skip header
+        xlsxData.mapStringColumnToDouble(VALUE_INDEX, 1, Double::parseDouble);
+        xlsxData.mapStringColumnToLong(ID_INDEX, 1, Long::parseLong);
 
         xlsxSheetData.put("Data", xlsxData);
 
@@ -186,6 +212,10 @@ public class MinimalCsvValueLoggingModule2
     @Override
     protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
         trace("register on close: {}", environment.registerIfNotRegistered(this));
+        resource = load(environment);
+        if(resource == null) {
+            throw new NullPointerException("resource not found");
+        }
         createCsvLogger(dir, baseName);
     }
 
@@ -199,8 +229,7 @@ public class MinimalCsvValueLoggingModule2
         double value = getNonnullSubmodule().calculate(input, actions);
         if(!(isReevaluatorCall() && isSkipReevaluatorCall())) {
             double logValue = Double.isNaN(value) ? 0 : value;
-            getValueLogger().log(
-                    "{};{};{};{};{}",
+            log(
                     input.getAgentName(),
                     getId(input),
                     input.getProductName(),
@@ -211,6 +240,17 @@ public class MinimalCsvValueLoggingModule2
             trace("[{}] skip reevaluator call", getName());
         }
         return value;
+    }
+
+    protected void log(Object agentName, Object agentId, Object productName, Object time, Object value) {
+        getValueLogger().log(
+                "{};{};{};{};{}",
+                agentName,
+                agentId,
+                productName,
+                time,
+                value
+        );
     }
 
     protected LocalDateTime getTime(ConsumerAgentData2 input) {

@@ -2,15 +2,13 @@ package de.unileipzig.irpact.commons.util.io3.csv;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.util.StringUtil;
-import de.unileipzig.irpact.commons.util.csv.CsvValuePrinter;
-import de.unileipzig.irpact.commons.util.io3.TableData3;
+import de.unileipzig.irpact.commons.util.io3.BasicTableData3;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -110,11 +108,11 @@ public class CsvPrinter<T> {
         }
     }
 
-    public void write(Path path, Charset charset, TableData3<T> data) throws IOException {
+    public void write(Path path, Charset charset, BasicTableData3<T> data) throws IOException {
         write(path, charset, null, null, data.getRows());
     }
 
-    public void write(Writer writer, TableData3<T> data) throws IOException {
+    public void write(Writer writer, BasicTableData3<T> data) throws IOException {
         write(writer, null, data.getRows());
     }
 
@@ -249,7 +247,7 @@ public class CsvPrinter<T> {
         flushIfRequired(writer);
     }
 
-    public void appendRows(TableData3<? extends T> data) throws IOException {
+    public void appendRows(BasicTableData3<? extends T> data) throws IOException {
         for(int i = 0; i < data.getNumberOfRows(); i++) {
             appendRow(data.getRow(i));
         }

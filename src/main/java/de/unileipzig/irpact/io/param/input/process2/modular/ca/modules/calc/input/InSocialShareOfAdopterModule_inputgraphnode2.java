@@ -68,6 +68,10 @@ public class InSocialShareOfAdopterModule_inputgraphnode2 implements InConsumerA
     public InSocialShareOfAdopterModule_inputgraphnode2() {
     }
 
+    public InSocialShareOfAdopterModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InSocialShareOfAdopterModule_inputgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

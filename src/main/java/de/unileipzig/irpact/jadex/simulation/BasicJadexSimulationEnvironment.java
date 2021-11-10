@@ -35,6 +35,7 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.core.util.AttributeHelper;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -62,6 +63,8 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected final DataStore STORE = newStore();
     protected final ProgressCalculator PROGRESS_CALC = new WeightedProgressCalculator(IRPact.NUMBER_OF_PROGRESS_PHASES);
+
+    protected MetaData metaData;
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
@@ -193,6 +196,15 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
                 LOGGER.warn("closing '" + entity + "' failed");
             }
         }
+    }
+
+    @Override
+    public MetaData getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(MetaData metaData) {
+        this.metaData = metaData;
     }
 
     @Override
