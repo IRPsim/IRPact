@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.simulation;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.IntStream;
 
 /**

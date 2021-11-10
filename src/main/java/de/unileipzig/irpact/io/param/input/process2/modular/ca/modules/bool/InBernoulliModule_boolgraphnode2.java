@@ -95,6 +95,10 @@ public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModu
     public InBernoulliModule_boolgraphnode2() {
     }
 
+    public InBernoulliModule_boolgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InBernoulliModule_boolgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

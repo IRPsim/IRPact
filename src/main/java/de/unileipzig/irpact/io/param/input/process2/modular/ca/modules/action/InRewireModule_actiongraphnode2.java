@@ -68,6 +68,10 @@ public class InRewireModule_actiongraphnode2 implements InConsumerAgentActionMod
     public InRewireModule_actiongraphnode2() {
     }
 
+    public InRewireModule_actiongraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InRewireModule_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

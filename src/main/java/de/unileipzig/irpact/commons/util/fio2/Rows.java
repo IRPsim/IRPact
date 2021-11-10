@@ -34,20 +34,31 @@ public final class Rows<T> {
     }
 
     public boolean isValidMatrix() {
+        try {
+            requiresValidMatrix();
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    public void requiresValidMatrix() throws IllegalStateException {
         int columnSize = -1;
+        int rowIndex = 0;
         for(List<T> row: rows) {
             if(row == null) {
-                return false;
+                throw new IllegalStateException("row " + rowIndex + " is null");
             }
+
             if(columnSize == -1) {
                 columnSize = row.size();
             } else {
                 if(columnSize != row.size()) {
-                    return false;
+                    throw new IllegalStateException("row " + rowIndex + " has other length: " + row.size() + " != " + columnSize);
                 }
             }
+            rowIndex++;
         }
-        return true;
     }
 
     public boolean hasEmptyColumn() {
@@ -230,9 +241,7 @@ public final class Rows<T> {
             Function<? super T, ? extends N> t2n,
             Function<? super T, ? extends V> t2v,
             TypedMatrix<M, N, V> target) {
-        if(!isValidMatrix()) {
-            throw new IllegalStateException("invalid matrix");
-        }
+        requiresValidMatrix();
 
         int i = 0;
         int j = 0;

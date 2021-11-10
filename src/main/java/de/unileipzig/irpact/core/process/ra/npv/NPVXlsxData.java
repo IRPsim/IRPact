@@ -14,6 +14,7 @@ public class NPVXlsxData implements NPVData {
     protected static final String STROMKOSTENANSTIEG = "p";
     protected static final String DEGRADATION = "D";
     protected static final String EIGENVERBRAUCH = "SC";
+    protected static final String T_FIT = "tFIT";
 
     protected static final String STRAHLUNG = "Strahlung";
     protected static final String AUSRICHTUNG = "Ausrichtung";
@@ -21,19 +22,19 @@ public class NPVXlsxData implements NPVData {
     protected static final String WIRKUNGSGRAD = "Wirkungsgrad";
 
     protected static final String BERECHNUNGSZEITPUNKT = "Berechnungszeitpunkt";
-    protected static final String NETTOSYSTEMPREIS = "Nettosystempreis zum Berechnungszeitpunkt";
-    protected static final String STROMPREIS = "Strompreis zum Berechnungszeitpunkt";
-    protected static final String EINSPEIS = "Einspeiseverg\u00FCtung zum Berechnungszeitpunkt (1.1., kl. Anlage)";
-    protected static final String ZINSSATZ = "Zinssatz f\u00FCr Spareinlagen";
+    protected static final String NETTOSYSTEMPREIS = "Nettosystempreis";
+    protected static final String STROMPREIS = "Strompreis";
+    protected static final String EINSPEIS = "Einspeiseverguetung";
+    protected static final String ZINSSATZ = "Zinssatz";
 
-    protected static final String NEIGUNGSWINKEL = "Neigungswinkel Dachfl\u00E4che Agent i";
-    protected static final String GLOBALSTRAHLUNG = "Globalstrahlung pro 6m^2 mit Neigung Ni";
+    protected static final String NEIGUNGSWINKEL = "Neigungswinkel";
+    protected static final String GLOBALSTRAHLUNG = "Globalstrahlung";
 
-    protected static final String AUSRICHTUNG_AGENT = "Ausrichtung Dachfl\u00E4che Agent i";
-    protected static final String AUSRICHTUNG_FAKTOR = "Faktor Ausrichtung";
+    protected static final String AUSRICHTUNG_AGENT = "Ausrichtung";
+    protected static final String AUSRICHTUNG_FAKTOR = "Faktor";
 
-    protected static final String MODULWIRKUNGSGRAD = "Modulwirkungsgrad(Jahr)";
-    protected static final String PERFORMANCE_RATIO = "Performance Ratio bei optimaler Ausrichtung";
+    protected static final String MODULWIRKUNGSGRAD = "Modulwirkungsgrad";
+    protected static final String PERFORMANCE_RATIO = "Performance_Ratio";
 
     protected KeyValueXlsxTable allgemeinSheet;
     protected Map<String, SimplifiedXlsxTable> tables;
@@ -86,6 +87,11 @@ public class NPVXlsxData implements NPVData {
     @Override
     public double getEinspeiseverguetung(int t0) {
         return getValue(STROM, BERECHNUNGSZEITPUNKT, t0, EINSPEIS);
+    }
+
+    @Override
+    public double getTFit() {
+        return allgemeinSheet.get(T_FIT);
     }
 
     @Override

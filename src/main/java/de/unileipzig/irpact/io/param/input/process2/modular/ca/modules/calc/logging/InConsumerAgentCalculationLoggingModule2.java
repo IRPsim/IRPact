@@ -24,6 +24,10 @@ public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgen
         return getBaseName() + ".csv";
     }
 
+    default boolean isPrintHeader() {
+        return true;
+    }
+
     boolean isSkipReevaluatorCall();
 
     int getAgentIndex();

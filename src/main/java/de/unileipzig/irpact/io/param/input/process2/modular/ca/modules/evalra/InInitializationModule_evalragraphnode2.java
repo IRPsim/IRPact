@@ -68,6 +68,10 @@ public class InInitializationModule_evalragraphnode2 implements InConsumerAgentE
     public InInitializationModule_evalragraphnode2() {
     }
 
+    public InInitializationModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InInitializationModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

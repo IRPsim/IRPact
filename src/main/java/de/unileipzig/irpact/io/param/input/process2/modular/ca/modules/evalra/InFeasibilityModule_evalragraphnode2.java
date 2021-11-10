@@ -84,6 +84,10 @@ public class InFeasibilityModule_evalragraphnode2 implements InConsumerAgentEval
     public InFeasibilityModule_evalragraphnode2() {
     }
 
+    public InFeasibilityModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InFeasibilityModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

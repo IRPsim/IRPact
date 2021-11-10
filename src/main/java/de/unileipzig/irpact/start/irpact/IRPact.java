@@ -87,7 +87,7 @@ public final class IRPact implements IRPActAccess {
     //reminder: change version in loc_lang.yaml
     private static final String MAJOR_STRING = "1";
     private static final String MINOR_STRING = "19";
-    private static final String BUILD_STRING = "2";
+    private static final String BUILD_STRING = "3";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -414,6 +414,7 @@ public final class IRPact implements IRPActAccess {
         int year = inEntry.getConfig().getYear();
         JadexInputParser parser = new JadexInputParser();
         parser.setSimulationYear(year);
+        parser.setMetaData(META_DATA);
         parser.setResourceLoader(META_DATA.getLoader());
         parser.setOptions(CL_OPTIONS);
         environment = parser.parseRoot(inRoot);
@@ -1069,8 +1070,10 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void finalTask() {
-        LOGGER.info(IRPSection.GENERAL, "simulation finished");
-        environment.closeEntities();
+        LOGGER.info(IRPSection.GENERAL, "simulation finished (environment == null ? {})", environment == null);
+        if(environment != null) {
+            environment.closeEntities();
+        }
         copyLogIfPossible();;
         IRPLogging.terminate();
         clearConverterCache();

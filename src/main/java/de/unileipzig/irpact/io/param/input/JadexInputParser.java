@@ -31,6 +31,7 @@ import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
@@ -67,6 +68,7 @@ public class JadexInputParser implements IRPactInputParser {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexInputParser.class);
 
     private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
+    private MetaData metaData;
     private ResourceLoader resourceLoader;
     private MainCommandLineOptions options;
 
@@ -78,6 +80,9 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     private void validate() {
+        if(metaData == null) {
+            throw new NoSuchElementException("no meta data");
+        }
         if(resourceLoader == null) {
             throw new NoSuchElementException("no resource loader");
         }
@@ -92,6 +97,7 @@ public class JadexInputParser implements IRPactInputParser {
         environment = new BasicJadexSimulationEnvironment();
         environment.setName("Initial_Environment");
         environment.initDefault();
+        environment.setMetaData(metaData);
         environment.setResourceLoader(resourceLoader);
     }
 
@@ -103,6 +109,10 @@ public class JadexInputParser implements IRPactInputParser {
     @Override
     public boolean isRestored() {
         return environment.isRestored();
+    }
+
+    public void setMetaData(MetaData metaData) {
+        this.metaData = metaData;
     }
 
     public void setResourceLoader(ResourceLoader resourceLoader) {

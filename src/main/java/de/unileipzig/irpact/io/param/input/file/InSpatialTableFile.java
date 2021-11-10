@@ -23,6 +23,8 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 @Definition
 public class InSpatialTableFile implements InFile {
 
+    private static final String DEFAULT_SHEET_NAME = "Datensatz";
+
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
         return L.lookupClass();
@@ -83,13 +85,14 @@ public class InSpatialTableFile implements InFile {
     public SpatialTableFileContent parse(IRPactInputParser parser) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
-            SpatialTableFileLoader gisLoader = new SpatialTableFileLoader();
-            gisLoader.setLoader(parser.getResourceLoader());
-            gisLoader.setInputFileName(fileName);
-            gisLoader.setCoverage(getCoverage());
+            SpatialTableFileLoader loader = new SpatialTableFileLoader();
+            loader.setLoader(parser.getResourceLoader());
+            loader.setInputFileName(fileName);
+            loader.setCoverage(getCoverage());
+            loader.setSheetName(DEFAULT_SHEET_NAME);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
-            gisLoader.initalize();
-            SpatialTableFileContent spatialData = gisLoader.getAllAttributes();
+            loader.parse();
+            SpatialTableFileContent spatialData = loader.getAllAttributes();
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "loaded '{}' entries", spatialData.size());
             return spatialData;
         } catch (Exception e) {

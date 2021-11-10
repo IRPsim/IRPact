@@ -81,6 +81,10 @@ public class InGlobalAvgNPVModule_inputgraphnode2 implements InConsumerAgentInpu
     public InGlobalAvgNPVModule_inputgraphnode2() {
     }
 
+    public InGlobalAvgNPVModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     public InGlobalAvgNPVModule_inputgraphnode2(String name, InPVFile pvFile) {
         setName(name);
         setPvFile(pvFile);

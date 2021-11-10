@@ -95,6 +95,10 @@ public class InLocalShareOfAdopterModule_inputgraphnode2 implements InConsumerAg
     public InLocalShareOfAdopterModule_inputgraphnode2() {
     }
 
+    public InLocalShareOfAdopterModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InLocalShareOfAdopterModule_inputgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

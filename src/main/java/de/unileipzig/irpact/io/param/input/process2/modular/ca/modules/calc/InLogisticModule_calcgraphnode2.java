@@ -121,6 +121,10 @@ public class InLogisticModule_calcgraphnode2 implements InConsumerAgentCalculati
     public InLogisticModule_calcgraphnode2() {
     }
 
+    public InLogisticModule_calcgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InLogisticModule_calcgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

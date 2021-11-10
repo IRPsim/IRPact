@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * @author Daniel Abitz
  */
-public class JsonTableData3 extends TableData3<JsonNode> {
+public class JsonTableData3 extends BasicTableData3<JsonNode> {
 
     protected JsonNodeCreator creator;
 

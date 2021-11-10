@@ -5,7 +5,6 @@ package de.unileipzig.irpact.core.process.ra.npv;
  */
 public class NPVCalculator {
 
-    protected int t_FIT = 20;
     protected NPVData data;
 
     public NPVCalculator() {
@@ -42,7 +41,7 @@ public class NPVCalculator {
         double p = data.getStromkostenanstieg();
         double r = data.getZinssatzProzent(t0);
         double sum = 0.0;
-        for(int t = 1; t <= t_FIT; t++) {
+        for(int t = 1; t <= data.getTFit(); t++) {
             double einnahmen = calcEinnahmen(t0, N, A, FIT0, SC, RP0, p, t);
             double zins = Math.pow(1 + r, t);
             sum += einnahmen / zins;

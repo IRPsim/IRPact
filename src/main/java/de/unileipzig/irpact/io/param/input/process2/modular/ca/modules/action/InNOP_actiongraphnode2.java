@@ -69,6 +69,10 @@ public class InNOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
     public InNOP_actiongraphnode2() {
     }
 
+    public InNOP_actiongraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InNOP_actiongraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

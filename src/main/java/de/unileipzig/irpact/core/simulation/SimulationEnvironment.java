@@ -17,6 +17,7 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.time.TimeModel;
 import de.unileipzig.irpact.core.util.AttributeHelper;
+import de.unileipzig.irpact.core.util.MetaData;
 
 /**
  * @author Daniel Abitz
@@ -55,6 +56,8 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     //=========================
     //main components
     //=========================
+
+    MetaData getMetaData();
 
     Settings getSettings();
 

@@ -70,10 +70,6 @@ public class BucketAnalyser extends AbstractDataHandler<InBucketAnalyser> {
         return getTargetFile(dataConfiguration.getBaseFileName() + extension);
     }
 
-    protected String[] buildKey(FileType type, String key) {
-        return new String[] {type.name(), getResourceKey(), key};
-    }
-
     @Override
     public IRPLogger getDefaultLogger() {
         return LoGGER;
@@ -91,7 +87,7 @@ public class BucketAnalyser extends AbstractDataHandler<InBucketAnalyser> {
     @Override
     public void execute() throws Throwable {
         JsonTableData3 data = loadData();
-        Map<Integer, BucketMap<Number, Integer>> annualBucketData = createAnnualBucketData(data);
+        Map<Integer, BucketMap<Number, Integer>> annualBucketData = createAnnualBucketData(data, dataConfiguration.getLoggingModule().isPrintHeader());
         Map<Integer, JsonTableData3> annualTableData = bucketDataToTableData(annualBucketData);
 
         if(dataConfiguration.isStoreCsv()) {
@@ -124,9 +120,9 @@ public class BucketAnalyser extends AbstractDataHandler<InBucketAnalyser> {
         processor.storeXlsx(outputPath, xlsxData);
     }
 
-    protected Map<Integer, BucketMap<Number, Integer>> createAnnualBucketData(JsonTableData3 data) throws ParsingException {
+    protected Map<Integer, BucketMap<Number, Integer>> createAnnualBucketData(JsonTableData3 data, boolean hasHeader) throws ParsingException {
         Map<Integer, BucketMap<Number, Integer>> annualBuckets = new TreeMap<>();
-        for(int r = 0; r < data.getNumberOfRows(); r++) {
+        for(int r = hasHeader ? 1 : 0; r < data.getNumberOfRows(); r++) {
             int year = getYear(data, r);
             double value = getValue(data, r);
             BucketMap<Number, Integer> bucketMap = annualBuckets.computeIfAbsent(year, _year -> newBucketMap());

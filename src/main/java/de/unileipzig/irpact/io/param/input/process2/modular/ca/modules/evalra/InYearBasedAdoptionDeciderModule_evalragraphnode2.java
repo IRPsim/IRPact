@@ -101,6 +101,10 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
     public InYearBasedAdoptionDeciderModule_evalragraphnode2() {
     }
 
+    public InYearBasedAdoptionDeciderModule_evalragraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InYearBasedAdoptionDeciderModule_evalragraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

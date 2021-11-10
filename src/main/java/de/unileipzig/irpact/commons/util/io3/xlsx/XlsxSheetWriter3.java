@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.commons.util.io3.xlsx;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import de.unileipzig.irpact.commons.util.io3.TableData3;
+import de.unileipzig.irpact.commons.util.io3.BasicTableData3;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FormulaError;
@@ -51,7 +51,7 @@ public class XlsxSheetWriter3<T> {
     public XSSFWorkbook write(
             Path target,
             String sheetName,
-            TableData3<T> rows) throws IOException {
+            BasicTableData3<T> rows) throws IOException {
         return write(target, sheetName, rows.getRows());
     }
 
@@ -74,7 +74,7 @@ public class XlsxSheetWriter3<T> {
 
     public XSSFWorkbook write(
             Path target,
-            Map<String, ? extends TableData3<T>> sheetData) throws IOException {
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
         XSSFWorkbook book = newBook();
         write(target, book, sheetData);
         return book;
@@ -82,8 +82,8 @@ public class XlsxSheetWriter3<T> {
 
     public void write(
             XSSFWorkbook book,
-            Map<String, ? extends TableData3<T>> sheetData) throws IOException {
-        for(Map.Entry<String, ? extends TableData3<T>> entry: sheetData.entrySet()) {
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
+        for(Map.Entry<String, ? extends BasicTableData3<T>> entry: sheetData.entrySet()) {
             write(book, entry.getKey(), entry.getValue());
         }
     }
@@ -91,7 +91,7 @@ public class XlsxSheetWriter3<T> {
     public void write(
             Path target,
             XSSFWorkbook book,
-            Map<String, ? extends TableData3<T>> sheetData) throws IOException {
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
         write(book, sheetData);
         write(target, book);
     }
@@ -105,7 +105,7 @@ public class XlsxSheetWriter3<T> {
     public XSSFSheet write(
             XSSFWorkbook book,
             String sheetName,
-            TableData3<T> rows) {
+            BasicTableData3<T> rows) {
         return write(book, sheetName, rows.getRows());
     }
 
@@ -129,7 +129,7 @@ public class XlsxSheetWriter3<T> {
 
     public void write(
             XSSFSheet sheet,
-            TableData3<T> rows) {
+            BasicTableData3<T> rows) {
         write(sheet, rows.getRows());
     }
 

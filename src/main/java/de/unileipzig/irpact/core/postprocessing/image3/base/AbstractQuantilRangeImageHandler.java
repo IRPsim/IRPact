@@ -52,6 +52,7 @@ public abstract class AbstractQuantilRangeImageHandler<I extends InOutputImage2>
             info("load csv '{}'", loggingFile);
             Map<Integer, Quantile<Number>> quantiles = calculateAnnualQuantils(
                     loggingFile,
+                    module.isPrintHeader(),
                     module.getTimeIndex(),
                     module.getValueIndex(),
                     module::toTime
@@ -64,24 +65,26 @@ public abstract class AbstractQuantilRangeImageHandler<I extends InOutputImage2>
 
     public static Map<Integer, Quantile<Number>> calculateAnnualQuantils(
             Path input,
+            boolean hasHeader,
             int timeIndex,
             int valueIndex,
             Function<? super String, ? extends LocalDateTime> toTimeFunction) throws IOException {
         CsvParser<JsonNode> csvParser = new CsvParser<>();
         csvParser.setValueGetter(CsvParser.forJson());
         JsonTableData3 rawData = new JsonTableData3(csvParser.parseToList(input, StandardCharsets.UTF_8));
-        return calculateAnnualQuantils(rawData, timeIndex, valueIndex, toTimeFunction);
+        return calculateAnnualQuantils(rawData, hasHeader, timeIndex, valueIndex, toTimeFunction);
     }
 
     protected static Map<Integer, Quantile<Number>> calculateAnnualQuantils(
             JsonTableData3 rawData,
+            boolean hasHeader,
             int timeIndex,
             int valueIndex,
             Function<? super String, ? extends LocalDateTime> toTimeFunction) {
         Map<Integer, List<Number>> values = new TreeMap<>();
         Map<Integer, Quantile<Number>> quantiles = new TreeMap<>();
 
-        for(int r = 0; r < rawData.getNumberOfRows(); r++) {
+        for(int r = hasHeader ? 1 : 0; r < rawData.getNumberOfRows(); r++) {
             String timeStr = rawData.getString(r, timeIndex);
             LocalDateTime time = toTimeFunction.apply(timeStr);
             int year = time.getYear();

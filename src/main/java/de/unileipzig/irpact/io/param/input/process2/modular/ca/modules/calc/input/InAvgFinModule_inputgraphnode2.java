@@ -68,6 +68,10 @@ public class InAvgFinModule_inputgraphnode2 implements InConsumerAgentInputModul
     public InAvgFinModule_inputgraphnode2() {
     }
 
+    public InAvgFinModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     @Override
     public InAvgFinModule_inputgraphnode2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

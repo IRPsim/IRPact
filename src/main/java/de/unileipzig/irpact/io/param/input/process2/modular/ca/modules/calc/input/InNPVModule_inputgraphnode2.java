@@ -81,6 +81,10 @@ public class InNPVModule_inputgraphnode2 implements InConsumerAgentInputModule2 
     public InNPVModule_inputgraphnode2() {
     }
 
+    public InNPVModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     public InNPVModule_inputgraphnode2(String name, InPVFile pvFile) {
         setName(name);
         setPvFile(pvFile);

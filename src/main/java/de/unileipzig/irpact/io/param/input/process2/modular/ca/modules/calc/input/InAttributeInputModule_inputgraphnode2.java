@@ -79,6 +79,10 @@ public class InAttributeInputModule_inputgraphnode2 implements InConsumerAgentIn
     public InAttributeInputModule_inputgraphnode2() {
     }
 
+    public InAttributeInputModule_inputgraphnode2(String name) {
+        setName(name);
+    }
+
     public InAttributeInputModule_inputgraphnode2(String name, InAttributeName attribute) {
         setName(name);
         setAttribute(attribute);

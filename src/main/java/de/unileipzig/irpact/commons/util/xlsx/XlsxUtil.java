@@ -58,6 +58,24 @@ public final class XlsxUtil {
         return tables;
     }
 
+    public static Map<String, SimplifiedXlsxTable> extractTablesWithTwoHeaderLines(XSSFWorkbook book, Collection<String> sheetNames) {
+        Map<String, SimplifiedXlsxTable> tables = new LinkedHashMap<>();
+        for(String sheetName: sheetNames) {
+            if(tables.containsKey(sheetName)) {
+                throw new IllegalArgumentException("duplicated sheet name: " + sheetName);
+            }
+
+            XSSFSheet sheet = book.getSheet(sheetName);
+            if(sheet == null) {
+                throw new NullPointerException("missing sheet: " + sheetName);
+            }
+
+            SimplifiedXlsxTable table = extractTableWithWithTwoHeaderLines(sheet);
+            tables.put(sheetName, table);
+        }
+        return tables;
+    }
+
     public static SimplifiedXlsxTable extractTableWithWithTwoHeaderLines(XSSFSheet sheet) {
         SimplifiedXlsxTable table = new SimplifiedXlsxTable();
         Iterator<Row> rowIter = sheet.rowIterator();
