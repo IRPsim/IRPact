@@ -352,6 +352,24 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return createDefaultModularProcessModel(name, uncertainty, speedOfConvergence, scheme, images, postDatas, new ModularProcessModelManager());
     }
 
+    public InMinimalCsvValueLoggingModule_calcloggraphnode2 createDefaultLoggingModule(String name) {
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 module = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        module.setName(name);
+        module.setPrintHeader(true);
+        module.setLogDefaultCall(true);
+        module.setLogReevaluatorCall(false);
+        return module;
+    }
+
+    public InMinimalCsvValueLoggingModule_calcloggraphnode2 createReevaluatorLoggingModule(String name) {
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 module = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        module.setName(name);
+        module.setPrintHeader(true);
+        module.setLogDefaultCall(false);
+        module.setLogReevaluatorCall(true);
+        return module;
+    }
+
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
             InUncertainty uncertainty,
@@ -427,13 +445,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         logisticNPV.setXInput(npv);
         logisticNPV.setX0Input(avgNPV);
 
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        npvLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, this::createDefaultLoggingModule);
         npvLogger.setInput(logisticNPV);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        npvReevalLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, this::createReevaluatorLoggingModule);
         npvReevalLogger.setInput(logisticNPV);
-        npvReevalLogger.setSkipReevaluatorCall(false);
 
         //pp
         InAttributeInputModule_inputgraphnode2 pp = mmp.create("PP", InAttributeInputModule_inputgraphnode2::new);
@@ -458,13 +473,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //env comp
         InAttributeInputModule_inputgraphnode2 envAttr = mmp.create("ENV", InAttributeInputModule_inputgraphnode2::new);
         envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        envLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, this::createDefaultLoggingModule);
         envLogger.setInput(envAttr);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        envReevalLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, this::createReevaluatorLoggingModule);
         envReevalLogger.setInput(envAttr);
-        envReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 envWeight = mmp.create(ENV_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
@@ -472,13 +484,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //nov comp
         InAttributeInputModule_inputgraphnode2 novAttr = mmp.create("NOV", InAttributeInputModule_inputgraphnode2::new);
         novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        novLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, this::createDefaultLoggingModule);
         novLogger.setInput(novAttr);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, this::createReevaluatorLoggingModule);
         novReevalLogger.setInput(novAttr);
-        novReevalLogger.setStoreXlsx(true);
-        novReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 novWeight = mmp.create(NOV_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
@@ -487,22 +496,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InLocalShareOfAdopterModule_inputgraphnode2 localShare = mmp.create("LOCAL_SHARE", InLocalShareOfAdopterModule_inputgraphnode2::new);
         localShare.setMaxToStore(2000);
         localShare.setNodeFilterScheme(scheme);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        localLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, this::createDefaultLoggingModule);
         localLogger.setInput(localShare);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, this::createReevaluatorLoggingModule);
         localReevalLogger.setInput(localShare);
-        localReevalLogger.setStoreXlsx(true);
-        localReevalLogger.setSkipReevaluatorCall(false);
 
         InSocialShareOfAdopterModule_inputgraphnode2 socialShare = mmp.create("SOCIAL_SHARE", InSocialShareOfAdopterModule_inputgraphnode2::new);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, this::createDefaultLoggingModule);
         socialLogger.setInput(socialShare);
-        socialLogger.setStoreXlsx(true);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, this::createReevaluatorLoggingModule);
         socialReevalLogger.setInput(socialShare);
-        socialReevalLogger.setSkipReevaluatorCall(false);
-        socialReevalLogger.setStoreXlsx(true);
 
         InMulScalarModule_calcgraphnode2 localWeight = mmp.create(LOCAL_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         localWeight.setScalar(RealData.WEIGHT_LOCALE);
@@ -532,9 +535,11 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 socComp
         );
 
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        utilityLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, this::createDefaultLoggingModule);
         utilityLogger.setInput(utilitySum);
+
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityReevalLogger = mmp.create(LazyData2FileLinker.UTILITY_REEVAL, this::createReevaluatorLoggingModule);
+        utilityReevalLogger.setInput(utilitySum);
 
         InDecisionMakingDeciderModule2_evalragraphnode2 decisionMaking = mmp.create("DECISION_MAKING", InDecisionMakingDeciderModule2_evalragraphnode2::new);
         decisionMaking.setFinCheck(finCheck);
@@ -633,7 +638,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 envReevalLogger,
                 novReevalLogger,
                 socialReevalLogger,
-                localReevalLogger
+                localReevalLogger,
+                utilityReevalLogger
         );
 
         InReevaluatorModuleLinker initLinker = new InReevaluatorModuleLinker();

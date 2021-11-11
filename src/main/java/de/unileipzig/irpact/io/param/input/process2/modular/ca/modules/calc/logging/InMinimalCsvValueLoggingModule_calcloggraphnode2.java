@@ -53,7 +53,9 @@ public class InMinimalCsvValueLoggingModule_calcloggraphnode2 implements InConsu
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_MINICSV);
         setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
 
-        addEntryWithDefaultAndDomain(res, thisClass(), "skipReevaluatorCall", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "logReevaluatorCall", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "logDefaultCall", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "printHeader", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge2");
     }
@@ -75,13 +77,33 @@ public class InMinimalCsvValueLoggingModule_calcloggraphnode2 implements InConsu
     }
 
     @FieldDefinition
-    public boolean skipReevaluatorCall = true;
-    public void setSkipReevaluatorCall(boolean skipReevaluatorCall) {
-        this.skipReevaluatorCall = skipReevaluatorCall;
+    public boolean logReevaluatorCall = false;
+    public void setLogReevaluatorCall(boolean logReevaluatorCall) {
+        this.logReevaluatorCall = logReevaluatorCall;
     }
     @Override
-    public boolean isSkipReevaluatorCall() {
-        return skipReevaluatorCall;
+    public boolean isLogReevaluatorCall() {
+        return logReevaluatorCall;
+    }
+
+    @FieldDefinition
+    public boolean logDefaultCall = true;
+    public void setLogDefaultCall(boolean logDefaultCall) {
+        this.logDefaultCall = logDefaultCall;
+    }
+    @Override
+    public boolean isLogDefaultCall() {
+        return logDefaultCall;
+    }
+
+    @FieldDefinition
+    public boolean printHeader = true;
+    public void setPrintHeader(boolean printHeader) {
+        this.printHeader = printHeader;
+    }
+    @Override
+    public boolean isPrintHeader() {
+        return printHeader;
     }
 
     @FieldDefinition
@@ -138,7 +160,9 @@ public class InMinimalCsvValueLoggingModule_calcloggraphnode2 implements InConsu
         module.setName(getName());
         module.setBaseName(getName());
         module.setStoreXlsx(isStoreXlsx());
-        module.setSkipReevaluatorCall(isSkipReevaluatorCall());
+        module.setLogReevaluatorCall(isLogReevaluatorCall());
+        module.setLogDefaultCall(isLogDefaultCall());
+        module.setPrintHeader(isPrintHeader());
         try {
             module.setDir(parser.getOptions().getCreatedDownloadDir());
         } catch (IOException e) {

@@ -2640,8 +2640,14 @@ InValueModule_inputgraphnode2_value:
 InCsvValueLoggingModule_calcloggraphnode2:
   edn_label: "CsvValueLoggingModule"
   edn_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_skipReevaluatorCall:
-  gams_identifier: "skipReevaluatorCall"
+InCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall:
+  gams_identifier: "Reevaluierungsaufrufe loggen?"
+  gams_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_logDefaultCall:
+  gams_identifier: "Normale Aufrufe loggen?"
+  gams_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_printHeader:
+  gams_identifier: "Kopfzeile schreiben?"
   gams_description: "todo"
 InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
   gams_identifier: "Als xlsx speichern?"
@@ -2653,8 +2659,14 @@ InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
 InMinimalCsvValueLoggingModule_calcloggraphnode2:
   edn_label: "MinimalCsvValueLoggingModule"
   edn_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_skipReevaluatorCall:
-  gams_identifier: "skipReevaluatorCall"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall:
+  gams_identifier: "Reevaluierungsaufrufe loggen?"
+  gams_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_logDefaultCall:
+  gams_identifier: "Normale Aufrufe loggen?"
+  gams_description: "todo"
+InMinimalCsvValueLoggingModule_calcloggraphnode2_printHeader:
+  gams_identifier: "Kopfzeile schreiben?"
   gams_description: "todo"
 InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
   gams_identifier: "Als xlsx speichern?"

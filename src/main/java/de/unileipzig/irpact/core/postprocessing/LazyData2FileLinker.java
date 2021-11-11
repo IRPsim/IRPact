@@ -17,4 +17,5 @@ public class LazyData2FileLinker {
     public static final String NOV_REEVAL = "NOV_END_OF_YEAR_LOGGER";
     public static final String SOCIAL_REEVAL = "SOCIAL_PRESURE_END_OF_YEAR_LOGGER";
     public static final String LOCAL_REEVAL = "LOCAL_END_OF_YEAR_LOGGER";
+    public static final String UTILITY_REEVAL = "UTILITY_END_OF_YEAR_LOGGER";
 }
