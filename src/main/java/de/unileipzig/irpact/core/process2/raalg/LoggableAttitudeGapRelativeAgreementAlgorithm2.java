@@ -133,6 +133,36 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     protected JsonResource resource;
     protected boolean printHeader;
     protected boolean storeXlsx;
+    protected boolean enabled = true;
+    protected boolean loggingEnabled = false;
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public boolean isDisabled() {
+        return !enabled;
+    }
+
+    public void setLoggingEnabled(boolean loggingEnabled) {
+        this.loggingEnabled = loggingEnabled;
+    }
+
+    public boolean isLoggingEnabled() {
+        return loggingEnabled;
+    }
+
+    public boolean isLoggingDisabled() {
+        return !loggingEnabled;
+    }
+
+    protected boolean isLoggingDisabled(Object time) {
+        return time == null || isLoggingDisabled();
+    }
 
     public void setLoggingMode(LoggingMode loggingMode) {
         this.loggingMode = loggingMode;
@@ -149,7 +179,9 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         if(resource == null) {
             throw new NullPointerException("resource not found");
         }
-        createCsvLogger(dir, baseName);
+        if(isLoggingEnabled()) {
+            createCsvLogger(dir, baseName);
+        }
     }
 
     @Override
@@ -261,6 +293,10 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             Timestamp time) {
         validate(influence);
 
+        if(isDisabled()) {
+            return handleDisabled(xi, ui, xj, uj, influence);
+        }
+
         double gab = gab(xi, xj);
 
         if(gab < getAttitudeGap()) {
@@ -268,6 +304,14 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         } else {
             return calculateWithMode(ni, xi, ui, nj, xj, uj, attr, influence, time);
         }
+    }
+
+    protected boolean handleDisabled(double xi, double ui, double xj, double uj, double[] influence) {
+        influence[RelativeAgreementAlgorithm2.INDEX_XI] = xi;
+        influence[RelativeAgreementAlgorithm2.INDEX_UI] = ui;
+        influence[RelativeAgreementAlgorithm2.INDEX_XJ] = xj;
+        influence[RelativeAgreementAlgorithm2.INDEX_UJ] = uj;
+        return false;
     }
 
     protected boolean calculateWithinGab(
@@ -317,7 +361,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             boolean changed,
             double[] influence,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         doLog(
                 ni, xi, ui,
@@ -339,7 +383,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             String nj, double xj, double uj,
             String attr,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         doLog(
                 ni, xi, ui, xi, ui,
@@ -362,7 +406,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             boolean changed,
             double[] influence,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         doLog(
                 ni, xi, ui,
@@ -386,7 +430,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             boolean changed,
             double[] influence,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         doLog(
                 ni, xi, ui,
@@ -411,7 +455,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             boolean changed,
             double[] influence,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         double newXj = influence[0];
         double newUj = influence[1];
@@ -434,7 +478,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             String desc,
             boolean changed,
             Timestamp time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         log(ni, xi, ui, newXi, newUi, nj, xj, uj, newXj, newUj, attr, desc, changed, printTime(time));
     }
@@ -450,7 +494,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             Object desc,
             Object changed,
             Object time) {
-        if(time == null) return;
+        if(isLoggingDisabled(time)) return;
 
         switch (loggingMode) {
             case OPINION:

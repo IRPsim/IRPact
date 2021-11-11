@@ -56,6 +56,7 @@ public final class IRPLogging {
             return;
         }
         initalized = true;
+        addDefaultForcedSections();
         if(!hasFilter()) {
             setFilter(new SectionLoggingFilter());
         }
@@ -63,6 +64,15 @@ public final class IRPLogging {
         writeToConsole();
         IRPSection.addSectionsToTools();
         IRPSection.addAllTo(getFilter());
+    }
+
+    private static void addDefaultForcedSections() {
+        addForcesLoggingSections(
+                IRPSection.TRACE0,
+                IRPSection.TRACE1,
+                IRPSection.TRACE2,
+                IRPSection.TRACE3
+        );
     }
 
     public static void terminate() {
@@ -79,7 +89,11 @@ public final class IRPLogging {
         CONTROLLER.stopWriting();
     }
 
-    public static void addForcesLoggingSection(IRPSection... sections) {
+    public static void addForcesLoggingSection(IRPSection section) {
+        FORCED_SECTIONS.add(section);
+    }
+
+    public static void addForcesLoggingSections(IRPSection... sections) {
         Collections.addAll(FORCED_SECTIONS, sections);
     }
 

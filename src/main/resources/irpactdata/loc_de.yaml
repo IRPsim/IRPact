@@ -2334,34 +2334,43 @@ InCommunicationModule_actiongraphnode2:
   edn_label: "Kommunikationsmodul"
   edn_description: "todo"
 InCommunicationModule_actiongraphnode2_adopterPoints:
-  gams_identifier: "adopterPoints"
+  gams_identifier: "Adopter points"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_interestedPoints:
-  gams_identifier: "interestedPoints"
+  gams_identifier: "Interested points"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_awarePoints:
-  gams_identifier: "awarePoints"
+  gams_identifier: "Aware points"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_unknownPoints:
-  gams_identifier: "unknownPoints"
+  gams_identifier: "Unknown üpoints"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_raEnabled:
+  gams_identifier: "Relative agreement nutzen?"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_raLoggingEnabled:
+  gams_identifier: "Relative agreement loggen?"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_speedOfConvergence:
-  gams_identifier: "speedOfConvergence"
+  gams_identifier: "Speed of convergence"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_attitudeGap:
-  gams_identifier: "attitudeGap"
+  gams_identifier: "Attitude gap"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_chanceNeutral:
-  gams_identifier: "chanceNeutral"
+  gams_identifier: "Wahrscheinllichkeit: Neutral"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_chanceConvergence:
-  gams_identifier: "chanceConvergence"
+  gams_identifier: "Wahrscheinllichkeit: Konvergenz"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_chanceDivergence:
-  gams_identifier: "chanceDivergence"
+  gams_identifier: "Wahrscheinllichkeit: Divergenz"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_uncertainties:
-  gams_identifier: "uncertainties"
+InCommunicationModule_actiongraphnode2_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten"
   gams_description: "todo"
 
 InIfElseActionModule_actiongraphnode2:

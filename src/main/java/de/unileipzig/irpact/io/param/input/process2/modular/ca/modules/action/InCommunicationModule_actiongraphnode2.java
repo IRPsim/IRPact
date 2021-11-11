@@ -57,12 +57,15 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         addEntryWithDefault(res, thisClass(), "interestedPoints", asValue(RAModelData.DEFAULT_INTERESTED_POINTS));
         addEntryWithDefault(res, thisClass(), "awarePoints", asValue(RAModelData.DEFAULT_AWARE_POINTS));
         addEntryWithDefault(res, thisClass(), "unknownPoints", asValue(RAModelData.DEFAULT_UNKNOWN_POINTS));
+        addEntryWithDefaultAndDomain(res, thisClass(), "raEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raLoggingEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefault(res, thisClass(), "speedOfConvergence", asValue(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
         addEntryWithDefault(res, thisClass(), "attitudeGap", asValue(RAConstants.DEFAULT_ATTIDUTE_GAP));
         addEntryWithDefault(res, thisClass(), "chanceNeutral", asValue(RAConstants.DEFAULT_NEUTRAL_CHANCE));
         addEntryWithDefault(res, thisClass(), "chanceConvergence", asValue(RAConstants.DEFAULT_CONVERGENCE_CHANCE));
         addEntryWithDefault(res, thisClass(), "chanceDivergence", asValue(RAConstants.DEFAULT_DIVERGENCE_CHANCE));
-        addEntry(res, thisClass(), "uncertainties");
+        addEntry(res, thisClass(), "uncertaintySuppliers");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -110,6 +113,33 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
     public void setUnknownPoints(int unknownPoints) {
         this.unknownPoints = unknownPoints;
+    }
+
+    @FieldDefinition
+    public boolean raEnabled = true;
+    public void setRaEnabled(boolean raEnabled) {
+        this.raEnabled = raEnabled;
+    }
+    public boolean isRaEnabled() {
+        return raEnabled;
+    }
+
+    @FieldDefinition
+    public boolean raLoggingEnabled = true;
+    public void setRaLoggingEnabled(boolean raLoggingEnabled) {
+        this.raLoggingEnabled = raLoggingEnabled;
+    }
+    public boolean isRaLoggingEnabled() {
+        return raLoggingEnabled;
+    }
+
+    @FieldDefinition
+    public boolean storeXlsx = true;
+    public void setStoreXlsx(boolean storeXlsx) {
+        this.storeXlsx = storeXlsx;
+    }
+    public boolean isStoreXlsx() {
+        return storeXlsx;
     }
 
     @FieldDefinition
@@ -207,6 +237,9 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
 
         LoggableAttitudeGapRelativeAgreementAlgorithm2 alg = new LoggableAttitudeGapRelativeAgreementAlgorithm2();
         alg.setName(getName() + "_RAALG");
+        alg.setEnabled(isRaEnabled());
+        alg.setLoggingEnabled(isRaLoggingEnabled());
+        alg.setStoreXlsx(isStoreXlsx());
         alg.setBaseName(getName());
         alg.setRnd(parser.deriveRnd());
         alg.setAttitudeGap(getAttitudeGap());
@@ -215,7 +248,8 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         alg.setWeight(AttitudeGap.CONVERGENCE, getChanceConvergence());
         alg.setWeight(AttitudeGap.DIVERGENCE, getChanceDivergence());
         alg.setLoggingMode(LoggableAttitudeGapRelativeAgreementAlgorithm2.LoggingMode.OPINION);
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
+        LOGGER.trace("LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' enabled={}, logging={}", alg.getName(), alg.isEnabled(), alg.isLoggingEnabled());
         module.setRelativeAgreementAlgorithm(alg);
 
         return module;

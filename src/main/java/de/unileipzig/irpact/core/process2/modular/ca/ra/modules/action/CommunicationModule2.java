@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
+import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
@@ -38,10 +39,10 @@ public class CommunicationModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(CommunicationModule2.class);
 
-    protected double adopterPoints = 0;
-    protected double interestedPoints = 0;
-    protected double awarePoints = 0;
-    protected double unknownPoints = 0;
+    protected double adopterPoints = RAModelData.DEFAULT_ADOPTER_POINTS;
+    protected double interestedPoints = RAModelData.DEFAULT_INTERESTED_POINTS;
+    protected double awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
+    protected double unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
 
     protected RelativeAgreementAlgorithm2 raAlgorithm;
     protected LoggableRelativeAgreementAlgorithm2 logRaAlgorithm;
@@ -132,7 +133,7 @@ public class CommunicationModule2
             UncertaintySupplier supplier = findSupplier(agent);
             Uncertainty uncertainty = supplier.createFor(agent);
             uncertaintyCache.register(agent, uncertainty);
-            trace1("[{}] add uncertainty '{}' for agent '{}' (supplier={})", getName(), uncertainty.getName(), agent.getName(), supplier.getName());
+            trace("[{}] add uncertainty '{}' for agent '{}' (uncertainty supplier={})", getName(), uncertainty.getName(), agent.getName(), supplier.getName());
         }
     }
 
