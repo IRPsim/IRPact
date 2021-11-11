@@ -87,6 +87,12 @@ public class MainBranchingModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        MultiModule2.uncheckedInitializeNewInput(input, initModule, awarenessModule, feasibilityModule, decisionModule, adopterModule, impededModule);
+        traceNewInput(input);
+    }
+
+    @Override
     public Module2<?, ?> containsLoop(Deque<Module2<?, ?>> currentPath, Set<Module2<?, ?>> allModules) {
         return MultiModule2.containsLoop(
                 currentPath,
@@ -135,7 +141,7 @@ public class MainBranchingModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         RAStage2 stage = input.getStage();
         if(stage == RAStage2.PRE_INITIALIZATION) {

@@ -24,6 +24,7 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -56,10 +57,6 @@ import de.unileipzig.irpact.io.param.input.process.ra.InDisabledProcessPlanNodeF
 import de.unileipzig.irpact.io.param.input.process.ra.InEntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
@@ -190,10 +187,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InRAProcessPlanMaxDistanceFilterScheme.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_UNCERT = PROCESS2.resolve(IOConstants.PROCESS_MODEL_RA_UNCERT).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GLDEFF = PROCESS_UNCERT.resolve(InGlobalDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GLDEFFPV = PROCESS_UNCERT.resolve(InPVactGlobalDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GBDEFF = PROCESS_UNCERT.resolve(InGroupBasedDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_BGDEFFPV = PROCESS_UNCERT.resolve(InPVactGroupBasedDeffuantUncertainty.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_UNCERT_GLDEFF = PROCESS_UNCERT.resolve(InPVactGlobalDeffuantUncertaintySupplier2.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_MODULAR3 = PROCESS2.resolve(IOConstants.PROCESS_MODULAR3).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODEL = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODEL).addTo(PATHS);

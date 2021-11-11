@@ -1,6 +1,9 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.action;
 
+import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
@@ -8,12 +11,15 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.*;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCAVoidModule2;
+import de.unileipzig.irpact.core.process2.raalg.LoggableRelativeAgreementAlgorithm2;
+import de.unileipzig.irpact.core.process2.raalg.RelativeAgreementAlgorithm2;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.UncertaintyCache;
+import de.unileipzig.irpact.core.process2.uncert.UncertaintySupplier;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -21,6 +27,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -36,13 +43,12 @@ public class CommunicationModule2
     protected double awarePoints = 0;
     protected double unknownPoints = 0;
 
-    protected RelativeAgreementAlgorithm raAlgorithm;
-    protected UncertaintyHandler uncertaintyHandler;
+    protected RelativeAgreementAlgorithm2 raAlgorithm;
+    protected LoggableRelativeAgreementAlgorithm2 logRaAlgorithm;
+    protected List<UncertaintySupplier> uncertaintySuppliers = new ArrayList<>();
+    protected UncertaintyCache uncertaintyCache = new UncertaintyCache();
 
     public CommunicationModule2() {
-        uncertaintyHandler = new UncertaintyHandler();
-        uncertaintyHandler.setCache(new UncertaintyCache());
-        uncertaintyHandler.setManager(new BasicUncertaintyManager());
     }
 
     @Override
@@ -82,17 +88,19 @@ public class CommunicationModule2
         return unknownPoints;
     }
 
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
+    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm2 raAlgorithm) {
         this.raAlgorithm = raAlgorithm;
+        if(raAlgorithm instanceof LoggableRelativeAgreementAlgorithm2) {
+            this.logRaAlgorithm = (LoggableRelativeAgreementAlgorithm2) raAlgorithm;
+        }
     }
 
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+    public RelativeAgreementAlgorithm2 getRelativeAgreementAlgorithm() {
         return raAlgorithm;
     }
 
-    @Override
-    public UncertaintyHandler getUncertaintyHandler() {
-        return uncertaintyHandler;
+    public void addUncertaintySupplier(UncertaintySupplier supplier) {
+        uncertaintySuppliers.add(supplier);
     }
 
     @Override
@@ -108,19 +116,43 @@ public class CommunicationModule2
             return;
         }
 
-        if(getSharedData().contains(UNCERTAINTY)) {
-            throw new IllegalStateException("uncertainty already exists");
-        } else {
-            trace("initalize uncertainty handler");
-            uncertaintyHandler.initalize();
-            getSharedData().put(UNCERTAINTY, uncertaintyHandler);
+        if(logRaAlgorithm != null) {
+            logRaAlgorithm.initialize(environment);
         }
+
         setInitalized();
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        traceNewInput(input);
+
+        ConsumerAgent agent = input.getAgent();
+        if(!uncertaintyCache.hasUncertainty(agent)) {
+            UncertaintySupplier supplier = findSupplier(agent);
+            Uncertainty uncertainty = supplier.createFor(agent);
+            uncertaintyCache.register(agent, uncertainty);
+            trace1("[{}] add uncertainty '{}' for agent '{}' (supplier={})", getName(), uncertainty.getName(), agent.getName(), supplier.getName());
+        }
+    }
+
+    protected UncertaintySupplier findSupplier(ConsumerAgent agent) {
+        List<UncertaintySupplier> supported = uncertaintySuppliers.stream()
+                .filter(s -> s.isSupported(agent))
+                .collect(Collectors.toList());
+        if(supported.size() == 1) {
+            return supported.get(0);
+        } else {
+            List<String> names = supported.stream()
+                    .map(Nameable::getName)
+                    .collect(Collectors.toList());
+            throw new IllegalStateException(StringUtil.format("multiple suppliers found for agent '{}': {}", agent.getName(), names));
+        }
+    }
+
+    @Override
     public void run(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         trace("[{}] start communication", input.getAgentName());
 
@@ -155,13 +187,13 @@ public class CommunicationModule2
                     agent.releaseAttention();
                     targetAgent.releaseAttention();
 
-                    //nur hier haben wir datalock durch aquireAttentionAndDataAccess
+                    //datalock
                     try {
                         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] start communication ('{}' -> '{}')", agent.getName(), agent.getName(), targetAgent.getName());
 
                         updateInterest(agent, targetAgent, product);
                         updateCommunicationGraph(graph, targetNode, agent.getSocialGraphNode());
-                        applyRelativeAgreement(agent, targetAgent);
+                        applyRelativeAgreement(agent, targetAgent, input.now());
 
                         return;
                     } finally {
@@ -175,9 +207,6 @@ public class CommunicationModule2
     }
 
     protected void updateInterest(ConsumerAgent agent, ConsumerAgent targetAgent, Product product) {
-//        double myInterest = getInterest(agent, product);
-//        double targetInterest = getInterest(targetAgent, product);
-
         double myPointsToAdd = getInterestPoints(agent, product);
         double targetPointsToAdd = getInterestPoints(targetAgent, product);
 
@@ -198,18 +227,18 @@ public class CommunicationModule2
         return unknownPoints;
     }
 
-    protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target) {
-        applyRelativeAgreement(source, target, RAConstants.NOVELTY_SEEKING);
-        applyRelativeAgreement(source, target, RAConstants.DEPENDENT_JUDGMENT_MAKING);
-        applyRelativeAgreement(source, target, RAConstants.ENVIRONMENTAL_CONCERN);
+    protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, Timestamp now) {
+        applyRelativeAgreement(source, target, RAConstants.NOVELTY_SEEKING, now);
+        applyRelativeAgreement(source, target, RAConstants.DEPENDENT_JUDGMENT_MAKING, now);
+        applyRelativeAgreement(source, target, RAConstants.ENVIRONMENTAL_CONCERN, now);
     }
 
-    protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, String attrName) {
+    protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, String attrName, Timestamp now) {
 
         ConsumerAgentAttribute opinionThis = source.getAttribute(attrName);
-        Uncertainty uncertaintyThis = getUncertaintyCache().getUncertainty(source);
+        Uncertainty uncertaintyThis = uncertaintyCache.getUncertainty(source);
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getUncertaintyCache().getUncertainty(target);
+        Uncertainty uncertaintyTarget = uncertaintyCache.getUncertainty(target);
 
         if(uncertaintyThis == null) {
             throw new NullPointerException("missing uncertainty for agent '" + source.getName() + "', attribute=" + attrName);
@@ -218,13 +247,31 @@ public class CommunicationModule2
             throw new NullPointerException("missing uncertainty for agent '" + target.getName() + "', attribute=" + attrName);
         }
 
-        raAlgorithm.apply(
-                source.getName(),
-                opinionThis,
-                uncertaintyThis,
-                target.getName(),
-                opinionTarget,
-                uncertaintyTarget
-        );
+        double xi = opinionThis.asValueAttribute().getDoubleValue();
+        double ui = uncertaintyThis.getUncertainty(opinionThis);
+        double xj = opinionTarget.asValueAttribute().getDoubleValue();
+        double uj = uncertaintyTarget.getUncertainty(opinionTarget);
+
+        boolean changed;
+        double[] influence = new double[RelativeAgreementAlgorithm2.INFLUENCE_LENGTH];
+
+        if(logRaAlgorithm == null) {
+            changed = raAlgorithm.calculateInfluence(xi, ui, xj, uj, influence);
+        } else {
+            changed = logRaAlgorithm.calculateInfluence(
+                    source.getName(), xi, ui,
+                    target.getName(), xj, uj,
+                    attrName,
+                    influence,
+                    now
+            );
+        }
+
+        if(changed) {
+            opinionThis.asValueAttribute().setDoubleValue(influence[RelativeAgreementAlgorithm2.INDEX_XI]);
+            uncertaintyThis.updateUncertainty(opinionThis, influence[RelativeAgreementAlgorithm2.INDEX_UI]);
+            opinionTarget.asValueAttribute().setDoubleValue(influence[RelativeAgreementAlgorithm2.INDEX_XJ]);
+            uncertaintyTarget.updateUncertainty(opinionTarget, influence[RelativeAgreementAlgorithm2.INDEX_UJ]);
+        }
     }
 }

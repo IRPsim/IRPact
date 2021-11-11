@@ -19,9 +19,6 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.product.Product;
@@ -30,7 +27,6 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
@@ -42,7 +38,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     Object AVG_FIN_KEY = new Object();
     Object LOCAL_NEIGHBOURS = new Object();
     Object LOCAL_NEIGHBOURS_TOO_LARGE = new Object();
-    Object UNCERTAINTY = new Object();
     //individual keys
     Object NODE_FILTER = new Object();
     Object UTILITY = new Object();
@@ -50,14 +45,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //=========================
     //general
     //=========================
-
-    default void traceModuleInfo(ConsumerAgentData2 input) {
-        trace("[{}]@[{}] call module ({})", getName(), input.getAgentName(), getClass().getSimpleName());
-    }
-
-    default void traceReevaluatorInfo(ConsumerAgentData2 input) {
-        trace("[{}]@[{}] call reevaluator ({})", getName(), input.getAgentName(), getClass().getSimpleName());
-    }
 
     default NPVDataSupplier getNPVDataSupplier(SimulationEnvironment environment, NPVData data) {
         DataStore store = environment.getGlobalData();
@@ -121,11 +108,11 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     }
 
     @Override
-    default String printName(Object obj) {
+    default String printInputInfo(Object obj) {
         if(obj instanceof ConsumerAgentData2) {
             return ((ConsumerAgentData2) obj).getAgentName();
         } else {
-            return HelperAPI2.super.printName(obj);
+            return HelperAPI2.super.printInputInfo(obj);
         }
     }
 
@@ -139,26 +126,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
 
     default double getUtility(ConsumerAgentData2 input) {
         return input.getOr(UTILITY, Double.NaN);
-    }
-
-    //=========================
-    //Uncertainty
-    //=========================
-
-    default UncertaintyHandler getUncertaintyHandler() {
-        UncertaintyHandler handler = getSharedData().getAs(UNCERTAINTY, UncertaintyHandler.class);
-        if(handler == null) {
-            throw new NoSuchElementException("missing uncertainy handler");
-        }
-        return handler;
-    }
-
-    default UncertaintyCache getUncertaintyCache() {
-        return getUncertaintyHandler().getCache();
-    }
-
-    default UncertaintyManager getUncertaintyManager() {
-        return getUncertaintyHandler().getManager();
     }
 
     //=========================

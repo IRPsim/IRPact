@@ -84,11 +84,11 @@ public class CsvValueLoggingModule2
         Map<String, JsonTableData3> xlsxSheetData = new HashMap<>();
 
         JsonTableData3 xlsxData = csvData.copy();
-        //skip header
-        xlsxData.mapStringColumnToDouble(VALUE_INDEX, 1, Double::parseDouble);
-        xlsxData.mapStringColumnToLong(ID_INDEX, 1, Long::parseLong);
+        int from = startIndexInFile();
+        xlsxData.mapStringColumnToDouble(VALUE_INDEX, from, Double::parseDouble);
+        xlsxData.mapStringColumnToLong(ID_INDEX, from, Long::parseLong);
 
-        xlsxSheetData.put("Data", xlsxData);
+        xlsxSheetData.put(getLocalizedString("sheetName"), xlsxData);
 
         return xlsxSheetData;
     }
@@ -126,6 +126,15 @@ public class CsvValueLoggingModule2
                 time,
                 value
         );
+    }
+
+    @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
     }
 
 //    @Override

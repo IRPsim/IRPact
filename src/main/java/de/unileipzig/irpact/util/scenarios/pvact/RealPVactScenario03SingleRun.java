@@ -10,7 +10,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistrib
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -146,7 +146,7 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
         timeModel.setAmountOfTime(1);
 
-        InPVactGlobalDeffuantUncertainty uncertainty = createGlobalUnvertainty("uncert", realData.CAGS.cags());
+        InPVactGlobalDeffuantUncertaintySupplier2 uncertainty = createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
 
         List<InOutputImage2> outputImages2 = new ArrayList<>();
         List<InPostDataAnalysis> postData = new ArrayList<>();

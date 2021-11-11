@@ -16,7 +16,6 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -78,17 +77,17 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topology");
 
         //process
-        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
-        uncertainty.setName("Unvertainty");
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
+//        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+//        uncertainty.setName("Unvertainty");
+//        uncertainty.setDefaultValues();
+//        uncertainty.setConsumerAgentGroups(cags);
 
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName("ProcessModel");
         processModel.setDefaultValues();
         processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
         processModel.setPvFile(pvFile);
-        processModel.setUncertainty(uncertainty);
+//        processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(0.0);
         processModel.addNewProductHandle(getDefaultInitialAdopterHandler());
 

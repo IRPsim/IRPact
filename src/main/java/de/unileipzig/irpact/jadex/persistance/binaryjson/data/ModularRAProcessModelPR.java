@@ -40,8 +40,8 @@ public class ModularRAProcessModelPR extends BinaryPRBase<ModularRAProcessModel>
         data.putDouble(object.getSpeedOfConvergence());
 
         manager.prepare(object.getRnd());
-        manager.prepare(object.getUncertaintyManager());
-        manager.prepare(object.getRelativeAgreementAlgorithm());
+//        manager.prepare(object.getUncertaintyManager());
+//        manager.prepare(object.getRelativeAgreementAlgorithm());
         manager.prepare(object.getInterestComponent());
         manager.prepare(object.getFeasibilityComponent());
         manager.prepare(object.getDecisionMakingComponent());
@@ -53,8 +53,8 @@ public class ModularRAProcessModelPR extends BinaryPRBase<ModularRAProcessModel>
     @Override
     protected void doSetupPersist(ModularRAProcessModel object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getRnd()));
-        data.putLong(manager.ensureGetUID(object.getUncertaintyManager()));
-        data.putLong(manager.ensureGetUID(object.getRelativeAgreementAlgorithm()));
+//        data.putLong(manager.ensureGetUID(object.getUncertaintyManager()));
+//        data.putLong(manager.ensureGetUID(object.getRelativeAgreementAlgorithm()));
         data.putLong(manager.ensureGetUID(object.getInterestComponent()));
         data.putLong(manager.ensureGetUID(object.getFeasibilityComponent()));
         data.putLong(manager.ensureGetUID(object.getDecisionMakingComponent()));
@@ -79,8 +79,8 @@ public class ModularRAProcessModelPR extends BinaryPRBase<ModularRAProcessModel>
         object.setEnvironment(getEnvironment(manager));
 
         object.setRnd(manager.ensureGet(data.getLong()));
-        object.setUncertaintyManager(manager.ensureGet(data.getLong()));
-        object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
+//        object.setUncertaintyManager(manager.ensureGet(data.getLong()));
+//        object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
         object.setInterestComponent(manager.ensureGet(data.getLong()));
         object.setFeasibilityComponent(manager.ensureGet(data.getLong()));
         object.setDecisionMakingComponent(manager.ensureGet(data.getLong()));

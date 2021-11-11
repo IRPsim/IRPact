@@ -58,8 +58,12 @@ public class LocalShareOfAdopterModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         NodeFilter nodeFilter = getNodeFilter(input, nodeFilterScheme);
         double local = getShareOfAdopterInLocalNetwork(

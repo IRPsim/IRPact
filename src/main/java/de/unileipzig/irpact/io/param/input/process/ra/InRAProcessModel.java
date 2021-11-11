@@ -11,14 +11,13 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -223,7 +222,7 @@ public class InRAProcessModel implements InProcessModel {
     public InPVFile[] pvFile;
 
     @FieldDefinition
-    public InUncertainty[] uncertainties;
+    public InUncertaintySupplier[] uncertainties;
 
     @FieldDefinition
     public InNewProductHandler[] newProductHandlers = new InNewProductHandler[0];
@@ -575,15 +574,15 @@ public class InRAProcessModel implements InProcessModel {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public void setUncertainty(InUncertainty uncertainty) {
-        this.uncertainties = new InUncertainty[]{uncertainty};
+    public void setUncertainty(InUncertaintySupplier uncertainty) {
+        this.uncertainties = new InUncertaintySupplier[]{uncertainty};
     }
 
-    public void setUncertainties(InUncertainty[] uncertainties) {
+    public void setUncertainties(InUncertaintySupplier[] uncertainties) {
         this.uncertainties = uncertainties;
     }
 
-    public InUncertainty[] getUncertainties() {
+    public InUncertaintySupplier[] getUncertainties() {
         return uncertainties;
     }
 
@@ -655,10 +654,10 @@ public class InRAProcessModel implements InProcessModel {
         model.setAdoptionCertaintyFactor(adoptionCertaintyFactor);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] adoptionCertaintyBase={}, adoptionCertaintyFactor={}, hasAdoptionCertainty={}", getName(), adoptionCertaintyBase, adoptionCertaintyFactor, model.hasAdoptionCertainty());
 
-        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
-        for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, params);
-        }
+//        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
+//        for(InUncertaintySupplier uncertainty: getUncertainties()) {
+//            uncertainty.setup(parser, params);
+//        }
 
         if(hasNodeFilterScheme()) {
             InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
@@ -672,15 +671,15 @@ public class InRAProcessModel implements InProcessModel {
 
         applyPvFile(parser, model);
 
-        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
-        algorithm.setName(model.getName() + "_RA");
-        algorithm.setEnvironment(parser.getEnvironment());
-        Rnd raRnd = parser.deriveRnd();
-        algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGap());
-        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
-        model.setRelativeAgreementAlgorithm(algorithm);
+//        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
+//        algorithm.setName(model.getName() + "_RA");
+//        algorithm.setEnvironment(parser.getEnvironment());
+//        Rnd raRnd = parser.deriveRnd();
+//        algorithm.setRandom(raRnd);
+//        algorithm.setAttitudeGap(getAttitudeGap());
+//        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
+//        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
+//        model.setRelativeAgreementAlgorithm(algorithm);
 
         if(hasNewProductHandlers()) {
             for(InNewProductHandler inHandler: getNewProductHandlers()) {

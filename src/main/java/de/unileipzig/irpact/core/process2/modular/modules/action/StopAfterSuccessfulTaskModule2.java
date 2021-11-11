@@ -53,8 +53,17 @@ public class StopAfterSuccessfulTaskModule2<I>
     }
 
     @Override
+    protected I castInput(I input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(I input) throws Throwable {
+    }
+
+    @Override
     public void run(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         if(useActions && actions != null) {
             actions.add(createPostAction(input, actions));
@@ -82,7 +91,7 @@ public class StopAfterSuccessfulTaskModule2<I>
     protected void run0(I input, List<PostAction2> actions) throws Throwable {
         for(BooleanModule2<I> submodule: MODULES) {
             boolean success = submodule.test(input, actions);
-            trace("[{}]@[{}] submodule '{}' result: {}", getName(), printName(input), submodule.getName(), success);
+            trace("[{}]@[{}] submodule '{}' result: {}", getName(), printInputInfo(input), submodule.getName(), success);
             if(success) {
                 break;
             }

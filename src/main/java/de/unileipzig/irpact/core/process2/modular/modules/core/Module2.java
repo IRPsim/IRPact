@@ -34,6 +34,8 @@ public interface Module2<I, O> extends Nameable {
     void validate() throws Throwable;
 
     void initialize(SimulationEnvironment environment) throws Throwable;
+    
+    void initializeNewInput(I input) throws Throwable;
 
     O apply(I input, List<PostAction2> actions) throws Throwable;
 }

@@ -35,7 +35,12 @@ public class NOPModule2<I>
     }
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
     public void run(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
     }
 }

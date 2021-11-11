@@ -669,7 +669,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.19.4"
+  edn_description: "IRPact v1.20.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -1462,102 +1462,24 @@ InRAProcessPlanMaxDistanceFilterScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
-InGlobalDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf allen Agenten"
-  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen."
-InGlobalDeffuantUncertainty_extremistParameter:
-  gams_identifier: "Extremistenparameter"
-  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InGlobalDeffuantUncertainty_extremistUncertainty:
-  gams_identifier: "Unsicherheit der Extremisten"
-  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InGlobalDeffuantUncertainty_moderateUncertainty:
-  gams_identifier: "Unsicherheit der Moderaten"
-  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InGlobalDeffuantUncertainty_lowerBoundInclusive:
-  gams_identifier: "Untere Grenze inklusive?"
-  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InGlobalDeffuantUncertainty_upperBoundInclusive:
-  gams_identifier: "Obere Grenze inklusive?"
-  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InGlobalDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppen fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InGlobalDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
-
-InGroupBasedDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf individuellen Agentengruppen"
-  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe."
-InGroupBasedDeffuantUncertainty_extremistParameter:
-  gams_identifier: "Extremistenparameter"
-  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InGroupBasedDeffuantUncertainty_extremistUncertainty:
-  gams_identifier: "Unsicherheit der Extremisten"
-  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InGroupBasedDeffuantUncertainty_moderateUncertainty:
-  gams_identifier: "Unsicherheit der Moderaten"
-  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InGroupBasedDeffuantUncertainty_lowerBoundInclusive:
-  gams_identifier: "Untere Grenze inklusive?"
-  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InGroupBasedDeffuantUncertainty_upperBoundInclusive:
-  gams_identifier: "Obere Grenze inklusive?"
-  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InGroupBasedDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InGroupBasedDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
-
-InPVactGlobalDeffuantUncertainty:
+InPVactGlobalDeffuantUncertaintySupplier2:
   edn_label: "Unsicherheit basierend auf allen PVact-Agenten"
-  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
-InPVactGlobalDeffuantUncertainty_extremistParameter:
+  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben (NOV, ENV, DJM)."
+InPVactGlobalDeffuantUncertaintySupplier2_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGlobalDeffuantUncertainty_extremistUncertainty:
+InPVactGlobalDeffuantUncertaintySupplier2_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGlobalDeffuantUncertainty_moderateUncertainty:
+InPVactGlobalDeffuantUncertaintySupplier2_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGlobalDeffuantUncertainty_lowerBoundInclusive:
+InPVactGlobalDeffuantUncertaintySupplier2_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGlobalDeffuantUncertainty_upperBoundInclusive:
+InPVactGlobalDeffuantUncertaintySupplier2_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InPVactGlobalDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
-
-InPVactGroupBasedDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf individuellen PVact-Agentengruppen"
-  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
-InPVactGroupBasedDeffuantUncertainty_extremistParameter:
-  gams_identifier: "Extremistenparameter"
-  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGroupBasedDeffuantUncertainty_extremistUncertainty:
-  gams_identifier: "Unsicherheit der Extremisten"
-  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGroupBasedDeffuantUncertainty_moderateUncertainty:
-  gams_identifier: "Unsicherheit der Moderaten"
-  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive:
-  gams_identifier: "Untere Grenze inklusive?"
-  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive:
-  gams_identifier: "Obere Grenze inklusive?"
-  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InPVactGroupBasedDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InPVactGroupBasedDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
 
 
 InModularRAProcessModel:

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.process.modular.ca.components.base;
 
-import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.agent.Acting;
 import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -13,11 +12,7 @@ import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.BasicConsumerAgentPostAction;
 import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
@@ -44,7 +39,6 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
     @Override
     public void setEnvironment(SimulationEnvironment environment) {
         super.setEnvironment(environment);
-        getUncertaintyHandler().setEnvironment(environment);
     }
 
     protected int adopterPoints;
@@ -77,25 +71,6 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
     }
     public void setUnknownPoints(int unknownPoints) {
         this.unknownPoints = unknownPoints;
-    }
-
-    protected RelativeAgreementAlgorithm relativeAgreementAlgorithm;
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm relativeAgreementAlgorithm) {
-        this.relativeAgreementAlgorithm = relativeAgreementAlgorithm;
-    }
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return relativeAgreementAlgorithm;
-    }
-
-    protected UncertaintyHandler uncertaintyHandler = newHandler();
-    protected static UncertaintyHandler newHandler() {
-        UncertaintyHandler handler = new UncertaintyHandler();
-        handler.setCache(new UncertaintyCache());
-        handler.setManager(new BasicUncertaintyManager());
-        return handler;
-    }
-    public UncertaintyHandler getUncertaintyHandler() {
-        return uncertaintyHandler;
     }
 
     //=========================
@@ -203,14 +178,6 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
         if(uncertaintyTarget == null) {
             warn("agent '{}' has no uncertainty - skip", target.getName());
         } else {
-            getRelativeAgreementAlgorithm().apply(
-                    agent.getName(),
-                    opinionThis,
-                    uncertaintyThis,
-                    target.getName(),
-                    opinionTarget,
-                    uncertaintyTarget
-            );
         }
     }
 
@@ -335,26 +302,11 @@ public abstract class AbstractActionModule extends AbstractConsumerAgentModule {
     //=========================
 
     protected int getPartialChecksum() {
-        return Checksums.SMART.getChecksum(
-                getAdopterPoints(),
-                getInterestedPoints(),
-                getAwarePoints(),
-                getUnknownPoints(),
-                getRelativeAgreementAlgorithm(),
-                getUncertaintyHandler().getManager()
-        );
+        return 0;
     }
 
     protected Uncertainty getUncertainty(ConsumerAgent agent) {
-        UncertaintyHandler handler = getUncertaintyHandler();
-        if(handler == null) {
-            throw new NullPointerException("UncertaintyHandler");
-        }
-        UncertaintyCache cache = handler.getCache();
-        if(cache == null) {
-            throw new NullPointerException("UncertaintyCache");
-        }
-        return cache.getUncertainty(agent);
+        return null;
     }
 
     protected double getInterestPoints(ConsumerAgent agent, Product product) {

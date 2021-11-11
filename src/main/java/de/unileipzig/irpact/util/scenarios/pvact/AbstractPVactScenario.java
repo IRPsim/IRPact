@@ -24,6 +24,7 @@ import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -47,9 +48,7 @@ import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -288,27 +287,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return defaults;
     }
 
-    public InPVactGroupBasedDeffuantUncertainty createDefaultUnvertainty(String name, InConsumerAgentGroup... cags) {
-        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+    public InPVactGlobalDeffuantUncertaintySupplier2 createGlobalUnvertaintySupplier(String name, double extremParam, double extremUncert, double moderateUncert) {
+        InPVactGlobalDeffuantUncertaintySupplier2 uncertainty = new InPVactGlobalDeffuantUncertaintySupplier2();
         uncertainty.setName(name);
         uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
-        return uncertainty;
-    }
-
-    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, InConsumerAgentGroup... cags) {
-        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
-        uncertainty.setName(name);
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
-        return uncertainty;
-    }
-
-    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, double extremParam, double extremUncert, double moderateUncert, InConsumerAgentGroup... cags) {
-        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
-        uncertainty.setName(name);
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
         uncertainty.setExtremistParameter(extremParam);
         uncertainty.setExtremistUncertainty(extremUncert);
         uncertainty.setModerateUncertainty(moderateUncert);
@@ -322,11 +304,11 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return scheme;
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence) {
         return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence, InRAProcessPlanNodeFilterScheme scheme) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InRAProcessPlanNodeFilterScheme scheme) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
         processModel.setDefaultValues();
@@ -344,7 +326,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
-            InUncertainty uncertainty,
+            InUncertaintySupplier uncertainty,
             double speedOfConvergence,
             InRAProcessPlanNodeFilterScheme scheme,
             List<InOutputImage2> images,
@@ -372,7 +354,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
-            InUncertainty uncertainty,
+            InUncertaintySupplier uncertainty,
             double speedOfConvergence,
             InRAProcessPlanNodeFilterScheme scheme,
             List<InOutputImage2> images,

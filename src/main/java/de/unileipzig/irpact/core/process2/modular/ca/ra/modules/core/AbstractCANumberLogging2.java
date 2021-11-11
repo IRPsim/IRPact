@@ -172,6 +172,10 @@ public abstract class AbstractCANumberLogging2
 
     protected abstract Map<String, JsonTableData3> toXlsxData(JsonTableData3 csvData);
 
+    protected int startIndexInFile() {
+        return isPrintHeader() ? 1 : 0;
+    }
+
     @Override
     protected void validateSelf() throws Throwable {
         if(baseName == null) {

@@ -35,6 +35,15 @@ public class PhaseUpdaterModule2
     }
 
     @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         RAStage2 currentStage = input.getStage();
         RAStage2 newStage = getNonnullSubmodule().apply(input, actions);

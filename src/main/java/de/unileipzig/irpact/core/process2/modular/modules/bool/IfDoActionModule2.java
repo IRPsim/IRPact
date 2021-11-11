@@ -49,6 +49,11 @@ public class IfDoActionModule2<I>
         taskModule.initialize(environment);
     }
 
+    @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
     public void setIfModule(BooleanModule2<I> ifModule) {
         this.ifModule = ifModule;
     }
@@ -85,7 +90,7 @@ public class IfDoActionModule2<I>
 
     @Override
     public boolean test(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         if(ifModule.test(input, actions)) {
             taskModule.run(input, actions);

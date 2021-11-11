@@ -1,17 +1,17 @@
 package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.action.CommunicationModule2;
+import de.unileipzig.irpact.core.process2.raalg.AttitudeGap;
+import de.unileipzig.irpact.core.process2.raalg.LoggableAttitudeGapRelativeAgreementAlgorithm2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -158,15 +158,15 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
-    public InUncertainty[] uncertainties;
-    public void setUncertainty(InUncertainty uncertainty) {
-        this.uncertainties = new InUncertainty[]{uncertainty};
+    public InUncertaintySupplier[] uncertaintySuppliers;
+    public void setUncertainty(InUncertaintySupplier uncertainty) {
+        this.uncertaintySuppliers = new InUncertaintySupplier[]{uncertainty};
     }
-    public void setUncertainties(InUncertainty[] uncertainties) {
-        this.uncertainties = uncertainties;
+    public void setUncertaintySuppliers(InUncertaintySupplier[] uncertaintySuppliers) {
+        this.uncertaintySuppliers = uncertaintySuppliers;
     }
-    public InUncertainty[] getUncertainties() {
-        return uncertainties;
+    public InUncertaintySupplier[] getUncertaintySuppliers() {
+        return uncertaintySuppliers;
     }
 
     public InCommunicationModule_actiongraphnode2() {
@@ -200,22 +200,22 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         module.setInterestedPoints(getInterestedPoints());
         module.setAwarePoints(getAwarePoints());
         module.setUnknownPoints(getUnknownPoints());
-        module.getUncertaintyHandler().setEnvironment(parser.getEnvironment());
 
-        Object[] params = { module.getName(), module.getUncertaintyManager(), getSpeedOfConvergence() };
-        for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, params);
+        for(InUncertaintySupplier supplier: getUncertaintySuppliers()) {
+            module.addUncertaintySupplier(parser.parseEntityTo(supplier));
         }
 
-        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
-        algorithm.setName(getName() + "_RA");
-        algorithm.setEnvironment(parser.getEnvironment());
-        Rnd raRnd = parser.deriveRnd();
-        algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGap());
-        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
-        module.setRelativeAgreementAlgorithm(algorithm);
+        LoggableAttitudeGapRelativeAgreementAlgorithm2 alg = new LoggableAttitudeGapRelativeAgreementAlgorithm2();
+        alg.setName(getName() + "_RAALG");
+        alg.setBaseName(getName());
+        alg.setRnd(parser.deriveRnd());
+        alg.setAttitudeGap(getAttitudeGap());
+        alg.setSpeedOfConvergence(getSpeedOfConvergence());
+        alg.setWeight(AttitudeGap.NEUTRAL, getChanceNeutral());
+        alg.setWeight(AttitudeGap.CONVERGENCE, getChanceConvergence());
+        alg.setWeight(AttitudeGap.DIVERGENCE, getChanceDivergence());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
+        module.setRelativeAgreementAlgorithm(alg);
 
         return module;
     }

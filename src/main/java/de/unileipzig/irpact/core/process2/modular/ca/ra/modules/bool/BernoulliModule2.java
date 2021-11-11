@@ -35,8 +35,17 @@ public class BernoulliModule2
     }
 
     @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public boolean test(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         double draw = input.rnd().nextDouble();
         double threshold = getNonnullSubmodule().calculate(input, actions);

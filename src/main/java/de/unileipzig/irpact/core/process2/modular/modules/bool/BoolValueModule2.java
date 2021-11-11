@@ -44,8 +44,13 @@ public class BoolValueModule2<I>
     }
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
     public boolean test(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         return getValue();
     }
 }

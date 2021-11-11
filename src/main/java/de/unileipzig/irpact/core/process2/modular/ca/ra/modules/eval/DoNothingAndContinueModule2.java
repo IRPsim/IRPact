@@ -32,6 +32,10 @@ public class DoNothingAndContinueModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public ProcessPlanResult2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         return ProcessPlanResult2.CONTINUE;
     }

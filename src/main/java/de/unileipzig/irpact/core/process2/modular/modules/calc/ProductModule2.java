@@ -28,13 +28,22 @@ public class ProductModule2<I>
     }
 
     @Override
+    protected I castInput(I input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(I input) throws Throwable {
+    }
+
+    @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
     }
 
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         double sum = 1.0;
         for(int i = 0; i < getSubmoduleCount(); i++) {
             sum *= getNonnullSubmodule(i).calculate(input, actions);

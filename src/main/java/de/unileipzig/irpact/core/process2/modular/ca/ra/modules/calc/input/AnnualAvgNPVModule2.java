@@ -44,8 +44,12 @@ public class AnnualAvgNPVModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         return dataSupplier.annualAvgNPV(getCurrentYear(input));
     }
 }

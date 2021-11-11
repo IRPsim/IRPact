@@ -876,11 +876,8 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InGlobalDeffuantUncertainty.class,
-            InGroupBasedDeffuantUncertainty.class,
-            InPVactGlobalDeffuantUncertainty.class,
-            InPVactGroupBasedDeffuantUncertainty.class,
-            InUncertainty.class,
+            InPVactGlobalDeffuantUncertaintySupplier2.class,
+            InUncertaintySupplier.class,
 
             InDisabledProcessPlanNodeFilterScheme.class,
             InEntireNetworkNodeFilterScheme.class,

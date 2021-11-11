@@ -8,14 +8,13 @@ import de.unileipzig.irpact.core.process.ProcessModelManager;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.base.EvaluableComponent;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.InEvaluableComponent;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -146,14 +145,14 @@ public class InModularRAProcessModel implements InProcessModel {
     }
 
     @FieldDefinition
-    public InUncertainty[] uncertainties;
-    public void setUncertainty(InUncertainty uncertainty) {
-        this.uncertainties = new InUncertainty[]{uncertainty};
+    public InUncertaintySupplier[] uncertainties;
+    public void setUncertainty(InUncertaintySupplier uncertainty) {
+        this.uncertainties = new InUncertaintySupplier[]{uncertainty};
     }
-    public void setUncertainties(InUncertainty[] uncertainties) {
+    public void setUncertainties(InUncertaintySupplier[] uncertainties) {
         this.uncertainties = uncertainties;
     }
-    public InUncertainty[] getUncertainties() {
+    public InUncertaintySupplier[] getUncertainties() {
         return uncertainties;
     }
 
@@ -204,20 +203,20 @@ public class InModularRAProcessModel implements InProcessModel {
         model.setRnd(rnd);
         model.setSpeedOfConvergence(getSpeedOfConvergence());
 
-        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
-        algorithm.setName(model.getName() + "_RA");
-        algorithm.setEnvironment(parser.getEnvironment());
-        Rnd raRnd = parser.deriveRnd();
-        algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGap());
-        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
-        model.setRelativeAgreementAlgorithm(algorithm);
+//        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
+//        algorithm.setName(model.getName() + "_RA");
+//        algorithm.setEnvironment(parser.getEnvironment());
+//        Rnd raRnd = parser.deriveRnd();
+//        algorithm.setRandom(raRnd);
+//        algorithm.setAttitudeGap(getAttitudeGap());
+//        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
+//        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
+//        model.setRelativeAgreementAlgorithm(algorithm);
 
-        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
-        for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, params);
-        }
+//        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
+//        for(InUncertaintySupplier uncertainty: getUncertainties()) {
+//            uncertainty.setup(parser, params);
+//        }
 
         EvaluableComponent interestComponent = parser.parseEntityTo(getInterestComponent(), model);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add interest component '{}' to '{}'", interestComponent.getName(), model.getName());

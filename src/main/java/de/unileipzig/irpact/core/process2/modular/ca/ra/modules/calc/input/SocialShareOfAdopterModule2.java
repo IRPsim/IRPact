@@ -33,8 +33,12 @@ public class SocialShareOfAdopterModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         double share = getShareOfAdopterInSocialNetwork(input);
         getAgentDataState(input).rawSocialShare = share;

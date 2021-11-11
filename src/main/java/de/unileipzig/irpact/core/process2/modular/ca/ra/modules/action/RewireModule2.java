@@ -41,8 +41,12 @@ public class RewireModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public void run(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         ConsumerAgent agent = input.getAgent();
         SimulationEnvironment environment = input.getEnvironment();

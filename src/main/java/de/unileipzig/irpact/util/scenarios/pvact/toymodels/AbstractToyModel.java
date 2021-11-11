@@ -15,7 +15,8 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
@@ -182,7 +183,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     }
 
     protected void createProcessModel(InRoot root, String name) {
-        InPVactGlobalDeffuantUncertainty uncertainty = createUncertainty("uncert");
+        InUncertaintySupplier uncertainty = createUncertainty("uncert");
         PVactModularProcessModelManager mpm = new PVactModularProcessModelManager();
 
         List<InOutputImage2> outputImages2 = new ArrayList<>();
@@ -204,8 +205,8 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         root.setPostData(postData);
     }
 
-    protected InPVactGlobalDeffuantUncertainty createUncertainty(String name) {
-        return createGlobalUnvertainty(name, cagManager.getCagsArray());
+    protected InUncertaintySupplier createUncertainty(String name) {
+        return createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
     }
 
     protected InRAProcessPlanNodeFilterScheme createNodeFilter() {

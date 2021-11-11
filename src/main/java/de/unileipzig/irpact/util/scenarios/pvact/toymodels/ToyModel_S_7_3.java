@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
@@ -138,12 +138,8 @@ public class ToyModel_S_7_3 extends AbstractToyModel {
     }
 
     @Override
-    protected InPVactGlobalDeffuantUncertainty createUncertainty(String name) {
-        InPVactGlobalDeffuantUncertainty uncert = createGlobalUnvertainty(name, cagManager.getCagsArray());
-        uncert.setExtremistParameter(0.1);
-        uncert.setModerateUncertainty(0.2);
-        uncert.setExtremistUncertainty(0.05);
-        return uncert;
+    protected InUncertaintySupplier createUncertainty(String name) {
+        return createGlobalUnvertaintySupplier(name, 0.1, 0.05, 0.2);
     }
 
     @Override

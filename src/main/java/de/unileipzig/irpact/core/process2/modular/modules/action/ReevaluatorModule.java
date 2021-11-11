@@ -73,6 +73,11 @@ public class ReevaluatorModule<I>
     }
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
     public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
         init(environment);
     }
@@ -99,7 +104,7 @@ public class ReevaluatorModule<I>
     }
 
     protected void execute(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         startReevaluatorCall();
         for(Module2<I, ?> submodule: MODULES) {
             trace("execute submodule '{}'", submodule.getName());

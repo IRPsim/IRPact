@@ -48,6 +48,15 @@ public class AgentDataStateLoggingModule2
     }
 
     @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
         updateAgentDataState(input, loggingHelper, value);

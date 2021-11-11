@@ -33,6 +33,15 @@ public class ThresholdReachedModule2<I>
     public void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
+    @Override
+    protected I castInput(I input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(I input) throws Throwable {
+    }
+
     public void setDrawModule(CalculationModule2<I> module) {
         setSubmodule1(module);
     }
@@ -51,12 +60,12 @@ public class ThresholdReachedModule2<I>
 
     @Override
     public boolean test(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         double draw = getDrawModule().calculate(input, actions);
         double threshold = getThresholdModule().calculate(input, actions);
         boolean valid = threshold <= draw;
-        trace("[{}]@[{}] threshold reached: {} ({} <= {})", getName(), printName(input), valid, threshold, draw);
+        trace("[{}]@[{}] threshold reached: {} ({} <= {})", getName(), printInputInfo(input), valid, threshold, draw);
         return valid;
     }
 }

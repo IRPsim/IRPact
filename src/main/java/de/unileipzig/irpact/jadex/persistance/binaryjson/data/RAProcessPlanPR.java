@@ -6,7 +6,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
 import de.unileipzig.irpact.core.process.ra.RAStage;
 import de.unileipzig.irpact.core.process.ra.RAProcessPlan;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -98,6 +98,6 @@ public class RAProcessPlanPR extends BinaryPRBase<RAProcessPlan> {
         if(restoredUncertainty == null) {
             throw new RestoreException("missing restored uncertainty");
         }
-        object.getModel().getUncertaintyCache().registerUncertainty(object.getAgent(), restoredUncertainty, false, false);
+//        object.getModel().getUncertaintyCache().registerUncertainty(object.getAgent(), restoredUncertainty, false, false);
     }
 }

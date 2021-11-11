@@ -56,8 +56,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
         return Checksums.SMART.getChecksum(
                 getName(),
                 modelData,
-                rnd,
-                uncertaintyHandler.getManager()
+                rnd
         );
     }
 
@@ -74,13 +73,13 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
         logHash("name", ChecksumComparable.getChecksum(getName()));
         logHash("model data", ChecksumComparable.getChecksum(modelData));
         logHash("rnd", ChecksumComparable.getChecksum(rnd));
-        logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyHandler.getManager()));
+//        logHash("uncertainty manager", ChecksumComparable.getChecksum(uncertaintyHandler.getManager()));
     }
 
     @Override
     public void setEnvironment(SimulationEnvironment environment) {
         super.setEnvironment(environment);
-        uncertaintyHandler.setEnvironment(environment);
+//        uncertaintyHandler.setEnvironment(environment);
     }
 
     public void setModelData(RAModelData modelData) {
@@ -304,7 +303,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
     @Override
     public ProcessPlan newPlan(Agent agent, Need need, Product product) {
         ConsumerAgent cAgent = cast(agent);
-        getUncertaintyCache().createUncertainty(cAgent, getUncertaintyManager());
+//        getUncertaintyCache().createUncertainty(cAgent, getUncertaintyManager());
         Rnd rnd = environment.getSimulationRandom().deriveInstance();
         RAProcessPlan plan = new RAProcessPlan(environment, this, rnd, cAgent, need, product);
         plan.setNetworkFilter(getNodeFilterScheme().createFilter(plan));

@@ -8,9 +8,10 @@ import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -105,7 +106,8 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
 
     public Uncertainty getUncertainty() {
-        return getModel().getUncertaintyCache().getUncertainty(getAgent());
+        //return getModel().getUncertaintyCache().getUncertainty(getAgent());
+        return Dev.throwException();
     }
 
     @Override

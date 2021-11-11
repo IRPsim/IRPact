@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.map.Map3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
@@ -20,10 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Daniel Abitz
  */
-public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerAgentData2 {
+public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerAgentData2, Nameable {
 
     protected final Map<Object, Object> cache = new ConcurrentHashMap<>();
     protected final Map3<Long, Object, Object> runCache = Map3.newConcurrentHashMap();
+    protected final String NAME;
     protected SimulationEnvironment environment;
     protected CAModularProcessModel2 model;
     protected Rnd rnd;
@@ -43,6 +45,7 @@ public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerA
             ConsumerAgent agent,
             Product product,
             Need need) {
+        NAME = "DATA@" + agent.getName();
         this.environment = environment;
         this.model = model;
         this.rnd = rnd;
@@ -54,6 +57,11 @@ public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerA
     @Override
     public int getChecksum() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     //=========================

@@ -48,6 +48,15 @@ public class LogisticModule2<I>
     }
 
     @Override
+    protected I castInput(I input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(I input) throws Throwable {
+    }
+
+    @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
     }
@@ -70,7 +79,7 @@ public class LogisticModule2<I>
 
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         double x = getX().calculate(input, actions);
         double x0 = getX0().calculate(input, actions);
         return MathUtil.logistic(getL(), getK(), x, x0);

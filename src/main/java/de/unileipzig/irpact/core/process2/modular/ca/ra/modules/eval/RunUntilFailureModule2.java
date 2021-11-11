@@ -12,7 +12,6 @@ import de.unileipzig.irpact.core.process2.modular.modules.core.MultiModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +57,11 @@ public class RunUntilFailureModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        submodule.initializeNewInput(input);
+    }
+
+    @Override
     public Module2<?, ?> containsLoop(Deque<Module2<?, ?>> currentPath, Set<Module2<?, ?>> allModules) {
         return MultiModule2.containsLoop(currentPath, allModules, this, submodule);
     }
@@ -79,7 +83,7 @@ public class RunUntilFailureModule2
 
     @Override
     public ProcessPlanResult2 apply(ConsumerAgentData2 input, List<PostAction2> actions) {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         Module2<ConsumerAgentData2, ?> submodul = getNonnullSubmodule();
         try {

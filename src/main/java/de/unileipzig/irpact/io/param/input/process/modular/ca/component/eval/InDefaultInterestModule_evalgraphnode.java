@@ -7,13 +7,12 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.modular.ca.components.eval.DefaultInterestModule;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.MPMSettings;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -169,14 +168,14 @@ public class InDefaultInterestModule_evalgraphnode implements InConsumerAgentEva
     }
 
     @FieldDefinition
-    public InUncertainty[] uncertainties = new InUncertainty[0];
-    public void setUncertainty(InUncertainty uncertainty) {
-        this.uncertainties = new InUncertainty[]{uncertainty};
+    public InUncertaintySupplier[] uncertainties = new InUncertaintySupplier[0];
+    public void setUncertainty(InUncertaintySupplier uncertainty) {
+        this.uncertainties = new InUncertaintySupplier[]{uncertainty};
     }
-    public void setUncertainties(InUncertainty[] uncertainties) {
+    public void setUncertainties(InUncertaintySupplier[] uncertainties) {
         this.uncertainties = uncertainties;
     }
-    public InUncertainty[] getUncertainties() {
+    public InUncertaintySupplier[] getUncertainties() {
         return uncertainties;
     }
 
@@ -221,20 +220,20 @@ public class InDefaultInterestModule_evalgraphnode implements InConsumerAgentEva
         module.setInterestedPoints(getInterestedPoints());
         module.setUnknownPoints(getUnknownPoints());
 
-        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
-        algorithm.setName(getName() + "_RA");
-        algorithm.setEnvironment(parser.getEnvironment());
-        Rnd raRnd = parser.deriveRnd();
-        algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGap());
-        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
-        module.setRelativeAgreementAlgorithm(algorithm);
-
-        Object[] params = { module.getName(), module.getUncertaintyHandler().getManager(), getSpeedOfConvergence() };
-        for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, params);
-        }
+//        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
+//        algorithm.setName(getName() + "_RA");
+//        algorithm.setEnvironment(parser.getEnvironment());
+//        Rnd raRnd = parser.deriveRnd();
+//        algorithm.setRandom(raRnd);
+//        algorithm.setAttitudeGap(getAttitudeGap());
+//        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
+//        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
+//        module.setRelativeAgreementAlgorithm(algorithm);
+//
+//        Object[] params = { module.getName(), module.getUncertaintyHandler().getManager(), getSpeedOfConvergence() };
+//        for(InUncertaintySupplier uncertainty: getUncertainties()) {
+//            uncertainty.setup(parser, params);
+//        }
 
         return module;
     }

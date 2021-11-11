@@ -34,6 +34,11 @@ public class DoNothingRAModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         return input.getStage();
     }
