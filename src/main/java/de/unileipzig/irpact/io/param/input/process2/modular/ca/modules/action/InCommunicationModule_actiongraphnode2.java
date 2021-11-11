@@ -214,6 +214,7 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         alg.setWeight(AttitudeGap.NEUTRAL, getChanceNeutral());
         alg.setWeight(AttitudeGap.CONVERGENCE, getChanceConvergence());
         alg.setWeight(AttitudeGap.DIVERGENCE, getChanceDivergence());
+        alg.setLoggingMode(LoggableAttitudeGapRelativeAgreementAlgorithm2.LoggingMode.OPINION);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
         module.setRelativeAgreementAlgorithm(alg);
 

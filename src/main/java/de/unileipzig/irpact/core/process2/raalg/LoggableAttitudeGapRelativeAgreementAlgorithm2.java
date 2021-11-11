@@ -29,14 +29,118 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         extends AttitudeGapRelativeAgreementAlgorithm2
         implements LoggingResourceAccess, LoggableRelativeAgreementAlgorithm2, CloseableSimulationEntity, HelperAPI2 {
 
+    /**
+     * @author Daniel Abitz
+     */
+    public enum LoggingMode {
+        OPINION,
+        UNCERTAINTY,
+        OPINION_UNCERTAINTY;
+
+        int map(int index) {
+            switch (this) {
+                case OPINION:
+                    switch (index) {
+                        case NI_INDEX: return 0;
+                        case XI_INDEX: return 1;
+                        case UI_INDEX: return  2;
+                        case NEW_XI_INDEX: return 3;
+                        case NEW_UI_INDEX: throw new IllegalArgumentException("new ui not supported");
+                        case NJ_INDEX: return 4;
+                        case XJ_INDEX: return 5;
+                        case UJ_INDEX: return 6;
+                        case NEW_XJ_INDEX: return 7;
+                        case NEW_UJ_INDEX: throw new IllegalArgumentException("new uj not supported");
+                        case ATTR_INDEX: return 8;
+                        case DESC_INDEX: return 9;
+                        case CHANGED_INDEX: return 10;
+                        case TIME_INDEX: return 11;
+
+                        default:
+                            throw new IllegalArgumentException("unsupported: " + index);
+                    }
+
+                case UNCERTAINTY:
+                    switch (index) {
+                        case NI_INDEX: return 0;
+                        case XI_INDEX: return 1;
+                        case UI_INDEX: return 2;
+                        case NEW_XI_INDEX: throw new IllegalArgumentException("new xi not supported");
+                        case NEW_UI_INDEX: return 3;
+                        case NJ_INDEX: return 4;
+                        case XJ_INDEX: return 5;
+                        case UJ_INDEX: return 6;
+                        case NEW_XJ_INDEX: throw new IllegalArgumentException("new xj not supported");
+                        case NEW_UJ_INDEX: return 7;
+                        case ATTR_INDEX: return 8;
+                        case DESC_INDEX: return 9;
+                        case CHANGED_INDEX: return 10;
+                        case TIME_INDEX: return 11;
+
+                        default:
+                            throw new IllegalArgumentException("unsupported: " + index);
+                    }
+
+                case OPINION_UNCERTAINTY:
+                    switch (index) {
+                        case NI_INDEX:
+                        case XI_INDEX:
+                        case UI_INDEX:
+                        case NEW_XI_INDEX:
+                        case NEW_UI_INDEX:
+                        case NJ_INDEX:
+                        case XJ_INDEX:
+                        case UJ_INDEX:
+                        case NEW_XJ_INDEX:
+                        case NEW_UJ_INDEX:
+                        case ATTR_INDEX:
+                        case DESC_INDEX:
+                        case CHANGED_INDEX:
+                        case TIME_INDEX:
+                            return index;
+
+                        default:
+                            throw new IllegalArgumentException("unsupported: " + index);
+                    }
+
+                default:
+                    throw new IllegalArgumentException("unsupported: " + index);
+            }
+        }
+    }
+
+    public static final int NI_INDEX = 0;
+    public static final int XI_INDEX = 1;
+    public static final int UI_INDEX = 2;
+    public static final int NEW_XI_INDEX = 3;
+    public static final int NEW_UI_INDEX = 4;
+    public static final int NJ_INDEX = 5;
+    public static final int XJ_INDEX = 6;
+    public static final int UJ_INDEX = 7;
+    public static final int NEW_XJ_INDEX = 8;
+    public static final int NEW_UJ_INDEX = 9;
+    public static final int ATTR_INDEX = 10;
+    public static final int DESC_INDEX = 11;
+    public static final int CHANGED_INDEX = 12;
+    public static final int TIME_INDEX = 13;
+
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+    protected LoggingMode loggingMode = LoggingMode.OPINION_UNCERTAINTY;
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
     protected JsonResource resource;
     protected boolean printHeader;
     protected boolean storeXlsx;
+
+    public void setLoggingMode(LoggingMode loggingMode) {
+        this.loggingMode = loggingMode;
+    }
+
+    public LoggingMode getLoggingMode() {
+        return loggingMode;
+    }
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
@@ -74,10 +178,11 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
     protected void logClassInfo(Path target) {
         trace(
-                "[{}] create logger '{}' (printHeader={}, storeXlsx={}), target: {}",
+                "[{}] create logger '{}' (printHeader={}, storeXlsx={}), mode={}, target={}",
                 getName(),
                 getName(),
                 isPrintHeader(), isStoreXlsx(),
+                getLoggingMode().name(),
                 target
         );
     }
@@ -100,21 +205,6 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
                 getLocalizedString("time")
         );
     }
-
-    public static final int NI_INDEX = 0;
-    public static final int XI_INDEX = 1;
-    public static final int UI_INDEX = 2;
-    public static final int NEW_XI_INDEX = 3;
-    public static final int NEW_UI_INDEX = 4;
-    public static final int NJ_INDEX = 5;
-    public static final int XJ_INDEX = 6;
-    public static final int UJ_INDEX = 7;
-    public static final int NEW_XJ_INDEX = 8;
-    public static final int NEW_UJ_INDEX = 9;
-    public static final int ATTR_INDEX = 10;
-    public static final int DESC_INDEX = 11;
-    public static final int CHANGED_INDEX = 12;
-    public static final int TIME_INDEX = 13;
 
     public void setDir(Path dir) {
         this.dir = dir;
@@ -362,15 +452,43 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             Object time) {
         if(time == null) return;
 
-        getValueLogger().log(
-                "{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
-                time,
-                attr,
-                desc,
-                changed,
-                ni, xi, ui, newXi, newUi,
-                nj, xj, uj, newXj, newUj
-        );
+        switch (loggingMode) {
+            case OPINION:
+                getValueLogger().log(
+                        "{};{};{};{};{};{};{};{};{};{};{};{}",
+                        time,
+                        attr,
+                        desc,
+                        changed,
+                        ni, xi, ui, newXi,
+                        nj, xj, uj, newXj
+                );
+                break;
+
+            case UNCERTAINTY:
+                getValueLogger().log(
+                        "{};{};{};{};{};{};{};{};{};{};{};{}",
+                        time,
+                        attr,
+                        desc,
+                        changed,
+                        ni, xi, ui, newUi,
+                        nj, xj, uj, newUj
+                );
+                break;
+
+            case OPINION_UNCERTAINTY:
+                getValueLogger().log(
+                        "{};{};{};{};{};{};{};{};{};{};{};{};{};{}",
+                        time,
+                        attr,
+                        desc,
+                        changed,
+                        ni, xi, ui, newXi, newUi,
+                        nj, xj, uj, newXj, newUj
+                );
+                break;
+        }
     }
 
     @Override
@@ -413,15 +531,22 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
         JsonTableData3 xlsxData = csvData.copy();
         int from = isPrintHeader() ? 1 : 0;
-        xlsxData.mapStringColumnToDouble(XJ_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(UJ_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(NEW_XJ_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(NEW_UJ_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(XI_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(UI_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(NEW_XI_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToDouble(NEW_UI_INDEX, from, Double::parseDouble);
-        xlsxData.mapStringColumnToBoolean(CHANGED_INDEX, from, Boolean::parseBoolean);
+
+        if(loggingMode == LoggingMode.OPINION || loggingMode == LoggingMode.OPINION_UNCERTAINTY) {
+            xlsxData.mapStringColumnToDouble(loggingMode.map(NEW_XJ_INDEX), from, Double::parseDouble);
+            xlsxData.mapStringColumnToDouble(loggingMode.map(NEW_XI_INDEX), from, Double::parseDouble);
+        }
+
+        if(loggingMode == LoggingMode.UNCERTAINTY || loggingMode == LoggingMode.OPINION_UNCERTAINTY) {
+            xlsxData.mapStringColumnToDouble(loggingMode.map(NEW_UJ_INDEX), from, Double::parseDouble);
+            xlsxData.mapStringColumnToDouble(loggingMode.map(NEW_UI_INDEX), from, Double::parseDouble);
+        }
+
+        xlsxData.mapStringColumnToDouble(loggingMode.map(XJ_INDEX), from, Double::parseDouble);
+        xlsxData.mapStringColumnToDouble(loggingMode.map(UJ_INDEX), from, Double::parseDouble);
+        xlsxData.mapStringColumnToDouble(loggingMode.map(XI_INDEX), from, Double::parseDouble);
+        xlsxData.mapStringColumnToDouble(loggingMode.map(UI_INDEX), from, Double::parseDouble);
+        xlsxData.mapStringColumnToBoolean(loggingMode.map(CHANGED_INDEX), from, Boolean::parseBoolean);
 
         xlsxSheetData.put(getLocalizedString("sheetName"), xlsxData);
 
