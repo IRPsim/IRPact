@@ -10,6 +10,13 @@ CSV:
     value: "Wert"
     sep: ";"
 
+  NEIGHBOURHOOD_OVERVIEW:
+    sourceAgent: "Agent"
+    targetCount: "Anzahl"
+    targetAgent: "Agent{0}"
+    distanceValue: "Abstand{0}"
+    sep: ";"
+
 # XLSX
 XLSX:
   BUCKET_ANALYSER:
@@ -38,4 +45,11 @@ XLSX:
     product: "Produkt"
     time: "Zeitpunkt"
     phase: "Adoptionsphase"
+
+  NEIGHBOURHOOD_OVERVIEW:
+    sourceAgent: "Agent"
+    targetCount: "Anzahl"
+    targetAgent: "Agent{0}"
+    distanceValue: "Abstand{0}"
+    sheetName: "Daten"
 

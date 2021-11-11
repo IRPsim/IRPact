@@ -15,7 +15,7 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
-import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -103,7 +103,7 @@ public class DefaultModularScenario extends AbstractScenario implements DefaultS
         decisionModule.setName("DECISION");
         decisionModule.setDefaultValues();
         decisionModule.setPvFile(pvFile);
-        decisionModule.setNodeFilterScheme(new InMaxDistanceNodeFilterScheme("MaxDistance", 100, true));
+        decisionModule.setNodeFilterScheme(new InMaxDistanceNodeFilterDistanceScheme("MaxDistance", 100, true));
 
         InStageEvaluationModule_evalgraphnode stageModule = new InStageEvaluationModule_evalgraphnode();
         stageModule.setName("PROCESS_STAGE_HANDLER");

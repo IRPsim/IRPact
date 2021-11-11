@@ -21,7 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InDisabledNodeFilterScheme implements InRAProcessPlanNodeFilterScheme {
+public class InDisabledNodeFilterDistanceScheme implements InNodeFilterDistanceScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -45,20 +45,20 @@ public class InDisabledNodeFilterScheme implements InRAProcessPlanNodeFilterSche
     @FieldDefinition
     public double placeholder;
 
-    public InDisabledNodeFilterScheme() {
+    public InDisabledNodeFilterDistanceScheme() {
     }
 
-    public InDisabledNodeFilterScheme(String name) {
+    public InDisabledNodeFilterDistanceScheme(String name) {
         setName(name);
     }
 
     @Override
-    public InDisabledNodeFilterScheme copy(CopyCache cache) {
+    public InDisabledNodeFilterDistanceScheme copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDisabledNodeFilterScheme newCopy(CopyCache cache) {
-        InDisabledNodeFilterScheme copy = new InDisabledNodeFilterScheme();
+    public InDisabledNodeFilterDistanceScheme newCopy(CopyCache cache) {
+        InDisabledNodeFilterDistanceScheme copy = new InDisabledNodeFilterDistanceScheme();
         copy._name = _name;
         return copy;
     }
@@ -74,11 +74,15 @@ public class InDisabledNodeFilterScheme implements InRAProcessPlanNodeFilterSche
 
     @Override
     public DisabledNodeFilterScheme parse(IRPactInputParser parser) throws ParsingException {
+        DisabledNodeFilterScheme scheme = createScheme();
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created DisabledProcessPlanNodeFilterScheme '{}'", getName());
+        return scheme;
+    }
+
+    @Override
+    public DisabledNodeFilterScheme createScheme() {
         DisabledNodeFilterScheme scheme = new DisabledNodeFilterScheme();
         scheme.setName(getName());
-
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created DisabledProcessPlanNodeFilterScheme '{}'", getName());
-
         return scheme;
     }
 }

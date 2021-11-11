@@ -75,8 +75,8 @@ import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
-import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.InNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
@@ -406,6 +406,16 @@ public class InRoot implements RootClass {
     }
     public InProcessModel[] getProcessModels() throws ParsingException {
         return getNonEmptyArray(processModels, "processModel");
+    }
+
+    @FieldDefinition
+    public InNodeFilterScheme[] nodeFilterSchemes;
+
+    public void setNodeFilterSchemes(InNodeFilterScheme[] nodeFilterSchemes) {
+        this.nodeFilterSchemes = nodeFilterSchemes;
+    }
+    public InNodeFilterScheme[] getNodeFilterSchemes() throws ParsingException {
+        return getNonEmptyArray(nodeFilterSchemes, "nodeFilterSchemes");
     }
 
     //=========================
@@ -879,13 +889,13 @@ public class InRoot implements RootClass {
             InPVactGlobalDeffuantUncertaintySupplier2.class,
             InUncertaintySupplier.class,
 
-            InDisabledNodeFilterScheme.class,
-            InEntireNetworkNodeFilterScheme.class,
+            InDisabledNodeFilterDistanceScheme.class,
+            InEntireNetworkNodeFilterDistanceScheme.class,
             InRAProcessModel.class,
-            InMaxDistanceNodeFilterScheme.class,
-            InRAProcessPlanNodeFilterScheme.class,
+            InMaxDistanceNodeFilterDistanceScheme.class,
+            InNodeFilterDistanceScheme.class,
             InProcessModel.class,
-            InProcessPlanNodeFilterScheme.class,
+            InNodeFilterScheme.class,
 
             InComponent.class,
             InDefaultDoActionComponent.class,

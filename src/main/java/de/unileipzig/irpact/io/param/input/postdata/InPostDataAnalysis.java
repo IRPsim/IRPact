@@ -1,11 +1,8 @@
 package de.unileipzig.irpact.io.param.input.postdata;
 
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
-import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 
 /**
  * @author Daniel Abitz

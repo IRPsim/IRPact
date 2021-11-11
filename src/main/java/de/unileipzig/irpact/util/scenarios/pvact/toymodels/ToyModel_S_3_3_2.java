@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
@@ -103,7 +103,7 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
     }
 
     @Override
-    protected InRAProcessPlanNodeFilterScheme createNodeFilter() {
+    protected InNodeFilterDistanceScheme createNodeFilter() {
         return createNodeFilterScheme(1000);
     }
 

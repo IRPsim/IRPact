@@ -1438,27 +1438,27 @@ process_filter:
   edn_label: "Peereffektdistanzeinstellung"
   edn_description: "todo"
 
-DisabledNodeFilterScheme:
+InDisabledNodeFilterDistanceScheme:
   edn_label: "Kein Peereffekt"
   edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
-DisabledNodeFilterScheme_placeholder:
+InDisabledNodeFilterDistanceScheme_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
-InEntireNetworkNodeFilterScheme:
+InEntireNetworkNodeFilterDistanceScheme:
   edn_label: "Peereffekt mit ganzen Gebiet"
   edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
-InEntireNetworkNodeFilterScheme_placeholder:
+InEntireNetworkNodeFilterDistanceScheme_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
-MaxDistanceNodeFilterScheme:
+InMaxDistanceNodeFilterDistanceScheme:
   edn_label: "Maximale Entfernung"
   edn_description: "todo"
-MaxDistanceNodeFilterScheme_maxDistance:
+InMaxDistanceNodeFilterDistanceScheme_maxDistance:
   gams_identifier: "Maximale Entfernung"
   gams_description: "Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell."
-MaxDistanceNodeFilterScheme_inclusive:
+InMaxDistanceNodeFilterDistanceScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 

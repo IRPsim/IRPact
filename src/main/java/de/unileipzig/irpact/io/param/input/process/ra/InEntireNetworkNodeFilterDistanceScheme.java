@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeDistanceFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -21,7 +22,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InEntireNetworkNodeFilterScheme implements InRAProcessPlanNodeFilterScheme {
+public class InEntireNetworkNodeFilterDistanceScheme implements InNodeFilterDistanceScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -45,20 +46,20 @@ public class InEntireNetworkNodeFilterScheme implements InRAProcessPlanNodeFilte
     @FieldDefinition
     public double placeholder;
 
-    public InEntireNetworkNodeFilterScheme() {
+    public InEntireNetworkNodeFilterDistanceScheme() {
     }
 
-    public InEntireNetworkNodeFilterScheme(String name) {
+    public InEntireNetworkNodeFilterDistanceScheme(String name) {
         setName(name);
     }
 
     @Override
-    public InEntireNetworkNodeFilterScheme copy(CopyCache cache) {
+    public InEntireNetworkNodeFilterDistanceScheme copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InEntireNetworkNodeFilterScheme newCopy(CopyCache cache) {
-        InEntireNetworkNodeFilterScheme copy = new InEntireNetworkNodeFilterScheme();
+    public InEntireNetworkNodeFilterDistanceScheme newCopy(CopyCache cache) {
+        InEntireNetworkNodeFilterDistanceScheme copy = new InEntireNetworkNodeFilterDistanceScheme();
         copy._name = _name;
         return copy;
     }
@@ -73,12 +74,16 @@ public class InEntireNetworkNodeFilterScheme implements InRAProcessPlanNodeFilte
     }
 
     @Override
-    public Object parse(IRPactInputParser parser) throws ParsingException {
+    public EntireNetworkNodeFilterScheme parse(IRPactInputParser parser) throws ParsingException {
+        EntireNetworkNodeFilterScheme scheme = createScheme();
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created EntireNetworkNodeFilterScheme '{}'", getName());
+        return scheme;
+    }
+
+    @Override
+    public EntireNetworkNodeFilterScheme createScheme() {
         EntireNetworkNodeFilterScheme scheme = new EntireNetworkNodeFilterScheme();
         scheme.setName(getName());
-
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created EntireNetworkNodeFilterScheme '{}'", getName());
-
         return scheme;
     }
 }

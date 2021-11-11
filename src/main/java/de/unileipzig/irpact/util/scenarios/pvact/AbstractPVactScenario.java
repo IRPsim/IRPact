@@ -22,8 +22,8 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
-import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
@@ -297,8 +297,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return uncertainty;
     }
 
-    public InMaxDistanceNodeFilterScheme createNodeFilterScheme(double distance) {
-        InMaxDistanceNodeFilterScheme scheme = new InMaxDistanceNodeFilterScheme();
+    public InMaxDistanceNodeFilterDistanceScheme createNodeFilterScheme(double distance) {
+        InMaxDistanceNodeFilterDistanceScheme scheme = new InMaxDistanceNodeFilterDistanceScheme();
         scheme.setName("MAX_DISTANCE_SCHEME");
         scheme.setMaxDistance(distance);
         return scheme;
@@ -308,7 +308,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InRAProcessPlanNodeFilterScheme scheme) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeFilterDistanceScheme scheme) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
         processModel.setDefaultValues();
@@ -328,7 +328,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             String name,
             InUncertaintySupplier uncertainty,
             double speedOfConvergence,
-            InRAProcessPlanNodeFilterScheme scheme,
+            InNodeFilterDistanceScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas) {
         return createDefaultModularProcessModel(name, uncertainty, speedOfConvergence, scheme, images, postDatas, new ModularProcessModelManager());
@@ -356,7 +356,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
             String name,
             InUncertaintySupplier uncertainty,
             double speedOfConvergence,
-            InRAProcessPlanNodeFilterScheme scheme,
+            InNodeFilterDistanceScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas,
             ModularProcessModelManager mmp) {

@@ -216,7 +216,7 @@ public class InRAProcessModel implements InProcessModel {
     public double adoptionCertaintyFactor = 1.0;
 
     @FieldDefinition
-    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
+    public InNodeFilterDistanceScheme[] nodeFilterScheme;
 
     @FieldDefinition
     public InPVFile[] pvFile;
@@ -550,15 +550,15 @@ public class InRAProcessModel implements InProcessModel {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
 
-    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+    public InNodeFilterDistanceScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
 
-    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(InNodeFilterDistanceScheme nodeFilterScheme) {
         if(nodeFilterScheme == null) {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+            this.nodeFilterScheme = new InNodeFilterDistanceScheme[0];
         } else {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+            this.nodeFilterScheme = new InNodeFilterDistanceScheme[]{nodeFilterScheme};
         }
     }
 
@@ -660,7 +660,7 @@ public class InRAProcessModel implements InProcessModel {
 //        }
 
         if(hasNodeFilterScheme()) {
-            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
+            InNodeFilterDistanceScheme inFilterScheme = getNodeFilterScheme();
             NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             model.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());

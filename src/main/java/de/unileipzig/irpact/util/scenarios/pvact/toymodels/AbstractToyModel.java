@@ -14,8 +14,7 @@ import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -209,7 +208,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         return createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
     }
 
-    protected InRAProcessPlanNodeFilterScheme createNodeFilter() {
+    protected InNodeFilterDistanceScheme createNodeFilter() {
         return createNodeFilterScheme(2);
     }
 
