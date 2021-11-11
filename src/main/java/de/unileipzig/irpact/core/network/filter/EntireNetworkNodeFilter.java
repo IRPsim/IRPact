@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 /**
  * @author Daniel Abitz
  */
-public class EntireNetworkNodeFilter extends NameableBase implements NodeFilter {
+public class EntireNetworkNodeFilter extends NameableBase implements NodeDistanceFilter {
 
     public static final EntireNetworkNodeFilter INSTANCE = new EntireNetworkNodeFilter("DEFAULT_EntireNetworkNodeFilter");
 

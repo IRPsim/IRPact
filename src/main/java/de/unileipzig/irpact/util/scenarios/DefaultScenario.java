@@ -15,7 +15,7 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -85,7 +85,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName("ProcessModel");
         processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
+        processModel.setNodeFilterScheme(new InMaxDistanceNodeFilterScheme("MaxDistance", 100, true));
         processModel.setPvFile(pvFile);
 //        processModel.setUncertainty(uncertainty);
         processModel.setSpeedOfConvergence(0.0);

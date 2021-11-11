@@ -22,7 +22,7 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
@@ -297,8 +297,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return uncertainty;
     }
 
-    public InRAProcessPlanMaxDistanceFilterScheme createNodeFilterScheme(double distance) {
-        InRAProcessPlanMaxDistanceFilterScheme scheme = new InRAProcessPlanMaxDistanceFilterScheme();
+    public InMaxDistanceNodeFilterScheme createNodeFilterScheme(double distance) {
+        InMaxDistanceNodeFilterScheme scheme = new InMaxDistanceNodeFilterScheme();
         scheme.setName("MAX_DISTANCE_SCHEME");
         scheme.setMaxDistance(distance);
         return scheme;

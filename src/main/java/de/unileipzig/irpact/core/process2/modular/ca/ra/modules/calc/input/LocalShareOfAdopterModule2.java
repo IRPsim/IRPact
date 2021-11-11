@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
@@ -21,14 +21,14 @@ public class LocalShareOfAdopterModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(LocalShareOfAdopterModule2.class);
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
+    protected NodeFilterScheme nodeFilterScheme;
     protected int maxToStore = -1;
 
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
 
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
 

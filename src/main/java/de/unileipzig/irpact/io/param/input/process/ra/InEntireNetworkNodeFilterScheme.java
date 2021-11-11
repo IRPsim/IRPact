@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.ra;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.filter.EntireNetworkNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

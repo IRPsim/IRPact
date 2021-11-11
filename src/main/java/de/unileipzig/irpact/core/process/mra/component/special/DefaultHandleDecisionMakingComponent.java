@@ -48,8 +48,8 @@ public class DefaultHandleDecisionMakingComponent extends AbstractSingleMRACompo
     @Override
     public void handleNewPlan(ProcessPlan plan) {
         ModularRAProcessPlan mPlan = (ModularRAProcessPlan) plan;
-        NodeFilter filter = getNodeFilterScheme().createFilter(mPlan);
-        mPlan.store(FILTER_KEY, filter);
+//        NodeFilter filter = getNodeFilterScheme().createFilter(mPlan);
+//        mPlan.store(FILTER_KEY, filter);
     }
 
     @Override

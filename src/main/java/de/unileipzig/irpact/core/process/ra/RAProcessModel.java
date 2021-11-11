@@ -19,7 +19,7 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
@@ -37,7 +37,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
 
     protected static boolean globalRAProcessInitCalled = false;
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
+    protected NodeFilterScheme nodeFilterScheme;
 
     protected NPVData npvData;
     protected NPVCalculator npvCalculator;
@@ -99,11 +99,11 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
         this.npvData = npvData;
     }
 
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
 
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
 
@@ -306,7 +306,7 @@ public class RAProcessModel extends RAProcessModelBase implements LoggableChecks
 //        getUncertaintyCache().createUncertainty(cAgent, getUncertaintyManager());
         Rnd rnd = environment.getSimulationRandom().deriveInstance();
         RAProcessPlan plan = new RAProcessPlan(environment, this, rnd, cAgent, need, product);
-        plan.setNetworkFilter(getNodeFilterScheme().createFilter(plan));
+        plan.setNetworkFilter(getNodeFilterScheme().createFilter(cAgent));
         return plan;
     }
 }

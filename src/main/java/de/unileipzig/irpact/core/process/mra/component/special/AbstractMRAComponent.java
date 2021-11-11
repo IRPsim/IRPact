@@ -19,7 +19,7 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
@@ -148,11 +148,11 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return logisticFactor;
     }
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    protected NodeFilterScheme nodeFilterScheme;
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
 

@@ -21,6 +21,8 @@ import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.FallbackAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.ScaledRealAdoptionData;
+import de.unileipzig.irpact.core.postprocessing.data4.RAHelperAPIInstance;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductInterest;
@@ -32,7 +34,6 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ public abstract class PostProcessor implements LoggingHelper {
 
     protected final Map<Object, Object> DATA_CACHE = new HashMap<>();
 
+    protected final RAHelperAPIInstance RA_HELPER = new RAHelperAPIInstance("RA_HELPER");
     protected MetaData metaData;
     protected MainCommandLineOptions clOptions;
     protected InRoot inRoot;
@@ -82,6 +84,10 @@ public abstract class PostProcessor implements LoggingHelper {
     @Override
     public IRPSection getDefaultSection() {
         return IRPSection.RESULT;
+    }
+
+    public RAHelperAPI2 getRAHelperAPI() {
+        return RA_HELPER;
     }
 
     public abstract void execute();

@@ -3,8 +3,8 @@ package de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.components.calc.SocialComponentModule;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -143,11 +143,11 @@ public class InSocialComponentModule_inputgraphnode implements InConsumerAgentCa
 
         if(hasNodeFilterScheme()) {
             InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
-            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             module.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
         } else {
-            module.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            module.setNodeFilterScheme(DisabledNodeFilterScheme.INSTANCE);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 

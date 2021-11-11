@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.ra;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -21,7 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InDisabledProcessPlanNodeFilterScheme implements InRAProcessPlanNodeFilterScheme {
+public class InDisabledNodeFilterScheme implements InRAProcessPlanNodeFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -45,20 +45,20 @@ public class InDisabledProcessPlanNodeFilterScheme implements InRAProcessPlanNod
     @FieldDefinition
     public double placeholder;
 
-    public InDisabledProcessPlanNodeFilterScheme() {
+    public InDisabledNodeFilterScheme() {
     }
 
-    public InDisabledProcessPlanNodeFilterScheme(String name) {
+    public InDisabledNodeFilterScheme(String name) {
         setName(name);
     }
 
     @Override
-    public InDisabledProcessPlanNodeFilterScheme copy(CopyCache cache) {
+    public InDisabledNodeFilterScheme copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InDisabledProcessPlanNodeFilterScheme newCopy(CopyCache cache) {
-        InDisabledProcessPlanNodeFilterScheme copy = new InDisabledProcessPlanNodeFilterScheme();
+    public InDisabledNodeFilterScheme newCopy(CopyCache cache) {
+        InDisabledNodeFilterScheme copy = new InDisabledNodeFilterScheme();
         copy._name = _name;
         return copy;
     }
@@ -73,8 +73,8 @@ public class InDisabledProcessPlanNodeFilterScheme implements InRAProcessPlanNod
     }
 
     @Override
-    public Object parse(IRPactInputParser parser) throws ParsingException {
-        DisabledProcessPlanNodeFilterScheme scheme = new DisabledProcessPlanNodeFilterScheme();
+    public DisabledNodeFilterScheme parse(IRPactInputParser parser) throws ParsingException {
+        DisabledNodeFilterScheme scheme = new DisabledNodeFilterScheme();
         scheme.setName(getName());
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "created DisabledProcessPlanNodeFilterScheme '{}'", getName());

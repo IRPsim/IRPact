@@ -24,6 +24,8 @@ import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
@@ -53,10 +55,8 @@ import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.*;
-import de.unileipzig.irpact.io.param.input.process.ra.InDisabledProcessPlanNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InEntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
@@ -182,9 +182,9 @@ public class InRootUI {
     public static final EdnPath PROCESS2 = ROOT.resolve(IOConstants.PROCESS_MODEL2).addTo(PATHS);
 
     public static final EdnPath PROCESS_FILTER = PROCESS2.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledProcessPlanNodeFilterScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledNodeFilterScheme.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_FILTER_ENTIRE = PROCESS_FILTER.resolve(InEntireNetworkNodeFilterScheme.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InRAProcessPlanMaxDistanceFilterScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InMaxDistanceNodeFilterScheme.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_UNCERT = PROCESS2.resolve(IOConstants.PROCESS_MODEL_RA_UNCERT).addTo(PATHS);
     public static final EdnPath PROCESS_UNCERT_GLDEFF = PROCESS_UNCERT.resolve(InPVactGlobalDeffuantUncertaintySupplier2.thisName()).addTo(PATHS);

@@ -76,7 +76,7 @@ import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
 import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
@@ -879,10 +879,10 @@ public class InRoot implements RootClass {
             InPVactGlobalDeffuantUncertaintySupplier2.class,
             InUncertaintySupplier.class,
 
-            InDisabledProcessPlanNodeFilterScheme.class,
+            InDisabledNodeFilterScheme.class,
             InEntireNetworkNodeFilterScheme.class,
             InRAProcessModel.class,
-            InRAProcessPlanMaxDistanceFilterScheme.class,
+            InMaxDistanceNodeFilterScheme.class,
             InRAProcessPlanNodeFilterScheme.class,
             InProcessModel.class,
             InProcessPlanNodeFilterScheme.class,

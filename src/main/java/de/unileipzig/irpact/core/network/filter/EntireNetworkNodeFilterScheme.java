@@ -1,15 +1,13 @@
-package de.unileipzig.irpact.core.process.filter;
+package de.unileipzig.irpact.core.network.filter;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilter;
-import de.unileipzig.irpact.core.network.filter.NodeFilter;
-import de.unileipzig.irpact.core.process.ProcessPlan;
+import de.unileipzig.irpact.core.agent.SpatialAgent;
 
 /**
  * @author Daniel Abitz
  */
-public class EntireNetworkNodeFilterScheme extends NameableBase implements ProcessPlanNodeFilterScheme {
+public class EntireNetworkNodeFilterScheme extends NameableBase implements NodeDistanceFilterScheme {
 
     public static final EntireNetworkNodeFilterScheme INSTANCE = new EntireNetworkNodeFilterScheme("DEFAULT_EntireNetworkNodeFilterScheme");
 
@@ -21,7 +19,7 @@ public class EntireNetworkNodeFilterScheme extends NameableBase implements Proce
     }
 
     @Override
-    public NodeFilter createFilter(ProcessPlan plan) {
+    public EntireNetworkNodeFilter createFilter(SpatialAgent agent) {
         return EntireNetworkNodeFilter.INSTANCE;
     }
 

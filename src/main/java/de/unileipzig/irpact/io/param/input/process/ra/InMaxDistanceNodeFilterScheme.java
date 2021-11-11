@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.ExceptionUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
@@ -23,7 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNodeFilterScheme {
+public class InMaxDistanceNodeFilterScheme implements InRAProcessPlanNodeFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -51,22 +51,22 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
     @FieldDefinition
     public boolean inclusive;
 
-    public InRAProcessPlanMaxDistanceFilterScheme() {
+    public InMaxDistanceNodeFilterScheme() {
     }
 
-    public InRAProcessPlanMaxDistanceFilterScheme(String name, double maxDistance, boolean inclusive) {
+    public InMaxDistanceNodeFilterScheme(String name, double maxDistance, boolean inclusive) {
         setName(name);
         setMaxDistance(maxDistance);
         setInclusive(inclusive);
     }
 
     @Override
-    public InRAProcessPlanMaxDistanceFilterScheme copy(CopyCache cache) {
+    public InMaxDistanceNodeFilterScheme copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InRAProcessPlanMaxDistanceFilterScheme newCopy(CopyCache cache) {
-        InRAProcessPlanMaxDistanceFilterScheme copy = new InRAProcessPlanMaxDistanceFilterScheme();
+    public InMaxDistanceNodeFilterScheme newCopy(CopyCache cache) {
+        InMaxDistanceNodeFilterScheme copy = new InMaxDistanceNodeFilterScheme();
         copy._name = _name;
         copy.maxDistance = maxDistance;
         copy.inclusive = inclusive;
@@ -100,12 +100,12 @@ public class InRAProcessPlanMaxDistanceFilterScheme implements InRAProcessPlanNo
     }
 
     @Override
-    public Object parse(IRPactInputParser parser) throws ParsingException {
+    public MaxDistanceNodeFilterScheme parse(IRPactInputParser parser) throws ParsingException {
         if(getMaxDistance() < 0) {
             throw ExceptionUtil.create(ParsingException::new, "max distance {} < 0", getMaxDistance());
         }
 
-        RAProcessPlanMaxDistanceFilterScheme scheme = new RAProcessPlanMaxDistanceFilterScheme();
+        MaxDistanceNodeFilterScheme scheme = new MaxDistanceNodeFilterScheme();
         scheme.setName(getName());
         scheme.setMaxDistance(getMaxDistance());
         scheme.setInclusive(isInclusive());

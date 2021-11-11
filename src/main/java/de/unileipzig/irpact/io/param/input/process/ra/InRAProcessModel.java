@@ -5,8 +5,8 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
@@ -661,11 +661,11 @@ public class InRAProcessModel implements InProcessModel {
 
         if(hasNodeFilterScheme()) {
             InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
-            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             model.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
         } else {
-            model.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            model.setNodeFilterScheme(DisabledNodeFilterScheme.INSTANCE);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 

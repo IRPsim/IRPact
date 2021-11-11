@@ -3,8 +3,8 @@ package de.unileipzig.irpact.io.param.input.process.mra.component;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.special.DefaultHandleDecisionMakingComponent;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -241,11 +241,11 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
 
         if(hasNodeFilterScheme()) {
             InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
-            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             component.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
         } else {
-            component.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            component.setNodeFilterScheme(DisabledNodeFilterScheme.INSTANCE);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 
