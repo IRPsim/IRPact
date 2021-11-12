@@ -23,7 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InMaxDistanceNodeFilterDistanceScheme implements InNodeFilterDistanceScheme {
+public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {

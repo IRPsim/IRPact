@@ -142,6 +142,9 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_QUANTILE_LOCAL = "LOCAL_Quantile";
     public static final String IMAGE_QUANTILE_LOCAL_PNG = IMAGE_QUANTILE_LOCAL + ".png";
 
+    public static final String IMAGE_UTILITY_LOCAL = "UTILITY_Quantile";
+    public static final String IMAGE_UTILITY_LOCAL_PNG = IMAGE_UTILITY_LOCAL + ".png";
+
     public static final int INVALID_CUSTOM_IMAGE = 0;
     public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;
     public static boolean isValidImageId(int id) {

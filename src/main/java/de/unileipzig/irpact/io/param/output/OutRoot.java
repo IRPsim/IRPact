@@ -318,7 +318,14 @@ public class OutRoot implements RootClass {
         image5.setImage(IRPact.IMAGE_QUANTILE_LOCAL_PNG);
         image5.setDescription("todo");
 
-        adoptionSections.addAll(image1, image2, image3, image4, image5);
+        Section image6 = new Section();
+        image6.setPriority(6);
+        image6.setLabel("UTILITY");
+        image6.setIcon(IRPact.ICON_IMAGE);
+        image6.setImage(IRPact.IMAGE_UTILITY_LOCAL_PNG);
+        image6.setDescription("todo");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5, image6);
 
         return adoptionSection;
     }

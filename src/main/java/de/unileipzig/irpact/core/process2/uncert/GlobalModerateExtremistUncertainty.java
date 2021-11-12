@@ -14,11 +14,11 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
-public class GlobalDeffuantUncertainty
+public class GlobalModerateExtremistUncertainty
         extends NameableBase
-        implements Uncertainty, DeffuantUncertainty, UncertaintySupplier, LoggingHelper {
+        implements Uncertainty, UncertaintySupplier, LoggingHelper {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(GlobalDeffuantUncertainty.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(GlobalModerateExtremistUncertainty.class);
 
     protected Set<String> attributeNames;
     protected Map<String, DoubleRange> ranges;
@@ -29,11 +29,11 @@ public class GlobalDeffuantUncertainty
     protected boolean lowerBoundInclusive;
     protected boolean upperBoundInclusive;
 
-    public GlobalDeffuantUncertainty() {
+    public GlobalModerateExtremistUncertainty() {
         this(new HashSet<>(), new HashMap<>());
     }
 
-    public GlobalDeffuantUncertainty(Set<String> attributeNames, Map<String, DoubleRange> ranges) {
+    public GlobalModerateExtremistUncertainty(Set<String> attributeNames, Map<String, DoubleRange> ranges) {
         this.attributeNames = attributeNames;
         this.ranges = ranges;
     }
@@ -71,7 +71,7 @@ public class GlobalDeffuantUncertainty
     }
 
     @Override
-    public GlobalDeffuantUncertainty createFor(ConsumerAgent agent) {
+    public GlobalModerateExtremistUncertainty createFor(ConsumerAgent agent) {
         if(agent == null) {
             throw new NullPointerException("agent is null");
         }
@@ -106,10 +106,22 @@ public class GlobalDeffuantUncertainty
                 .sorted()
                 .toArray();
 
+        double min = sortedValues[0];
+        double max = sortedValues[sortedValues.length - 1];
         int lowerIndex = (int) (sortedValues.length * extremistParameter / 2.0);
         int upperIndex = sortedValues.length - lowerIndex - 1;
         double lowerBound = sortedValues[lowerIndex];
         double upperBound = sortedValues[upperIndex];
+
+        trace(
+                "[{}] value information for attribute '{}': min={}, lowerBound={} (index={}), upperBound={} (index={}), max={}",
+                getName(),
+                attributeName,
+                min,
+                lowerBound, lowerIndex,
+                upperBound, upperIndex,
+                max
+        );
 
         DoubleRange range = new DoubleRange();
         range.setLowerBound(lowerBound);

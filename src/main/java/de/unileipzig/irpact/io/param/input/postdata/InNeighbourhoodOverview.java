@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -18,7 +18,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InNeighborhoodOverview implements InPostDataAnalysis {
+public class InNeighbourhoodOverview implements InPostDataAnalysis {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -50,21 +50,21 @@ public class InNeighborhoodOverview implements InPostDataAnalysis {
     public boolean storeXlsx = true;
 
     @FieldDefinition
-    public InNodeFilterDistanceScheme[] nodeFilterScheme;
+    public InNodeDistanceFilterScheme[] nodeFilterScheme;
 
-    public InNeighborhoodOverview() {
+    public InNeighbourhoodOverview() {
     }
 
-    public InNeighborhoodOverview(String name) {
+    public InNeighbourhoodOverview(String name) {
         setName(name);
     }
 
     @Override
-    public InNeighborhoodOverview copy(CopyCache cache) {
+    public InNeighbourhoodOverview copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InNeighborhoodOverview newCopy(CopyCache cache) {
+    public InNeighbourhoodOverview newCopy(CopyCache cache) {
         return Dev.throwException();
     }
 
@@ -107,15 +107,15 @@ public class InNeighborhoodOverview implements InPostDataAnalysis {
         return isStoreCsv() || isStoreXlsx();
     }
 
-    public InNodeFilterDistanceScheme getNodeFilterScheme() throws ParsingException {
+    public InNodeDistanceFilterScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
 
-    public void setNodeFilterScheme(InNodeFilterDistanceScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(InNodeDistanceFilterScheme nodeFilterScheme) {
         if(nodeFilterScheme == null) {
-            this.nodeFilterScheme = new InNodeFilterDistanceScheme[0];
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[0];
         } else {
-            this.nodeFilterScheme = new InNodeFilterDistanceScheme[]{nodeFilterScheme};
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[]{nodeFilterScheme};
         }
     }
 }

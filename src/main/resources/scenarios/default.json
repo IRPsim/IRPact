@@ -130,7 +130,9 @@
       "set_InAttributeInputModule_inputgraphnode2" : { },
       "set_InAttributeName" : { },
       "set_InAvgFinModule_inputgraphnode2" : { },
-      "set_InBasicCAModularProcessModel" : { },
+      "set_InBasicCAModularProcessModel" : {
+        "ProcessModel" : { }
+      },
       "set_InBasicProductGroup" : { },
       "set_InBasicProductGroupAttribute" : { },
       "set_InBernoulliDistribution" : { },
@@ -157,7 +159,9 @@
       "set_InConsumerAgentCalculationLoggingModule2" : { },
       "set_InConsumerAgentCalculationModule" : { },
       "set_InConsumerAgentCalculationModule2" : { },
-      "set_InConsumerAgentEvalModule2" : { },
+      "set_InConsumerAgentEvalModule2" : {
+        "DO_NOTHING" : { }
+      },
       "set_InConsumerAgentEvalRALoggingModule2" : { },
       "set_InConsumerAgentEvalRAModule2" : { },
       "set_InConsumerAgentEvaluationModule" : { },
@@ -209,7 +213,9 @@
       "set_InConsumerAgentInputModule2" : { },
       "set_InConsumerAgentModularProcessModel" : { },
       "set_InConsumerAgentModule" : { },
-      "set_InConsumerAgentModule2" : { },
+      "set_InConsumerAgentModule2" : {
+        "DO_NOTHING" : { }
+      },
       "set_InConsumerAgentMPMWithAdoptionHandler" : { },
       "set_InConsumerAgentReevaluationModule2" : { },
       "set_InCsvValueLoggingModule_calcloggraphnode2" : { },
@@ -231,21 +237,25 @@
           "par_InDiracUnivariateDistribution_value" : 0.0
         }
       },
-      "set_InDisabledProcessPlanNodeFilterScheme" : { },
+      "set_InDisabledNodeFilterDistanceScheme" : { },
       "set_InDisaggregatedFinancialModule_inputgraphnode" : { },
       "set_InDisaggregatedNPVModule_inputgraphnode" : { },
       "set_InDistanceEvaluator" : { },
       "set_InDoAdoptModule_evalragraphnode2" : { },
+      "set_InDoNothingAndContinueModule_evalgraphnode2" : {
+        "DO_NOTHING" : {
+          "par_InDoNothingAndContinueModule_evalgraphnode2_placeholder" : 0.0
+        }
+      },
       "set_InDoNothingComponent" : { },
       "set_InDoNothingModule_evalgraphnode" : { },
-      "set_InEntireNetworkNodeFilterScheme" : { },
+      "set_InEntireNetworkNodeFilterDistanceScheme" : { },
       "set_InEnvironmentalConcernModule_inputgraphnode" : { },
       "set_InEvaluableComponent" : { },
       "set_InFeasibilityModule_evalragraphnode2" : { },
       "set_InFile" : {
-        "Barwertrechner" : { },
-        "Datensatz_210322" : { },
-        "PV_Diffusion_Leipzig" : { }
+        "Datensatz_L" : { },
+        "PV_Diffusion_L" : { }
       },
       "set_InFileBasedConsumerAgentPopulation" : { },
       "set_InFileBasedPVactConsumerAgentPopulation" : { },
@@ -272,19 +282,18 @@
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGenericOutputImage" : { },
       "set_InGlobalAvgNPVModule_inputgraphnode2" : { },
-      "set_InGlobalDeffuantUncertainty" : { },
+      "set_InGlobalModerateExtremistUncertainty" : { },
       "set_InGnuPlotOutputImage" : { },
       "set_InGraphTopologyScheme" : {
         "Topology" : { }
       },
-      "set_InGroupBasedDeffuantUncertainty" : { },
       "set_InIfDoActionModule_boolgraphnode2" : { },
       "set_InIfElseActionModule_actiongraphnode2" : { },
       "set_InImpededResetter" : { },
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_10_T_12_25_33" : {
+        "CT_D_2021_11_12_T_08_18_45" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -305,21 +314,27 @@
       "set_InLogisticModule_calcgraphnode2" : { },
       "set_InMainBranchingModule_evalragraphnode2" : { },
       "set_InMassPoint" : { },
+      "set_InMaxDistanceNodeFilterDistanceScheme" : { },
       "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" : { },
       "set_InModularProcessModel" : { },
-      "set_InModularProcessModel2" : { },
+      "set_InModularProcessModel2" : {
+        "ProcessModel" : { }
+      },
       "set_InModularRAProcessModel" : { },
       "set_InModule" : { },
-      "set_InModule2" : { },
+      "set_InModule2" : {
+        "DO_NOTHING" : { }
+      },
       "set_InMulScalarModule_calcgraphnode2" : { },
       "set_InName" : { },
       "set_InNameSplitAffinityEntry" : { },
       "set_InNameSplitConsumerAgentGroupAttribute" : { },
       "set_InNameSplitProductGroupAttribute" : { },
       "set_InNaNModule_inputgraphnode2" : { },
-      "set_InNewProductHandler" : {
-        "DEFAULT_INIT_ADOPTER" : { }
-      },
+      "set_InNeighbourhoodOverview" : { },
+      "set_InNewProductHandler" : { },
+      "set_InNodeDistanceFilterScheme" : { },
+      "set_InNodeFilterScheme" : { },
       "set_InNoDistance" : { },
       "set_InNOP_actiongraphnode2" : { },
       "set_InNormalDistribution" : { },
@@ -336,9 +351,6 @@
         "ProcessModel" : { }
       },
       "set_InProcessPhaseOverviewImage" : { },
-      "set_InProcessPlanNodeFilterScheme" : {
-        "MaxDistance" : { }
-      },
       "set_InProductFindingScheme" : { },
       "set_InProductGroup" : { },
       "set_InProductGroupAttribute" : { },
@@ -348,76 +360,17 @@
       "set_InProductModule_calcgraphnode2" : { },
       "set_InProductThresholdInterestSupplyScheme" : { },
       "set_InPurchasePowerModule_inputgraphnode" : { },
-      "set_InPVactAttributeBasedInitialAdoption" : {
-        "DEFAULT_INIT_ADOPTER" : {
-          "par_InPVactAttributeBasedInitialAdoption_placeholder" : 0
-        }
-      },
+      "set_InPVactAttributeBasedInitialAdoption" : { },
       "set_InPVactConsumerAgentGroup" : {
         "TRA" : { }
       },
       "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" : { },
-      "set_InPVactGlobalDeffuantUncertainty" : { },
-      "set_InPVactGroupBasedDeffuantUncertainty" : {
-        "Unvertainty" : {
-          "par_InPVactGroupBasedDeffuantUncertainty_extremistParameter" : 0.125,
-          "par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty" : 0.05,
-          "par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty" : 0.2,
-          "par_InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive" : 0,
-          "par_InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive" : 0
-        }
-      },
-      "set_InPVFile" : {
-        "Barwertrechner" : {
-          "par_InPVFile_placeholderPVFile" : 0.0
-        }
-      },
+      "set_InPVFile" : { },
       "set_InQuantileRange" : { },
-      "set_InRAProcessModel" : {
-        "ProcessModel" : {
-          "par_InRAProcessModel_skipAwareness" : 0,
-          "par_InRAProcessModel_skipFeasibility" : 0,
-          "par_InRAProcessModel_forceEvaluate" : 0,
-          "par_InRAProcessModel_a" : 0.25,
-          "par_InRAProcessModel_b" : 0.25,
-          "par_InRAProcessModel_c" : 0.25,
-          "par_InRAProcessModel_d" : 0.25,
-          "par_InRAProcessModel_aWeight" : 1.0,
-          "par_InRAProcessModel_bWeight" : 1.0,
-          "par_InRAProcessModel_cWeight" : 1.0,
-          "par_InRAProcessModel_dWeight" : 1.0,
-          "par_InRAProcessModel_adopterPoints" : 3,
-          "par_InRAProcessModel_interestedPoints" : 2,
-          "par_InRAProcessModel_awarePoints" : 1,
-          "par_InRAProcessModel_unknownPoints" : 0,
-          "par_InRAProcessModel_logisticFactor" : 0.005,
-          "par_InRAProcessModel_speedOfConvergence" : 0.0,
-          "par_InRAProcessModel_attitudeGap" : 0.25,
-          "par_InRAProcessModel_chanceNeutral" : 0.5,
-          "par_InRAProcessModel_chanceConvergence" : 0.25,
-          "par_InRAProcessModel_chanceDivergence" : 0.25,
-          "par_InRAProcessModel_weightFT" : 0.5,
-          "par_InRAProcessModel_weightNPV" : 0.5,
-          "par_InRAProcessModel_weightSocial" : 0.5,
-          "par_InRAProcessModel_weightLocal" : 0.5,
-          "par_InRAProcessModel_communicationFactor" : 1.0,
-          "par_InRAProcessModel_rewireFactor" : 1.0,
-          "par_InRAProcessModel_adoptionCertaintyBase" : 1.0,
-          "par_InRAProcessModel_adoptionCertaintyFactor" : 1.0
-        }
-      },
-      "set_InRAProcessPlanMaxDistanceFilterScheme" : {
-        "MaxDistance" : {
-          "par_InRAProcessPlanMaxDistanceFilterScheme_maxDistance" : 100.0,
-          "par_InRAProcessPlanMaxDistanceFilterScheme_inclusive" : 1
-        }
-      },
-      "set_InRAProcessPlanNodeFilterScheme" : {
-        "MaxDistance" : { }
-      },
+      "set_InRAProcessModel" : { },
       "set_InRealAdoptionDataFile" : {
-        "PV_Diffusion_Leipzig" : {
+        "PV_Diffusion_L" : {
           "par_InRealAdoptionDataFile_placeholder" : 0.0
         }
       },
@@ -428,7 +381,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_19_3" : {
+        "v1_20_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -457,7 +410,7 @@
         "Space2D" : { }
       },
       "set_InSpatialTableFile" : {
-        "Datensatz_210322" : {
+        "Datensatz_L" : {
           "par_InSpatialTableFile_coverage" : 1.0
         }
       },
@@ -477,9 +430,7 @@
         "DiscreteUnitStep" : { }
       },
       "set_InTruncatedNormalDistribution" : { },
-      "set_InUncertainty" : {
-        "Unvertainty" : { }
-      },
+      "set_InUncertaintySupplier" : { },
       "set_InUnitStepDiscreteTimeModel" : {
         "DiscreteUnitStep" : {
           "par_InUnitStepDiscreteTimeModel_amountOfTime" : 1,
@@ -543,13 +494,29 @@
       "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
-      "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : { },
-      "par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers" : { },
-      "par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers" : { },
-      "par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators" : { },
-      "par_link_InBasicCAModularProcessModel_InReevaluator2_initializationReevaluators" : { },
-      "par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevaluators" : { },
-      "par_link_InBasicCAModularProcessModel_InReevaluator2_startOfYearReevaluators" : { },
+      "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : {
+        "ProcessModel" : {
+          "DO_NOTHING" : 1.0
+        }
+      },
+      "par_link_InBasicCAModularProcessModel_InInitializationHandler_initializationHandlers" : {
+        "ProcessModel" : { }
+      },
+      "par_link_InBasicCAModularProcessModel_InNewProductHandler_newProductHandlers" : {
+        "ProcessModel" : { }
+      },
+      "par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevaluators" : {
+        "ProcessModel" : { }
+      },
+      "par_link_InBasicCAModularProcessModel_InReevaluator2_initializationReevaluators" : {
+        "ProcessModel" : { }
+      },
+      "par_link_InBasicCAModularProcessModel_InReevaluator2_midOfYearReevaluators" : {
+        "ProcessModel" : { }
+      },
+      "par_link_InBasicCAModularProcessModel_InReevaluator2_startOfYearReevaluators" : {
+        "ProcessModel" : { }
+      },
       "par_link_InBasicProductGroup_InDependentProductGroupAttribute_pgAttributes" : { },
       "par_link_InBasicProductGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InBasicProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
@@ -559,7 +526,7 @@
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge" : { },
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onInProcessModule_graphedge" : { },
       "par_link_InBucketAnalyser_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
-      "par_link_InCommunicationModule_actiongraphnode2_InUncertainty_uncertainties" : { },
+      "par_link_InCommunicationModule_actiongraphnode2_InUncertaintySupplier_uncertaintySuppliers" : { },
       "par_link_InComparedAnnualImage_InRealAdoptionDataFile_realData" : { },
       "par_link_InComparedAnnualZipImage_InRealAdoptionDataFile_realData" : { },
       "par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag" : {
@@ -622,13 +589,13 @@
       "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2" : { },
       "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_utility_graphedge2" : { },
       "par_link_InDecisionMakingReevaluator_InConsumerAgentModule2_modules" : { },
-      "par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultActionModule_evalgraphnode_InUncertaintySupplier_uncertainties" : { },
+      "par_link_InDefaultDecisionMakingModule_evalgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile" : { },
-      "par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertaintySupplier_uncertainties" : { },
+      "par_link_InDefaultHandleDecisionMakingComponent_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile" : { },
-      "par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InDefaultInterestModule_evalgraphnode_InUncertainty_uncertainties" : { },
+      "par_link_InDefaultInterestModule_evalgraphnode_InUncertaintySupplier_uncertainties" : { },
       "par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InDoAdoptModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2" : { },
       "par_link_InDoNothingModule_evalgraphnode_InConsumerAgentModule_inputModule_graphedge" : { },
@@ -640,7 +607,7 @@
       "par_link_InFileBasedPVactConsumerAgentPopulation_InSpatialTableFile_file" : { },
       "par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file" : {
         "SpatialDistribution" : {
-          "Datensatz_210322" : 1.0
+          "Datensatz_L" : 1.0
         }
       },
       "par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_groupKey" : { },
@@ -684,11 +651,7 @@
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InGlobalAvgNPVModule_inputgraphnode2_InPVFile_pvFile" : { },
-      "par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames" : { },
-      "par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
-      "par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames" : { },
-      "par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
       "par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentActionModule2_taskInput_graphedge2" : { },
       "par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentBoolModule2_ifInput_graphedge2" : { },
       "par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onFalse_graphedge2" : { },
@@ -697,7 +660,7 @@
       "par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2" : { },
       "par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InLinearePercentageAgentAttributeUpdater_InLinearePercentageAgentAttributeScaler_scaler" : { },
-      "par_link_InLocalShareOfAdopterModule_inputgraphnode2_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
+      "par_link_InLocalShareOfAdopterModule_inputgraphnode2_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2" : { },
       "par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_xinput_graphedge2" : { },
       "par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
@@ -712,10 +675,11 @@
       "par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent" : { },
       "par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent" : { },
-      "par_link_InModularRAProcessModel_InUncertainty_uncertainties" : { },
+      "par_link_InModularRAProcessModel_InUncertaintySupplier_uncertainties" : { },
       "par_link_InMulScalarModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
+      "par_link_InNeighbourhoodOverview_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InNPVModule_inputgraphnode2_InPVFile_pvFile" : { },
       "par_link_InNPVModule_inputgraphnode_InPVFile_pvFile" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
@@ -803,38 +767,16 @@
       },
       "par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file" : { },
       "par_link_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file" : { },
-      "par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags" : { },
-      "par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags" : {
-        "Unvertainty" : {
-          "TRA" : 1.0
-        }
-      },
-      "par_link_InRAProcessModel_InNewProductHandler_newProductHandlers" : {
-        "ProcessModel" : {
-          "DEFAULT_INIT_ADOPTER" : 1.0
-        }
-      },
-      "par_link_InRAProcessModel_InPVFile_pvFile" : {
-        "ProcessModel" : {
-          "Barwertrechner" : 1.0
-        }
-      },
-      "par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : {
-        "ProcessModel" : {
-          "MaxDistance" : 1.0
-        }
-      },
-      "par_link_InRAProcessModel_InUncertainty_uncertainties" : {
-        "ProcessModel" : {
-          "Unvertainty" : 1.0
-        }
-      },
+      "par_link_InRAProcessModel_InNewProductHandler_newProductHandlers" : { },
+      "par_link_InRAProcessModel_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
+      "par_link_InRAProcessModel_InPVFile_pvFile" : { },
+      "par_link_InRAProcessModel_InUncertaintySupplier_uncertainties" : { },
       "par_link_InReevaluatorModule_reevalgraphnode2_InConsumerAgentModule2_input_graphedge2" : { },
       "par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules" : { },
       "par_link_InROutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2_input_graphedge2" : { },
-      "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
-      "par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme" : { },
+      "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
+      "par_link_InSocialComponentModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InSpecialAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge" : { },

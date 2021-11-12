@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilterScheme;
-import de.unileipzig.irpact.core.network.filter.NodeDistanceFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -22,7 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InEntireNetworkNodeFilterDistanceScheme implements InNodeFilterDistanceScheme {
+public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {

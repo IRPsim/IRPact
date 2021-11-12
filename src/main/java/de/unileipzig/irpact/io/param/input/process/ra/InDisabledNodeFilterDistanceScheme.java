@@ -21,7 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InDisabledNodeFilterDistanceScheme implements InNodeFilterDistanceScheme {
+public class InDisabledNodeFilterDistanceScheme implements InNodeDistanceFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {

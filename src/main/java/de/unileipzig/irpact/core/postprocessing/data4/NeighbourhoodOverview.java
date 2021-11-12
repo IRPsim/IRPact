@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.postprocessing.data3.FileType;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.io.param.input.postdata.InNeighborhoodOverview;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 /**
  * @author Daniel Abitz
  */
-public class NeighbourhoodOverview extends AbstractDataHandler<InNeighborhoodOverview> {
+public class NeighbourhoodOverview extends AbstractDataHandler<InNeighbourhoodOverview> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(NeighbourhoodOverview.class);
 
-    public NeighbourhoodOverview(DataProcessor4 processor, InNeighborhoodOverview dataConfiguration) {
+    public NeighbourhoodOverview(DataProcessor4 processor, InNeighbourhoodOverview dataConfiguration) {
         super(processor, dataConfiguration);
     }
 

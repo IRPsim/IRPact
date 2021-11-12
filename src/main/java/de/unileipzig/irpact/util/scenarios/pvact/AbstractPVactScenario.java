@@ -21,10 +21,11 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalModerateExtremistUncertainty;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -287,8 +288,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return defaults;
     }
 
-    public InPVactGlobalDeffuantUncertaintySupplier2 createGlobalUnvertaintySupplier(String name, double extremParam, double extremUncert, double moderateUncert) {
-        InPVactGlobalDeffuantUncertaintySupplier2 uncertainty = new InPVactGlobalDeffuantUncertaintySupplier2();
+    public InGlobalModerateExtremistUncertainty createGlobalUnvertaintySupplier(String name, double extremParam, double extremUncert, double moderateUncert) {
+        InGlobalModerateExtremistUncertainty uncertainty = new InGlobalModerateExtremistUncertainty();
         uncertainty.setName(name);
         uncertainty.setDefaultValues();
         uncertainty.setExtremistParameter(extremParam);
@@ -308,7 +309,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeFilterDistanceScheme scheme) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeDistanceFilterScheme scheme) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
         processModel.setDefaultValues();
@@ -327,11 +328,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
             InUncertaintySupplier uncertainty,
-            double speedOfConvergence,
-            InNodeFilterDistanceScheme scheme,
+            InNodeDistanceFilterScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas) {
-        return createDefaultModularProcessModel(name, uncertainty, speedOfConvergence, scheme, images, postDatas, new ModularProcessModelManager());
+        return createDefaultModularProcessModel(name, uncertainty, scheme, images, postDatas, new ModularProcessModelManager());
     }
 
     public InMinimalCsvValueLoggingModule_calcloggraphnode2 createDefaultLoggingModule(String name) {
@@ -355,8 +355,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
             InUncertaintySupplier uncertainty,
-            double speedOfConvergence,
-            InNodeFilterDistanceScheme scheme,
+            InNodeDistanceFilterScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas,
             ModularProcessModelManager mmp) {
@@ -370,11 +369,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InBernoulliModule_boolgraphnode2 commuIf = mmp.create("TEST_COMMUNICATION", InBernoulliModule_boolgraphnode2::new);
         commuIf.setInput(commuAttrWeight);
         InCommunicationModule_actiongraphnode2 commuAction = mmp.create(COMMUNICATION, InCommunicationModule_actiongraphnode2::new);
+        commuAction.setRaEnabled(true);
+        commuAction.setRaLoggingEnabled(true);
+        commuAction.setStoreXlsx(true);
         commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
         commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
         commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
         commuAction.setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
-        commuAction.setSpeedOfConvergence(speedOfConvergence);
+        commuAction.setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
         commuAction.setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
         commuAction.setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
         commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
@@ -667,6 +669,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         localQuantil.setLoggingModule(localReevalLogger);
         images.add(localQuantil);
 
+        InSpecialAverageQuantilRangeImage utilityQuantil = InSpecialAverageQuantilRangeImage.UTILITY;
+        utilityQuantil.setLoggingModule(utilityReevalLogger);
+        images.add(utilityQuantil);
+
         //Custom-Test
 //        InQuantileRange qr0 = new InQuantileRange();
 //        qr0.setName("QR0");
@@ -725,6 +731,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envBucket.setBucketRange(0.01);
         envBucket.setLoggingModule(envLogger);
         postDatas.add(envBucket);
+
+        //neighborhood
+        InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();
+        neighbourhoodOverview.setName("NEIGHBOURHOOD");
+        neighbourhoodOverview.setEnabled(true);
+        neighbourhoodOverview.setStoreXlsx(true);
+        neighbourhoodOverview.setNodeFilterScheme(scheme);
+        postDatas.add(neighbourhoodOverview);
 
         //===
         return processModel;

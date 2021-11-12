@@ -17,6 +17,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
@@ -44,6 +45,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logg
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
@@ -409,7 +411,7 @@ public class InRoot implements RootClass {
     }
 
     @FieldDefinition
-    public InNodeFilterScheme[] nodeFilterSchemes;
+    public InNodeFilterScheme[] nodeFilterSchemes = new InNodeFilterScheme[0];
 
     public void setNodeFilterSchemes(InNodeFilterScheme[] nodeFilterSchemes) {
         this.nodeFilterSchemes = nodeFilterSchemes;
@@ -857,6 +859,7 @@ public class InRoot implements RootClass {
             InROutputImage.class,
 
             InBucketAnalyser.class,
+            InNeighbourhoodOverview.class,
             InPostDataAnalysis.class,
 
             InAdoptionPhaseOverviewImage.class,
@@ -886,14 +889,14 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InPVactGlobalDeffuantUncertaintySupplier2.class,
+            InGlobalModerateExtremistUncertainty.class,
             InUncertaintySupplier.class,
 
             InDisabledNodeFilterDistanceScheme.class,
             InEntireNetworkNodeFilterDistanceScheme.class,
             InRAProcessModel.class,
             InMaxDistanceNodeFilterDistanceScheme.class,
-            InNodeFilterDistanceScheme.class,
+            InNodeDistanceFilterScheme.class,
             InProcessModel.class,
             InNodeFilterScheme.class,
 
@@ -993,6 +996,7 @@ public class InRoot implements RootClass {
             InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             //eval
             InConsumerAgentEvalModule2.class,
+            InDoNothingAndContinueModule_evalgraphnode2.class,
             InRunUntilFailureModule_evalgraphnode2.class,
             //evalra
             InConsumerAgentEvalRAModule2.class,

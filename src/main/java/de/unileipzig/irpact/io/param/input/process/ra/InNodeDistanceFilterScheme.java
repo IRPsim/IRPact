@@ -9,7 +9,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
  * @author Daniel Abitz
  */
 @Definition
-public interface InNodeFilterDistanceScheme extends InNodeFilterScheme {
+public interface InNodeDistanceFilterScheme extends InNodeFilterScheme {
 
     static void initRes(TreeAnnotationResource res) {
     }

@@ -14,8 +14,8 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -46,9 +46,8 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 
     @Override
     protected InRoot createInRoot(int year, int delta) {
-        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
-        InPVFile pvFile = new InPVFile("Barwertrechner");
-        InRealAdoptionDataFile realData = new InRealAdoptionDataFile("PV_Diffusion_Leipzig");
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_L");
+        InRealAdoptionDataFile realData = new InRealAdoptionDataFile("PV_Diffusion_L");
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);
 
         //spatial
@@ -82,16 +81,12 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 //        uncertainty.setDefaultValues();
 //        uncertainty.setConsumerAgentGroups(cags);
 
-        if(true) throw new RuntimeException("XXX");
+        InDoNothingAndContinueModule_evalgraphnode2 startModule = new InDoNothingAndContinueModule_evalgraphnode2();
+        startModule.setName("DO_NOTHING");
 
-        InRAProcessModel processModel = new InRAProcessModel();
+        InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName("ProcessModel");
-        processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(new InMaxDistanceNodeFilterDistanceScheme("MaxDistance", 100, true));
-        processModel.setPvFile(pvFile);
-//        processModel.setUncertainty(uncertainty);
-        processModel.setSpeedOfConvergence(0.0);
-        processModel.addNewProductHandle(getDefaultInitialAdopterHandler());
+        processModel.setStartModule(startModule);
 
         //space
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);

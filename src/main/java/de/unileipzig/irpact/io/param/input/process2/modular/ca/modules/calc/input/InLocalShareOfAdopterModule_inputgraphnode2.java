@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process.ra.InNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -77,18 +77,18 @@ public class InLocalShareOfAdopterModule_inputgraphnode2 implements InConsumerAg
     }
 
     @FieldDefinition
-    public InNodeFilterDistanceScheme[] nodeFilterScheme;
+    public InNodeDistanceFilterScheme[] nodeFilterScheme;
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
-    public InNodeFilterDistanceScheme getNodeFilterScheme() throws ParsingException {
+    public InNodeDistanceFilterScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
-    public void setNodeFilterScheme(InNodeFilterDistanceScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(InNodeDistanceFilterScheme nodeFilterScheme) {
         if(nodeFilterScheme == null) {
-            this.nodeFilterScheme = new InNodeFilterDistanceScheme[0];
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[0];
         } else {
-            this.nodeFilterScheme = new InNodeFilterDistanceScheme[]{nodeFilterScheme};
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[]{nodeFilterScheme};
         }
     }
 
@@ -121,7 +121,7 @@ public class InLocalShareOfAdopterModule_inputgraphnode2 implements InConsumerAg
         module.setName(getName());
         module.setMaxToStore(maxToStore);
         if(hasNodeFilterScheme()) {
-            InNodeFilterDistanceScheme inFilterScheme = getNodeFilterScheme();
+            InNodeDistanceFilterScheme inFilterScheme = getNodeFilterScheme();
             NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             module.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());

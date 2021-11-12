@@ -298,6 +298,22 @@ InBucketAnalyser_loggingModule:
   gams_identifier: "loggingModule"
   gams_description: "todo"
 
+InNeighbourhoodOverview:
+  edn_label: "Nachbarschaftsübersicht"
+  edn_description: "Gibt eine Tabelle aller Agenten und ihrer räumlichen Nachbarn aus. Diese Übersicht kann genutzt werden, um einen Überblick über die räumliche Verteilung der Agenten zu erhalten. Achtung: Diese Analyse kann zu großen Dateien führen!"
+InNeighbourhoodOverview_enabled:
+  gams_identifier: "Verwenden?"
+  gams_description: "Mittels dieser Option kann die Analyse aktiviert bzw. deaktiviert."
+InNeighbourhoodOverview_storeCsv:
+  gams_identifier: "Als csv speichern?"
+  gams_description: "todo"
+InNeighbourhoodOverview_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InNeighbourhoodOverview_nodeFilterScheme:
+  gams_identifier: "Netzwerkfilter für räumliche Sicht"
+  gams_description: "todo"
+
 
 result_visualisation2:
   edn_label: "Ergebnisvisualisierung"
@@ -1462,22 +1478,22 @@ InMaxDistanceNodeFilterDistanceScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
-InPVactGlobalDeffuantUncertaintySupplier2:
-  edn_label: "Unsicherheit basierend auf allen PVact-Agenten"
-  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben (NOV, ENV, DJM)."
-InPVactGlobalDeffuantUncertaintySupplier2_extremistParameter:
+InGlobalModerateExtremistUncertainty:
+  edn_label: "Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die verwendeten Attribute sind: NOV, ENV und DJM."
+InGlobalModerateExtremistUncertainty_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGlobalDeffuantUncertaintySupplier2_extremistUncertainty:
+InGlobalModerateExtremistUncertainty_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGlobalDeffuantUncertaintySupplier2_moderateUncertainty:
+InGlobalModerateExtremistUncertainty_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGlobalDeffuantUncertaintySupplier2_lowerBoundInclusive:
+InGlobalModerateExtremistUncertainty_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGlobalDeffuantUncertaintySupplier2_upperBoundInclusive:
+InGlobalModerateExtremistUncertainty_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
@@ -2347,10 +2363,10 @@ InCommunicationModule_actiongraphnode2_unknownPoints:
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_raEnabled:
   gams_identifier: "Relative agreement nutzen?"
-  gams_description: "todo"
+  gams_description: "Diese Option aktiviert bzw. deaktiviert das relative agreement."
 InCommunicationModule_actiongraphnode2_raLoggingEnabled:
   gams_identifier: "Relative agreement loggen?"
-  gams_description: "todo"
+  gams_description: "Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!"
 InCommunicationModule_actiongraphnode2_storeXlsx:
   gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
@@ -2616,6 +2632,13 @@ InRunUntilFailureModule_evalgraphnode2:
   edn_description: "todo"
 InRunUntilFailureModule_evalgraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+
+InDoNothingAndContinueModule_evalgraphnode2:
+  edn_label: "DoNothingAndContinueModule"
+  edn_description: "todo"
+InDoNothingAndContinueModule_evalgraphnode2_placeholder:
+  gams_identifier: "---"
   gams_description: "todo"
 
 # stage

@@ -8,7 +8,9 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
  */
 public interface UncertaintySupplier extends Nameable {
 
-    void initalize();
+    void initalize() throws Throwable;
+
+    void update();
 
     boolean isSupported(ConsumerAgent agent);
 

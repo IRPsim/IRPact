@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertaintySupplier2;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;

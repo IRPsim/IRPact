@@ -26,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class DefaultModularScenario extends AbstractScenario implements DefaultScenarioFactory {
 
     public static final int REVISION = 0;

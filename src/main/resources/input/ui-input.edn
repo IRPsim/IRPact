@@ -280,7 +280,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.19.3" 
+        :description "IRPact v1.20.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -334,6 +334,12 @@
             :set "set_InBucketAnalyser" 
             :description "todo" 
             :tags [["InBucketAnalyser" "enabled"] ["InBucketAnalyser" "storeCsv"] ["InBucketAnalyser" "storeXlsx"] ["InBucketAnalyser" "bucketRange"] ["link" "InBucketAnalyser" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
+          } 
+          {
+            :label "Nachbarschaftsübersicht" 
+            :set "set_InNeighbourhoodOverview" 
+            :description "Gibt eine Tabelle aller Agenten und ihrer räumlichen Nachbarn aus. Diese Übersicht kann genutzt werden, um einen Überblick über die räumliche Verteilung der Agenten zu erhalten. Achtung: Diese Analyse kann zu großen Dateien führen!" 
+            :tags [["InNeighbourhoodOverview" "enabled"] ["InNeighbourhoodOverview" "storeCsv"] ["InNeighbourhoodOverview" "storeXlsx"] ["link" "InNeighbourhoodOverview" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
           }
         ]
       } 
@@ -791,21 +797,21 @@
         :sections [
           {
             :label "Kein Peereffekt" 
-            :set "set_InDisabledProcessPlanNodeFilterScheme" 
+            :set "set_InDisabledNodeFilterDistanceScheme" 
             :description "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert." 
-            :tags [["InDisabledProcessPlanNodeFilterScheme" "placeholder"]]
+            :tags [["InDisabledNodeFilterDistanceScheme" "placeholder"]]
           } 
           {
             :label "Peereffekt mit ganzen Gebiet" 
-            :set "set_InEntireNetworkNodeFilterScheme" 
+            :set "set_InEntireNetworkNodeFilterDistanceScheme" 
             :description "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen." 
-            :tags [["InEntireNetworkNodeFilterScheme" "placeholder"]]
+            :tags [["InEntireNetworkNodeFilterDistanceScheme" "placeholder"]]
           } 
           {
             :label "Maximale Entfernung" 
-            :set "set_InRAProcessPlanMaxDistanceFilterScheme" 
+            :set "set_InMaxDistanceNodeFilterDistanceScheme" 
             :description "todo" 
-            :tags [["InRAProcessPlanMaxDistanceFilterScheme" "maxDistance"] ["InRAProcessPlanMaxDistanceFilterScheme" "inclusive"]]
+            :tags [["InMaxDistanceNodeFilterDistanceScheme" "maxDistance"] ["InMaxDistanceNodeFilterDistanceScheme" "inclusive"]]
           }
         ]
       } 
@@ -814,28 +820,10 @@
         :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
         :sections [
           {
-            :label "Unsicherheit basierend auf allen Agenten" 
-            :set "set_InGlobalDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen." 
-            :tags [["InGlobalDeffuantUncertainty" "extremistParameter"] ["InGlobalDeffuantUncertainty" "extremistUncertainty"] ["InGlobalDeffuantUncertainty" "moderateUncertainty"] ["InGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGlobalDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf allen PVact-Agenten" 
-            :set "set_InPVactGlobalDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-            :tags [["InPVactGlobalDeffuantUncertainty" "extremistParameter"] ["InPVactGlobalDeffuantUncertainty" "extremistUncertainty"] ["InPVactGlobalDeffuantUncertainty" "moderateUncertainty"] ["InPVactGlobalDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGlobalDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGlobalDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf individuellen Agentengruppen" 
-            :set "set_InGroupBasedDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe." 
-            :tags [["InGroupBasedDeffuantUncertainty" "extremistParameter"] ["InGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"] ["link" "InGroupBasedDeffuantUncertainty" "InAttributeName" "attributeNames"]]
-          } 
-          {
-            :label "Unsicherheit basierend auf individuellen PVact-Agentengruppen" 
-            :set "set_InPVactGroupBasedDeffuantUncertainty" 
-            :description "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben." 
-            :tags [["InPVactGroupBasedDeffuantUncertainty" "extremistParameter"] ["InPVactGroupBasedDeffuantUncertainty" "extremistUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "moderateUncertainty"] ["InPVactGroupBasedDeffuantUncertainty" "lowerBoundInclusive"] ["InPVactGroupBasedDeffuantUncertainty" "upperBoundInclusive"] ["link" "InPVactGroupBasedDeffuantUncertainty" "InConsumerAgentGroup" "cags"]]
+            :label "Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InGlobalModerateExtremistUncertainty" 
+            :description "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die verwendeten Attribute sind: NOV, ENV und DJM." 
+            :tags [["InGlobalModerateExtremistUncertainty" "extremistParameter"] ["InGlobalModerateExtremistUncertainty" "extremistUncertainty"] ["InGlobalModerateExtremistUncertainty" "moderateUncertainty"] ["InGlobalModerateExtremistUncertainty" "lowerBoundInclusive"] ["InGlobalModerateExtremistUncertainty" "upperBoundInclusive"]]
           }
         ]
       } 
@@ -933,7 +921,7 @@
                     :label "Kommunikationsmodul" 
                     :set "set_InCommunicationModule_actiongraphnode2" 
                     :description "todo" 
-                    :tags [["InCommunicationModule" "actiongraphnode2" "adopterPoints"] ["InCommunicationModule" "actiongraphnode2" "interestedPoints"] ["InCommunicationModule" "actiongraphnode2" "awarePoints"] ["InCommunicationModule" "actiongraphnode2" "unknownPoints"] ["InCommunicationModule" "actiongraphnode2" "speedOfConvergence"] ["InCommunicationModule" "actiongraphnode2" "attitudeGap"] ["InCommunicationModule" "actiongraphnode2" "chanceNeutral"] ["InCommunicationModule" "actiongraphnode2" "chanceConvergence"] ["InCommunicationModule" "actiongraphnode2" "chanceDivergence"] ["link" "InCommunicationModule" "actiongraphnode2" "InUncertainty" "uncertainties"]]
+                    :tags [["InCommunicationModule" "actiongraphnode2" "adopterPoints"] ["InCommunicationModule" "actiongraphnode2" "interestedPoints"] ["InCommunicationModule" "actiongraphnode2" "awarePoints"] ["InCommunicationModule" "actiongraphnode2" "unknownPoints"] ["InCommunicationModule" "actiongraphnode2" "raEnabled"] ["InCommunicationModule" "actiongraphnode2" "raLoggingEnabled"] ["InCommunicationModule" "actiongraphnode2" "storeXlsx"] ["InCommunicationModule" "actiongraphnode2" "speedOfConvergence"] ["InCommunicationModule" "actiongraphnode2" "attitudeGap"] ["InCommunicationModule" "actiongraphnode2" "chanceNeutral"] ["InCommunicationModule" "actiongraphnode2" "chanceConvergence"] ["InCommunicationModule" "actiongraphnode2" "chanceDivergence"] ["link" "InCommunicationModule" "actiongraphnode2" "InUncertaintySupplier" "uncertaintySuppliers"]]
                   } 
                   {
                     :label "StopAfterSuccessfulTaskModule" 
@@ -1017,13 +1005,13 @@
                     :label "CsvValueLoggingModule" 
                     :set "set_InCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
-                    :tags [["InCsvValueLoggingModule" "calcloggraphnode2" "skipReevaluatorCall"] ["InCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InCsvValueLoggingModule" "calcloggraphnode2" "logReevaluatorCall"] ["InCsvValueLoggingModule" "calcloggraphnode2" "logDefaultCall"] ["InCsvValueLoggingModule" "calcloggraphnode2" "printHeader"] ["InCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   } 
                   {
                     :label "MinimalCsvValueLoggingModule" 
                     :set "set_InMinimalCsvValueLoggingModule_calcloggraphnode2" 
                     :description "todo" 
-                    :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "skipReevaluatorCall"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
+                    :tags [["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "logReevaluatorCall"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "logDefaultCall"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "printHeader"] ["InMinimalCsvValueLoggingModule" "calcloggraphnode2" "storeXlsx"] ["link" "InMinimalCsvValueLoggingModule" "calcloggraphnode2" "InConsumerAgentCalculationModule2" "input" "graphedge2"]]
                   }
                 ]
               } 
@@ -1065,7 +1053,7 @@
                     :label "LocalShareOfAdopterModule" 
                     :set "set_InLocalShareOfAdopterModule_inputgraphnode2" 
                     :description "todo" 
-                    :tags [["InLocalShareOfAdopterModule" "inputgraphnode2" "maxToStore"] ["link" "InLocalShareOfAdopterModule" "inputgraphnode2" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                    :tags [["InLocalShareOfAdopterModule" "inputgraphnode2" "maxToStore"] ["link" "InLocalShareOfAdopterModule" "inputgraphnode2" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
                   } 
                   {
                     :label "SocialShareOfAdopterModule" 
@@ -1090,6 +1078,12 @@
                     :set "set_InRunUntilFailureModule_evalgraphnode2" 
                     :description "todo" 
                     :tags [["link" "InRunUntilFailureModule" "evalgraphnode2" "InConsumerAgentModule2" "input" "graphedge2"]]
+                  } 
+                  {
+                    :label "DoNothingAndContinueModule" 
+                    :set "set_InDoNothingAndContinueModule_evalgraphnode2" 
+                    :description "todo" 
+                    :tags [["InDoNothingAndContinueModule" "evalgraphnode2" "placeholder"]]
                   }
                 ]
               } 
@@ -1411,13 +1405,13 @@
               {
                 :label "Relative Agreement" 
                 :set "set_InRAProcessModel" 
-                :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertainty" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
+                :tags [["InRAProcessModel" "skipAwareness"] ["InRAProcessModel" "skipFeasibility"] ["InRAProcessModel" "forceEvaluate"] ["InRAProcessModel" "a"] ["InRAProcessModel" "b"] ["InRAProcessModel" "c"] ["InRAProcessModel" "d"] ["InRAProcessModel" "aWeight"] ["InRAProcessModel" "bWeight"] ["InRAProcessModel" "cWeight"] ["InRAProcessModel" "dWeight"] ["InRAProcessModel" "adopterPoints"] ["InRAProcessModel" "interestedPoints"] ["InRAProcessModel" "awarePoints"] ["InRAProcessModel" "unknownPoints"] ["InRAProcessModel" "logisticFactor"] ["InRAProcessModel" "speedOfConvergence"] ["InRAProcessModel" "attitudeGap"] ["InRAProcessModel" "chanceNeutral"] ["InRAProcessModel" "chanceConvergence"] ["InRAProcessModel" "chanceDivergence"] ["InRAProcessModel" "weightFT"] ["InRAProcessModel" "weightNPV"] ["InRAProcessModel" "weightSocial"] ["InRAProcessModel" "weightLocal"] ["InRAProcessModel" "communicationFactor"] ["InRAProcessModel" "rewireFactor"] ["InRAProcessModel" "adoptionCertaintyBase"] ["InRAProcessModel" "adoptionCertaintyFactor"] ["link" "InRAProcessModel" "InNodeDistanceFilterScheme" "nodeFilterScheme"] ["link" "InRAProcessModel" "InPVFile" "pvFile"] ["link" "InRAProcessModel" "InUncertaintySupplier" "uncertainties"] ["link" "InRAProcessModel" "InNewProductHandler" "newProductHandlers"]]
               } 
               {
                 :label "[NICHT NUTZEN - VERALTET] Modulares Relative Agreement" 
                 :set "set_InModularRAProcessModel" 
                 :description "todo" 
-                :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertainty" "uncertainties"]] 
+                :tags [["InModularRAProcessModel" "speedOfConvergence"] ["InModularRAProcessModel" "attitudeGap"] ["InModularRAProcessModel" "chanceNeutral"] ["InModularRAProcessModel" "chanceConvergence"] ["InModularRAProcessModel" "chanceDivergence"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "interestComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "feasibilityComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "decisionMakingComponent"] ["link" "InModularRAProcessModel" "InEvaluableComponent" "actionComponent"] ["link" "InModularRAProcessModel" "InUncertaintySupplier" "uncertainties"]] 
                 :sections [
                   {
                     :label "Komponenten" 
@@ -1439,7 +1433,7 @@
                         :label "Standard Decision Making" 
                         :set "set_InDefaultHandleDecisionMakingComponent" 
                         :description "todo" 
-                        :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                        :tags [["InDefaultHandleDecisionMakingComponent" "a"] ["InDefaultHandleDecisionMakingComponent" "b"] ["InDefaultHandleDecisionMakingComponent" "c"] ["InDefaultHandleDecisionMakingComponent" "d"] ["InDefaultHandleDecisionMakingComponent" "weightFT"] ["InDefaultHandleDecisionMakingComponent" "weightNPV"] ["InDefaultHandleDecisionMakingComponent" "weightSocial"] ["InDefaultHandleDecisionMakingComponent" "weightLocal"] ["InDefaultHandleDecisionMakingComponent" "logisticFactor"] ["link" "InDefaultHandleDecisionMakingComponent" "InPVFile" "pvFile"] ["link" "InDefaultHandleDecisionMakingComponent" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
                       } 
                       {
                         :label "Standard Action" 
@@ -1569,7 +1563,7 @@
                             :label "Lokaler Adopteranteil" 
                             :set "set_InShareOfAdopterInLocalNetworkModule_inputgraphnode" 
                             :description "Dieses Modul berechnet den Anteil der Adopter im lokalen Netzwerk: output = shareOfAdopter * weight. Das lokale Netz wird dabei über ein Berechnungsschema bzw. Filter bestimmt." 
-                            :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                            :tags [["InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "weight"] ["link" "InShareOfAdopterInLocalNetworkModule" "inputgraphnode" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
                           } 
                           {
                             :label "Sozialer Adopteranteil" 
@@ -1581,7 +1575,7 @@
                             :label "Soziale Komponente" 
                             :set "set_InSocialComponentModule_inputgraphnode" 
                             :description "Dieses Modul berechnet die soziale Komponente, bestehend aus dem Anteil der Adopter im lokalen und sozialen Netzwerk: output = ((shareOfAdopterLocal * weightLocal) + (shareOfAdopterSocial * weightSocial)) * weight." 
-                            :tags [["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                            :tags [["InSocialComponentModule" "inputgraphnode" "weight"] ["InSocialComponentModule" "inputgraphnode" "socialWeight"] ["InSocialComponentModule" "inputgraphnode" "localWeight"] ["link" "InSocialComponentModule" "inputgraphnode" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
                           } 
                           {
                             :label "Summierer" 
@@ -1617,25 +1611,25 @@
                             :label "[Standard] Aktion" 
                             :set "set_InDefaultActionModule_evalgraphnode" 
                             :description "Dieses Modul implementiert die \"Standardaktionen\" des klassischen PV-Prozessmodells. Dabei handelt es sich um die Aktionen \"Kommunikation\" und \"Rewiring\". Dieses Modul gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                            :tags [["InDefaultActionModule" "evalgraphnode" "adopterPoints"] ["InDefaultActionModule" "evalgraphnode" "interestedPoints"] ["InDefaultActionModule" "evalgraphnode" "awarePoints"] ["InDefaultActionModule" "evalgraphnode" "unknownPoints"] ["InDefaultActionModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultActionModule" "evalgraphnode" "attitudeGap"] ["InDefaultActionModule" "evalgraphnode" "chanceNeutral"] ["InDefaultActionModule" "evalgraphnode" "chanceConvergence"] ["InDefaultActionModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                            :tags [["InDefaultActionModule" "evalgraphnode" "adopterPoints"] ["InDefaultActionModule" "evalgraphnode" "interestedPoints"] ["InDefaultActionModule" "evalgraphnode" "awarePoints"] ["InDefaultActionModule" "evalgraphnode" "unknownPoints"] ["InDefaultActionModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultActionModule" "evalgraphnode" "attitudeGap"] ["InDefaultActionModule" "evalgraphnode" "chanceNeutral"] ["InDefaultActionModule" "evalgraphnode" "chanceConvergence"] ["InDefaultActionModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultActionModule" "evalgraphnode" "InUncertaintySupplier" "uncertainties"]]
                           } 
                           {
                             :label "[Standard] Decision Making" 
                             :set "set_InDefaultDecisionMakingModule_evalgraphnode" 
                             :description "Dieses Modul implementiert das komplette \"decision making\"-Phase des klassischen PV-Prozessmodells. Dieses Modul gibt als Ergebnis entweder \"adoptiert\" oder \"Adoption nicht möglich\" zurück." 
-                            :tags [["InDefaultDecisionMakingModule" "evalgraphnode" "a"] ["InDefaultDecisionMakingModule" "evalgraphnode" "b"] ["InDefaultDecisionMakingModule" "evalgraphnode" "c"] ["InDefaultDecisionMakingModule" "evalgraphnode" "d"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightFT"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "evalgraphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InRAProcessPlanNodeFilterScheme" "nodeFilterScheme"]]
+                            :tags [["InDefaultDecisionMakingModule" "evalgraphnode" "a"] ["InDefaultDecisionMakingModule" "evalgraphnode" "b"] ["InDefaultDecisionMakingModule" "evalgraphnode" "c"] ["InDefaultDecisionMakingModule" "evalgraphnode" "d"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightFT"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightNPV"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightSocial"] ["InDefaultDecisionMakingModule" "evalgraphnode" "weightLocal"] ["InDefaultDecisionMakingModule" "evalgraphnode" "logisticFactor"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InPVFile" "pvFile"] ["link" "InDefaultDecisionMakingModule" "evalgraphnode" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
                           } 
                           {
                             :label "[Standard] Feasibility" 
                             :set "set_InDefaultFeasibilityModule_evalgraphnode" 
                             :description "Dieses Modul implementiert die komplette \"feasibility\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                            :tags [["InDefaultFeasibilityModule" "evalgraphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "awarePoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                            :tags [["InDefaultFeasibilityModule" "evalgraphnode" "adopterPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "interestedPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "awarePoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "unknownPoints"] ["InDefaultFeasibilityModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "attitudeGap"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceNeutral"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceConvergence"] ["InDefaultFeasibilityModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultFeasibilityModule" "evalgraphnode" "InUncertaintySupplier" "uncertainties"]]
                           } 
                           {
                             :label "[Standard] Interesse" 
                             :set "set_InDefaultInterestModule_evalgraphnode" 
                             :description "Dieses Modul implementiert die komplette \"interest\"-Phase des klassischen PV-Prozessmodells. Es gibt als Ergebnis immer \"Adoption nicht entschieden\" zurück. Zusätzlich führt es (falls nötig) die Standardaktionen \"Kommunikation\" und \"Rewiring\" aus. Die Wahrscheinlichkeiten von \"Kommunikation\" und \"Rewiring\" sind von den jeweiligen Agentenattributen abhängig." 
-                            :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertainty" "uncertainties"]]
+                            :tags [["InDefaultInterestModule" "evalgraphnode" "adopterPoints"] ["InDefaultInterestModule" "evalgraphnode" "interestedPoints"] ["InDefaultInterestModule" "evalgraphnode" "awarePoints"] ["InDefaultInterestModule" "evalgraphnode" "unknownPoints"] ["InDefaultInterestModule" "evalgraphnode" "speedOfConvergence"] ["InDefaultInterestModule" "evalgraphnode" "attitudeGap"] ["InDefaultInterestModule" "evalgraphnode" "chanceNeutral"] ["InDefaultInterestModule" "evalgraphnode" "chanceConvergence"] ["InDefaultInterestModule" "evalgraphnode" "chanceDivergence"] ["link" "InDefaultInterestModule" "evalgraphnode" "InUncertaintySupplier" "uncertainties"]]
                           } 
                           {
                             :label "[TESTMODUL] Testmodul" 

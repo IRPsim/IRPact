@@ -109,6 +109,10 @@ public class CommunicationModule2
         if(raAlgorithm == null) {
             throw new NullPointerException("missing relative agreement algorithm");
         }
+
+        if(uncertaintySuppliers.isEmpty()) {
+            throw new IllegalArgumentException("missing uncertainty supplier");
+        }
     }
 
     @Override
@@ -119,6 +123,10 @@ public class CommunicationModule2
 
         if(logRaAlgorithm != null) {
             logRaAlgorithm.initialize(environment);
+        }
+
+        for(UncertaintySupplier supplier: uncertaintySuppliers) {
+            supplier.initalize();
         }
 
         setInitalized();

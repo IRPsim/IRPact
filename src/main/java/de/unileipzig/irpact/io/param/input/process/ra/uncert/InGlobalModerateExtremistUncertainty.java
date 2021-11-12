@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.ra.uncert;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process2.uncert.GlobalDeffuantUncertainty;
+import de.unileipzig.irpact.core.process2.uncert.GlobalModerateExtremistUncertainty;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -20,7 +20,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InPVactGlobalDeffuantUncertaintySupplier2 implements InUncertaintySupplier {
+public class InGlobalModerateExtremistUncertainty implements InUncertaintySupplier {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -33,7 +33,7 @@ public class InPVactGlobalDeffuantUncertaintySupplier2 implements InUncertaintyS
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_GLDEFF);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_GMEU);
 
         addEntry(res, thisClass(), "extremistParameter");
         addEntry(res, thisClass(), "extremistUncertainty");
@@ -69,7 +69,7 @@ public class InPVactGlobalDeffuantUncertaintySupplier2 implements InUncertaintyS
     @FieldDefinition
     public boolean upperBoundInclusive;
 
-    public InPVactGlobalDeffuantUncertaintySupplier2() {
+    public InGlobalModerateExtremistUncertainty() {
     }
 
     @Override
@@ -130,12 +130,12 @@ public class InPVactGlobalDeffuantUncertaintySupplier2 implements InUncertaintyS
     }
 
     @Override
-    public InPVactGlobalDeffuantUncertaintySupplier2 copy(CopyCache cache) {
+    public InGlobalModerateExtremistUncertainty copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InPVactGlobalDeffuantUncertaintySupplier2 newCopy(CopyCache cache) {
-        InPVactGlobalDeffuantUncertaintySupplier2 copy = new InPVactGlobalDeffuantUncertaintySupplier2();
+    public InGlobalModerateExtremistUncertainty newCopy(CopyCache cache) {
+        InGlobalModerateExtremistUncertainty copy = new InGlobalModerateExtremistUncertainty();
         copy._name = _name;
         copy.extremistParameter = extremistParameter;
         copy.extremistUncertainty = extremistUncertainty;
@@ -151,14 +151,14 @@ public class InPVactGlobalDeffuantUncertaintySupplier2 implements InUncertaintyS
     }
 
     @Override
-    public GlobalDeffuantUncertainty parse(IRPactInputParser parser) throws ParsingException {
+    public GlobalModerateExtremistUncertainty parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new ParsingException("not supported");
         }
 
         LOGGER.trace("parse '{}': {}", thisClass(), getName());
 
-        GlobalDeffuantUncertainty data = new GlobalDeffuantUncertainty();
+        GlobalModerateExtremistUncertainty data = new GlobalModerateExtremistUncertainty();
         data.setName(getName());
         data.setEnvironment(parser.getEnvironment());
         data.setExtremistParameter(getExtremistParameter());

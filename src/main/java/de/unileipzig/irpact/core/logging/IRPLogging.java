@@ -67,12 +67,10 @@ public final class IRPLogging {
     }
 
     private static void addDefaultForcedSections() {
-        addForcesLoggingSections(
-                IRPSection.TRACE0,
-                IRPSection.TRACE1,
-                IRPSection.TRACE2,
-                IRPSection.TRACE3
-        );
+        addForcesLoggingSection(IRPSection.TRACE0);
+        addForcesLoggingSection(IRPSection.TRACE1);
+        addForcesLoggingSection(IRPSection.TRACE2);
+        //addForcesLoggingSection(IRPSection.TRACE3);
     }
 
     public static void terminate() {
