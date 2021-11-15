@@ -11,11 +11,6 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -38,9 +33,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     protected SimulationEnvironment environment;
     protected Rnd rnd;
-    protected UncertaintyHandler uncertaintyHandler;
     protected double speedOfConvergence;
-    protected RelativeAgreementAlgorithm raAlgorithm;
     protected Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected boolean isYearChange = false;
     protected boolean skipAwareness = false;
@@ -52,9 +45,6 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
 
     public RAProcessModelBase() {
-        uncertaintyHandler = new UncertaintyHandler();
-        uncertaintyHandler.setCache(new UncertaintyCache());
-        uncertaintyHandler.setManager(new BasicUncertaintyManager());
     }
 
     @Override
@@ -87,7 +77,6 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-        uncertaintyHandler.setEnvironment(environment);
     }
     public SimulationEnvironment getEnvironment() {
         return environment;
@@ -152,30 +141,30 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     public double getAdoptionCertaintyFactor() {
         return adoptionCertaintyFactor;
     }
-
-    public UncertaintyManager getUncertaintyManager() {
-        return uncertaintyHandler.getManager();
-    }
-
-    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
-        uncertaintyHandler.setManager(uncertaintyManager);
-    }
-
-    public UncertaintyCache getUncertaintyCache() {
-        return uncertaintyHandler.getCache();
-    }
-
-    public void setUncertaintyCache(UncertaintyCache uncertaintyCache) {
-        uncertaintyHandler.setCache(uncertaintyCache);
-    }
-
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
-        this.raAlgorithm = raAlgorithm;
-    }
-
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return raAlgorithm;
-    }
+//
+//    public UncertaintyManager getUncertaintyManager() {
+//        return uncertaintyHandler.getManager();
+//    }
+//
+//    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
+//        uncertaintyHandler.setManager(uncertaintyManager);
+//    }
+//
+//    public UncertaintyCache getUncertaintyCache() {
+//        return uncertaintyHandler.getCache();
+//    }
+//
+//    public void setUncertaintyCache(UncertaintyCache uncertaintyCache) {
+//        uncertaintyHandler.setCache(uncertaintyCache);
+//    }
+//
+//    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
+//        this.raAlgorithm = raAlgorithm;
+//    }
+//
+//    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+//        return raAlgorithm;
+//    }
 
     private void setYearChange(boolean isYearChange) {
         this.isYearChange = isYearChange;
@@ -214,7 +203,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     protected void initUncertainty() {
-        uncertaintyHandler.initalize();
+//        uncertaintyHandler.initalize();
     }
 
     @Override

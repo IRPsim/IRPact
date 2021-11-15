@@ -5,20 +5,19 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ProcessModelManager;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process.ra.alg.AttitudeGapRelativeAgreementAlgorithm;
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -217,13 +216,13 @@ public class InRAProcessModel implements InProcessModel {
     public double adoptionCertaintyFactor = 1.0;
 
     @FieldDefinition
-    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
+    public InNodeDistanceFilterScheme[] nodeFilterScheme;
 
     @FieldDefinition
     public InPVFile[] pvFile;
 
     @FieldDefinition
-    public InUncertainty[] uncertainties;
+    public InUncertaintySupplier[] uncertainties;
 
     @FieldDefinition
     public InNewProductHandler[] newProductHandlers = new InNewProductHandler[0];
@@ -551,15 +550,15 @@ public class InRAProcessModel implements InProcessModel {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
 
-    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+    public InNodeDistanceFilterScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
 
-    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(InNodeDistanceFilterScheme nodeFilterScheme) {
         if(nodeFilterScheme == null) {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[0];
         } else {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[]{nodeFilterScheme};
         }
     }
 
@@ -575,15 +574,15 @@ public class InRAProcessModel implements InProcessModel {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public void setUncertainty(InUncertainty uncertainty) {
-        this.uncertainties = new InUncertainty[]{uncertainty};
+    public void setUncertainty(InUncertaintySupplier uncertainty) {
+        this.uncertainties = new InUncertaintySupplier[]{uncertainty};
     }
 
-    public void setUncertainties(InUncertainty[] uncertainties) {
+    public void setUncertainties(InUncertaintySupplier[] uncertainties) {
         this.uncertainties = uncertainties;
     }
 
-    public InUncertainty[] getUncertainties() {
+    public InUncertaintySupplier[] getUncertainties() {
         return uncertainties;
     }
 
@@ -655,32 +654,32 @@ public class InRAProcessModel implements InProcessModel {
         model.setAdoptionCertaintyFactor(adoptionCertaintyFactor);
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "[{}] adoptionCertaintyBase={}, adoptionCertaintyFactor={}, hasAdoptionCertainty={}", getName(), adoptionCertaintyBase, adoptionCertaintyFactor, model.hasAdoptionCertainty());
 
-        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
-        for(InUncertainty uncertainty: getUncertainties()) {
-            uncertainty.setup(parser, params);
-        }
+//        Object[] params = { model.getName(), model.getUncertaintyManager(), model.getSpeedOfConvergence() };
+//        for(InUncertaintySupplier uncertainty: getUncertainties()) {
+//            uncertainty.setup(parser, params);
+//        }
 
         if(hasNodeFilterScheme()) {
-            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
-            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            InNodeDistanceFilterScheme inFilterScheme = getNodeFilterScheme();
+            NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             model.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
         } else {
-            model.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            model.setNodeFilterScheme(DisabledNodeFilterScheme.INSTANCE);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 
         applyPvFile(parser, model);
 
-        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
-        algorithm.setName(model.getName() + "_RA");
-        algorithm.setEnvironment(parser.getEnvironment());
-        Rnd raRnd = parser.deriveRnd();
-        algorithm.setRandom(raRnd);
-        algorithm.setAttitudeGap(getAttitudeGap());
-        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
-        model.setRelativeAgreementAlgorithm(algorithm);
+//        AttitudeGapRelativeAgreementAlgorithm algorithm = new AttitudeGapRelativeAgreementAlgorithm();
+//        algorithm.setName(model.getName() + "_RA");
+//        algorithm.setEnvironment(parser.getEnvironment());
+//        Rnd raRnd = parser.deriveRnd();
+//        algorithm.setRandom(raRnd);
+//        algorithm.setAttitudeGap(getAttitudeGap());
+//        algorithm.setWeightes(getChanceNeutral(), getChanceConvergence(), getChanceDivergence());
+//        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttitudeGapRelativeAgreementAlgorithm '{}' uses seed: {}", algorithm.getName(), raRnd.getInitialSeed());
+//        model.setRelativeAgreementAlgorithm(algorithm);
 
         if(hasNewProductHandlers()) {
             for(InNewProductHandler inHandler: getNewProductHandlers()) {

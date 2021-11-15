@@ -38,11 +38,31 @@ public class RewireModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
+        traceModuleInitalization();
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
     }
 
     @Override
     public void run(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         ConsumerAgent agent = input.getAgent();
         SimulationEnvironment environment = input.getEnvironment();

@@ -58,6 +58,20 @@ public interface MultiModule2<I, O> extends Module2<I, O> {
         }
     }
 
+    static void setupAll(SimulationEnvironment environment, Module2<?, ?>... modules) throws Throwable {
+        for(Module2<?, ?> module: modules) {
+            module.setup(environment);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static <I> void uncheckedInitializeNewInput(I input, Module2<?, ?>... modules) throws Throwable {
+        for(Module2<?, ?> module: modules) {
+            Module2<I, ?> castedModule = (Module2<I, ?>) module;
+            castedModule.initializeNewInput(input);
+        }
+    }
+
     @Override
     default Module2<?, ?> containsLoop(Deque<Module2<?, ?>> currentPath, Set<Module2<?, ?>> allModules) {
         allModules.add(this);

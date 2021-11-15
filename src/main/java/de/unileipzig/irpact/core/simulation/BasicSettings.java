@@ -2,8 +2,10 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
-import de.unileipzig.irpact.develop.AddToParam;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,8 +21,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
     protected int previousLastSimulationYear = -1;
     protected boolean continueSimulation = false;
 
-    @AddToParam("InGeneral")
-    protected boolean prefereCsv = false;
+    protected MainCommandLineOptions clOptions;
 
     protected boolean logResultAdoptionsAll = false;
     protected boolean logPerformance = false;
@@ -46,16 +47,29 @@ public class BasicSettings implements Settings, ChecksumComparable {
 
     @Override
     public void apply(MainCommandLineOptions clOptions) {
-        setPrefereCsv(clOptions.isPrefereCsv());
+        this.clOptions = clOptions;
+    }
+
+    //=========================
+    //files
+    //=========================
+
+    @Override
+    public Path getDownloadDir() {
+        try {
+            return clOptions.getCreatedDownloadDir();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
-    public boolean prefereCsv() {
-        return prefereCsv;
-    }
-
-    public void setPrefereCsv(boolean prefereCsv) {
-        this.prefereCsv = prefereCsv;
+    public Path getOutputDir() {
+        try {
+            return clOptions.getCreatedOutputDir();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     //=========================

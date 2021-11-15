@@ -5,14 +5,14 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class DisabledProcessPlanNodeFilterSchemePR extends BinaryPRBase<DisabledProcessPlanNodeFilterScheme> {
+public class DisabledProcessPlanNodeFilterSchemePR extends BinaryPRBase<DisabledNodeFilterScheme> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DisabledProcessPlanNodeFilterSchemePR.class);
 
@@ -24,8 +24,8 @@ public class DisabledProcessPlanNodeFilterSchemePR extends BinaryPRBase<Disabled
     }
 
     @Override
-    public Class<DisabledProcessPlanNodeFilterScheme> getType() {
-        return DisabledProcessPlanNodeFilterScheme.class;
+    public Class<DisabledNodeFilterScheme> getType() {
+        return DisabledNodeFilterScheme.class;
     }
 
     //=========================
@@ -33,10 +33,10 @@ public class DisabledProcessPlanNodeFilterSchemePR extends BinaryPRBase<Disabled
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(DisabledProcessPlanNodeFilterScheme object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(DisabledNodeFilterScheme object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
 
-        boolean isGlobalInstance = object == DisabledProcessPlanNodeFilterScheme.INSTANCE;
+        boolean isGlobalInstance = object == DisabledNodeFilterScheme.INSTANCE;
         data.putBoolean(isGlobalInstance);
 
         if(!isGlobalInstance) {
@@ -51,13 +51,13 @@ public class DisabledProcessPlanNodeFilterSchemePR extends BinaryPRBase<Disabled
     //=========================
 
     @Override
-    protected DisabledProcessPlanNodeFilterScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+    protected DisabledNodeFilterScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
         boolean isGlobalInstance = data.getBoolean();
         if(isGlobalInstance) {
-            return DisabledProcessPlanNodeFilterScheme.INSTANCE;
+            return DisabledNodeFilterScheme.INSTANCE;
         }
 
-        DisabledProcessPlanNodeFilterScheme object = new DisabledProcessPlanNodeFilterScheme();
+        DisabledNodeFilterScheme object = new DisabledNodeFilterScheme();
         object.setName(data.getText());
 
         return object;

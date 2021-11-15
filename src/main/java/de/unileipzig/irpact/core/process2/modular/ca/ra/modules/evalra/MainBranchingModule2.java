@@ -83,7 +83,30 @@ public class MainBranchingModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
+        traceModuleInitalization();
         MultiModule2.initalizeAll(environment, initModule, awarenessModule, feasibilityModule, decisionModule, adopterModule, impededModule);
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        MultiModule2.uncheckedInitializeNewInput(input, initModule, awarenessModule, feasibilityModule, decisionModule, adopterModule, impededModule);
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        MultiModule2.setupAll(environment, initModule, awarenessModule, feasibilityModule, decisionModule, adopterModule, impededModule);
+        setSetupCalled();
     }
 
     @Override
@@ -135,7 +158,7 @@ public class MainBranchingModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         RAStage2 stage = input.getStage();
         if(stage == RAStage2.PRE_INITIALIZATION) {

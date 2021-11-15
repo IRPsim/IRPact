@@ -55,21 +55,30 @@ public class Quantile<T> {
     }
 
     public double calculate(double p) {
-        checkNotEmpty();
+        return calculate(sorted, func, p);
+    }
 
-        if(p <= 0 || p >= 1) {
-            throw new IllegalArgumentException("p=" + p);
+    public static <T> double calculate(
+            List<T> sortedList,
+            ToDoubleFunction<T> func,
+            double p) {
+        if(sortedList.isEmpty()) {
+            throw new IllegalArgumentException("list is empty");
         }
 
-        double np = sorted.size() * p;
+        if(p <= 0 || p >= 1) {
+            throw new IllegalArgumentException("p not in (0,1): " + p);
+        }
+
+        double np = sortedList.size() * p;
         if(Math.floor(np) == np) {
             int i = (int) np - 1;
-            T v1 = sorted.get(i);
-            T v2 = sorted.get(i + 1);
+            T v1 = sortedList.get(i);
+            T v2 = sortedList.get(i + 1);
             return 0.5 * (func.applyAsDouble(v1) + func.applyAsDouble(v2));
         } else {
             int i = (int) Math.floor(np + 1) - 1;
-            T v = sorted.get(i);
+            T v = sortedList.get(i);
             return func.applyAsDouble(v);
         }
     }

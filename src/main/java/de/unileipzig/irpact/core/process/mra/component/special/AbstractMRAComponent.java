@@ -19,7 +19,7 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.generic.AbstractComponent;
 import de.unileipzig.irpact.core.process.mra.component.generic.ComponentType;
@@ -29,10 +29,11 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
 import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
-import de.unileipzig.irpact.core.process.ra.uncert.*;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.slf4j.event.Level;
@@ -147,11 +148,11 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         return logisticFactor;
     }
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    protected NodeFilterScheme nodeFilterScheme;
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
 
@@ -412,14 +413,14 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
         if(uncertaintyTarget == null) {
             warn("agent '{}' has no uncertainty - skip", target.getName());
         } else {
-            getModel().getRelativeAgreementAlgorithm().apply(
-                    agent.getName(),
-                    opinionThis,
-                    uncertaintyThis,
-                    target.getName(),
-                    opinionTarget,
-                    uncertaintyTarget
-            );
+//            getModel().getRelativeAgreementAlgorithm().apply(
+//                    agent.getName(),
+//                    opinionThis,
+//                    uncertaintyThis,
+//                    target.getName(),
+//                    opinionTarget,
+//                    uncertaintyTarget
+//            );
         }
     }
 
@@ -772,7 +773,8 @@ public abstract class AbstractMRAComponent extends AbstractComponent implements 
     }
 
     protected Uncertainty getUncertainty(ConsumerAgent ca) {
-        return getModel().getUncertaintyCache().getUncertainty(ca);
+//        return getModel().getUncertaintyCache().getUncertainty(ca);
+        return Dev.throwException();
     }
 
     protected void initNPVMatrixWithFile() {

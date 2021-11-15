@@ -35,8 +35,18 @@ public class NaNModule2<I>
     }
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        traceModuleSetup();
+    }
+
+    @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         return Double.NaN;
     }
 }

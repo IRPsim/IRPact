@@ -65,6 +65,19 @@ public class NewDecisionMakingDeciderModule2
     }
 
     @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public int getSubmoduleCount() {
         return 2;
     }
@@ -83,7 +96,7 @@ public class NewDecisionMakingDeciderModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         boolean valid = getFinancialCheckModule().test(input, actions);
         trace("[{}]@[{}] valid={}, isForceEvaluation={}", getName(), input.getAgentName(), valid, isForceEvaluation());

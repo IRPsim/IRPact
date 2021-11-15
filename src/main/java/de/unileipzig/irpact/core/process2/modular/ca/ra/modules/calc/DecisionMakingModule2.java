@@ -52,6 +52,19 @@ public class DecisionMakingModule2
         sortPriority();
     }
 
+    @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setFinancialCheckComponent(BooleanModule2<ConsumerAgentData2> module) {
         this.finCheck = module;
     }

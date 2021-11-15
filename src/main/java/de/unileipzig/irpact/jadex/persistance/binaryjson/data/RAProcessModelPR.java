@@ -41,8 +41,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
 
         manager.prepare(object.getModelData());
         manager.prepare(object.getRnd());
-        manager.prepare(object.getUncertaintyManager());
-        manager.prepare(object.getRelativeAgreementAlgorithm());
+//        manager.prepare(object.getUncertaintyManager());
+//        manager.prepare(object.getRelativeAgreementAlgorithm());
         manager.prepare(object.getNodeFilterScheme());
 
         return data;
@@ -52,8 +52,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
     protected void doSetupPersist(RAProcessModel object, BinaryJsonData data, PersistManager manager) throws PersistException {
         data.putLong(manager.ensureGetUID(object.getModelData()));
         data.putLong(manager.ensureGetUID(object.getRnd()));
-        data.putLong(manager.ensureGetUID(object.getUncertaintyManager()));
-        data.putLong(manager.ensureGetUID(object.getRelativeAgreementAlgorithm()));
+//        data.putLong(manager.ensureGetUID(object.getUncertaintyManager()));
+//        data.putLong(manager.ensureGetUID(object.getRelativeAgreementAlgorithm()));
         data.putLong(manager.ensureGetUID(object.getNodeFilterScheme()));
     }
 
@@ -76,8 +76,8 @@ public class RAProcessModelPR extends BinaryPRBase<RAProcessModel> {
 
         object.setModelData(manager.ensureGet(data.getLong()));
         object.setRnd(manager.ensureGet(data.getLong()));
-        object.setUncertaintyManager(manager.ensureGet(data.getLong()));
-        object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
+//        object.setUncertaintyManager(manager.ensureGet(data.getLong()));
+//        object.setRelativeAgreementAlgorithm(manager.ensureGet(data.getLong()));
         object.setNodeFilterScheme(manager.ensureGet(data.getLong()));
     }
 }

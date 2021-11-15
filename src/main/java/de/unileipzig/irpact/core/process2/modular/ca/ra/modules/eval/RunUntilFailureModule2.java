@@ -12,7 +12,6 @@ import de.unileipzig.irpact.core.process2.modular.modules.core.MultiModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.Set;
@@ -52,9 +51,30 @@ public class RunUntilFailureModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
         this.environment = environment;
         submodule.initialize(environment);
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        submodule.initializeNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        submodule.setup(environment);
+        setSetupCalled();
     }
 
     @Override
@@ -79,7 +99,7 @@ public class RunUntilFailureModule2
 
     @Override
     public ProcessPlanResult2 apply(ConsumerAgentData2 input, List<PostAction2> actions) {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         Module2<ConsumerAgentData2, ?> submodul = getNonnullSubmodule();
         try {

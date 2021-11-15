@@ -73,6 +73,24 @@ public class ReevaluatorModule<I>
     }
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
+        for(Module2<I, ?> submodule: MODULES) {
+            submodule.setup(environment);
+        }
+    }
+
+    @Override
     public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
         init(environment);
     }
@@ -89,6 +107,20 @@ public class ReevaluatorModule<I>
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        return false;
+    }
+
+    @Override
+    public void reevaluate() throws Throwable {
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return true;
+    }
+
+    @Override
     public void reevaluate(I input, List<PostAction2> actions) throws Throwable {
         execute(input, actions);
     }
@@ -99,7 +131,7 @@ public class ReevaluatorModule<I>
     }
 
     protected void execute(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         startReevaluatorCall();
         for(Module2<I, ?> submodule: MODULES) {
             trace("execute submodule '{}'", submodule.getName());

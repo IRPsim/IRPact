@@ -73,6 +73,10 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
         set(rowIndex, columnIndex, creator.numberNode(value));
     }
 
+    public void setBoolean(int rowIndex, int columnIndex, boolean value) {
+        set(rowIndex, columnIndex, creator.booleanNode(value));
+    }
+
     public void setDouble(int rowIndex, int columnIndex, double value) {
         set(rowIndex, columnIndex, creator.numberNode(value));
     }
@@ -123,6 +127,20 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
         }
     }
 
+    public boolean mapStringToBoolean(int rowIndex, int columnIndex, Predicate<? super String> func) {
+        JsonNode node = get(rowIndex, columnIndex);
+        if(node != null && node.isTextual()) {
+            try {
+                setBoolean(rowIndex, columnIndex, func.test(node.textValue()));
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void map(int rowIndex, int columnIndex, UnaryOperator<JsonNode> func) {
         JsonNode node = get(rowIndex, columnIndex);
         set(rowIndex, columnIndex, func.apply(node));
@@ -143,6 +161,12 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
     public void mapStringColumnToDouble(int columnIndex, int from, ToDoubleFunction<? super String> func) {
         for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
             mapStringToDouble(rowIndex, columnIndex, func);
+        }
+    }
+
+    public void mapStringColumnToBoolean(int columnIndex, int from, Predicate<? super String> func) {
+        for(int rowIndex = from; rowIndex < getNumberOfRows(); rowIndex++) {
+            mapStringToBoolean(rowIndex, columnIndex, func);
         }
     }
 

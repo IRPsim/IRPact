@@ -4,12 +4,12 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.handler.AgentAttributScaler;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -18,8 +18,8 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.asValue;
 
 /**
  * @author Daniel Abitz
@@ -40,6 +40,7 @@ public class InAgentAttributeScaler implements InInitializationHandler {
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR);
 
+        addEntryWithDefault(res, thisClass(), "priority", asValue(InitializationHandler.NORM_PRIORITY));
         addEntry(res, thisClass(), "attribute");
     }
 
@@ -52,6 +53,15 @@ public class InAgentAttributeScaler implements InInitializationHandler {
     }
     public void setName(String name) {
         this._name = name;
+    }
+
+    @FieldDefinition
+    public int priority = InitializationHandler.NORM_PRIORITY;
+    public int getPriority() {
+        return priority;
+    }
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     @FieldDefinition
@@ -86,6 +96,7 @@ public class InAgentAttributeScaler implements InInitializationHandler {
 
         AgentAttributScaler scaler = new AgentAttributScaler();
         scaler.setName(getName());
+        scaler.setPriority(getPriority());
         scaler.setAttributeName(getAttributeName());
 
         return scaler;

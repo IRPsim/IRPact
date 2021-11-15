@@ -19,7 +19,6 @@ final class BinaryJsonUtil {
     }
 
     private static void ensureRegisterDefaults(Object manager) {
-        ensureRegister(manager, AttitudeGapRelativeAgreementAlgorithmPR.INSTANCE);
         ensureRegister(manager, BasicAdoptedProductPR.INSTANCE);
         ensureRegister(manager, BasicAgentManagerPR.INSTANCE);
         ensureRegister(manager, BasicConsumerAgentAnnualAttributePR.INSTANCE);
@@ -31,7 +30,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, BasicConsumerAgentProductRelatedGroupAttributePR.INSTANCE);
         ensureRegister(manager, BasicDistanceEvaluatorPR.INSTANCE);
         ensureRegister(manager, BasicDoubleRangePR.INSTANCE);
-        ensureRegister(manager, BasicUncertaintyManagerPR.INSTANCE);
         ensureRegister(manager, BasicEdgePR.INSTANCE);
         ensureRegister(manager, BasicJadexLifeCycleControlPR.INSTANCE);
         ensureRegister(manager, BasicJadexSimulationEnvironmentPR.INSTANCE);
@@ -59,7 +57,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, DefaultHandleDecisionMakingComponentPR.INSTANCE);
         ensureRegister(manager, DefaultHandleFeasibilityComponentPR.INSTANCE);
         ensureRegister(manager, DefaultHandleInterestComponentPR.INSTANCE);
-        ensureRegister(manager, DeffuantUncertaintyPR.INSTANCE);
         ensureRegister(manager, DiracUnivariateDoubleDistributionPR.INSTANCE);
         ensureRegister(manager, DisabledNodeFilterPR.INSTANCE);
         ensureRegister(manager, DisabledProcessPlanNodeFilterSchemePR.INSTANCE);
@@ -69,10 +66,6 @@ final class BinaryJsonUtil {
         ensureRegister(manager, FixProcessModelFindingSchemePR.INSTANCE);
         ensureRegister(manager, FixProductFindingSchemePR.INSTANCE);
         ensureRegister(manager, FreeNetworkTopologyPR.INSTANCE);
-        ensureRegister(manager, GlobalDeffuantUncertaintyDataPR.INSTANCE);
-        ensureRegister(manager, GlobalDeffuantUncertaintySupplierPR.INSTANCE);
-        ensureRegister(manager, GroupBasedDeffuantUncertaintyDataPR.INSTANCE);
-        ensureRegister(manager, GroupBasedDeffuantUncertaintySupplierPR.INSTANCE);
         ensureRegister(manager, InversePR.INSTANCE);
         ensureRegister(manager, JadexConsumerAgentGroupPR.INSTANCE);
         ensureRegister(manager, MaxDistanceNodeFilterPR.INSTANCE);

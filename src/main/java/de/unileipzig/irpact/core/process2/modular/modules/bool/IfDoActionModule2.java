@@ -44,9 +44,31 @@ public class IfDoActionModule2<I>
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
         ifModule.initialize(environment);
         taskModule.initialize(environment);
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        ifModule.setup(environment);
+        taskModule.setup(environment);
+        setSetupCalled();
     }
 
     public void setIfModule(BooleanModule2<I> ifModule) {
@@ -85,7 +107,7 @@ public class IfDoActionModule2<I>
 
     @Override
     public boolean test(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         if(ifModule.test(input, actions)) {
             taskModule.run(input, actions);

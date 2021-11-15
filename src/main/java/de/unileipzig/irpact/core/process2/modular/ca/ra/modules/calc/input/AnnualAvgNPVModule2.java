@@ -39,13 +39,31 @@ public class AnnualAvgNPVModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
         dataSupplier = getNPVDataSupplier(environment, data);
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        setSetupCalled();
     }
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         return dataSupplier.annualAvgNPV(getCurrentYear(input));
     }
 }

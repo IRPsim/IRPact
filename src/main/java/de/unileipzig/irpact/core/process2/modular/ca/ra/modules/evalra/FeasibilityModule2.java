@@ -35,6 +35,19 @@ public class FeasibilityModule2
     public void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
+    @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setActionModule(VoidModule2<ConsumerAgentData2> module) {
         setSubmodule(module);
     }
@@ -45,7 +58,7 @@ public class FeasibilityModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         if(isShareOf1Or2FamilyHouse(input) && isHouseOwner(input)) {
             doSelfActionAndAllowAttention(input);

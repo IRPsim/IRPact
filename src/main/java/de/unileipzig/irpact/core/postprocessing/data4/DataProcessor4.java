@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -26,8 +27,6 @@ public class DataProcessor4 extends PostProcessor {
 
     protected static final String POPULATION_OVERVIEW_BASENAME = "Populationsuebersicht";
     protected static final String ADOPTION_OVERVIEW_BASENAME = "Adoptionsuebersicht";
-
-    protected JsonResource localizedData;
 
     public DataProcessor4(
             MetaData metaData,
@@ -130,6 +129,9 @@ public class DataProcessor4 extends PostProcessor {
         if(postData instanceof InBucketAnalyser) {
             handleBucketAnalyser((InBucketAnalyser) postData);
         }
+        if(postData instanceof InNeighbourhoodOverview) {
+            handleNeighborhoodOverview((InNeighbourhoodOverview) postData);
+        }
         else {
             warn("unsupported analysis: " + postData.getName());
         }
@@ -140,5 +142,12 @@ public class DataProcessor4 extends PostProcessor {
         BucketAnalyser analyser = new BucketAnalyser(this, postData);
         analyser.init();
         analyser.execute();
+    }
+
+    protected void handleNeighborhoodOverview(InNeighbourhoodOverview postData) throws Throwable {
+        trace("handle InBucketAnalyser '{}'", postData.getName());
+        NeighbourhoodOverview overview = new NeighbourhoodOverview(this, postData);
+        overview.init();
+        overview.execute();
     }
 }

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.process2.modular.ca;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.SetSupplier;
@@ -119,9 +120,8 @@ public class BasicCAModularProcessModel2
     }
 
     @Override
-    public ModularProcessPlan2 newPlan2(Agent agent, Need need, Product product) {
+    public BasicConsumerAgentData2 newPlan2(Agent agent, Need need, Product product) {
         ConsumerAgent consumerAgent = validateAgent(agent);
-        createUncertainty(consumerAgent);
         BasicConsumerAgentData2 plan = new BasicConsumerAgentData2(
                 environment,
                 this,
@@ -131,18 +131,15 @@ public class BasicCAModularProcessModel2
                 need
         );
         plans.add(plan);
+        initalizeNewInput(plan);
         return plan;
     }
 
-    protected void createUncertainty(ConsumerAgent agent) {
-        trace("create uncertainty for agent '{}'", agent.getName());
-        getUncertaintyCache().createUncertainty(
-                agent,
-                getUncertaintyManager()
-        );
-        trace("uncertainty for agent '{}': {}", agent.getName(), getUncertaintyCache().getUncertainty(agent));
-        if(getUncertaintyCache().getUncertainty(agent) == null) {
-            throw new NullPointerException("missing uncertainty for agent '" + agent.getName() + "'");
+    protected void initalizeNewInput(BasicConsumerAgentData2 input) {
+        try {
+            startModule.initializeNewInput(input);
+        } catch (Throwable t) {
+            throw new IRPactRuntimeException(t, "initializeNewInput failed for agent '{}'", input.getAgentName());
         }
     }
 
@@ -289,7 +286,11 @@ public class BasicCAModularProcessModel2
     @Override
     public void preSimulationStart() throws MissingDataException {
         setupTasks();
+        setupModules();
+    }
 
+    protected void setupTasks() throws MissingDataException {
+        createTasks();
         try {
             runInitializationTasks();
         } catch (MissingDataException e) {
@@ -299,7 +300,24 @@ public class BasicCAModularProcessModel2
         }
     }
 
-    protected void setupTasks() {
+    protected void runInitializationTasks() throws Throwable {
+        for(Reevaluator<ConsumerAgentData2> task: initializationTasks) {
+            reevaluate(task);
+        }
+    }
+
+    protected void setupModules() throws MissingDataException {
+        trace("start module setup");
+        try {
+            startModule.setup(environment);
+        } catch (MissingDataException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new MissingDataException(e);
+        }
+    }
+
+    protected void createTasks() {
         int firstYear = environment.getTimeModel().getFirstSimulationYear();
         int lastYear = environment.getTimeModel().getLastSimulationYear();
 
@@ -343,10 +361,7 @@ public class BasicCAModularProcessModel2
 
     protected void runStartOfYear() throws Throwable {
         for(Reevaluator<ConsumerAgentData2> task: startOfYearTasks) {
-            trace("run task '{}'", task.getName());
-            for(BasicConsumerAgentData2 plan: plans) {
-                task.reevaluate(plan, null);
-            }
+            reevaluate(task);
         }
     }
 
@@ -371,10 +386,7 @@ public class BasicCAModularProcessModel2
 
     protected void runMidOfYear() throws Throwable {
         for(Reevaluator<ConsumerAgentData2> task: midOfYearTasks) {
-            trace("run task '{}'", task.getName());
-            for(BasicConsumerAgentData2 plan: plans) {
-                task.reevaluate(plan, null);
-            }
+            reevaluate(task);
         }
     }
 
@@ -400,17 +412,17 @@ public class BasicCAModularProcessModel2
     protected void runEndOfYear() throws Throwable {
         yearChange = true;
         for(Reevaluator<ConsumerAgentData2> task: endOfYearTasks) {
-            trace("run task '{}'", task.getName());
-            for(BasicConsumerAgentData2 plan: plans) {
-                task.reevaluate(plan, null);
-            }
+            reevaluate(task);
         }
         yearChange = false;
     }
 
-    protected void runInitializationTasks() throws Throwable {
-        for(Reevaluator<ConsumerAgentData2> task: initializationTasks) {
-            trace("run task '{}'", task.getName());
+    protected void reevaluate(Reevaluator<ConsumerAgentData2> task) throws Throwable {
+        trace("[{}] run reevaluator '{}' (global={}, individual={}, priority={})", getName(), task.getName(), task.reevaluateGlobal(), task.reevaluateIndividual(), task.getPriority());
+        if(task.reevaluateGlobal()) {
+            task.reevaluate();
+        }
+        if(task.reevaluateIndividual()) {
             for(BasicConsumerAgentData2 plan: plans) {
                 task.reevaluate(plan, null);
             }

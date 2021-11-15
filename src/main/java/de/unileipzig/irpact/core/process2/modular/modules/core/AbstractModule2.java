@@ -18,6 +18,7 @@ public abstract class AbstractModule2<I, O>
     protected int priority = NORM_PRIORITY;
     protected boolean validated = false;
     protected boolean initalized = false;
+    protected boolean setupCalled = false;
 
     protected boolean alreadyValidated() {
         return validated;
@@ -31,8 +32,16 @@ public abstract class AbstractModule2<I, O>
         return initalized;
     }
 
-    public void setInitalized() {
+    protected void setInitalized() {
         initalized = true;
+    }
+
+    protected boolean alreadySetupCalled() {
+        return setupCalled;
+    }
+
+    public void setSetupCalled() {
+        this.setupCalled = true;
     }
 
     @Override

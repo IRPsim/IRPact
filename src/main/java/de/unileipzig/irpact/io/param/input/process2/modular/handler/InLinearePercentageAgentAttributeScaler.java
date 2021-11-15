@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param.input.process2.modular.handler;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
 import de.unileipzig.irpact.core.process2.handler.LinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -39,6 +40,7 @@ public class InLinearePercentageAgentAttributeScaler implements InInitialization
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR);
 
+        addEntryWithDefault(res, thisClass(), "priority", asValue(InitializationHandler.NORM_PRIORITY));
         addEntryWithDefault(res, thisClass(), "mValue", VALUE_1);
         addEntryWithDefault(res, thisClass(), "nValue", VALUE_0);
         addEntry(res, thisClass(), "attribute");
@@ -53,6 +55,15 @@ public class InLinearePercentageAgentAttributeScaler implements InInitialization
     }
     public void setName(String name) {
         this._name = name;
+    }
+
+    @FieldDefinition
+    public int priority = InitializationHandler.NORM_PRIORITY;
+    public int getPriority() {
+        return priority;
+    }
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     @FieldDefinition
@@ -105,6 +116,7 @@ public class InLinearePercentageAgentAttributeScaler implements InInitialization
 
         LinearePercentageAgentAttributeScaler scaler = new LinearePercentageAgentAttributeScaler();
         scaler.setName(getName());
+        scaler.setPriority(getPriority());
         scaler.setM(getM());
         scaler.setN(getN());
         scaler.setAttributeName(getAttributeName());

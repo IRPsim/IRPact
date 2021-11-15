@@ -63,6 +63,19 @@ public class IfElseActionModule2<I>
     }
 
     @Override
+    protected I castInput(I input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(I input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public int getSubmoduleCount() {
         return 3;
     }
@@ -83,7 +96,7 @@ public class IfElseActionModule2<I>
 
     @Override
     public void run(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
 
         if(usePostactions) {
             if(actions == null) {
@@ -102,7 +115,7 @@ public class IfElseActionModule2<I>
         return new PostAction2() {
             @Override
             public String getName() {
-                return "PostAction@" + IfElseActionModule2.this.getName() + "@" + printName(input);
+                return "PostAction@" + IfElseActionModule2.this.getName() + "@" + printInputInfo(input);
             }
 
             @Override

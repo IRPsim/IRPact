@@ -7,10 +7,10 @@ import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -34,31 +34,47 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     SharedModuleData getSharedData();
 
     default void traceReevaluatorInitalization() {
-        trace("[{}] initalize reevaluator", getName());
+        trace1("[{}] initalize reevaluator", getName());
     }
 
     default void traceModuleInitalization() {
-        trace("[{}] initalize module", getName());
+        trace1("[{}] initalize module", getName());
+    }
+
+    default void traceModuleSetup() {
+        trace1("[{}] setup module", getName());
     }
 
     default void traceModuleValidation() {
-        trace("[{}] validate module", getName());
-    }
-
-    default void traceModuleCall() {
-        trace("[{}] call module ({})", getName(), getClass().getSimpleName());
+        trace1("[{}] validate module", getName());
     }
 
     default void traceSetSharedData() {
-        trace("[{}] set shared data ({})", getName(), getClass().getSimpleName());
+        trace3("[{}] set shared data ({})", getName(), getClass().getSimpleName());
     }
 
-    default String printName(Object obj) {
+    default void traceNewInput(Object input) {
+        trace3("[{}] initalize new input '{}' ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+    }
+
+    default void traceModuleCall(Object input) {
+        trace3("[{}]@[{}] call module ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+    }
+
+    default void traceReevaluatorInfo(Object input) {
+        trace3("[{}]@[{}] call reevaluator ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+    }
+
+    default String printInputInfo(Object obj) {
+        if(obj instanceof ConsumerAgentData2) {
+            return ((ConsumerAgentData2) obj).getAgentName();
+        }
+
         if(obj instanceof Nameable) {
             return ((Nameable) obj).getName();
-        } else {
-            return Objects.toString(obj);
         }
+
+        return Objects.toString(obj);
     }
 
     default void startReevaluatorCall() {

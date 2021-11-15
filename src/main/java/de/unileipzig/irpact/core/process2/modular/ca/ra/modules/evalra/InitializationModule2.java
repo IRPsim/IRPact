@@ -36,6 +36,15 @@ public class InitializationModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         RAStage2 initialStage;
         if(isAdopter(input)) {

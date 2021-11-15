@@ -4,6 +4,8 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
+import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -21,9 +23,11 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -38,6 +42,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -47,9 +52,6 @@ import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -288,45 +290,80 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return defaults;
     }
 
-    public InPVactGroupBasedDeffuantUncertainty createDefaultUnvertainty(String name, InConsumerAgentGroup... cags) {
-        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+    public InPVactUpdatableGlobalModerateExtremistUncertainty createInPVactUpdatableGlobalModerateExtremistUncertainty(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactUpdatableGlobalModerateExtremistUncertainty uncertainty = new InPVactUpdatableGlobalModerateExtremistUncertainty();
         uncertainty.setName(name);
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
-        return uncertainty;
-    }
-
-    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, InConsumerAgentGroup... cags) {
-        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
-        uncertainty.setName(name);
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
-        return uncertainty;
-    }
-
-    public InPVactGlobalDeffuantUncertainty createGlobalUnvertainty(String name, double extremParam, double extremUncert, double moderateUncert, InConsumerAgentGroup... cags) {
-        InPVactGlobalDeffuantUncertainty uncertainty = new InPVactGlobalDeffuantUncertainty();
-        uncertainty.setName(name);
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
         uncertainty.setExtremistParameter(extremParam);
         uncertainty.setExtremistUncertainty(extremUncert);
         uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
         return uncertainty;
     }
 
-    public InRAProcessPlanMaxDistanceFilterScheme createNodeFilterScheme(double distance) {
-        InRAProcessPlanMaxDistanceFilterScheme scheme = new InRAProcessPlanMaxDistanceFilterScheme();
+    public InPVactIndividualGlobalModerateExtremistUncertaintySupplier createInPVactIndividualGlobalModerateExtremistUncertaintySupplier(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactIndividualGlobalModerateExtremistUncertaintySupplier uncertainty = new InPVactIndividualGlobalModerateExtremistUncertaintySupplier();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion createInPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion uncertainty = new InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InUpdatableGlobalModerateExtremistUncertainty createGlobalUnvertaintySupplier(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert,
+            String[] attrs) {
+        InUpdatableGlobalModerateExtremistUncertainty uncertainty = new InUpdatableGlobalModerateExtremistUncertainty();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setAttributeNames(getAttributeNames(attrs));
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InMaxDistanceNodeFilterDistanceScheme createNodeFilterScheme(double distance) {
+        InMaxDistanceNodeFilterDistanceScheme scheme = new InMaxDistanceNodeFilterDistanceScheme();
         scheme.setName("MAX_DISTANCE_SCHEME");
         scheme.setMaxDistance(distance);
         return scheme;
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence) {
         return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertainty uncertainty, double speedOfConvergence, InRAProcessPlanNodeFilterScheme scheme) {
+    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeDistanceFilterScheme scheme) {
         InRAProcessModel processModel = new InRAProcessModel();
         processModel.setName(name);
         processModel.setDefaultValues();
@@ -344,19 +381,42 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
-            InUncertainty uncertainty,
-            double speedOfConvergence,
-            InRAProcessPlanNodeFilterScheme scheme,
+            InUncertaintySupplier uncertainty,
+            InNodeDistanceFilterScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas) {
-        return createDefaultModularProcessModel(name, uncertainty, speedOfConvergence, scheme, images, postDatas, new ModularProcessModelManager());
+        return createDefaultModularProcessModel(name, uncertainty, scheme, images, postDatas, new ModularProcessModelManager());
+    }
+
+    public InMinimalCsvValueLoggingModule_calcloggraphnode2 createDefaultLoggingModule(String name) {
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 module = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        module.setName(name);
+        module.setPrintHeader(true);
+        module.setLogDefaultCall(true);
+        module.setLogReevaluatorCall(false);
+        module.setStoreXlsx(true);
+        return module;
+    }
+
+    public InMinimalCsvValueLoggingModule_calcloggraphnode2 createReevaluatorLoggingModule(String name) {
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 module = new InMinimalCsvValueLoggingModule_calcloggraphnode2();
+        module.setName(name);
+        module.setPrintHeader(true);
+        module.setLogDefaultCall(false);
+        module.setLogReevaluatorCall(true);
+        module.setStoreXlsx(true);
+        return module;
+    }
+
+    protected void setupCommunicationModuleLogging(InCommunicationModule_actiongraphnode2 module) {
+        module.setRaOpinionLogging(false);
+        module.setRaUnceraintyLogging(false);
     }
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,
-            InUncertainty uncertainty,
-            double speedOfConvergence,
-            InRAProcessPlanNodeFilterScheme scheme,
+            InUncertaintySupplier uncertainty,
+            InNodeDistanceFilterScheme scheme,
             List<InOutputImage2> images,
             List<InPostDataAnalysis> postDatas,
             ModularProcessModelManager mmp) {
@@ -370,16 +430,21 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InBernoulliModule_boolgraphnode2 commuIf = mmp.create("TEST_COMMUNICATION", InBernoulliModule_boolgraphnode2::new);
         commuIf.setInput(commuAttrWeight);
         InCommunicationModule_actiongraphnode2 commuAction = mmp.create(COMMUNICATION, InCommunicationModule_actiongraphnode2::new);
+        commuAction.setRaEnabled(true);
+        commuAction.setRaLoggingEnabled(true);
+        commuAction.setRaStoreXlsx(true);
+        commuAction.setRaKeepCsv(false);
         commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
         commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
         commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
         commuAction.setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
-        commuAction.setSpeedOfConvergence(speedOfConvergence);
+        commuAction.setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
         commuAction.setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
         commuAction.setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
         commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
         commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
         commuAction.setUncertainty(uncertainty);
+        setupCommunicationModuleLogging(commuAction);
 
         InAttributeInputModule_inputgraphnode2 rewireAttr = mmp.create("ATTR_REWIRE", InAttributeInputModule_inputgraphnode2::new);
         rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
@@ -427,13 +492,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         logisticNPV.setXInput(npv);
         logisticNPV.setX0Input(avgNPV);
 
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        npvLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, this::createDefaultLoggingModule);
         npvLogger.setInput(logisticNPV);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        npvReevalLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, this::createReevaluatorLoggingModule);
         npvReevalLogger.setInput(logisticNPV);
-        npvReevalLogger.setSkipReevaluatorCall(false);
 
         //pp
         InAttributeInputModule_inputgraphnode2 pp = mmp.create("PP", InAttributeInputModule_inputgraphnode2::new);
@@ -458,13 +520,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //env comp
         InAttributeInputModule_inputgraphnode2 envAttr = mmp.create("ENV", InAttributeInputModule_inputgraphnode2::new);
         envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        envLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, this::createDefaultLoggingModule);
         envLogger.setInput(envAttr);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        envReevalLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, this::createReevaluatorLoggingModule);
         envReevalLogger.setInput(envAttr);
-        envReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 envWeight = mmp.create(ENV_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         envWeight.setScalar(RealData.WEIGHT_EK);
         envWeight.setInput(envLogger);
@@ -472,13 +531,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //nov comp
         InAttributeInputModule_inputgraphnode2 novAttr = mmp.create("NOV", InAttributeInputModule_inputgraphnode2::new);
         novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        novLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, this::createDefaultLoggingModule);
         novLogger.setInput(novAttr);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, this::createReevaluatorLoggingModule);
         novReevalLogger.setInput(novAttr);
-        novReevalLogger.setStoreXlsx(true);
-        novReevalLogger.setSkipReevaluatorCall(false);
         InMulScalarModule_calcgraphnode2 novWeight = mmp.create(NOV_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         novWeight.setScalar(RealData.WEIGHT_NS);
         novWeight.setInput(novLogger);
@@ -487,22 +543,16 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InLocalShareOfAdopterModule_inputgraphnode2 localShare = mmp.create("LOCAL_SHARE", InLocalShareOfAdopterModule_inputgraphnode2::new);
         localShare.setMaxToStore(2000);
         localShare.setNodeFilterScheme(scheme);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        localLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, this::createDefaultLoggingModule);
         localLogger.setInput(localShare);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, this::createReevaluatorLoggingModule);
         localReevalLogger.setInput(localShare);
-        localReevalLogger.setStoreXlsx(true);
-        localReevalLogger.setSkipReevaluatorCall(false);
 
         InSocialShareOfAdopterModule_inputgraphnode2 socialShare = mmp.create("SOCIAL_SHARE", InSocialShareOfAdopterModule_inputgraphnode2::new);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, this::createDefaultLoggingModule);
         socialLogger.setInput(socialShare);
-        socialLogger.setStoreXlsx(true);
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, this::createReevaluatorLoggingModule);
         socialReevalLogger.setInput(socialShare);
-        socialReevalLogger.setSkipReevaluatorCall(false);
-        socialReevalLogger.setStoreXlsx(true);
 
         InMulScalarModule_calcgraphnode2 localWeight = mmp.create(LOCAL_WEIGHT, InMulScalarModule_calcgraphnode2::new);
         localWeight.setScalar(RealData.WEIGHT_LOCALE);
@@ -532,9 +582,11 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 socComp
         );
 
-        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, InMinimalCsvValueLoggingModule_calcloggraphnode2::new);
-        utilityLogger.setStoreXlsx(true);
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, this::createDefaultLoggingModule);
         utilityLogger.setInput(utilitySum);
+
+        InMinimalCsvValueLoggingModule_calcloggraphnode2 utilityReevalLogger = mmp.create(LazyData2FileLinker.UTILITY_REEVAL, this::createReevaluatorLoggingModule);
+        utilityReevalLogger.setInput(utilitySum);
 
         InDecisionMakingDeciderModule2_evalragraphnode2 decisionMaking = mmp.create("DECISION_MAKING", InDecisionMakingDeciderModule2_evalragraphnode2::new);
         decisionMaking.setFinCheck(finCheck);
@@ -575,21 +627,29 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //INIT
         InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
         novScaler.setName("NOV_SCALER");
+        novScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
         novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
 
         InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
         envScaler.setName("ENV_SCALER");
         envScaler.setM(RAConstants.DEFAULT_M);
         envScaler.setN(RAConstants.DEFAULT_N);
+        envScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
         envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
 
         InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
         envUpdater.setName("ENV_UPDATER");
         envUpdater.setScaler(envScaler);
 
+        InUncertaintySupplierInitializer uncertInit = new InUncertaintySupplierInitializer();
+        uncertInit.setName("UNCERT_INIT");
+        uncertInit.setPriority(InitializationHandler.LOW_PRIORITY);
+        uncertInit.setUncertaintySuppliers(uncertainty);
+
         processModel.addInitializationHandlers(
                 novScaler,
-                envScaler
+                envScaler,
+                uncertInit
         );
 
         //NEW PRODUCT
@@ -601,8 +661,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InImpededResetter impededResetter = new InImpededResetter();
         impededResetter.setName("IMPEDED_RESETTER");
 
+        InUncertaintySupplierReevaluator uncertUpdater = new InUncertaintySupplierReevaluator();
+        uncertUpdater.setName("UNCERT_UPDATER");
+        uncertUpdater.setPriorty(Reevaluator.LOW_PRIORITY);
+        uncertUpdater.setUncertaintySuppliers(uncertainty);
+
         processModel.addStartOfYearReevaluators(
-                impededResetter
+                impededResetter,
+                uncertUpdater
         );
 
         //MID OF YEAR
@@ -633,7 +699,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
                 envReevalLogger,
                 novReevalLogger,
                 socialReevalLogger,
-                localReevalLogger
+                localReevalLogger,
+                utilityReevalLogger
         );
 
         InReevaluatorModuleLinker initLinker = new InReevaluatorModuleLinker();
@@ -678,6 +745,10 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL;
         localQuantil.setLoggingModule(localReevalLogger);
         images.add(localQuantil);
+
+        InSpecialAverageQuantilRangeImage utilityQuantil = InSpecialAverageQuantilRangeImage.UTILITY;
+        utilityQuantil.setLoggingModule(utilityReevalLogger);
+        images.add(utilityQuantil);
 
         //Custom-Test
 //        InQuantileRange qr0 = new InQuantileRange();
@@ -737,6 +808,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         envBucket.setBucketRange(0.01);
         envBucket.setLoggingModule(envLogger);
         postDatas.add(envBucket);
+
+        //neighborhood
+        InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();
+        neighbourhoodOverview.setName("NEIGHBOURHOOD");
+        neighbourhoodOverview.setEnabled(true);
+        neighbourhoodOverview.setStoreXlsx(true);
+        neighbourhoodOverview.setNodeFilterScheme(scheme);
+        postDatas.add(neighbourhoodOverview);
 
         //===
         return processModel;

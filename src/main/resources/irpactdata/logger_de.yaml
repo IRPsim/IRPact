@@ -8,6 +8,7 @@ MinimalCsvValueLoggingModule2:
   productName: "Produkt"
   time: "Datum"
   value: "Wert"
+  sheetName: "Daten"
 
 CsvValueLoggingModule2:
   agentName: "Agent"
@@ -17,6 +18,28 @@ CsvValueLoggingModule2:
   productGroupName: "Produktgruppe"
   time: "Datum"
   value: "Wert"
+  sheetName: "Daten"
+
+LoggableAttitudeGapRelativeAgreementAlgorithm2:
+  ni: "Agent_i"
+  xi: "x_i"
+  ui: "u_i"
+  newXi: "neues x_i"
+  newUi: "neues u_i"
+  nj: "Agent_j"
+  xj: "x_j"
+  uj: "u_j"
+  newXj: "neues x_j"
+  newUj: "neues u_j"
+  attr: "Attribut"
+  desc: "Info"
+  changed: "Geändert?"
+  time: "Zeitpunkt"
+  sheetName: "Daten"
+  defaultDescription: "DEFAULT"
+  neutralDescription: "NEUTRAL"
+  positiveDescription: "CONVERGENCE"
+  negativeDescription: "DIVERGENCE"
 
 
 

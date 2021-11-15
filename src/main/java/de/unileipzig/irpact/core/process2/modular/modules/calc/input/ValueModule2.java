@@ -41,13 +41,33 @@ public class ValueModule2<I>
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
         trace("[{}] value={}", getName(), getValue());
+        setInitalized();
+    }
+
+    @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
     }
 
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall();
+        traceModuleCall(input);
         return getValue();
     }
 }

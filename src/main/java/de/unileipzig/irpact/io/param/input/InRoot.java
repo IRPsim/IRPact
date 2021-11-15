@@ -17,6 +17,7 @@ import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process.modular.InModule;
@@ -44,6 +45,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logg
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
@@ -54,6 +56,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
@@ -75,8 +78,8 @@ import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
-import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.InNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
@@ -406,6 +409,16 @@ public class InRoot implements RootClass {
     }
     public InProcessModel[] getProcessModels() throws ParsingException {
         return getNonEmptyArray(processModels, "processModel");
+    }
+
+    @FieldDefinition
+    public InNodeFilterScheme[] nodeFilterSchemes = new InNodeFilterScheme[0];
+
+    public void setNodeFilterSchemes(InNodeFilterScheme[] nodeFilterSchemes) {
+        this.nodeFilterSchemes = nodeFilterSchemes;
+    }
+    public InNodeFilterScheme[] getNodeFilterSchemes() throws ParsingException {
+        return getNonEmptyArray(nodeFilterSchemes, "nodeFilterSchemes");
     }
 
     //=========================
@@ -847,6 +860,7 @@ public class InRoot implements RootClass {
             InROutputImage.class,
 
             InBucketAnalyser.class,
+            InNeighbourhoodOverview.class,
             InPostDataAnalysis.class,
 
             InAdoptionPhaseOverviewImage.class,
@@ -876,19 +890,18 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InGlobalDeffuantUncertainty.class,
-            InGroupBasedDeffuantUncertainty.class,
-            InPVactGlobalDeffuantUncertainty.class,
-            InPVactGroupBasedDeffuantUncertainty.class,
-            InUncertainty.class,
+            InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.class,
+            InPVactIndividualGlobalModerateExtremistUncertaintySupplier.class,
+            InPVactUpdatableGlobalModerateExtremistUncertainty.class,
+            InUncertaintySupplier.class,
 
-            InDisabledProcessPlanNodeFilterScheme.class,
-            InEntireNetworkNodeFilterScheme.class,
+            InDisabledNodeFilterDistanceScheme.class,
+            InEntireNetworkNodeFilterDistanceScheme.class,
             InRAProcessModel.class,
-            InRAProcessPlanMaxDistanceFilterScheme.class,
-            InRAProcessPlanNodeFilterScheme.class,
+            InMaxDistanceNodeFilterDistanceScheme.class,
+            InNodeDistanceFilterScheme.class,
             InProcessModel.class,
-            InProcessPlanNodeFilterScheme.class,
+            InNodeFilterScheme.class,
 
             InComponent.class,
             InDefaultDoActionComponent.class,
@@ -986,6 +999,7 @@ public class InRoot implements RootClass {
             InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             //eval
             InConsumerAgentEvalModule2.class,
+            InDoNothingAndContinueModule_evalgraphnode2.class,
             InRunUntilFailureModule_evalgraphnode2.class,
             //evalra
             InConsumerAgentEvalRAModule2.class,
@@ -1010,12 +1024,14 @@ public class InRoot implements RootClass {
             InImpededResetter.class,
             InLinearePercentageAgentAttributeUpdater.class,
             InReevaluatorModuleLinker.class,
+            InUncertaintySupplierReevaluator.class,
             //reeval-general
             InReevaluator2.class,
             //handler-init
             InAgentAttributeScaler.class,
             InInitializationHandler.class,
             InLinearePercentageAgentAttributeScaler.class,
+            InUncertaintySupplierInitializer.class,
             //===
 
             //special

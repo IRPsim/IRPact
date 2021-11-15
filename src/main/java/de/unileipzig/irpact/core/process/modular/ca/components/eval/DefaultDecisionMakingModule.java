@@ -12,7 +12,7 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.AdoptionResult;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.Stage;
@@ -146,15 +146,15 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
         return npvDataSupplier;
     }
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    protected NodeFilterScheme nodeFilterScheme;
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
-    protected ProcessPlanNodeFilterScheme getValidNodeFilterScheme() {
-        ProcessPlanNodeFilterScheme filter = getNodeFilterScheme();
+    protected NodeFilterScheme getValidNodeFilterScheme() {
+        NodeFilterScheme filter = getNodeFilterScheme();
         if(filter == null) {
             throw new NullPointerException("ProcessPlanNodeFilterScheme");
         }
@@ -173,8 +173,8 @@ public class DefaultDecisionMakingModule extends AbstractConsumerAgentModule imp
     protected synchronized NodeFilter getFilter0(ProcessPlan plan) {
         NodeFilter filter = filters.get(plan);
         if(filter == null) {
-            filter = getValidNodeFilterScheme().createFilter(plan);
-            filters.put(plan, filter);
+//            filter = getValidNodeFilterScheme().createFilter(plan);
+//            filters.put(plan, filter);
         }
         return filter;
     }

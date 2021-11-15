@@ -87,6 +87,12 @@
             :icon "fa fa-file-image-o" 
             :description "todo" 
             :image "LOCAL_Quantile.png"
+          } 
+          {
+            :label "UTILITY" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "UTILITY_Quantile.png"
           }
         ]
       } 

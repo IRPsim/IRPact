@@ -18,8 +18,7 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -105,9 +104,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return modelData().getLogisticFactor();
     }
 
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return getModel().getRelativeAgreementAlgorithm();
-    }
+//    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+//        return getModel().getRelativeAgreementAlgorithm();
+//    }
 
     @Override
     public ProcessPlanResult execute() throws Throwable {
@@ -872,19 +871,19 @@ public class RAProcessPlan extends RAProcessPlanBase {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertainty();
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
-        if(uncertaintyTarget == null) {
-            LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
-        } else {
-            getRelativeAgreementAlgorithm().apply(
-                    getAgent().getName(),
-                    opinionThis,
-                    uncertaintyThis,
-                    target.getName(),
-                    opinionTarget,
-                    uncertaintyTarget
-            );
-        }
+//        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
+//        if(uncertaintyTarget == null) {
+//            LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
+//        } else {
+//            getRelativeAgreementAlgorithm().apply(
+//                    getAgent().getName(),
+//                    opinionThis,
+//                    uncertaintyThis,
+//                    target.getName(),
+//                    opinionTarget,
+//                    uncertaintyTarget
+//            );
+//        }
     }
 
     //=========================

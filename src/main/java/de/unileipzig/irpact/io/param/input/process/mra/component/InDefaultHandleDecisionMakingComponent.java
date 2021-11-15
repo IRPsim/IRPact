@@ -3,8 +3,8 @@ package de.unileipzig.irpact.io.param.input.process.mra.component;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.filter.DisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.mra.ModularRAProcessModel;
 import de.unileipzig.irpact.core.process.mra.component.special.DefaultHandleDecisionMakingComponent;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -14,7 +14,7 @@ import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -176,18 +176,18 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
     }
 
     @FieldDefinition
-    public InRAProcessPlanNodeFilterScheme[] nodeFilterScheme;
+    public InNodeDistanceFilterScheme[] nodeFilterScheme;
     public boolean hasNodeFilterScheme() {
         return ParamUtil.len(nodeFilterScheme) > 0;
     }
-    public InRAProcessPlanNodeFilterScheme getNodeFilterScheme() throws ParsingException {
+    public InNodeDistanceFilterScheme getNodeFilterScheme() throws ParsingException {
         return ParamUtil.getInstance(nodeFilterScheme, "nodeFilterScheme");
     }
-    public void setNodeFilterScheme(InRAProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(InNodeDistanceFilterScheme nodeFilterScheme) {
         if(nodeFilterScheme == null) {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[0];
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[0];
         } else {
-            this.nodeFilterScheme = new InRAProcessPlanNodeFilterScheme[]{nodeFilterScheme};
+            this.nodeFilterScheme = new InNodeDistanceFilterScheme[]{nodeFilterScheme};
         }
     }
 
@@ -240,12 +240,12 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         component.setEnvironment(parser.getEnvironment());
 
         if(hasNodeFilterScheme()) {
-            InRAProcessPlanNodeFilterScheme inFilterScheme = getNodeFilterScheme();
-            ProcessPlanNodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
+            InNodeDistanceFilterScheme inFilterScheme = getNodeFilterScheme();
+            NodeFilterScheme filterScheme = parser.parseEntityTo(inFilterScheme);
             component.setNodeFilterScheme(filterScheme);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set node filter scheme '{}'", filterScheme.getName());
         } else {
-            component.setNodeFilterScheme(DisabledProcessPlanNodeFilterScheme.INSTANCE);
+            component.setNodeFilterScheme(DisabledNodeFilterScheme.INSTANCE);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "no node filter scheme specified");
         }
 

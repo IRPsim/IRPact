@@ -50,6 +50,14 @@ public class NPVModule2
     }
 
     @Override
+    public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         return dataSupplier.NPV(input.getAgent(), getCurrentYear(input));
     }

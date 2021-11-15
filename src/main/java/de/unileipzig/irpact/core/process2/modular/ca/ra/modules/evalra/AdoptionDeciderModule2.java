@@ -37,6 +37,19 @@ public class AdoptionDeciderModule2
     protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
     }
 
+    @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setThreshold(double threshold) {
         this.threshold = threshold;
     }
@@ -55,7 +68,7 @@ public class AdoptionDeciderModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         RAStage2 stage = getNonnullSubmodule().apply(input, actions);
         if(isEnabled() && stage == RAStage2.ADOPTED) {

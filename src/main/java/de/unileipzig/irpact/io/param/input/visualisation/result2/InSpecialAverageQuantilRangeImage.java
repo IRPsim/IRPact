@@ -57,6 +57,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     public static InSpecialAverageQuantilRangeImage NOV = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_NOV);
     public static InSpecialAverageQuantilRangeImage SOCIAL = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_SOCIAL);
     public static InSpecialAverageQuantilRangeImage LOCAL = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_LOCAL);
+    public static InSpecialAverageQuantilRangeImage UTILITY = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_UTILITY_LOCAL);
 
     public String _name;
 

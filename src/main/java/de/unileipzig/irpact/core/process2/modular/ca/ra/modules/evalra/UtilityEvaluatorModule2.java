@@ -52,8 +52,21 @@ public class UtilityEvaluatorModule2
     }
 
     @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleInfo(input);
+        traceModuleCall(input);
 
         double threshold = getThresholdModule().calculate(input, actions);
         double utility = getDecisionMakingModule().calculate(input, actions);

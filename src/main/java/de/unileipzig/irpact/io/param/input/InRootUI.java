@@ -19,11 +19,17 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
 import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.process.ra.*;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactIndividualGlobalModerateExtremistUncertaintySupplier;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlobalModerateExtremistUncertainty;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -33,6 +39,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
@@ -40,6 +47,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
@@ -52,14 +60,7 @@ import de.unileipzig.irpact.io.param.input.interest.InProductGroupThresholdEntry
 import de.unileipzig.irpact.io.param.input.interest.InProductThresholdInterestSupplyScheme;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.*;
-import de.unileipzig.irpact.io.param.input.process.ra.InDisabledProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InEntireNetworkNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGroupBasedDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.InEntireNetworkNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
@@ -94,6 +95,7 @@ public class InRootUI {
 
     public static final EdnPath SETT_RESULT2 = SETT.resolve(IOConstants.RESULT_DATA2).addTo(PATHS);
     public static final EdnPath SETT_RESULT2_BUCKET = SETT_RESULT2.resolve(InBucketAnalyser.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_RESULT2_NEIGHBORS = SETT_RESULT2.resolve(InNeighbourhoodOverview.thisName()).addTo(PATHS);
 
     public static final EdnPath SETT_VISURESULT2 = SETT.resolve(IOConstants.RESULT_VISUALISATION2).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_CUSTOMAVGQUANTIL = SETT_VISURESULT2.resolve(InCustomAverageQuantilRangeImage.thisName()).addTo(PATHS);
@@ -185,15 +187,15 @@ public class InRootUI {
     public static final EdnPath PROCESS2 = ROOT.resolve(IOConstants.PROCESS_MODEL2).addTo(PATHS);
 
     public static final EdnPath PROCESS_FILTER = PROCESS2.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledProcessPlanNodeFilterScheme.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_ENTIRE = PROCESS_FILTER.resolve(InEntireNetworkNodeFilterScheme.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InRAProcessPlanMaxDistanceFilterScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledNodeFilterDistanceScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_FILTER_ENTIRE = PROCESS_FILTER.resolve(InEntireNetworkNodeFilterDistanceScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InMaxDistanceNodeFilterDistanceScheme.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_UNCERT = PROCESS2.resolve(IOConstants.PROCESS_MODEL_RA_UNCERT).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GLDEFF = PROCESS_UNCERT.resolve(InGlobalDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GLDEFFPV = PROCESS_UNCERT.resolve(InPVactGlobalDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_GBDEFF = PROCESS_UNCERT.resolve(InGroupBasedDeffuantUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_BGDEFFPV = PROCESS_UNCERT.resolve(InPVactGroupBasedDeffuantUncertainty.thisName()).addTo(PATHS);
+    //public static final EdnPath PROCESS_UNCERT_GMEU = PROCESS_UNCERT.resolve(InGlobalModerateExtremistUncertainty.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_UNCERT_PVACTGMEU = PROCESS_UNCERT.resolve(InPVactUpdatableGlobalModerateExtremistUncertainty.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_UNCERT_PVACTMEUOP = PROCESS_UNCERT.resolve(InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_UNCERT_PVACTIMEU = PROCESS_UNCERT.resolve(InPVactIndividualGlobalModerateExtremistUncertaintySupplier.thisName()).addTo(PATHS);
 
     public static final EdnPath PROCESS_MODULAR3 = PROCESS2.resolve(IOConstants.PROCESS_MODULAR3).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODEL = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODEL).addTo(PATHS);
@@ -201,6 +203,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_REEVAL = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_REEVAL).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_REEVAL_LINKER = PROCESS_MODULAR3_REEVAL.resolve(InReevaluatorModuleLinker.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_REEVAL_INTEREST = PROCESS_MODULAR3_REEVAL.resolve(InAnnualInterestLogger.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_UNCERT = PROCESS_MODULAR3_REEVAL.resolve(InUncertaintySupplierReevaluator.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_REEVAL_CONSTRENO = PROCESS_MODULAR3_REEVAL.resolve(InConstructionRenovationUpdater.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_REEVAL_DEC = PROCESS_MODULAR3_REEVAL.resolve(InDecisionMakingReevaluator.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_REEVAL_IMPEDEDRESET = PROCESS_MODULAR3_REEVAL.resolve(InImpededResetter.thisName()).addTo(PATHS);
@@ -210,6 +213,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_INIT).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR = PROCESS_MODULAR3_HANDLER_INIT.resolve(InAgentAttributeScaler.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR = PROCESS_MODULAR3_HANDLER_INIT.resolve(InLinearePercentageAgentAttributeScaler.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_UNCERT = PROCESS_MODULAR3_HANDLER_INIT.resolve(InUncertaintySupplierInitializer.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_HANDLER_NEWPRODUCT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_NEWPRODUCT).addTo(PATHS);
 
     public static final EdnPath PROCESS_MODULAR3_MODULES = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODULES).addTo(PATHS);
@@ -241,6 +245,7 @@ public class InRootUI {
     public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_AVGFIN = PROCESS_MODULAR3_MODULES_INPUT.resolve(InAvgFinModule_inputgraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_EVAL).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL_UNTILFAIL = PROCESS_MODULAR3_MODULES_EVAL.resolve(InRunUntilFailureModule_evalgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL_DONOTHING = PROCESS_MODULAR3_MODULES_EVAL.resolve(InDoNothingAndContinueModule_evalgraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_EVALRA).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_YEARBASED = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InYearBasedAdoptionDeciderModule_evalragraphnode2.thisName()).addTo(PATHS);
     public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_INTEREST = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InInterestModule_evalragraphnode2.thisName()).addTo(PATHS);

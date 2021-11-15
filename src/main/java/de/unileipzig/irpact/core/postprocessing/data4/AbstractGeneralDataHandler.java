@@ -4,7 +4,6 @@ import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.FileType;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
-import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;

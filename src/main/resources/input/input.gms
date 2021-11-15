@@ -1151,6 +1151,36 @@ PARAMETER par_InBucketAnalyser_bucketRange(set_InBucketAnalyser)
 * - type: Boolean
 PARAMETER par_link_InBucketAnalyser_InConsumerAgentCalculationLoggingModule2_loggingModule(set_InBucketAnalyser,set_InConsumerAgentCalculationLoggingModule2)
 
+* - identifier: InNeighbourhoodOverview
+* - type: String
+SET set_InNeighbourhoodOverview(set_InPostDataAnalysis)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Mittels dieser Option kann die Analyse aktiviert bzw. deaktiviert.
+* - identifier: Verwenden?
+* - type: Boolean
+PARAMETER par_InNeighbourhoodOverview_enabled(set_InNeighbourhoodOverview)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als csv speichern?
+* - type: Boolean
+PARAMETER par_InNeighbourhoodOverview_storeCsv(set_InNeighbourhoodOverview)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als xlsx speichern?
+* - type: Boolean
+PARAMETER par_InNeighbourhoodOverview_storeXlsx(set_InNeighbourhoodOverview)
+
+* - description: todo
+* - identifier: Netzwerkfilter für räumliche Sicht
+* - type: Boolean
+PARAMETER par_link_InNeighbourhoodOverview_InNodeDistanceFilterScheme_nodeFilterScheme(set_InNeighbourhoodOverview,set_InNodeDistanceFilterScheme)
+
 * - identifier: InPostDataAnalysis
 * - hidden: 1
 * - type: String
@@ -1971,195 +2001,133 @@ SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme)
 * - type: Float
 PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
-* - identifier: InGlobalDeffuantUncertainty
+* - identifier: InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion
 * - type: String
-SET set_InGlobalDeffuantUncertainty(set_InUncertainty)
-
-* - default: 0.125
-* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
-* - identifier: Extremistenparameter
-* - type: Float
-PARAMETER par_InGlobalDeffuantUncertainty_extremistParameter(set_InGlobalDeffuantUncertainty)
-
-* - default: 0.05
-* - description: Legt den Wert der Unsicherheit für Extremisten fest.
-* - identifier: Unsicherheit der Extremisten
-* - type: Float
-PARAMETER par_InGlobalDeffuantUncertainty_extremistUncertainty(set_InGlobalDeffuantUncertainty)
-
-* - default: 0.2
-* - description: Legt den Wert der Unsicherheit für Moderate fest.
-* - identifier: Unsicherheit der Moderaten
-* - type: Float
-PARAMETER par_InGlobalDeffuantUncertainty_moderateUncertainty(set_InGlobalDeffuantUncertainty)
-
-* - default: 0
-* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
-* - identifier: Untere Grenze inklusive?
-* - type: Boolean
-PARAMETER par_InGlobalDeffuantUncertainty_lowerBoundInclusive(set_InGlobalDeffuantUncertainty)
-
-* - default: 0
-* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
-* - identifier: Obere Grenze inklusive?
-* - type: Boolean
-PARAMETER par_InGlobalDeffuantUncertainty_upperBoundInclusive(set_InGlobalDeffuantUncertainty)
-
-* - description: Legt die Agentengruppen fest, auf deren Basis die Unsicherheit berechnet werden soll.
-* - identifier: Betrachtete Agentengruppen
-* - type: Boolean
-PARAMETER par_link_InGlobalDeffuantUncertainty_InConsumerAgentGroup_cags(set_InGlobalDeffuantUncertainty,set_InConsumerAgentGroup)
-
-* - description: Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen.
-* - identifier: Betrachtete Attribute
-* - type: Boolean
-PARAMETER par_link_InGlobalDeffuantUncertainty_InAttributeName_attributeNames(set_InGlobalDeffuantUncertainty,set_InAttributeName)
-
-* - identifier: InGroupBasedDeffuantUncertainty
-* - type: String
-SET set_InGroupBasedDeffuantUncertainty(set_InUncertainty)
-
-* - default: 0.125
-* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
-* - identifier: Extremistenparameter
-* - type: Float
-PARAMETER par_InGroupBasedDeffuantUncertainty_extremistParameter(set_InGroupBasedDeffuantUncertainty)
-
-* - default: 0.05
-* - description: Legt den Wert der Unsicherheit für Extremisten fest.
-* - identifier: Unsicherheit der Extremisten
-* - type: Float
-PARAMETER par_InGroupBasedDeffuantUncertainty_extremistUncertainty(set_InGroupBasedDeffuantUncertainty)
-
-* - default: 0.2
-* - description: Legt den Wert der Unsicherheit für Moderate fest.
-* - identifier: Unsicherheit der Moderaten
-* - type: Float
-PARAMETER par_InGroupBasedDeffuantUncertainty_moderateUncertainty(set_InGroupBasedDeffuantUncertainty)
-
-* - default: 0
-* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
-* - identifier: Untere Grenze inklusive?
-* - type: Boolean
-PARAMETER par_InGroupBasedDeffuantUncertainty_lowerBoundInclusive(set_InGroupBasedDeffuantUncertainty)
-
-* - default: 0
-* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
-* - identifier: Obere Grenze inklusive?
-* - type: Boolean
-PARAMETER par_InGroupBasedDeffuantUncertainty_upperBoundInclusive(set_InGroupBasedDeffuantUncertainty)
-
-* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
-* - identifier: Betrachtete Agentengruppen
-* - type: Boolean
-PARAMETER par_link_InGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags(set_InGroupBasedDeffuantUncertainty,set_InConsumerAgentGroup)
-
-* - description: Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen.
-* - identifier: Betrachtete Attribute
-* - type: Boolean
-PARAMETER par_link_InGroupBasedDeffuantUncertainty_InAttributeName_attributeNames(set_InGroupBasedDeffuantUncertainty,set_InAttributeName)
-
-* - identifier: InPVactGlobalDeffuantUncertainty
-* - type: String
-SET set_InPVactGlobalDeffuantUncertainty(set_InUncertainty)
+SET set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion(set_InUncertaintySupplier)
 
 * - default: 0.125
 * - domain: [0,1]
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
-PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistParameter(set_InPVactGlobalDeffuantUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
-PARAMETER par_InPVactGlobalDeffuantUncertainty_extremistUncertainty(set_InPVactGlobalDeffuantUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
-PARAMETER par_InPVactGlobalDeffuantUncertainty_moderateUncertainty(set_InPVactGlobalDeffuantUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InPVactGlobalDeffuantUncertainty_lowerBoundInclusive(set_InPVactGlobalDeffuantUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InPVactGlobalDeffuantUncertainty_upperBoundInclusive(set_InPVactGlobalDeffuantUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
-* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
-* - identifier: Betrachtete Agentengruppen
-* - type: Boolean
-PARAMETER par_link_InPVactGlobalDeffuantUncertainty_InConsumerAgentGroup_cags(set_InPVactGlobalDeffuantUncertainty,set_InConsumerAgentGroup)
-
-* - identifier: InPVactGroupBasedDeffuantUncertainty
+* - identifier: InPVactIndividualGlobalModerateExtremistUncertaintySupplier
 * - type: String
-SET set_InPVactGroupBasedDeffuantUncertainty(set_InUncertainty)
+SET set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier(set_InUncertaintySupplier)
 
 * - default: 0.125
+* - domain: [0,1]
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
-PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistParameter(set_InPVactGroupBasedDeffuantUncertainty)
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
-PARAMETER par_InPVactGroupBasedDeffuantUncertainty_extremistUncertainty(set_InPVactGroupBasedDeffuantUncertainty)
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
-PARAMETER par_InPVactGroupBasedDeffuantUncertainty_moderateUncertainty(set_InPVactGroupBasedDeffuantUncertainty)
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 0
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive(set_InPVactGroupBasedDeffuantUncertainty)
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 0
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive(set_InPVactGroupBasedDeffuantUncertainty)
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_upperBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
-* - description: Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll.
-* - identifier: Betrachtete Agentengruppen
+* - identifier: InPVactUpdatableGlobalModerateExtremistUncertainty
+* - type: String
+SET set_InPVactUpdatableGlobalModerateExtremistUncertainty(set_InUncertaintySupplier)
+
+* - default: 0.125
+* - domain: [0,1]
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0.05
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0.2
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_link_InPVactGroupBasedDeffuantUncertainty_InConsumerAgentGroup_cags(set_InPVactGroupBasedDeffuantUncertainty,set_InConsumerAgentGroup)
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
-* - identifier: InUncertainty
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - identifier: InUncertaintySupplier
 * - hidden: 1
 * - type: String
-SET set_InUncertainty(*)
+SET set_InUncertaintySupplier(*)
 
-* - identifier: InDisabledProcessPlanNodeFilterScheme
+* - identifier: InDisabledNodeFilterDistanceScheme
 * - type: String
-SET set_InDisabledProcessPlanNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
+SET set_InDisabledNodeFilterDistanceScheme(set_InNodeDistanceFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Float
-PARAMETER par_InDisabledProcessPlanNodeFilterScheme_placeholder(set_InDisabledProcessPlanNodeFilterScheme)
+PARAMETER par_InDisabledNodeFilterDistanceScheme_placeholder(set_InDisabledNodeFilterDistanceScheme)
 
-* - identifier: InEntireNetworkNodeFilterScheme
+* - identifier: InEntireNetworkNodeFilterDistanceScheme
 * - type: String
-SET set_InEntireNetworkNodeFilterScheme(set_InRAProcessPlanNodeFilterScheme)
+SET set_InEntireNetworkNodeFilterDistanceScheme(set_InNodeDistanceFilterScheme)
 
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Float
-PARAMETER par_InEntireNetworkNodeFilterScheme_placeholder(set_InEntireNetworkNodeFilterScheme)
+PARAMETER par_InEntireNetworkNodeFilterDistanceScheme_placeholder(set_InEntireNetworkNodeFilterDistanceScheme)
 
 * - identifier: InRAProcessModel
 * - type: String
@@ -2348,7 +2316,7 @@ PARAMETER par_InRAProcessModel_adoptionCertaintyFactor(set_InRAProcessModel)
 * - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
 * - identifier: Netzwerkfilter für räumliche Sicht
 * - type: Boolean
-PARAMETER par_link_InRAProcessModel_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InRAProcessModel,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InRAProcessModel_InNodeDistanceFilterScheme_nodeFilterScheme(set_InRAProcessModel,set_InNodeDistanceFilterScheme)
 
 * - description: Legt die zu nutzende PV-Datei fest.
 * - identifier: PV-Datei
@@ -2358,41 +2326,41 @@ PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InP
 * - description: Legt die Unsicherheiten, welche von diesem Modell verwendet werden sollen.
 * - identifier: Unsicherheiten
 * - type: Boolean
-PARAMETER par_link_InRAProcessModel_InUncertainty_uncertainties(set_InRAProcessModel,set_InUncertainty)
+PARAMETER par_link_InRAProcessModel_InUncertaintySupplier_uncertainties(set_InRAProcessModel,set_InUncertaintySupplier)
 
 * - description: todo
 * - identifier: agent initializers
 * - type: Boolean
 PARAMETER par_link_InRAProcessModel_InNewProductHandler_newProductHandlers(set_InRAProcessModel,set_InNewProductHandler)
 
-* - identifier: InRAProcessPlanMaxDistanceFilterScheme
+* - identifier: InMaxDistanceNodeFilterDistanceScheme
 * - type: String
-SET set_InRAProcessPlanMaxDistanceFilterScheme(set_InRAProcessPlanNodeFilterScheme)
+SET set_InMaxDistanceNodeFilterDistanceScheme(set_InNodeDistanceFilterScheme)
 
 * - description: Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell.
 * - identifier: Maximale Entfernung
 * - type: Float
-PARAMETER par_InRAProcessPlanMaxDistanceFilterScheme_maxDistance(set_InRAProcessPlanMaxDistanceFilterScheme)
+PARAMETER par_InMaxDistanceNodeFilterDistanceScheme_maxDistance(set_InMaxDistanceNodeFilterDistanceScheme)
 
 * - description: Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Grenzwert inklusive?
 * - type: Boolean
-PARAMETER par_InRAProcessPlanMaxDistanceFilterScheme_inclusive(set_InRAProcessPlanMaxDistanceFilterScheme)
+PARAMETER par_InMaxDistanceNodeFilterDistanceScheme_inclusive(set_InMaxDistanceNodeFilterDistanceScheme)
 
-* - identifier: InRAProcessPlanNodeFilterScheme
+* - identifier: InNodeDistanceFilterScheme
 * - hidden: 1
 * - type: String
-SET set_InRAProcessPlanNodeFilterScheme(set_InProcessPlanNodeFilterScheme)
+SET set_InNodeDistanceFilterScheme(set_InNodeFilterScheme)
 
 * - identifier: InProcessModel
 * - hidden: 1
 * - type: String
 SET set_InProcessModel(*)
 
-* - identifier: InProcessPlanNodeFilterScheme
+* - identifier: InNodeFilterScheme
 * - hidden: 1
 * - type: String
-SET set_InProcessPlanNodeFilterScheme(*)
+SET set_InNodeFilterScheme(*)
 
 * - identifier: InComponent
 * - hidden: 1
@@ -2493,7 +2461,7 @@ PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile(set_In
 * - description: todo
 * - identifier: nodeFilterScheme
 * - type: Boolean
-PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultHandleDecisionMakingComponent,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InNodeDistanceFilterScheme_nodeFilterScheme(set_InDefaultHandleDecisionMakingComponent,set_InNodeDistanceFilterScheme)
 
 * - identifier: InDefaultHandleFeasibilityComponent
 * - type: String
@@ -2680,7 +2648,7 @@ PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent(
 
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InUncertainty_uncertainties(set_InModularRAProcessModel,set_InUncertainty)
+PARAMETER par_link_InModularRAProcessModel_InUncertaintySupplier_uncertainties(set_InModularRAProcessModel,set_InUncertaintySupplier)
 
 * - color: Blue
 * - shape: gear
@@ -2899,7 +2867,7 @@ PARAMETER par_InShareOfAdopterInLocalNetworkModule_inputgraphnode_weight(set_InS
 * - description: todo
 * - identifier: node filter scheme
 * - type: Boolean
-PARAMETER par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode,set_InNodeDistanceFilterScheme)
 
 * - color: Green
 * - shape: square
@@ -2940,7 +2908,7 @@ PARAMETER par_InSocialComponentModule_inputgraphnode_localWeight(set_InSocialCom
 * - description: todo
 * - identifier: node filter scheme
 * - type: Boolean
-PARAMETER par_link_InSocialComponentModule_inputgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InSocialComponentModule_inputgraphnode,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InSocialComponentModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InSocialComponentModule_inputgraphnode,set_InNodeDistanceFilterScheme)
 
 * - color: Blue
 * - shape: gear
@@ -3101,7 +3069,7 @@ PARAMETER par_InDefaultActionModule_evalgraphnode_chanceDivergence(set_InDefault
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultActionModule_evalgraphnode_InUncertainty_uncertainties(set_InDefaultActionModule_evalgraphnode,set_InUncertainty)
+PARAMETER par_link_InDefaultActionModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultActionModule_evalgraphnode,set_InUncertaintySupplier)
 
 * - color: Red
 * - shape: diamond
@@ -3171,7 +3139,7 @@ PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile(s
 * - description: todo
 * - identifier: node filter scheme
 * - type: Boolean
-PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule_evalgraphnode,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule_evalgraphnode,set_InNodeDistanceFilterScheme)
 
 * - color: Red
 * - shape: diamond
@@ -3238,7 +3206,7 @@ PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_chanceDivergence(set_InDe
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertainty_uncertainties(set_InDefaultFeasibilityModule_evalgraphnode,set_InUncertainty)
+PARAMETER par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultFeasibilityModule_evalgraphnode,set_InUncertaintySupplier)
 
 * - color: Red
 * - shape: diamond
@@ -3305,7 +3273,7 @@ PARAMETER par_InDefaultInterestModule_evalgraphnode_chanceDivergence(set_InDefau
 * - description: todo
 * - identifier: uncertainties
 * - type: Boolean
-PARAMETER par_link_InDefaultInterestModule_evalgraphnode_InUncertainty_uncertainties(set_InDefaultInterestModule_evalgraphnode,set_InUncertainty)
+PARAMETER par_link_InDefaultInterestModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultInterestModule_evalgraphnode,set_InUncertaintySupplier)
 
 * - color: Red
 * - shape: diamond
@@ -3589,62 +3557,111 @@ SET set_InCommunicationModule_actiongraphnode2(set_InConsumerAgentActionModule2)
 
 * - default: 3
 * - description: todo
-* - identifier: adopterPoints
+* - identifier: Adopter points
 * - type: Integer
 PARAMETER par_InCommunicationModule_actiongraphnode2_adopterPoints(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 2
 * - description: todo
-* - identifier: interestedPoints
+* - identifier: Interested points
 * - type: Integer
 PARAMETER par_InCommunicationModule_actiongraphnode2_interestedPoints(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 1
 * - description: todo
-* - identifier: awarePoints
+* - identifier: Aware points
 * - type: Integer
 PARAMETER par_InCommunicationModule_actiongraphnode2_awarePoints(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0
 * - description: todo
-* - identifier: unknownPoints
+* - identifier: Unknown üpoints
 * - type: Integer
 PARAMETER par_InCommunicationModule_actiongraphnode2_unknownPoints(set_InCommunicationModule_actiongraphnode2)
 
+* - default: 1
+* - domain: [0|1]
+* - description: Diese Option aktiviert bzw. deaktiviert das relative agreement.
+* - identifier: Relative agreement nutzen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raEnabled(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!
+* - identifier: Relative agreement loggen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raLoggingEnabled(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt.
+* - identifier: Meinung loggen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raOpinionLogging(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt.
+* - identifier: Unsicherheit loggen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raUnceraintyLogging(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Kopfzeile schreiben?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raPrintHeader(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als csv speichern?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raKeepCsv(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als xlsx speichern?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raStoreXlsx(set_InCommunicationModule_actiongraphnode2)
+
 * - default: 0.5
 * - description: todo
-* - identifier: speedOfConvergence
+* - identifier: Speed of convergence
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_speedOfConvergence(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0.25
 * - description: todo
-* - identifier: attitudeGap
+* - identifier: Attitude gap
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_attitudeGap(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0.5
 * - description: todo
-* - identifier: chanceNeutral
+* - identifier: Wahrscheinllichkeit: Neutral
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_chanceNeutral(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0.25
 * - description: todo
-* - identifier: chanceConvergence
+* - identifier: Wahrscheinllichkeit: Konvergenz
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_chanceConvergence(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0.25
 * - description: todo
-* - identifier: chanceDivergence
+* - identifier: Wahrscheinllichkeit: Divergenz
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_chanceDivergence(set_InCommunicationModule_actiongraphnode2)
 
 * - description: todo
-* - identifier: uncertainties
+* - identifier: Unsicherheiten
 * - type: Boolean
-PARAMETER par_link_InCommunicationModule_actiongraphnode2_InUncertainty_uncertainties(set_InCommunicationModule_actiongraphnode2,set_InUncertainty)
+PARAMETER par_link_InCommunicationModule_actiongraphnode2_InUncertaintySupplier_uncertaintySuppliers(set_InCommunicationModule_actiongraphnode2,set_InUncertaintySupplier)
 
 * - identifier: InConsumerAgentActionModule2
 * - hidden: 1
@@ -3929,7 +3946,7 @@ PARAMETER par_InLocalShareOfAdopterModule_inputgraphnode2_maxToStore(set_InLocal
 * - description: todo
 * - identifier: nodeFilterScheme
 * - type: Boolean
-PARAMETER par_link_InLocalShareOfAdopterModule_inputgraphnode2_InRAProcessPlanNodeFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule_inputgraphnode2,set_InRAProcessPlanNodeFilterScheme)
+PARAMETER par_link_InLocalShareOfAdopterModule_inputgraphnode2_InNodeDistanceFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule_inputgraphnode2,set_InNodeDistanceFilterScheme)
 
 * - fill: #CAFE12
 * - color: #CAFE12
@@ -3993,12 +4010,26 @@ SET set_InConsumerAgentCalculationLoggingModule2(set_InConsumerAgentCalculationM
 * - type: String
 SET set_InCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
 
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Reevaluierungsaufrufe loggen?
+* - type: Boolean
+PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall(set_InCsvValueLoggingModule_calcloggraphnode2)
+
 * - default: 1
 * - domain: [0|1]
 * - description: todo
-* - identifier: skipReevaluatorCall
+* - identifier: Normale Aufrufe loggen?
 * - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_skipReevaluatorCall(set_InCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_logDefaultCall(set_InCsvValueLoggingModule_calcloggraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Kopfzeile schreiben?
+* - type: Boolean
+PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_printHeader(set_InCsvValueLoggingModule_calcloggraphnode2)
 
 * - default: 0
 * - domain: [0|1]
@@ -4019,12 +4050,26 @@ PARAMETER par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalc
 * - type: String
 SET set_InMinimalCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
 
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Reevaluierungsaufrufe loggen?
+* - type: Boolean
+PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
+
 * - default: 1
 * - domain: [0|1]
 * - description: todo
-* - identifier: skipReevaluatorCall
+* - identifier: Normale Aufrufe loggen?
 * - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_skipReevaluatorCall(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_logDefaultCall(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Kopfzeile schreiben?
+* - type: Boolean
+PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_printHeader(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
 
 * - default: 0
 * - domain: [0|1]
@@ -4042,6 +4087,18 @@ PARAMETER par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAg
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentEvalModule2(set_InConsumerAgentModule2)
+
+* - fill: Blue
+* - color: Blue
+* - shape: pentagon
+* - identifier: InDoNothingAndContinueModule_evalgraphnode2
+* - type: String
+SET set_InDoNothingAndContinueModule_evalgraphnode2(set_InConsumerAgentEvalModule2)
+
+* - description: todo
+* - identifier: ---
+* - type: Float
+PARAMETER par_InDoNothingAndContinueModule_evalgraphnode2_placeholder(set_InDoNothingAndContinueModule_evalgraphnode2)
 
 * - fill: Blue
 * - color: Blue
@@ -4300,6 +4357,21 @@ SET set_InReevaluatorModuleLinker(set_InReevaluator2)
 * - type: Boolean
 PARAMETER par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules(set_InReevaluatorModuleLinker,set_InConsumerAgentReevaluationModule2)
 
+* - identifier: InUncertaintySupplierReevaluator
+* - type: String
+SET set_InUncertaintySupplierReevaluator(set_InReevaluator2)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InUncertaintySupplierReevaluator_priorty(set_InUncertaintySupplierReevaluator)
+
+* - description: todo
+* - identifier: Unsicherheiten:
+* - type: Boolean
+PARAMETER par_link_InUncertaintySupplierReevaluator_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintySupplierReevaluator,set_InUncertaintySupplier)
+
 * - identifier: InReevaluator2
 * - hidden: 1
 * - type: String
@@ -4308,6 +4380,12 @@ SET set_InReevaluator2(*)
 * - identifier: InAgentAttributeScaler
 * - type: String
 SET set_InAgentAttributeScaler(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InAgentAttributeScaler_priority(set_InAgentAttributeScaler)
 
 * - description: todo
 * - identifier: Attribut
@@ -4322,6 +4400,12 @@ SET set_InInitializationHandler(*)
 * - identifier: InLinearePercentageAgentAttributeScaler
 * - type: String
 SET set_InLinearePercentageAgentAttributeScaler(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InLinearePercentageAgentAttributeScaler_priority(set_InLinearePercentageAgentAttributeScaler)
 
 * - default: 1
 * - description: todo
@@ -4339,6 +4423,21 @@ PARAMETER par_InLinearePercentageAgentAttributeScaler_nValue(set_InLinearePercen
 * - identifier: Attribut
 * - type: Boolean
 PARAMETER par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute(set_InLinearePercentageAgentAttributeScaler,set_InAttributeName)
+
+* - identifier: InUncertaintySupplierInitializer
+* - type: String
+SET set_InUncertaintySupplierInitializer(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InUncertaintySupplierInitializer_priority(set_InUncertaintySupplierInitializer)
+
+* - description: todo
+* - identifier: Unsicherheiten
+* - type: Boolean
+PARAMETER par_link_InUncertaintySupplierInitializer_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintySupplierInitializer,set_InUncertaintySupplier)
 
 * - default: 0
 * - domain: [0|1]

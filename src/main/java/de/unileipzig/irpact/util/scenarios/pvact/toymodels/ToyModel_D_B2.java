@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalDeffuantUncertainty;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
@@ -143,15 +142,6 @@ public class ToyModel_D_B2 extends AbstractToyModel {
     @Override
     protected void createTopology(InRoot root, String name) {
         createFreeTopology(root, name);
-    }
-
-    @Override
-    protected InPVactGlobalDeffuantUncertainty createUncertainty(String name) {
-        InPVactGlobalDeffuantUncertainty uncert = createGlobalUnvertainty(name, cagManager.getCagsArray());
-        uncert.setExtremistParameter(0.1);
-        uncert.setModerateUncertainty(0.2);
-        uncert.setExtremistUncertainty(0.05);
-        return uncert;
     }
 
     @Override

@@ -56,6 +56,40 @@ public abstract class AbstractUniformMultiModule1_2<I, O, I2, O2, M extends Modu
     protected abstract void initializeSelf(SimulationEnvironment environment) throws Throwable;
 
     @Override
+    public void initializeNewInput(I input) throws Throwable {
+        traceNewInput(input);
+        initializeNewInputSelf(input);
+        initializeNewInputSubmodules(input);
+    }
+
+    protected void initializeNewInputSubmodules(I input) throws Throwable {
+        I2 input2 = castInput(input);
+        getNonnullSubmodule(). initializeNewInput(input2);
+    }
+
+    protected abstract I2 castInput(I input);
+
+    protected abstract void initializeNewInputSelf(I input) throws Throwable;
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setupSelf(environment);
+        setupSubmodules(environment);
+        setSetupCalled();
+    }
+
+    protected void setupSubmodules(SimulationEnvironment environment) throws Throwable {
+        getNonnullSubmodule().setup(environment);
+    }
+
+    protected abstract void setupSelf(SimulationEnvironment environment) throws Throwable;
+
+    @Override
     public int getSubmoduleCount() {
         return 1;
     }

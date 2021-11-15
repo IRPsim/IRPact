@@ -15,8 +15,7 @@ import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -27,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class DefaultModularScenario extends AbstractScenario implements DefaultScenarioFactory {
 
     public static final int REVISION = 0;
@@ -77,34 +77,34 @@ public class DefaultModularScenario extends AbstractScenario implements DefaultS
         InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topology");
 
         //process
-        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
-        uncertainty.setName("Unvertainty");
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
+//        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+//        uncertainty.setName("Unvertainty");
+//        uncertainty.setDefaultValues();
+//        uncertainty.setConsumerAgentGroups(cags);
 
         InDefaultActionModule_evalgraphnode actionModule = new InDefaultActionModule_evalgraphnode();
         actionModule.setName("ACTION");
         actionModule.setDefaultValues();
-        actionModule.setUncertainty(uncertainty);
+//        actionModule.setUncertainty(uncertainty);
         actionModule.setSpeedOfConvergence(0);
 
         InDefaultInterestModule_evalgraphnode interestModule = new InDefaultInterestModule_evalgraphnode();
         interestModule.setName("INTEREST");
         interestModule.setDefaultValues();
-        interestModule.setUncertainty(uncertainty);
+//        interestModule.setUncertainty(uncertainty);
         interestModule.setSpeedOfConvergence(0);
 
         InDefaultFeasibilityModule_evalgraphnode feasibilityModule = new InDefaultFeasibilityModule_evalgraphnode();
         feasibilityModule.setName("FEASIBILITY");
         feasibilityModule.setDefaultValues();
-        feasibilityModule.setUncertainty(uncertainty);
+//        feasibilityModule.setUncertainty(uncertainty);
         feasibilityModule.setSpeedOfConvergence(0);
 
         InDefaultDecisionMakingModule_evalgraphnode decisionModule = new InDefaultDecisionMakingModule_evalgraphnode();
         decisionModule.setName("DECISION");
         decisionModule.setDefaultValues();
         decisionModule.setPvFile(pvFile);
-        decisionModule.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
+        decisionModule.setNodeFilterScheme(new InMaxDistanceNodeFilterDistanceScheme("MaxDistance", 100, true));
 
         InStageEvaluationModule_evalgraphnode stageModule = new InStageEvaluationModule_evalgraphnode();
         stageModule.setName("PROCESS_STAGE_HANDLER");
