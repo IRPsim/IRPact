@@ -44,6 +44,10 @@ public class FeasibilityModule2
     protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
     }
 
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setActionModule(VoidModule2<ConsumerAgentData2> module) {
         setSubmodule(module);
     }

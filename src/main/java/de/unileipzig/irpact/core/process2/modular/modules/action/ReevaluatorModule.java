@@ -78,6 +78,19 @@ public class ReevaluatorModule<I>
     }
 
     @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
+        for(Module2<I, ?> submodule: MODULES) {
+            submodule.setup(environment);
+        }
+    }
+
+    @Override
     public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
         init(environment);
     }
@@ -91,6 +104,20 @@ public class ReevaluatorModule<I>
         for(Module2<I, ?> submodule: MODULES) {
             submodule.initialize(environment);
         }
+    }
+
+    @Override
+    public boolean reevaluateGlobal() {
+        return false;
+    }
+
+    @Override
+    public void reevaluate() throws Throwable {
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return true;
     }
 
     @Override

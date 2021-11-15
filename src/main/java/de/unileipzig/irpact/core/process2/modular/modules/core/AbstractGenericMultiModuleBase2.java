@@ -85,6 +85,26 @@ public abstract class AbstractGenericMultiModuleBase2<I, O, I2>
 
     protected abstract void initializeNewInputSelf(I input) throws Throwable;
 
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setupSelf(environment);
+        setupSubmodules(environment);
+        setSetupCalled();
+    }
+
+    protected void setupSubmodules(SimulationEnvironment environment) throws Throwable {
+        for(int i = 0; i < getSubmoduleCount(); i++) {
+            getNonnullSubmodule(i).setup(environment);
+        }
+    }
+
+    protected abstract void setupSelf(SimulationEnvironment environment) throws Throwable;
+
     protected List<String> listSubmoduleNames() {
         return IntStream.range(0, getSubmoduleCount())
                 .mapToObj(this::getSubmodule)

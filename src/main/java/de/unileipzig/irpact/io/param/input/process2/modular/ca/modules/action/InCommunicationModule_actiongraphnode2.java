@@ -59,7 +59,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         addEntryWithDefault(res, thisClass(), "unknownPoints", asValue(RAModelData.DEFAULT_UNKNOWN_POINTS));
         addEntryWithDefaultAndDomain(res, thisClass(), "raEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "raLoggingEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raOpinionLogging", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raUnceraintyLogging", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raPrintHeader", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raKeepCsv", VALUE_FALSE, DOMAIN_BOOLEAN);
+        addEntryWithDefaultAndDomain(res, thisClass(), "raStoreXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefault(res, thisClass(), "speedOfConvergence", asValue(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
         addEntryWithDefault(res, thisClass(), "attitudeGap", asValue(RAConstants.DEFAULT_ATTIDUTE_GAP));
         addEntryWithDefault(res, thisClass(), "chanceNeutral", asValue(RAConstants.DEFAULT_NEUTRAL_CHANCE));
@@ -134,12 +138,48 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
-    public boolean storeXlsx = true;
-    public void setStoreXlsx(boolean storeXlsx) {
-        this.storeXlsx = storeXlsx;
+    public boolean raOpinionLogging = true;
+    public void setRaOpinionLogging(boolean raOpinionLogging) {
+        this.raOpinionLogging = raOpinionLogging;
     }
-    public boolean isStoreXlsx() {
-        return storeXlsx;
+    public boolean isRaOpinionLogging() {
+        return raOpinionLogging;
+    }
+
+    @FieldDefinition
+    public boolean raUnceraintyLogging = true;
+    public void setRaUnceraintyLogging(boolean raUnceraintyLogging) {
+        this.raUnceraintyLogging = raUnceraintyLogging;
+    }
+    public boolean isRaUnceraintyLogging() {
+        return raUnceraintyLogging;
+    }
+
+    @FieldDefinition
+    public boolean raPrintHeader = true;
+    public void setRaPrintHeader(boolean raPrintHeader) {
+        this.raPrintHeader = raPrintHeader;
+    }
+    public boolean isRaPrintHeader() {
+        return raPrintHeader;
+    }
+
+    @FieldDefinition
+    public boolean raKeepCsv = false;
+    public void setRaKeepCsv(boolean raKeepCsv) {
+        this.raKeepCsv = raKeepCsv;
+    }
+    public boolean isRaKeepCsv() {
+        return raKeepCsv;
+    }
+
+    @FieldDefinition
+    public boolean raStoreXlsx = true;
+    public void setRaStoreXlsx(boolean raStoreXlsx) {
+        this.raStoreXlsx = raStoreXlsx;
+    }
+    public boolean isRaStoreXlsx() {
+        return raStoreXlsx;
     }
 
     @FieldDefinition
@@ -239,7 +279,9 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         alg.setName(getName() + "_RAALG");
         alg.setEnabled(isRaEnabled());
         alg.setLoggingEnabled(isRaLoggingEnabled());
-        alg.setStoreXlsx(isStoreXlsx());
+        alg.setStoreXlsx(isRaStoreXlsx());
+        alg.setKeepCsv(isRaKeepCsv());
+        alg.setPrintHeader(isRaPrintHeader());
         alg.setBaseName(getName());
         alg.setRnd(parser.deriveRnd());
         alg.setAttitudeGap(getAttitudeGap());
@@ -247,9 +289,9 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         alg.setWeight(AttitudeGap.NEUTRAL, getChanceNeutral());
         alg.setWeight(AttitudeGap.CONVERGENCE, getChanceConvergence());
         alg.setWeight(AttitudeGap.DIVERGENCE, getChanceDivergence());
-        alg.setLoggingMode(LoggableAttitudeGapRelativeAgreementAlgorithm2.LoggingMode.OPINION);
+        alg.setLoggingMode(LoggableAttitudeGapRelativeAgreementAlgorithm2.LoggingMode.get(isRaOpinionLogging(), isRaUnceraintyLogging()));
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
-        LOGGER.trace("LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' enabled={}, logging={}", alg.getName(), alg.isEnabled(), alg.isLoggingEnabled());
+        LOGGER.trace("LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' enabled={}, logging={}, mode={}", alg.getName(), alg.isEnabled(), alg.isLoggingEnabled(), alg.getLoggingMode());
         module.setRelativeAgreementAlgorithm(alg);
 
         return module;

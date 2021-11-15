@@ -79,7 +79,7 @@ public final class RAConstants {
         return ParamUtil.concData(name, UNCERTAINTY_SUFFIX);
     }
 
-    public static String[] UNCERTAINTY_ATTRIBUTES = { NOVELTY_SEEKING, DEPENDENT_JUDGMENT_MAKING, ENVIRONMENTAL_CONCERN };
+    public static String[] UNCERTAINTY_ATTRIBUTES = { NOVELTY_SEEKING, ENVIRONMENTAL_CONCERN };
 
     public static String[] DEFAULT_ATTRIBUTES = {
             PURCHASE_POWER_EUR,

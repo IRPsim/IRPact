@@ -1478,22 +1478,82 @@ InMaxDistanceNodeFilterDistanceScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
-InGlobalModerateExtremistUncertainty:
+InUpdatableGlobalModerateExtremistUncertainty:
   edn_label: "Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
   edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die verwendeten Attribute sind: NOV, ENV und DJM."
-InGlobalModerateExtremistUncertainty_extremistParameter:
+InUpdatableGlobalModerateExtremistUncertainty_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InGlobalModerateExtremistUncertainty_extremistUncertainty:
+InUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InGlobalModerateExtremistUncertainty_moderateUncertainty:
+InUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InGlobalModerateExtremistUncertainty_lowerBoundInclusive:
+InUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InGlobalModerateExtremistUncertainty_upperBoundInclusive:
+InUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+InUpdatableGlobalModerateExtremistUncertainty_attributeNames:
+  gams_identifier: "Attribute"
+  gams_description: "Legt die Attribute fest, welche eine Unsicherheit erhalten sollen."
+
+InPVactUpdatableGlobalModerateExtremistUncertainty:
+  edn_label: "Zeitlich aktualisierbare Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten und unterstützt zeitbasierte Aktualisierungen. Die verwendeten Attribute sind NOV und ENV."
+InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion:
+  edn_label: "Hochdynamische Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die Bereiche werden bei jeder Meinungsänderung angepasst. Die verwendeten Attribute sind NOV und ENV."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier:
+  edn_label: "Individuell aktualisierte Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Bei Änderungen passt jeder Agent seine eigene Unsicherheit an. Die verwendeten Attribute sind NOV und ENV."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
@@ -2302,6 +2362,16 @@ InReevaluatorModuleLinker_modules:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
 
+InUncertaintySupplierReevaluator:
+  edn_label: "Updater für Unsicherheiten"
+  edn_description: "todo"
+InUncertaintySupplierReevaluator_priorty:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InUncertaintySupplierReevaluator_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten:"
+  gams_description: "todo"
+
 # Handler
 process_modular3_PV_handler:
   edn_label: "Konfiguratoren"
@@ -2315,6 +2385,9 @@ process_modular3_PV_handler_init:
 InAgentAttributeScaler:
   edn_label: "Agentattributskalierer"
   edn_description: "todo; newValue = (oldValue - min) \\/ (max - min)"
+InAgentAttributeScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 InAgentAttributeScaler_attribute:
   gams_identifier: "Attribut"
   gams_description: "todo"
@@ -2322,6 +2395,9 @@ InAgentAttributeScaler_attribute:
 InLinearePercentageAgentAttributeScaler:
   edn_label: "Fancy Agentattributskalierer"
   edn_description: "todo; y = m * x + n"
+InLinearePercentageAgentAttributeScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 InLinearePercentageAgentAttributeScaler_mValue:
   gams_identifier: "m"
   gams_description: "todo"
@@ -2331,6 +2407,17 @@ InLinearePercentageAgentAttributeScaler_nValue:
 InLinearePercentageAgentAttributeScaler_attribute:
   gams_identifier: "Attribut"
   gams_description: "todo"
+
+InUncertaintySupplierInitializer:
+  edn_label: "Initialisierer für Unsicherheiten"
+  edn_description: "todo; newValue = (oldValue - min) \\/ (max - min)"
+InUncertaintySupplierInitializer_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InUncertaintySupplierInitializer_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten"
+  gams_description: "todo"
+
 
 process_modular3_PV_handler_newproduct:
   edn_label: "Neue Produkte"
@@ -2367,7 +2454,19 @@ InCommunicationModule_actiongraphnode2_raEnabled:
 InCommunicationModule_actiongraphnode2_raLoggingEnabled:
   gams_identifier: "Relative agreement loggen?"
   gams_description: "Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!"
-InCommunicationModule_actiongraphnode2_storeXlsx:
+InCommunicationModule_actiongraphnode2_raPrintHeader:
+  gams_identifier: "Kopfzeile schreiben?"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_raOpinionLogging:
+  gams_identifier: "Meinung loggen?"
+  gams_description: "Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt."
+InCommunicationModule_actiongraphnode2_raUnceraintyLogging:
+  gams_identifier: "Unsicherheit loggen?"
+  gams_description: "Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt."
+InCommunicationModule_actiongraphnode2_raKeepCsv:
+  gams_identifier: "Als csv speichern?"
+  gams_description: "todo"
+InCommunicationModule_actiongraphnode2_raStoreXlsx:
   gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
 InCommunicationModule_actiongraphnode2_speedOfConvergence:

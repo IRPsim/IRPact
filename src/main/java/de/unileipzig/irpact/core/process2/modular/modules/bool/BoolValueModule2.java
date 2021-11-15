@@ -44,6 +44,11 @@ public class BoolValueModule2<I>
     }
 
     @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        traceModuleSetup();
+    }
+
+    @Override
     public void initializeNewInput(I input) throws Throwable {
         traceNewInput(input);
     }

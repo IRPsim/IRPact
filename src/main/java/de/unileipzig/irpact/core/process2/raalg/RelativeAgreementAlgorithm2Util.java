@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.core.process2.raalg;
 
+import de.unileipzig.irpact.core.process.ra.RAConstants;
+
 /**
  * @author Daniel Abitz
  */
@@ -58,8 +60,8 @@ public final class RelativeAgreementAlgorithm2Util {
     @SuppressWarnings("ConstantConditions")
     public static boolean mutualRa(boolean positive, double xi, double ui, double xj, double uj, double m, double[] influence, int off) {
         boolean changed = false;
-        changed |= ra(positive, xi, ui, xj, uj, m, influence, off + 2);
-        changed |= ra(positive, xj, uj, xi, ui, m, influence, off);
+        changed |= ra(positive, xi, ui, xj, uj, m, influence, off + 2); //i->j, [2]=xj, [3]=uj
+        changed |= ra(positive, xj, uj, xi, ui, m, influence, off); //j->i, [0]=xi, [1]=ui
         return changed;
     }
 }

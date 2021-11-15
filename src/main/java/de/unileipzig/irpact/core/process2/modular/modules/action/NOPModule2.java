@@ -31,12 +31,27 @@ public class NOPModule2<I>
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
+        setInitalized();
     }
 
     @Override
     public void initializeNewInput(I input) throws Throwable {
         traceNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
     }
 
     @Override

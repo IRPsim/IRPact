@@ -2,8 +2,8 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.IntStream;
 
 /**
@@ -17,7 +17,13 @@ public interface Settings {
 
     void apply(MainCommandLineOptions clOptions);
 
-    boolean prefereCsv();
+    //=========================
+    //File
+    //=========================
+
+    Path getOutputDir();
+
+    Path getDownloadDir();
 
     //=========================
     //run and previous run

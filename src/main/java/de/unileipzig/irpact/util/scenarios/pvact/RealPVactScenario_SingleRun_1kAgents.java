@@ -10,7 +10,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistrib
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalModerateExtremistUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * @author Daniel Abitz
  */
-public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
+public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario {
 
     public static final int REVISION = 0;
 
@@ -36,7 +37,7 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
 
     public Path xlsx;
 
-    public RealPVactScenario03SingleRun(String name, String creator, String description) {
+    public RealPVactScenario_SingleRun_1kAgents(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
     }
@@ -67,6 +68,21 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
         grp.setInitialProductInterest(dirac0);                    //D6 -
 
         return grp;
+    }
+
+    protected InUncertaintySupplier createUncertainty(String name) {
+        return createInPVactUpdatableGlobalModerateExtremistUncertainty(
+                name,
+                RAConstants.DEFAULT_EXTREMIST_RATE,
+                RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY,
+                RAConstants.DEFAULT_MODERATE_UNCERTAINTY
+        );
+    }
+
+    @Override
+    protected void setupCommunicationModuleLogging(InCommunicationModule_actiongraphnode2 module) {
+        module.setRaOpinionLogging(true);
+        module.setRaUnceraintyLogging(false);
     }
 
     @Override
@@ -146,13 +162,11 @@ public class RealPVactScenario03SingleRun extends AbstractPVactScenario {
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
         timeModel.setAmountOfTime(1);
 
-        InGlobalModerateExtremistUncertainty uncertainty = createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
-
         List<InOutputImage2> outputImages2 = new ArrayList<>();
         List<InPostDataAnalysis> postData = new ArrayList<>();
         InProcessModel processModel = createDefaultModularProcessModel(
                 "Process",
-                uncertainty,
+                createUncertainty("uncert"),
                 createNodeFilterScheme(2),
                 outputImages2,
                 postData

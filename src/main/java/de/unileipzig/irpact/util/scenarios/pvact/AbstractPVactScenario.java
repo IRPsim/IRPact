@@ -4,6 +4,8 @@ import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
+import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -25,7 +27,7 @@ import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalModerateExtremistUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
@@ -40,6 +42,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.In
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -49,7 +52,6 @@ import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -288,13 +290,65 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return defaults;
     }
 
-    public InGlobalModerateExtremistUncertainty createGlobalUnvertaintySupplier(String name, double extremParam, double extremUncert, double moderateUncert) {
-        InGlobalModerateExtremistUncertainty uncertainty = new InGlobalModerateExtremistUncertainty();
+    public InPVactUpdatableGlobalModerateExtremistUncertainty createInPVactUpdatableGlobalModerateExtremistUncertainty(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactUpdatableGlobalModerateExtremistUncertainty uncertainty = new InPVactUpdatableGlobalModerateExtremistUncertainty();
         uncertainty.setName(name);
-        uncertainty.setDefaultValues();
         uncertainty.setExtremistParameter(extremParam);
         uncertainty.setExtremistUncertainty(extremUncert);
         uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InPVactIndividualGlobalModerateExtremistUncertaintySupplier createInPVactIndividualGlobalModerateExtremistUncertaintySupplier(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactIndividualGlobalModerateExtremistUncertaintySupplier uncertainty = new InPVactIndividualGlobalModerateExtremistUncertaintySupplier();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion createInPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert) {
+        InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion uncertainty = new InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
+        return uncertainty;
+    }
+
+    public InUpdatableGlobalModerateExtremistUncertainty createGlobalUnvertaintySupplier(
+            String name,
+            double extremParam,
+            double extremUncert,
+            double moderateUncert,
+            String[] attrs) {
+        InUpdatableGlobalModerateExtremistUncertainty uncertainty = new InUpdatableGlobalModerateExtremistUncertainty();
+        uncertainty.setName(name);
+        uncertainty.setExtremistParameter(extremParam);
+        uncertainty.setExtremistUncertainty(extremUncert);
+        uncertainty.setModerateUncertainty(moderateUncert);
+        uncertainty.setAttributeNames(getAttributeNames(attrs));
+        uncertainty.setLowerBoundInclusive(true);
+        uncertainty.setUpperBoundInclusive(true);
         return uncertainty;
     }
 
@@ -340,6 +394,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         module.setPrintHeader(true);
         module.setLogDefaultCall(true);
         module.setLogReevaluatorCall(false);
+        module.setStoreXlsx(true);
         return module;
     }
 
@@ -349,7 +404,13 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         module.setPrintHeader(true);
         module.setLogDefaultCall(false);
         module.setLogReevaluatorCall(true);
+        module.setStoreXlsx(true);
         return module;
+    }
+
+    protected void setupCommunicationModuleLogging(InCommunicationModule_actiongraphnode2 module) {
+        module.setRaOpinionLogging(false);
+        module.setRaUnceraintyLogging(false);
     }
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
@@ -371,7 +432,8 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InCommunicationModule_actiongraphnode2 commuAction = mmp.create(COMMUNICATION, InCommunicationModule_actiongraphnode2::new);
         commuAction.setRaEnabled(true);
         commuAction.setRaLoggingEnabled(true);
-        commuAction.setStoreXlsx(true);
+        commuAction.setRaStoreXlsx(true);
+        commuAction.setRaKeepCsv(false);
         commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
         commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
         commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
@@ -382,6 +444,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
         commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
         commuAction.setUncertainty(uncertainty);
+        setupCommunicationModuleLogging(commuAction);
 
         InAttributeInputModule_inputgraphnode2 rewireAttr = mmp.create("ATTR_REWIRE", InAttributeInputModule_inputgraphnode2::new);
         rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
@@ -564,21 +627,29 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         //INIT
         InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
         novScaler.setName("NOV_SCALER");
+        novScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
         novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
 
         InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
         envScaler.setName("ENV_SCALER");
         envScaler.setM(RAConstants.DEFAULT_M);
         envScaler.setN(RAConstants.DEFAULT_N);
+        envScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
         envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
 
         InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
         envUpdater.setName("ENV_UPDATER");
         envUpdater.setScaler(envScaler);
 
+        InUncertaintySupplierInitializer uncertInit = new InUncertaintySupplierInitializer();
+        uncertInit.setName("UNCERT_INIT");
+        uncertInit.setPriority(InitializationHandler.LOW_PRIORITY);
+        uncertInit.setUncertaintySuppliers(uncertainty);
+
         processModel.addInitializationHandlers(
                 novScaler,
-                envScaler
+                envScaler,
+                uncertInit
         );
 
         //NEW PRODUCT
@@ -590,8 +661,14 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         InImpededResetter impededResetter = new InImpededResetter();
         impededResetter.setName("IMPEDED_RESETTER");
 
+        InUncertaintySupplierReevaluator uncertUpdater = new InUncertaintySupplierReevaluator();
+        uncertUpdater.setName("UNCERT_UPDATER");
+        uncertUpdater.setPriorty(Reevaluator.LOW_PRIORITY);
+        uncertUpdater.setUncertaintySuppliers(uncertainty);
+
         processModel.addStartOfYearReevaluators(
-                impededResetter
+                impededResetter,
+                uncertUpdater
         );
 
         //MID OF YEAR

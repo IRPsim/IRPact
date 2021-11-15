@@ -25,5 +25,11 @@ public interface Reevaluator<I> extends Nameable {
 
     void initializeReevaluator(SimulationEnvironment environment) throws Throwable;
 
+    boolean reevaluateGlobal();
+
+    void reevaluate() throws Throwable;
+
+    boolean reevaluateIndividual();
+
     void reevaluate(I input, List<PostAction2> actions) throws Throwable;
 }

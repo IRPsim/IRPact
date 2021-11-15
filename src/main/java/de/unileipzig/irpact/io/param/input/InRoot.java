@@ -56,6 +56,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.handler.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.handler.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
@@ -889,7 +890,9 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InGlobalModerateExtremistUncertainty.class,
+            InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.class,
+            InPVactIndividualGlobalModerateExtremistUncertaintySupplier.class,
+            InPVactUpdatableGlobalModerateExtremistUncertainty.class,
             InUncertaintySupplier.class,
 
             InDisabledNodeFilterDistanceScheme.class,
@@ -1021,12 +1024,14 @@ public class InRoot implements RootClass {
             InImpededResetter.class,
             InLinearePercentageAgentAttributeUpdater.class,
             InReevaluatorModuleLinker.class,
+            InUncertaintySupplierReevaluator.class,
             //reeval-general
             InReevaluator2.class,
             //handler-init
             InAgentAttributeScaler.class,
             InInitializationHandler.class,
             InLinearePercentageAgentAttributeScaler.class,
+            InUncertaintySupplierInitializer.class,
             //===
 
             //special

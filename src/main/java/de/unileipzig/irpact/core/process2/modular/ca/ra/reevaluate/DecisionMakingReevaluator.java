@@ -50,6 +50,20 @@ public class DecisionMakingReevaluator
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        return false;
+    }
+
+    @Override
+    public void reevaluate() {
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return true;
+    }
+
+    @Override
     public void reevaluate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         if(input.getStage() == RAStage2.IMPEDED) {
             trace("[{}] reset process stage '{}' to '{}' for agent '{}' and reevaluate", getName(), RAStage.IMPEDED, RAStage.DECISION_MAKING, input.getAgentName());

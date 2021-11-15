@@ -42,6 +42,10 @@ public class AddScalarModule2<I>
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     protected I castInput(I input) {
         return input;
     }

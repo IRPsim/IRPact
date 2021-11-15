@@ -43,6 +43,11 @@ public class DoNothingAndContinueModule2<I>
     }
 
     @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        traceModuleSetup();
+    }
+
+    @Override
     public ProcessPlanResult2 apply(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
         return ProcessPlanResult2.CONTINUE;

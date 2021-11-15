@@ -14,7 +14,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  * @author Daniel Abitz
  */
 public class AgentAttributScaler
-        extends NameableBase
+        extends AbstractInitializationHandler
         implements InitializationHandler, LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AgentAttributScaler.class);

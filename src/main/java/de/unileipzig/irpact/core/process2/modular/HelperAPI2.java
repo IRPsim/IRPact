@@ -41,6 +41,10 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
         trace1("[{}] initalize module", getName());
     }
 
+    default void traceModuleSetup() {
+        trace1("[{}] setup module", getName());
+    }
+
     default void traceModuleValidation() {
         trace1("[{}] validate module", getName());
     }

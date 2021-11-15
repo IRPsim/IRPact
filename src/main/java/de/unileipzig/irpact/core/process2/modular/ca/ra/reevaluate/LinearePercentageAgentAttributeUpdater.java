@@ -43,6 +43,20 @@ public class LinearePercentageAgentAttributeUpdater
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        return false;
+    }
+
+    @Override
+    public void reevaluate() {
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return true;
+    }
+
+    @Override
     public void reevaluate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceReevaluatorInfo(input);
         double oldValue = scaler.getValue(input.getEnvironment(), input.getAgent());

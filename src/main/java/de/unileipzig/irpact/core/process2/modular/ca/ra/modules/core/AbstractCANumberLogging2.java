@@ -196,6 +196,10 @@ public abstract class AbstractCANumberLogging2
         createCsvLogger(dir, baseName);
     }
 
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     protected boolean doLog() {
         if(isReevaluatorCall()) {
             return isLogReevaluatorCall();

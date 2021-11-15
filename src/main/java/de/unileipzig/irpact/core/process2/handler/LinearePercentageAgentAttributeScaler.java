@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Daniel Abitz
  */
 public class LinearePercentageAgentAttributeScaler
-        extends NameableBase
+        extends AbstractInitializationHandler
         implements InitializationHandler, LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(LinearePercentageAgentAttributeScaler.class);

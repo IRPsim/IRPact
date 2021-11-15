@@ -26,6 +26,21 @@ public class ReevaluatorWrapper<I> extends AbstractReevaluator<I> {
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        return reevaluator.reevaluateGlobal();
+    }
+
+    @Override
+    public void reevaluate() throws Throwable {
+        reevaluator.reevaluate();
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return reevaluator.reevaluateIndividual();
+    }
+
+    @Override
     public void reevaluate(I input, List<PostAction2> actions) throws Throwable {
         reevaluator.reevaluate(input, actions);
     }

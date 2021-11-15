@@ -282,7 +282,6 @@
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGenericOutputImage" : { },
       "set_InGlobalAvgNPVModule_inputgraphnode2" : { },
-      "set_InGlobalModerateExtremistUncertainty" : { },
       "set_InGnuPlotOutputImage" : { },
       "set_InGraphTopologyScheme" : {
         "Topology" : { }
@@ -293,7 +292,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_12_T_08_18_45" : {
+        "CT_D_2021_11_15_T_07_14_23" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -366,6 +365,9 @@
       },
       "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" : { },
+      "set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" : { },
+      "set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier" : { },
+      "set_InPVactUpdatableGlobalModerateExtremistUncertainty" : { },
       "set_InPVFile" : { },
       "set_InQuantileRange" : { },
       "set_InRAProcessModel" : { },
@@ -431,6 +433,8 @@
       },
       "set_InTruncatedNormalDistribution" : { },
       "set_InUncertaintySupplier" : { },
+      "set_InUncertaintySupplierInitializer" : { },
+      "set_InUncertaintySupplierReevaluator" : { },
       "set_InUnitStepDiscreteTimeModel" : {
         "DiscreteUnitStep" : {
           "par_InUnitStepDiscreteTimeModel_amountOfTime" : 1,
@@ -793,6 +797,8 @@
       "par_link_InThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },
       "par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2" : { },
       "par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2" : { },
+      "par_link_InUncertaintySupplierInitializer_InUncertaintySupplier_uncertaintySuppliers" : { },
+      "par_link_InUncertaintySupplierReevaluator_InUncertaintySupplier_uncertaintySuppliers" : { },
       "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge" : { },
       "par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge" : { },
       "par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge" : { },

@@ -54,11 +54,27 @@ public class LocalShareOfAdopterModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
+        traceModuleInitalization();
         trace("use node filter: {}", nodeFilterScheme);
+        setInitalized();
     }
 
     @Override
     public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        setSetupCalled();
     }
 
     @Override

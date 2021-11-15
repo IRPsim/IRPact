@@ -37,6 +37,10 @@ public class ProductModule2<I>
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
     }

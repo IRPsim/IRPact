@@ -2001,40 +2001,110 @@ SET set_InUnlinkedGraphTopology(set_InGraphTopologyScheme)
 * - type: Float
 PARAMETER par_InUnlinkedGraphTopology_placeholderUnlinked(set_InUnlinkedGraphTopology)
 
-* - identifier: InGlobalModerateExtremistUncertainty
+* - identifier: InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion
 * - type: String
-SET set_InGlobalModerateExtremistUncertainty(set_InUncertaintySupplier)
+SET set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion(set_InUncertaintySupplier)
 
 * - default: 0.125
 * - domain: [0,1]
 * - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
 * - identifier: Extremistenparameter
 * - type: Float
-PARAMETER par_InGlobalModerateExtremistUncertainty_extremistParameter(set_InGlobalModerateExtremistUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0.05
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
-PARAMETER par_InGlobalModerateExtremistUncertainty_extremistUncertainty(set_InGlobalModerateExtremistUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0.2
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
-PARAMETER par_InGlobalModerateExtremistUncertainty_moderateUncertainty(set_InGlobalModerateExtremistUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InGlobalModerateExtremistUncertainty_lowerBoundInclusive(set_InGlobalModerateExtremistUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 0
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
-PARAMETER par_InGlobalModerateExtremistUncertainty_upperBoundInclusive(set_InGlobalModerateExtremistUncertainty)
+PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
+
+* - identifier: InPVactIndividualGlobalModerateExtremistUncertaintySupplier
+* - type: String
+SET set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier(set_InUncertaintySupplier)
+
+* - default: 0.125
+* - domain: [0,1]
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
+
+* - default: 0.05
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
+
+* - default: 0.2
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_upperBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
+
+* - identifier: InPVactUpdatableGlobalModerateExtremistUncertainty
+* - type: String
+SET set_InPVactUpdatableGlobalModerateExtremistUncertainty(set_InUncertaintySupplier)
+
+* - default: 0.125
+* - domain: [0,1]
+* - description: Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten.
+* - identifier: Extremistenparameter
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0.05
+* - description: Legt den Wert der Unsicherheit für Extremisten fest.
+* - identifier: Unsicherheit der Extremisten
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0.2
+* - description: Legt den Wert der Unsicherheit für Moderate fest.
+* - identifier: Unsicherheit der Moderaten
+* - type: Float
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
+
+* - default: 0
+* - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
 * - identifier: InUncertaintySupplier
 * - hidden: 1
@@ -3525,10 +3595,38 @@ PARAMETER par_InCommunicationModule_actiongraphnode2_raLoggingEnabled(set_InComm
 
 * - default: 1
 * - domain: [0|1]
+* - description: Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt.
+* - identifier: Meinung loggen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raOpinionLogging(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt.
+* - identifier: Unsicherheit loggen?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raUnceraintyLogging(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Kopfzeile schreiben?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raPrintHeader(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Als csv speichern?
+* - type: Boolean
+PARAMETER par_InCommunicationModule_actiongraphnode2_raKeepCsv(set_InCommunicationModule_actiongraphnode2)
+
+* - default: 1
+* - domain: [0|1]
 * - description: todo
 * - identifier: Als xlsx speichern?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_storeXlsx(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule_actiongraphnode2_raStoreXlsx(set_InCommunicationModule_actiongraphnode2)
 
 * - default: 0.5
 * - description: todo
@@ -4259,6 +4357,21 @@ SET set_InReevaluatorModuleLinker(set_InReevaluator2)
 * - type: Boolean
 PARAMETER par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules(set_InReevaluatorModuleLinker,set_InConsumerAgentReevaluationModule2)
 
+* - identifier: InUncertaintySupplierReevaluator
+* - type: String
+SET set_InUncertaintySupplierReevaluator(set_InReevaluator2)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InUncertaintySupplierReevaluator_priorty(set_InUncertaintySupplierReevaluator)
+
+* - description: todo
+* - identifier: Unsicherheiten:
+* - type: Boolean
+PARAMETER par_link_InUncertaintySupplierReevaluator_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintySupplierReevaluator,set_InUncertaintySupplier)
+
 * - identifier: InReevaluator2
 * - hidden: 1
 * - type: String
@@ -4267,6 +4380,12 @@ SET set_InReevaluator2(*)
 * - identifier: InAgentAttributeScaler
 * - type: String
 SET set_InAgentAttributeScaler(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InAgentAttributeScaler_priority(set_InAgentAttributeScaler)
 
 * - description: todo
 * - identifier: Attribut
@@ -4281,6 +4400,12 @@ SET set_InInitializationHandler(*)
 * - identifier: InLinearePercentageAgentAttributeScaler
 * - type: String
 SET set_InLinearePercentageAgentAttributeScaler(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InLinearePercentageAgentAttributeScaler_priority(set_InLinearePercentageAgentAttributeScaler)
 
 * - default: 1
 * - description: todo
@@ -4298,6 +4423,21 @@ PARAMETER par_InLinearePercentageAgentAttributeScaler_nValue(set_InLinearePercen
 * - identifier: Attribut
 * - type: Boolean
 PARAMETER par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute(set_InLinearePercentageAgentAttributeScaler,set_InAttributeName)
+
+* - identifier: InUncertaintySupplierInitializer
+* - type: String
+SET set_InUncertaintySupplierInitializer(set_InInitializationHandler)
+
+* - default: 5
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InUncertaintySupplierInitializer_priority(set_InUncertaintySupplierInitializer)
+
+* - description: todo
+* - identifier: Unsicherheiten
+* - type: Boolean
+PARAMETER par_link_InUncertaintySupplierInitializer_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintySupplierInitializer,set_InUncertaintySupplier)
 
 * - default: 0
 * - domain: [0|1]

@@ -29,6 +29,20 @@ public class ConstructionRenovationUpdater
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        return false;
+    }
+
+    @Override
+    public void reevaluate() {
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        return true;
+    }
+
+    @Override
     public void reevaluate(ConsumerAgentData2 input, List<PostAction2> actions) {
         double renovationRate = getRenovationRate(input);
         double renovationDraw = input.rnd().nextDouble();

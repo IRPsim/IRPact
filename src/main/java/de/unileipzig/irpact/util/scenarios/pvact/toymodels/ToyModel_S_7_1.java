@@ -158,7 +158,7 @@ public class ToyModel_S_7_1 extends AbstractToyModel {
 
     @Override
     protected InUncertaintySupplier createUncertainty(String name) {
-        return createGlobalUnvertaintySupplier(name, 1.0/3.0, 0.05, 0.2);
+        return createInPVactUpdatableGlobalModerateExtremistUncertainty(name, 1.0/3.0, 0.05, 0.2);
     }
 
     @Override

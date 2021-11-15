@@ -42,6 +42,10 @@ public class ThresholdReachedModule2<I>
     protected void initializeNewInputSelf(I input) throws Throwable {
     }
 
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setDrawModule(CalculationModule2<I> module) {
         setSubmodule1(module);
     }

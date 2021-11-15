@@ -121,13 +121,7 @@ public class CommunicationModule2
             return;
         }
 
-        if(logRaAlgorithm != null) {
-            logRaAlgorithm.initialize(environment);
-        }
-
-        for(UncertaintySupplier supplier: uncertaintySuppliers) {
-            supplier.initalize();
-        }
+        logRaAlgorithm.initialize(environment);
 
         setInitalized();
     }
@@ -143,6 +137,15 @@ public class CommunicationModule2
             uncertaintyCache.register(agent, uncertainty);
             trace("[{}] add uncertainty '{}' for agent '{}' (uncertainty supplier={})", getName(), uncertainty.getName(), agent.getName(), supplier.getName());
         }
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        setSetupCalled();
     }
 
     protected UncertaintySupplier findSupplier(ConsumerAgent agent) {
@@ -238,7 +241,7 @@ public class CommunicationModule2
 
     protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, Timestamp now) {
         applyRelativeAgreement(source, target, RAConstants.NOVELTY_SEEKING, now);
-        applyRelativeAgreement(source, target, RAConstants.DEPENDENT_JUDGMENT_MAKING, now);
+        //applyRelativeAgreement(source, target, RAConstants.DEPENDENT_JUDGMENT_MAKING, now);
         applyRelativeAgreement(source, target, RAConstants.ENVIRONMENTAL_CONCERN, now);
     }
 
@@ -278,9 +281,12 @@ public class CommunicationModule2
 
         if(changed) {
             opinionThis.asValueAttribute().setDoubleValue(influence[RelativeAgreementAlgorithm2.INDEX_XI]);
-            uncertaintyThis.updateUncertainty(opinionThis, influence[RelativeAgreementAlgorithm2.INDEX_UI]);
+            uncertaintyThis.setUncertainty(opinionThis, influence[RelativeAgreementAlgorithm2.INDEX_UI]);
             opinionTarget.asValueAttribute().setDoubleValue(influence[RelativeAgreementAlgorithm2.INDEX_XJ]);
-            uncertaintyTarget.updateUncertainty(opinionTarget, influence[RelativeAgreementAlgorithm2.INDEX_UJ]);
+            uncertaintyTarget.setUncertainty(opinionTarget, influence[RelativeAgreementAlgorithm2.INDEX_UJ]);
+
+            uncertaintyThis.updateOpinion(opinionThis, xi, influence[RelativeAgreementAlgorithm2.INDEX_XI]);
+            uncertaintyTarget.updateOpinion(opinionTarget, xj, influence[RelativeAgreementAlgorithm2.INDEX_XJ]);
         }
     }
 }

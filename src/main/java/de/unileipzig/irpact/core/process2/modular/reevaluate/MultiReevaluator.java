@@ -62,9 +62,40 @@ public class MultiReevaluator<I> extends AbstractReevaluator<I> implements Helpe
     }
 
     @Override
+    public boolean reevaluateGlobal() {
+        for(Reevaluator<I> reevaluator: getReevaluators()) {
+            if(reevaluator.reevaluateGlobal()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void reevaluate() throws Throwable {
+        for(Reevaluator<I> reevaluator: getReevaluators()) {
+            if(reevaluator.reevaluateGlobal()) {
+                reevaluator.reevaluate();
+            }
+        }
+    }
+
+    @Override
+    public boolean reevaluateIndividual() {
+        for(Reevaluator<I> reevaluator: getReevaluators()) {
+            if(reevaluator.reevaluateIndividual()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void reevaluate(I input, List<PostAction2> actions) throws Throwable {
         for(Reevaluator<I> reevaluator: getReevaluators()) {
-            reevaluator.reevaluate(input, actions);
+            if(reevaluator.reevaluateIndividual()) {
+                reevaluator.reevaluate(input, actions);
+            }
         }
     }
 }

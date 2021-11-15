@@ -3,7 +3,7 @@ package de.unileipzig.irpact.io.param.input.process.ra.uncert;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process2.uncert.GlobalModerateExtremistUncertainty;
+import de.unileipzig.irpact.core.process2.uncert.UpdatableGlobalModerateExtremistUncertainty;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -20,7 +20,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InGlobalModerateExtremistUncertainty implements InUncertaintySupplier {
+public class InPVactUpdatableGlobalModerateExtremistUncertainty implements InUncertaintySupplier {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -33,7 +33,7 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_GMEU);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_PVACTGMEU);
 
         addEntry(res, thisClass(), "extremistParameter");
         addEntry(res, thisClass(), "extremistUncertainty");
@@ -46,8 +46,8 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
         setDefault(res, thisClass(), "extremistParameter", asValue(RAConstants.DEFAULT_EXTREMIST_RATE));
         setDefault(res, thisClass(), "extremistUncertainty", asValue(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));
         setDefault(res, thisClass(), "moderateUncertainty", asValue(RAConstants.DEFAULT_MODERATE_UNCERTAINTY));
-        setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_FALSE);
-        setDefault(res, thisClass(), "upperBoundInclusive", VALUE_FALSE);
+        setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_TRUE);
+        setDefault(res, thisClass(), "upperBoundInclusive", VALUE_TRUE);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -69,7 +69,7 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
     @FieldDefinition
     public boolean upperBoundInclusive;
 
-    public InGlobalModerateExtremistUncertainty() {
+    public InPVactUpdatableGlobalModerateExtremistUncertainty() {
     }
 
     @Override
@@ -79,14 +79,6 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
 
     public void setName(String name) {
         this._name = name;
-    }
-
-    public void setDefaultValues() {
-        setExtremistParameter(RAConstants.DEFAULT_EXTREMIST_RATE);
-        setExtremistUncertainty(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY);
-        setModerateUncertainty(RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
-        setLowerBoundInclusive(false);
-        setUpperBoundInclusive(false);
     }
 
     public void setExtremistParameter(double extremistParameter) {
@@ -130,12 +122,12 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
     }
 
     @Override
-    public InGlobalModerateExtremistUncertainty copy(CopyCache cache) {
+    public InPVactUpdatableGlobalModerateExtremistUncertainty copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InGlobalModerateExtremistUncertainty newCopy(CopyCache cache) {
-        InGlobalModerateExtremistUncertainty copy = new InGlobalModerateExtremistUncertainty();
+    public InPVactUpdatableGlobalModerateExtremistUncertainty newCopy(CopyCache cache) {
+        InPVactUpdatableGlobalModerateExtremistUncertainty copy = new InPVactUpdatableGlobalModerateExtremistUncertainty();
         copy._name = _name;
         copy.extremistParameter = extremistParameter;
         copy.extremistUncertainty = extremistUncertainty;
@@ -146,19 +138,14 @@ public class InGlobalModerateExtremistUncertainty implements InUncertaintySuppli
     }
 
     @Override
-    public boolean requiresSetup() {
-        return true;
-    }
-
-    @Override
-    public GlobalModerateExtremistUncertainty parse(IRPactInputParser parser) throws ParsingException {
+    public UpdatableGlobalModerateExtremistUncertainty parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new ParsingException("not supported");
         }
 
         LOGGER.trace("parse '{}': {}", thisClass(), getName());
 
-        GlobalModerateExtremistUncertainty data = new GlobalModerateExtremistUncertainty();
+        UpdatableGlobalModerateExtremistUncertainty data = new UpdatableGlobalModerateExtremistUncertainty();
         data.setName(getName());
         data.setEnvironment(parser.getEnvironment());
         data.setExtremistParameter(getExtremistParameter());

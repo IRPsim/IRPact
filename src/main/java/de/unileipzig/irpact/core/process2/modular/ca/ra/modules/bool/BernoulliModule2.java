@@ -44,6 +44,10 @@ public class BernoulliModule2
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public boolean test(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
 

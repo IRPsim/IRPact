@@ -46,6 +46,10 @@ public class AdoptionDeciderModule2
     protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
     }
 
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setThreshold(double threshold) {
         this.threshold = threshold;
     }

@@ -62,6 +62,10 @@ public class StopAfterSuccessfulTaskModule2<I>
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public void run(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
 

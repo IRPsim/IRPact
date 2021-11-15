@@ -57,6 +57,10 @@ public class AgentDataStateLoggingModule2
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
         updateAgentDataState(input, loggingHelper, value);

@@ -820,10 +820,22 @@
         :description "Ermöglicht es die Unsicherheit für Attribute zu bestimmen, welche durch den 'relative agreement' Algorithmus beeinflusst werden." 
         :sections [
           {
-            :label "Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten" 
-            :set "set_InGlobalModerateExtremistUncertainty" 
-            :description "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die verwendeten Attribute sind: NOV, ENV und DJM." 
-            :tags [["InGlobalModerateExtremistUncertainty" "extremistParameter"] ["InGlobalModerateExtremistUncertainty" "extremistUncertainty"] ["InGlobalModerateExtremistUncertainty" "moderateUncertainty"] ["InGlobalModerateExtremistUncertainty" "lowerBoundInclusive"] ["InGlobalModerateExtremistUncertainty" "upperBoundInclusive"]]
+            :label "Zeitlich aktualisierbare Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InPVactUpdatableGlobalModerateExtremistUncertainty" 
+            :description "Diese Variante unterteilt Agenten in Moderate und Extremisten und unterstützt zeitbasierte Aktualisierungen. Die verwendeten Attribute sind NOV und ENV." 
+            :tags [["InPVactUpdatableGlobalModerateExtremistUncertainty" "extremistParameter"] ["InPVactUpdatableGlobalModerateExtremistUncertainty" "extremistUncertainty"] ["InPVactUpdatableGlobalModerateExtremistUncertainty" "moderateUncertainty"] ["InPVactUpdatableGlobalModerateExtremistUncertainty" "lowerBoundInclusive"] ["InPVactUpdatableGlobalModerateExtremistUncertainty" "upperBoundInclusive"]]
+          } 
+          {
+            :label "Hochdynamische Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" 
+            :description "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die Bereiche werden bei jeder Meinungsänderung angepasst. Die verwendeten Attribute sind NOV und ENV." 
+            :tags [["InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" "extremistParameter"] ["InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" "extremistUncertainty"] ["InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" "moderateUncertainty"] ["InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" "lowerBoundInclusive"] ["InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" "upperBoundInclusive"]]
+          } 
+          {
+            :label "Individuell aktualisierte Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten" 
+            :set "set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier" 
+            :description "Diese Variante unterteilt Agenten in Moderate und Extremisten. Bei Änderungen passt jeder Agent seine eigene Unsicherheit an. Die verwendeten Attribute sind NOV und ENV." 
+            :tags [["InPVactIndividualGlobalModerateExtremistUncertaintySupplier" "extremistParameter"] ["InPVactIndividualGlobalModerateExtremistUncertaintySupplier" "extremistUncertainty"] ["InPVactIndividualGlobalModerateExtremistUncertaintySupplier" "moderateUncertainty"] ["InPVactIndividualGlobalModerateExtremistUncertaintySupplier" "lowerBoundInclusive"] ["InPVactIndividualGlobalModerateExtremistUncertaintySupplier" "upperBoundInclusive"]]
           }
         ]
       } 
@@ -858,6 +870,12 @@
                 :set "set_InAnnualInterestLogger" 
                 :description "todo" 
                 :tags [["InAnnualInterestLogger" "placeholder"]]
+              } 
+              {
+                :label "Updater für Unsicherheiten" 
+                :set "set_InUncertaintySupplierReevaluator" 
+                :description "todo" 
+                :tags [["InUncertaintySupplierReevaluator" "priorty"] ["link" "InUncertaintySupplierReevaluator" "InUncertaintySupplier" "uncertaintySuppliers"]]
               } 
               {
                 :label "ConstructionRenovationUpdater" 
@@ -897,13 +915,19 @@
                     :label "Agentattributskalierer" 
                     :set "set_InAgentAttributeScaler" 
                     :description "todo; newValue = (oldValue - min) / (max - min)" 
-                    :tags [["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
+                    :tags [["InAgentAttributeScaler" "priority"] ["link" "InAgentAttributeScaler" "InAttributeName" "attribute"]]
                   } 
                   {
                     :label "Fancy Agentattributskalierer" 
                     :set "set_InLinearePercentageAgentAttributeScaler" 
                     :description "todo; y = m * x + n" 
-                    :tags [["InLinearePercentageAgentAttributeScaler" "mValue"] ["InLinearePercentageAgentAttributeScaler" "nValue"] ["link" "InLinearePercentageAgentAttributeScaler" "InAttributeName" "attribute"]]
+                    :tags [["InLinearePercentageAgentAttributeScaler" "priority"] ["InLinearePercentageAgentAttributeScaler" "mValue"] ["InLinearePercentageAgentAttributeScaler" "nValue"] ["link" "InLinearePercentageAgentAttributeScaler" "InAttributeName" "attribute"]]
+                  } 
+                  {
+                    :label "Initialisierer für Unsicherheiten" 
+                    :set "set_InUncertaintySupplierInitializer" 
+                    :description "todo; newValue = (oldValue - min) / (max - min)" 
+                    :tags [["InUncertaintySupplierInitializer" "priority"] ["link" "InUncertaintySupplierInitializer" "InUncertaintySupplier" "uncertaintySuppliers"]]
                   }
                 ]
               }
@@ -921,7 +945,7 @@
                     :label "Kommunikationsmodul" 
                     :set "set_InCommunicationModule_actiongraphnode2" 
                     :description "todo" 
-                    :tags [["InCommunicationModule" "actiongraphnode2" "adopterPoints"] ["InCommunicationModule" "actiongraphnode2" "interestedPoints"] ["InCommunicationModule" "actiongraphnode2" "awarePoints"] ["InCommunicationModule" "actiongraphnode2" "unknownPoints"] ["InCommunicationModule" "actiongraphnode2" "raEnabled"] ["InCommunicationModule" "actiongraphnode2" "raLoggingEnabled"] ["InCommunicationModule" "actiongraphnode2" "storeXlsx"] ["InCommunicationModule" "actiongraphnode2" "speedOfConvergence"] ["InCommunicationModule" "actiongraphnode2" "attitudeGap"] ["InCommunicationModule" "actiongraphnode2" "chanceNeutral"] ["InCommunicationModule" "actiongraphnode2" "chanceConvergence"] ["InCommunicationModule" "actiongraphnode2" "chanceDivergence"] ["link" "InCommunicationModule" "actiongraphnode2" "InUncertaintySupplier" "uncertaintySuppliers"]]
+                    :tags [["InCommunicationModule" "actiongraphnode2" "adopterPoints"] ["InCommunicationModule" "actiongraphnode2" "interestedPoints"] ["InCommunicationModule" "actiongraphnode2" "awarePoints"] ["InCommunicationModule" "actiongraphnode2" "unknownPoints"] ["InCommunicationModule" "actiongraphnode2" "raEnabled"] ["InCommunicationModule" "actiongraphnode2" "raLoggingEnabled"] ["InCommunicationModule" "actiongraphnode2" "raOpinionLogging"] ["InCommunicationModule" "actiongraphnode2" "raUnceraintyLogging"] ["InCommunicationModule" "actiongraphnode2" "raPrintHeader"] ["InCommunicationModule" "actiongraphnode2" "raKeepCsv"] ["InCommunicationModule" "actiongraphnode2" "raStoreXlsx"] ["InCommunicationModule" "actiongraphnode2" "speedOfConvergence"] ["InCommunicationModule" "actiongraphnode2" "attitudeGap"] ["InCommunicationModule" "actiongraphnode2" "chanceNeutral"] ["InCommunicationModule" "actiongraphnode2" "chanceConvergence"] ["InCommunicationModule" "actiongraphnode2" "chanceDivergence"] ["link" "InCommunicationModule" "actiongraphnode2" "InUncertaintySupplier" "uncertaintySuppliers"]]
                   } 
                   {
                     :label "StopAfterSuccessfulTaskModule" 

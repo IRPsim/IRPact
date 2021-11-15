@@ -204,7 +204,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     }
 
     protected InUncertaintySupplier createUncertainty(String name) {
-        return createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
+        return createInPVactUpdatableGlobalModerateExtremistUncertainty("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
     }
 
     protected InNodeDistanceFilterScheme createNodeFilter() {

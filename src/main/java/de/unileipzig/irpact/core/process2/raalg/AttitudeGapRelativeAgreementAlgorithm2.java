@@ -48,7 +48,11 @@ public class AttitudeGapRelativeAgreementAlgorithm2 extends BasicRelativeAgreeme
     }
 
     public synchronized void setWeight(AttitudeGap mode, double weight) {
-        weights.put(mode, weight);
+        if(weight > 0) {
+            weights.put(mode, weight);
+        } else {
+            weights.remove(mode);
+        }
         mapping = null;
     }
 
@@ -62,10 +66,12 @@ public class AttitudeGapRelativeAgreementAlgorithm2 extends BasicRelativeAgreeme
 
     protected synchronized WeightedMapping<AttitudeGap> syncGetMapping() {
         if(mapping == null) {
-            mapping = new NavigableMapWeightedMapping<>();
+            NavigableMapWeightedMapping<AttitudeGap> mapping = new NavigableMapWeightedMapping<>();
             for(Map.Entry<AttitudeGap, Double> entry: weights.entrySet()) {
+                trace("[{}] put mode={}, weight={}", getName(), entry.getKey(), entry.getValue());
                 mapping.set(entry.getKey(), entry.getValue());
             }
+            this.mapping = mapping;
         }
         return mapping;
     }
@@ -87,6 +93,11 @@ public class AttitudeGapRelativeAgreementAlgorithm2 extends BasicRelativeAgreeme
 
     protected boolean calculateWithMode(double xi, double ui, double xj, double uj, double[] influence) {
         WeightedMapping<AttitudeGap> mapping = getMapping();
+
+        if(mapping.isEmpty()) {
+            throw new IllegalStateException("empty weight mapping");
+        }
+
         AttitudeGap mode = mapping.getWeightedRandom(getRnd());
         switch (mode) {
             case NEUTRAL:
@@ -103,12 +114,16 @@ public class AttitudeGapRelativeAgreementAlgorithm2 extends BasicRelativeAgreeme
         }
     }
 
-    protected boolean calculateNeutral(double xi, double ui, double xj, double uj, double[] influence) {
-        influence[0] = xj;
-        influence[1] = uj;
-        influence[2] = xi;
-        influence[3] = ui;
+    protected boolean handleDisabled(double xi, double ui, double xj, double uj, double[] influence) {
+        influence[RelativeAgreementAlgorithm2.INDEX_XI] = xi;
+        influence[RelativeAgreementAlgorithm2.INDEX_UI] = ui;
+        influence[RelativeAgreementAlgorithm2.INDEX_XJ] = xj;
+        influence[RelativeAgreementAlgorithm2.INDEX_UJ] = uj;
         return false;
+    }
+
+    protected boolean calculateNeutral(double xi, double ui, double xj, double uj, double[] influence) {
+        return handleDisabled(xi, ui, xj, uj, influence);
     }
 
     protected boolean calculateConvergence(double xi, double ui, double xj, double uj, double[] influence) {

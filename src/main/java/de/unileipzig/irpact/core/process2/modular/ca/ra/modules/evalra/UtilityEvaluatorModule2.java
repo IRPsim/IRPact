@@ -61,6 +61,10 @@ public class UtilityEvaluatorModule2
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
 

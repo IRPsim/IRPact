@@ -33,28 +33,45 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
      * @author Daniel Abitz
      */
     public enum LoggingMode {
+        DISABLED,
         OPINION,
         UNCERTAINTY,
         OPINION_UNCERTAINTY;
+
+        public static LoggingMode get(boolean logOpionion, boolean logUncertainty) {
+            if(logOpionion) {
+                if(logUncertainty) {
+                    return OPINION_UNCERTAINTY;
+                } else {
+                    return OPINION;
+                }
+            } else {
+                if(logUncertainty) {
+                    return UNCERTAINTY;
+                } else {
+                    return DISABLED;
+                }
+            }
+        }
 
         int map(int index) {
             switch (this) {
                 case OPINION:
                     switch (index) {
-                        case NI_INDEX: return 0;
-                        case XI_INDEX: return 1;
-                        case UI_INDEX: return  2;
-                        case NEW_XI_INDEX: return 3;
+                        case TIME_INDEX: return 0;
+                        case ATTR_INDEX: return 1;
+                        case DESC_INDEX: return 2;
+                        case CHANGED_INDEX: return 3;
+                        case NI_INDEX: return 4;
+                        case XI_INDEX: return 5;
+                        case UI_INDEX: return  6;
+                        case NEW_XI_INDEX: return 7;
                         case NEW_UI_INDEX: throw new IllegalArgumentException("new ui not supported");
-                        case NJ_INDEX: return 4;
-                        case XJ_INDEX: return 5;
-                        case UJ_INDEX: return 6;
-                        case NEW_XJ_INDEX: return 7;
+                        case NJ_INDEX: return 8;
+                        case XJ_INDEX: return 9;
+                        case UJ_INDEX: return 10;
+                        case NEW_XJ_INDEX: return 11;
                         case NEW_UJ_INDEX: throw new IllegalArgumentException("new uj not supported");
-                        case ATTR_INDEX: return 8;
-                        case DESC_INDEX: return 9;
-                        case CHANGED_INDEX: return 10;
-                        case TIME_INDEX: return 11;
 
                         default:
                             throw new IllegalArgumentException("unsupported: " + index);
@@ -62,20 +79,20 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
                 case UNCERTAINTY:
                     switch (index) {
-                        case NI_INDEX: return 0;
-                        case XI_INDEX: return 1;
-                        case UI_INDEX: return 2;
+                        case TIME_INDEX: return 0;
+                        case ATTR_INDEX: return 1;
+                        case DESC_INDEX: return 2;
+                        case CHANGED_INDEX: return 3;
+                        case NI_INDEX: return 4;
+                        case XI_INDEX: return 5;
+                        case UI_INDEX: return 6;
                         case NEW_XI_INDEX: throw new IllegalArgumentException("new xi not supported");
-                        case NEW_UI_INDEX: return 3;
-                        case NJ_INDEX: return 4;
-                        case XJ_INDEX: return 5;
-                        case UJ_INDEX: return 6;
+                        case NEW_UI_INDEX: return 7;
+                        case NJ_INDEX: return 8;
+                        case XJ_INDEX: return 9;
+                        case UJ_INDEX: return 10;
                         case NEW_XJ_INDEX: throw new IllegalArgumentException("new xj not supported");
-                        case NEW_UJ_INDEX: return 7;
-                        case ATTR_INDEX: return 8;
-                        case DESC_INDEX: return 9;
-                        case CHANGED_INDEX: return 10;
-                        case TIME_INDEX: return 11;
+                        case NEW_UJ_INDEX: return 11;
 
                         default:
                             throw new IllegalArgumentException("unsupported: " + index);
@@ -83,6 +100,10 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
                 case OPINION_UNCERTAINTY:
                     switch (index) {
+                        case TIME_INDEX:
+                        case ATTR_INDEX:
+                        case DESC_INDEX:
+                        case CHANGED_INDEX:
                         case NI_INDEX:
                         case XI_INDEX:
                         case UI_INDEX:
@@ -93,10 +114,6 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
                         case UJ_INDEX:
                         case NEW_XJ_INDEX:
                         case NEW_UJ_INDEX:
-                        case ATTR_INDEX:
-                        case DESC_INDEX:
-                        case CHANGED_INDEX:
-                        case TIME_INDEX:
                             return index;
 
                         default:
@@ -109,20 +126,21 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         }
     }
 
-    public static final int NI_INDEX = 0;
-    public static final int XI_INDEX = 1;
-    public static final int UI_INDEX = 2;
-    public static final int NEW_XI_INDEX = 3;
-    public static final int NEW_UI_INDEX = 4;
-    public static final int NJ_INDEX = 5;
-    public static final int XJ_INDEX = 6;
-    public static final int UJ_INDEX = 7;
-    public static final int NEW_XJ_INDEX = 8;
-    public static final int NEW_UJ_INDEX = 9;
-    public static final int ATTR_INDEX = 10;
-    public static final int DESC_INDEX = 11;
-    public static final int CHANGED_INDEX = 12;
-    public static final int TIME_INDEX = 13;
+    public static final int TIME_INDEX = 0;
+    public static final int ATTR_INDEX = 1;
+    public static final int DESC_INDEX = 2;
+    public static final int CHANGED_INDEX = 3;
+    public static final int NI_INDEX = 4;
+    public static final int XI_INDEX = 5;
+    public static final int UI_INDEX = 6;
+    public static final int NEW_XI_INDEX = 7;
+    public static final int NEW_UI_INDEX = 8;
+    public static final int NJ_INDEX = 9;
+    public static final int XJ_INDEX = 10;
+    public static final int UJ_INDEX = 11;
+    public static final int NEW_XJ_INDEX = 12;
+    public static final int NEW_UJ_INDEX = 13;
+
 
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -133,6 +151,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     protected JsonResource resource;
     protected boolean printHeader;
     protected boolean storeXlsx;
+    protected boolean keepCsv;
     protected boolean enabled = true;
     protected boolean loggingEnabled = false;
 
@@ -161,7 +180,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     }
 
     protected boolean isLoggingDisabled(Object time) {
-        return time == null || isLoggingDisabled();
+        return time == null || isLoggingDisabled() || loggingMode == LoggingMode.DISABLED;
     }
 
     public void setLoggingMode(LoggingMode loggingMode) {
@@ -175,6 +194,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
         trace("register on close: {}", environment.registerIfNotRegistered(this));
+        setDir(environment.getSettings().getDownloadDir());
         resource = load(environment);
         if(resource == null) {
             throw new NullPointerException("resource not found");
@@ -270,6 +290,14 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         return storeXlsx;
     }
 
+    public void setKeepCsv(boolean keepCsv) {
+        this.keepCsv = keepCsv;
+    }
+
+    public boolean isKeepCsv() {
+        return keepCsv;
+    }
+
     public SimplifiedLogger getValueLogger() {
         return valueLogger;
     }
@@ -306,14 +334,6 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         }
     }
 
-    protected boolean handleDisabled(double xi, double ui, double xj, double uj, double[] influence) {
-        influence[RelativeAgreementAlgorithm2.INDEX_XI] = xi;
-        influence[RelativeAgreementAlgorithm2.INDEX_UI] = ui;
-        influence[RelativeAgreementAlgorithm2.INDEX_XJ] = xj;
-        influence[RelativeAgreementAlgorithm2.INDEX_UJ] = uj;
-        return false;
-    }
-
     protected boolean calculateWithinGab(
             String ni, double xi, double ui,
             String nj, double xj, double uj,
@@ -332,7 +352,13 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             double[] influence,
             Timestamp time) {
         WeightedMapping<AttitudeGap> mapping = getMapping();
+
+        if(mapping.isEmpty()) {
+            throw new IllegalStateException("empty weight mapping");
+        }
+
         AttitudeGap mode = mapping.getWeightedRandom(getRnd());
+
         switch (mode) {
             case NEUTRAL:
                 boolean changedNeutral = calculateNeutral(xi, ui, xj, uj, influence);
@@ -457,10 +483,11 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             Timestamp time) {
         if(isLoggingDisabled(time)) return;
 
-        double newXj = influence[0];
-        double newUj = influence[1];
-        double newXi = influence[2];
-        double newUi = influence[3];
+        double newXi = influence[INDEX_XI];
+        double newUi = influence[INDEX_UI];
+        double newXj = influence[INDEX_XJ];
+        double newUj = influence[INDEX_UJ];
+
         doLog(
                 ni, xi, ui, newXi, newUi,
                 nj, xj, uj, newXj, newUj,
@@ -542,6 +569,9 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             if(storeXlsx) {
                 storeXlsx();
             }
+            if(!keepCsv) {
+                deleteCsv();
+            }
         }
     }
 
@@ -595,5 +625,14 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
         xlsxSheetData.put(getLocalizedString("sheetName"), xlsxData);
 
         return xlsxSheetData;
+    }
+
+    protected void deleteCsv() {
+        Path csvPath = dir.resolve(baseName + ".csv");
+        try {
+            trace("[{}] delete '{}': {}", getName(), csvPath, Files.deleteIfExists(csvPath));
+        } catch (Throwable t) {
+            error("deleting '" + csvPath + "' failed", t);
+        }
     }
 }

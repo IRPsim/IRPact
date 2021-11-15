@@ -84,6 +84,10 @@ public class DecisionMakingDeciderModule2
     }
 
     @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
+    @Override
     public int getSubmoduleCount() {
         return 3;
     }

@@ -47,6 +47,10 @@ public class YearBasedAdoptionDeciderModule2
     protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
     }
 
+    @Override
+    protected void setupSelf(SimulationEnvironment environment) throws Throwable {
+    }
+
     public void setBase(double base) {
         this.base = base;
     }

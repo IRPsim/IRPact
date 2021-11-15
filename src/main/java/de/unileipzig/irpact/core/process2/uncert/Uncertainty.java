@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute
  */
 public interface Uncertainty extends Nameable {
 
-    void updateUncertainty(ConsumerAgentAttribute attribute, double value);
+    void updateOpinion(ConsumerAgentAttribute attribute, double oldValue, double newValue);
 
     void setUncertainty(ConsumerAgentAttribute attribute, double value);
 

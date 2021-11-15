@@ -39,6 +39,11 @@ public class DoNothingRAModule2
     }
 
     @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        traceModuleSetup();
+    }
+
+    @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         return input.getStage();
     }

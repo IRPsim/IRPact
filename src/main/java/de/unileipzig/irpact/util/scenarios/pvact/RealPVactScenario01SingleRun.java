@@ -9,7 +9,7 @@ import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistrib
 import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InGlobalModerateExtremistUncertainty;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlobalModerateExtremistUncertainty;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -145,7 +145,7 @@ public class RealPVactScenario01SingleRun extends AbstractPVactScenario {
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
         timeModel.setAmountOfTime(1);
 
-        InGlobalModerateExtremistUncertainty uncertainty = createGlobalUnvertaintySupplier("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
+        InPVactUpdatableGlobalModerateExtremistUncertainty uncertainty = createInPVactUpdatableGlobalModerateExtremistUncertainty("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
 
         InRAProcessModel processModel = createDefaultProcessModel(
                 "Process",

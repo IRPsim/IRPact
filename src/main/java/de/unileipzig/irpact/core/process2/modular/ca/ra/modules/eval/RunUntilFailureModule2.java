@@ -51,14 +51,30 @@ public class RunUntilFailureModule2
 
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
+        if(alreadyInitalized()) {
+            return;
+        }
+
         traceModuleInitalization();
         this.environment = environment;
         submodule.initialize(environment);
+        setInitalized();
     }
 
     @Override
     public void initializeNewInput(ConsumerAgentData2 input) throws Throwable {
         submodule.initializeNewInput(input);
+    }
+
+    @Override
+    public void setup(SimulationEnvironment environment) throws Throwable {
+        if(alreadySetupCalled()) {
+            return;
+        }
+
+        traceModuleSetup();
+        submodule.setup(environment);
+        setSetupCalled();
     }
 
     @Override

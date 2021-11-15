@@ -1,39 +1,44 @@
 package de.unileipzig.irpact.core.process2.uncert;
 
 import de.unileipzig.irpact.commons.NameableBase;
+import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.DoubleRange;
+import de.unileipzig.irpact.commons.util.Quantile;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
-import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
+import java.util.function.DoubleConsumer;
+import java.util.function.ToDoubleFunction;
 
 /**
  * @author Daniel Abitz
  */
-public class GlobalModerateExtremistUncertainty
+public abstract class AbstractGlobalModerateExtremistUncertainty
         extends NameableBase
-        implements Uncertainty, UncertaintySupplier, LoggingHelper {
+        implements UncertaintySupplier, LoggingHelper {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(GlobalModerateExtremistUncertainty.class);
+    protected static final ToDoubleFunction<Double> FUNC = Double::doubleValue;
 
+    protected SimulationEnvironment environment;
     protected Set<String> attributeNames;
     protected Map<String, DoubleRange> ranges;
-    protected SimulationEnvironment environment;
     protected double extremistParameter;
+    protected double extremistParameterHalf;
     protected double extremistUncertainty;
     protected double moderateUncertainty;
     protected boolean lowerBoundInclusive;
     protected boolean upperBoundInclusive;
 
-    public GlobalModerateExtremistUncertainty() {
+    protected boolean initalized = false;
+
+    public AbstractGlobalModerateExtremistUncertainty() {
         this(new HashSet<>(), new HashMap<>());
     }
 
-    public GlobalModerateExtremistUncertainty(Set<String> attributeNames, Map<String, DoubleRange> ranges) {
+    public AbstractGlobalModerateExtremistUncertainty(Set<String> attributeNames, Map<String, DoubleRange> ranges) {
         this.attributeNames = attributeNames;
         this.ranges = ranges;
     }
@@ -43,14 +48,22 @@ public class GlobalModerateExtremistUncertainty
     }
 
     @Override
-    public IRPLogger getDefaultLogger() {
-        return LOGGER;
+    public abstract IRPLogger getDefaultLogger();
+
+    protected void checkInitalized() {
+        if(!initalized) {
+            throw new IllegalStateException("not initalized: " + getName());
+        }
     }
 
     @Override
     public void initalize() {
+        if(initalized) {
+            return;
+        }
+
         trace(
-                "[{}] init: extremistParameter={}, extremistUncertainty={}, moderateUncertainty={}, lowerBoundInclusive={}, upperBoundInclusive={}",
+                "[{}] initalize: extremistParameter={}, extremistUncertainty={}, moderateUncertainty={}, lowerBoundInclusive={}, upperBoundInclusive={}",
                 getName(),
                 getExtremistParameter(),
                 getExtremistUncertainty(),
@@ -58,7 +71,8 @@ public class GlobalModerateExtremistUncertainty
                 isLowerBoundInclusive(),
                 isUpperBoundInclusive()
         );
-        update();
+        initalized = true;
+        putAll(attributeNames);
     }
 
     @Override
@@ -71,23 +85,20 @@ public class GlobalModerateExtremistUncertainty
     }
 
     @Override
-    public GlobalModerateExtremistUncertainty createFor(ConsumerAgent agent) {
-        if(agent == null) {
-            throw new NullPointerException("agent is null");
-        }
-        return this;
-    }
-
-    @Override
     public void update() {
+        trace("[{}] update ranges [@ {}]", getName(), tryGetNow());
         ranges.clear();
-        for(String attributeName: attributeNames) {
-            put(attributeName);
-        }
+        putAll(attributeNames);
     }
 
     protected double getAttributeValue(ConsumerAgent agent, String attributeName) {
         return agent.getAttribute(attributeName).asValueAttribute().getDoubleValue();
+    }
+
+    protected void putAll(Collection<? extends String> attributeNames) {
+        for(String attributeName: attributeNames) {
+            put(attributeName);
+        }
     }
 
     protected void put(String attributeName) {
@@ -101,27 +112,32 @@ public class GlobalModerateExtremistUncertainty
             return;
         }
 
-        double[] sortedValues = environment.getAgents().streamConsumerAgents()
+        List<Double> sortedValues = new ArrayList<>();
+        collectValues(attributeName, sortedValues::add);
+        sortedValues.sort(Double::compareTo);
+
+        updateRange(attributeName, sortedValues);
+    }
+
+    protected void collectValues(String attributeName, DoubleConsumer consumer) {
+        environment.getAgents().streamConsumerAgents()
                 .mapToDouble(agent -> getAttributeValue(agent, attributeName))
-                .sorted()
-                .toArray();
+                .forEach(consumer);
+    }
 
-        double min = sortedValues[0];
-        double max = sortedValues[sortedValues.length - 1];
-        int lowerIndex = (int) (sortedValues.length * extremistParameter / 2.0);
-        int upperIndex = sortedValues.length - lowerIndex - 1;
-        double lowerBound = sortedValues[lowerIndex];
-        double upperBound = sortedValues[upperIndex];
+    protected Timestamp tryGetNow() {
+        try {
+            return environment.getTimeModel().now();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
 
-        trace(
-                "[{}] value information for attribute '{}': min={}, lowerBound={} (index={}), upperBound={} (index={}), max={}",
-                getName(),
-                attributeName,
-                min,
-                lowerBound, lowerIndex,
-                upperBound, upperIndex,
-                max
-        );
+    protected void updateRange(String attributeName, List<Double> sortedValues) {
+        double min = sortedValues.get(0);
+        double max = sortedValues.get(sortedValues.size() - 1);
+        double lowerBound = Quantile.calculate(sortedValues, FUNC, extremistParameterHalf);
+        double upperBound = Quantile.calculate(sortedValues, FUNC, 1.0 - extremistParameterHalf);
 
         DoubleRange range = new DoubleRange();
         range.setLowerBound(lowerBound);
@@ -129,23 +145,24 @@ public class GlobalModerateExtremistUncertainty
         range.setLowerBoundInclusive(lowerBoundInclusive);
         range.setUpperBoundInclusive(upperBoundInclusive);
 
-        trace("[{}] set range {} for attribute {}", getName(), range, attributeName);
+        trace(
+                "[{}] set range for attribute '{}' (min={}, lowerBound={}, upperBound={}, max={}): {} [@ {}]",
+                getName(),
+                attributeName,
+                min,
+                lowerBound,
+                upperBound,
+                max,
+                range,
+                tryGetNow()
+        );
 
         ranges.put(attributeName, range);
     }
 
-    @Override
-    public void updateUncertainty(ConsumerAgentAttribute attribute, double value) {
-        //uncertainty not changeable
-    }
-
-    @Override
-    public void setUncertainty(ConsumerAgentAttribute attribute, double value) {
-        //uncertainty not changeable
-    }
-
     public void setExtremistParameter(double extremistParameter) {
         this.extremistParameter = Math.max(0, Math.min(1, extremistParameter));
+        this.extremistParameterHalf = extremistParameter * 0.5;
     }
 
     public double getExtremistParameter() {
@@ -190,19 +207,5 @@ public class GlobalModerateExtremistUncertainty
 
     public boolean isAllExtremist() {
         return extremistParameter == 1.0;
-    }
-
-    @Override
-    public double getUncertainty(ConsumerAgentAttribute attribute) {
-        if(isAllModerate()) return moderateUncertainty;
-        if(isAllExtremist()) return extremistUncertainty;
-
-        DoubleRange range = ranges.get(attribute.getName());
-        if(range == null) {
-            throw new NoSuchElementException("missing range: " + attribute.getName());
-        }
-        return range.isInRange(attribute.asValueAttribute().getDoubleValue())
-                ? moderateUncertainty
-                : extremistUncertainty;
     }
 }

@@ -173,6 +173,12 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
         return computeCachedIfAbsent(name, InAttributeName::new);
     }
 
+    protected InAttributeName[] getAttributeNames(String... names) {
+        return Arrays.stream(names)
+                .map(this::getAttributeName)
+                .toArray(InAttributeName[]::new);
+    }
+
     protected boolean isCached(String name) {
         return NAMED_DATA.containsKey(name);
     }
