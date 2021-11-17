@@ -28,7 +28,7 @@ public class DoubleBucketFactory implements BucketFactory<Number> {
     public void cacheBuckets(boolean enabled) {
         if(enabled) {
             if(bucketCache == null) {
-                bucketCache = new HashMap<>();
+                bucketCache = new TreeMap<>();
             }
         } else {
             bucketCache = null;
@@ -91,15 +91,31 @@ public class DoubleBucketFactory implements BucketFactory<Number> {
         return bucket;
     }
 
-    @Override
-    public Stream<Bucket<Number>> streamBuckets(Number from, Number to) {
+    protected Set<Bucket<Number>> getBuckets(Number from, Number to) {
         double f = from.doubleValue();
         double t = to.doubleValue();
-        List<Bucket<Number>> buckets = new ArrayList<>();
+        Set<Bucket<Number>> buckets = new LinkedHashSet<>();
         for(double d = f; d <= t; d += RANGE) {
             buckets.add(createBucket(d));
         }
-        return buckets.stream();
+        //sanity
+        buckets.add(createBucket(to.doubleValue()));
+        return buckets;
+    }
+
+    @Override
+    public void createBuckets(Number from, Number to) {
+        getBuckets(from, to);
+    }
+
+    @Override
+    public Collection<DoubleBucket> getAllBuckets() {
+        return bucketCache.values();
+    }
+
+    @Override
+    public Stream<Bucket<Number>> streamBuckets(Number from, Number to) {
+        return getBuckets(from, to).stream();
     }
 
     @Override

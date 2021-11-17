@@ -6,16 +6,16 @@ import java.text.MessageFormat;
 /**
  * @author Daniel Abitz
  */
-public class GenericPlotCommand extends PlotCommand {
+public class GenericPlotCommandWithLinestyle extends PlotCommand {
 
-    protected static final String PATTERN = "{0} u 2:xtic(1) ti col linewidth {1}, for [i=3:*] '''' u i ti col linewidth {1}";
+    protected static final String PATTERN = "{0} u 2:xtic(1) ti col ls 1, for [i=3:*] '''' u i ti col ls (((i-2)%{1})+1)";
     protected String data;
-    protected int linewidth;
+    protected int maxCycle;
 
-    public GenericPlotCommand(String data, int linewidth) {
+    public GenericPlotCommandWithLinestyle(String data, int maxCycle) {
         super(null);
         setData(data);
-        setLinewidth(linewidth);
+        setMaxCycle(maxCycle);
     }
 
     public void setData(String data) {
@@ -26,16 +26,16 @@ public class GenericPlotCommand extends PlotCommand {
         return data;
     }
 
-    public int getLinewidth() {
-        return linewidth;
+    public void setMaxCycle(int maxCycle) {
+        this.maxCycle = maxCycle;
     }
 
-    public void setLinewidth(int linewidth) {
-        this.linewidth = linewidth;
+    public int getMaxCycle() {
+        return maxCycle;
     }
 
     public String getText() {
-        return MessageFormat.format(PATTERN, getData(), getLinewidth());
+        return MessageFormat.format(PATTERN, getData(), getMaxCycle());
     }
 
     @Override

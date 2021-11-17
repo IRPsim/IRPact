@@ -141,6 +141,16 @@ public abstract class PostProcessor implements LoggingHelper {
         return years;
     }
 
+    protected List<Integer> yearsWithPrior;
+    public List<Integer> getAllSimulationYearsPrior() {
+        if(yearsWithPrior == null) {
+            List<Integer> years = new ArrayList<>(getAllSimulationYears());
+            years.add(0, years.get(0) - 1);
+            yearsWithPrior = years;
+        }
+        return yearsWithPrior;
+    }
+
     public int getFirstSimulationYear() {
         return metaData.getOldestRunInfo().getFirstSimulationYear();
     }
@@ -356,6 +366,16 @@ public abstract class PostProcessor implements LoggingHelper {
             }
         }
         return localizedData;
+    }
+
+    public JsonTableData3 loadOrGetCsv(Path path, Charset charset, String delimiter, Object key) throws IOException {
+        if(isCached(key)) {
+            return retrieveFromCache(key);
+        } else {
+            JsonTableData3 data = loadCsv(path, charset, delimiter);
+            storeInCache(key, data);
+            return data;
+        }
     }
 
     public JsonTableData3 loadCsv(Path path, Charset charset, String delimiter) throws IOException {

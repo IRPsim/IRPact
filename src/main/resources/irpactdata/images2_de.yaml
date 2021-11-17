@@ -10,6 +10,7 @@ GNUPLOT:
     sep: ";"
     years: "Jahre"
     avg: "avg"
+
   SPECIAL_AVERAGE_QUANTILE_RANGE:
     title: "Quantilanalyse"
     xlab: "Jahre"
@@ -23,6 +24,7 @@ GNUPLOT:
     q3: "[50,75)"
     q4: "[75,90)"
     q5: "[90,100)"
+
   COMPARED_ANNUAL_ZIP:
     title: |-
       Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
@@ -38,6 +40,7 @@ GNUPLOT:
     realSuffix: "-Real"
     realScaledSuffix: "-Real-Skaliert"
     realUnscaledSuffix: "-Real-Unskaliert"
+
   COMPARED_ANNUAL:
     title: "Jährliche Adoptionen im Vergleich zu realen Daten"
     xlab: "Jahre"
@@ -49,6 +52,7 @@ GNUPLOT:
     real: "Real"
     realScaled: "Real-Skaliert"
     realUnscaled: "Real-Unskaliert"
+
   ADOPTION_PHASE_OVERVIEW:
     title: |-
       Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
@@ -61,6 +65,7 @@ GNUPLOT:
     startMid: "Start-Mitte"
     midEnd: "Mitte-Ende"
     endStart: "Ende-Start"
+
   PROCESS_PHASE_OVERVIEW:
     title: "Prozessphasen"
     xlab: "Adoptionen"
@@ -72,10 +77,21 @@ GNUPLOT:
     feasibility: "Feasibility"
     decisionMaking: "Decision Making"
     adopted: "Adopted"
+
   INTEREST_OVERVIEW:
     title: "Interessensübersicht"
-    xlab: "Interesse"
-    ylab: "Jahre"
+    xlab: "Jahre"
+    ylab: "Interesse"
     keylab: "Interesse"
     sep: ";"
+
+  ANNUAL_BUCKETS:
+    title: "Bereichsanalyse"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    keylab: "Bereiche"
+    sep: ";"
+    headerYear: "year"
+    decimalSeparator: ","
+    rangeSeparator: ":"
 

@@ -97,6 +97,49 @@
         ]
       } 
       {
+        :label "Bereichsanalyse" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "NPV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NPV_Buckets.png"
+          } 
+          {
+            :label "ENV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "ENV_Buckets.png"
+          } 
+          {
+            :label "NOV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NOV_Buckets.png"
+          } 
+          {
+            :label "SOCIAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "SOCIAL_Buckets.png"
+          } 
+          {
+            :label "LOCAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "LOCAL_Buckets.png"
+          } 
+          {
+            :label "UTILITY" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "UTILITY_Buckets.png"
+          }
+        ]
+      } 
+      {
         :label "Benutzerdefiniert" 
         :icon "fa fa-plus-square" 
         :description "todo" 

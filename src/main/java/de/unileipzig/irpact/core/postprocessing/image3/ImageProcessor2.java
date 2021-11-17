@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image3.gnuplot.*;
+import de.unileipzig.irpact.core.postprocessing.image3.selector.CustomAverageQuantilRangeSelector;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -18,6 +19,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Daniel Abitz
@@ -29,12 +33,19 @@ public class ImageProcessor2 extends PostProcessor {
     protected static final String IMAGES_BASENAME = "images2";
     protected static final String IMAGES_EXTENSION = "yaml";
 
+    protected final List<ImageHandlerSelector> SELECTORS = new ArrayList<>();
+
     public ImageProcessor2(
             MetaData metaData,
             MainCommandLineOptions clOptions,
             InRoot inRoot,
             SimulationEnvironment environment) {
         super(metaData, clOptions, inRoot, environment);
+        initDefaultSelectors();
+    }
+
+    protected void initDefaultSelectors() {
+        SELECTORS.add(new CustomAverageQuantilRangeSelector(this));
     }
 
     @Override
@@ -49,6 +60,10 @@ public class ImageProcessor2 extends PostProcessor {
 
     public SimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    public Locale getLocale() {
+        return getEnvironment().getMetaData().getLocale();
     }
 
     //=========================
@@ -131,6 +146,32 @@ public class ImageProcessor2 extends PostProcessor {
         return getLocalizedData(IMAGES_BASENAME, IMAGES_EXTENSION);
     }
 
+    protected void handle2(InOutputImage2 image) throws Throwable {
+        if(image == null) {
+            warn("skip null image");
+            return;
+        }
+
+        if(image.isDisabled()) {
+            info("skip disabled image '{}'", image.getName());
+            return;
+        }
+
+        if(image.hasNothingToStore()) {
+            info("skip pointless image '{}' (nothing to store)", image.getName());
+            return;
+        }
+
+        for(ImageHandlerSelector selector: SELECTORS) {
+            if(selector.isSupported(image)) {
+                selector.handle(image);
+                return;
+            }
+        }
+
+        warn("unsupported image: " + image.getName());
+    }
+
     protected void handle(InOutputImage2 image) throws Throwable {
         if(image == null) {
             warn("skip null image");
@@ -167,6 +208,9 @@ public class ImageProcessor2 extends PostProcessor {
         }
         else if(image instanceof InProcessPhaseOverviewImage) {
             handleProcessPhaseOverviewImage((InProcessPhaseOverviewImage) image);
+        }
+        else if(image instanceof InAnnualBucketImage) {
+            handleAnnualBucketImage((InAnnualBucketImage) image);
         }
         else {
             warn("unsupported image: " + image.getName());
@@ -269,6 +313,21 @@ public class ImageProcessor2 extends PostProcessor {
         ImageHandler handler;
         if(image.getEngine() == SupportedEngine.GNUPLOT) {
             handler = new ProcessPhaseOverviewGnuplotImageHandler(this, image);
+        } else {
+            warn("R not supported, skip");
+            return;
+        }
+
+        handler.init();
+        handler.execute();
+    }
+
+    protected void handleAnnualBucketImage(InAnnualBucketImage image) throws Throwable {
+        trace("handle InAnnualBucketImage '{}'", image.getName());
+
+        ImageHandler handler;
+        if(image.getEngine() == SupportedEngine.GNUPLOT) {
+            handler = new AnnualBucketGnuplotImageHandler(this, image);
         } else {
             warn("R not supported, skip");
             return;

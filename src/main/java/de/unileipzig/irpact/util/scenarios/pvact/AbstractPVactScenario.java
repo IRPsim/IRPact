@@ -750,6 +750,30 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         utilityQuantil.setLoggingModule(utilityReevalLogger);
         images.add(utilityQuantil);
 
+        InAnnualBucketImage npvBucket = InAnnualBucketImage.NPV;
+        npvBucket.setLoggingModule(npvReevalLogger);
+        images.add(npvBucket);
+
+        InAnnualBucketImage envBucket = InAnnualBucketImage.ENV;
+        envBucket.setLoggingModule(envReevalLogger);
+        images.add(envBucket);
+
+        InAnnualBucketImage novBucket = InAnnualBucketImage.NOV;
+        novBucket.setLoggingModule(novReevalLogger);
+        images.add(novBucket);
+
+        InAnnualBucketImage socialBucket = InAnnualBucketImage.SOCIAL;
+        socialBucket.setLoggingModule(socialReevalLogger);
+        images.add(socialBucket);
+
+        InAnnualBucketImage localBucket = InAnnualBucketImage.LOCAL;
+        localBucket.setLoggingModule(localReevalLogger);
+        images.add(localBucket);
+
+        InAnnualBucketImage utlityBucket = InAnnualBucketImage.UTILITY;
+        utlityBucket.setLoggingModule(utilityReevalLogger);
+        images.add(utlityBucket);
+
         //Custom-Test
 //        InQuantileRange qr0 = new InQuantileRange();
 //        qr0.setName("QR0");
@@ -797,17 +821,17 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         images.add(processPhaseOverview);
 
         //bucket
-        InBucketAnalyser novBucket = new InBucketAnalyser();
-        novBucket.setName("NOV_BUCKET");
-        novBucket.setBucketRange(0.1);
-        novBucket.setLoggingModule(novLogger);
-        postDatas.add(novBucket);
+        InBucketAnalyser novBucketData = new InBucketAnalyser();
+        novBucketData.setName("NOV_BUCKET");
+        novBucketData.setBucketRange(0.1);
+        novBucketData.setLoggingModule(novLogger);
+        postDatas.add(novBucketData);
 
-        InBucketAnalyser envBucket = new InBucketAnalyser();
-        envBucket.setName("ENV_BUCKET");
-        envBucket.setBucketRange(0.01);
-        envBucket.setLoggingModule(envLogger);
-        postDatas.add(envBucket);
+        InBucketAnalyser envBucketData = new InBucketAnalyser();
+        envBucketData.setName("ENV_BUCKET");
+        envBucketData.setBucketRange(0.01);
+        envBucketData.setLoggingModule(envLogger);
+        postDatas.add(envBucketData);
 
         //neighborhood
         InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();

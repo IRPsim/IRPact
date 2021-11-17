@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.commons.util.data;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
@@ -43,10 +44,25 @@ public class DoubleBucket implements Bucket<Number> {
     }
 
     @Override
+    public boolean isInside(Number value) {
+        return getFromAsDouble() <= value.doubleValue() && value.doubleValue() < getToAsDouble();
+    }
+
+    @Override
+    public String print(Function<? super Number, ? extends String> toStringFunction) {
+        if(isNaN()) {
+            return "NaN";
+        } else {
+            if(toStringFunction == null) {
+                toStringFunction = Objects::toString;
+            }
+            return "[" + toStringFunction.apply(getFrom()) + ", " + toStringFunction.apply(getTo()) + ")";
+        }
+    }
+
+    @Override
     public String toString() {
-        return isNaN()
-                ? "NaN"
-                : "[" + getFrom() + ", " + getTo() + ")";
+        return print(null);
     }
 
     @Override

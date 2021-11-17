@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util.data;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 
 /**
@@ -8,6 +9,10 @@ import java.util.stream.Stream;
 public interface BucketFactory<T> {
 
     Bucket<T> createBucket(T value);
+
+    void createBuckets(T from, T to);
+
+    Collection<? extends Bucket<T>> getAllBuckets();
 
     Stream<Bucket<T>> streamBuckets(T from, T to);
 

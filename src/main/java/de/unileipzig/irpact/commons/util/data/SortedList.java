@@ -8,14 +8,23 @@ import java.util.stream.Stream;
  */
 public class SortedList<T> implements List<T> {
 
-    protected final List<T> list = new ArrayList<>();
+    protected final List<T> list;
     protected Comparator<? super T> c;
 
     public SortedList() {
         this((Comparator<T>) null);
     }
 
+    public SortedList(int initialSize) {
+        this(null, initialSize);
+    }
+
     public SortedList(Comparator<? super T> c) {
+        this(c, 16);
+    }
+
+    public SortedList(Comparator<? super T> c, int initialSize) {
+        list = new ArrayList<>(initialSize);
         setComparator(c);
     }
 
@@ -24,6 +33,11 @@ public class SortedList<T> implements List<T> {
     }
 
     public SortedList(Comparator<? super T> c, Collection<? extends T> elements) {
+        this(c, elements, 16);
+    }
+
+    public SortedList(Comparator<? super T> c, Collection<? extends T> elements, int initialSize) {
+        list = new ArrayList<>(initialSize);
         setComparator(c);
         addAll(elements);
     }
@@ -345,15 +359,15 @@ public class SortedList<T> implements List<T> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SortedList)) return false;
+        if(this == o) return true;
+        if(!(o instanceof SortedList)) return false;
         SortedList<?> that = (SortedList<?>) o;
         return Objects.equals(list, that.list);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(list);
+        return list.hashCode();
     }
 
     @Override
