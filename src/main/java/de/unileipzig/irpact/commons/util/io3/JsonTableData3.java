@@ -61,8 +61,23 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
         return get(rowIndex, columnIndex).doubleValue();
     }
 
+    public int getStringAsInt(int rowIndex, int columnIndex, ToIntFunction<? super String> castFunction) {
+        String value = getString(rowIndex, columnIndex);
+        return castFunction.applyAsInt(value);
+    }
+
+    public double getStringAsDouble(int rowIndex, int columnIndex, ToDoubleFunction<? super String> castFunction) {
+        String value = getString(rowIndex, columnIndex);
+        return castFunction.applyAsDouble(value);
+    }
+
     public String getString(int rowIndex, int columnIndex) {
         return get(rowIndex, columnIndex).textValue();
+    }
+
+    public <R> R getStringAsObject(int rowIndex, int columnIndex, Function<? super String, ? extends R> castFunction) {
+        String value = getString(rowIndex, columnIndex);
+        return castFunction.apply(value);
     }
 
     public void setInt(int rowIndex, int columnIndex, int value) {

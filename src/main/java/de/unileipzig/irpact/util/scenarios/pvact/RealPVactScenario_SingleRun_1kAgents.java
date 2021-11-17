@@ -96,7 +96,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         InDiracUnivariateDistribution renoDist = new InDiracUnivariateDistribution("RENO", 0.00394339526076053);
         InDiracUnivariateDistribution constDist = new InDiracUnivariateDistribution("CONST", 0.00364015558626337);
         InDiracUnivariateDistribution interestDist = new InDiracUnivariateDistribution("INTEREST_THRESHOLD", 9);
-        InDiracUnivariateDistribution financialThresholdDist = new InDiracUnivariateDistribution("FINANCIAL_THRESHOLD", 40000);
+        InDiracUnivariateDistribution financialThresholdDist = new InDiracUnivariateDistribution("FINANCIAL_THRESHOLD", RealData.FINANCIAL_THRESHOLD);
         InDiracUnivariateDistribution adoptionThreshold = new InDiracUnivariateDistribution("ADOPTION_THRESHOLD", 0);
         realData.CAGS.forEach(cag -> cag.setRenovationRate(renoDist));
         realData.CAGS.forEach(cag -> cag.setConstructionRate(constDist));

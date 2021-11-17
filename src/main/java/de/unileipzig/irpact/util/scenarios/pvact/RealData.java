@@ -129,6 +129,8 @@ public final class RealData {
     public static final double SCALE = 0.5;
     public static final double MULTIPLIER = 15;
 
+    public static final double FINANCIAL_THRESHOLD = 38827.44;
+
     public static final double WEIGHT_NS = 0.348;
     public static final double WEIGHT_NEP = -0.0996;
     public static final double WEIGHT_EK = 0;

@@ -86,7 +86,7 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "20";
+    private static final String MINOR_STRING = "21";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -142,8 +142,26 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_QUANTILE_LOCAL = "LOCAL_Quantile";
     public static final String IMAGE_QUANTILE_LOCAL_PNG = IMAGE_QUANTILE_LOCAL + ".png";
 
-    public static final String IMAGE_UTILITY_LOCAL = "UTILITY_Quantile";
-    public static final String IMAGE_UTILITY_LOCAL_PNG = IMAGE_UTILITY_LOCAL + ".png";
+    public static final String IMAGE_QUANTILE_UTILITY = "UTILITY_Quantile";
+    public static final String IMAGE_QUANTILE_UTILITY_PNG = IMAGE_QUANTILE_UTILITY + ".png";
+
+    public static final String IMAGE_BUCKET_NPV = "NPV_Buckets";
+    public static final String IMAGE_BUCKET_NPV_PNG = IMAGE_BUCKET_NPV + ".png";
+
+    public static final String IMAGE_BUCKET_ENV = "ENV_Buckets";
+    public static final String IMAGE_BUCKET_ENV_PNG = IMAGE_BUCKET_ENV + ".png";
+
+    public static final String IMAGE_BUCKET_NOV = "NOV_Buckets";
+    public static final String IMAGE_BUCKET_NOV_PNG = IMAGE_BUCKET_NOV + ".png";
+
+    public static final String IMAGE_BUCKET_SOCIAL = "SOCIAL_Buckets";
+    public static final String IMAGE_BUCKET_SOCIAL_PNG = IMAGE_BUCKET_SOCIAL + ".png";
+
+    public static final String IMAGE_BUCKET_LOCAL = "LOCAL_Buckets";
+    public static final String IMAGE_BUCKET_LOCAL_PNG = IMAGE_BUCKET_LOCAL + ".png";
+
+    public static final String IMAGE_BUCKET_UTILITY = "UTILITY_Buckets";
+    public static final String IMAGE_BUCKET_UTILITY_PNG = IMAGE_BUCKET_UTILITY + ".png";
 
     public static final int INVALID_CUSTOM_IMAGE = 0;
     public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;

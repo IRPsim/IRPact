@@ -280,7 +280,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.20.0" 
+        :description "IRPact v1.21.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -396,6 +396,12 @@
             :set "set_InInterestOverviewImage" 
             :description "todo" 
             :tags [["InInterestOverviewImage" "enabled"] ["InInterestOverviewImage" "useGnuplot"] ["InInterestOverviewImage" "useR"] ["InInterestOverviewImage" "storeScript"] ["InInterestOverviewImage" "storeData"] ["InInterestOverviewImage" "storeImage"] ["InInterestOverviewImage" "imageWidth"] ["InInterestOverviewImage" "imageHeight"] ["InInterestOverviewImage" "boxWidth"] ["InInterestOverviewImage" "customImageId"]]
+          } 
+          {
+            :label "Jährliche Bereichsanalyse" 
+            :set "set_InAnnualBucketImage" 
+            :description "todo" 
+            :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "useCorporateDesign"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
           }
         ]
       } 

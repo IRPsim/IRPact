@@ -35,7 +35,15 @@ public class BucketMap<K, V> {
     }
 
     public V get(K key) {
-        return map.get(getBucket(key));
+        return get(getBucket(key));
+    }
+
+    public V get(Bucket<K> bucket) {
+        return map.get(bucket);
+    }
+
+    public V getOrDefault(Bucket<K> bucket, V ifMissing) {
+        return map.getOrDefault(bucket, ifMissing);
     }
 
     public V update(K key, V ifMissing, UnaryOperator<V> updater) {
@@ -61,6 +69,11 @@ public class BucketMap<K, V> {
                 .forEach(bucket -> map.putIfAbsent(bucket, nullValue));
     }
 
+    public BucketMap<K, V> withMissingBuckets(K from, K to, V nullValue) {
+        addMissingBuckets(from, to, nullValue);
+        return this;
+    }
+
     public Set<Bucket<K>> buckets() {
         return map.keySet();
     }
@@ -71,5 +84,10 @@ public class BucketMap<K, V> {
 
     public Set<Map.Entry<Bucket<K>, V>> entries() {
         return map.entrySet();
+    }
+
+    @Override
+    public String toString() {
+        return map.toString();
     }
 }

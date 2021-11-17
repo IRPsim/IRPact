@@ -200,7 +200,8 @@ public class OutRoot implements RootClass {
                 buildNetworkImageSection(1),
                 buildAdoptionSection(2),
                 buildQuantilSection(3),
-                buildCustomSection(4)
+                buildAnnualBucketSection(4),
+                buildCustomSection(5)
         );
         return imageSection;
     }
@@ -322,7 +323,64 @@ public class OutRoot implements RootClass {
         image6.setPriority(6);
         image6.setLabel("UTILITY");
         image6.setIcon(IRPact.ICON_IMAGE);
-        image6.setImage(IRPact.IMAGE_UTILITY_LOCAL_PNG);
+        image6.setImage(IRPact.IMAGE_QUANTILE_UTILITY_PNG);
+        image6.setDescription("todo");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5, image6);
+
+        return adoptionSection;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected Section buildAnnualBucketSection(int priority) {
+        Section adoptionSection = new Section();
+        adoptionSection.setPriority(priority);
+        adoptionSection.setLabel("Bereichsanalyse");
+        adoptionSection.setDescription("todo");
+        adoptionSection.setIcon(IRPact.ICON_IMAGES);
+
+        Sections adoptionSections = adoptionSection.getSections();
+
+        Section image1 = new Section();
+        image1.setPriority(1);
+        image1.setLabel("NPV");
+        image1.setIcon(IRPact.ICON_IMAGE);
+        image1.setImage(IRPact.IMAGE_BUCKET_NPV_PNG);
+        image1.setDescription("todo");
+
+        Section image2 = new Section();
+        image2.setPriority(2);
+        image2.setLabel("ENV");
+        image2.setIcon(IRPact.ICON_IMAGE);
+        image2.setImage(IRPact.IMAGE_BUCKET_ENV_PNG);
+        image2.setDescription("todo");
+
+        Section image3 = new Section();
+        image3.setPriority(3);
+        image3.setLabel("NOV");
+        image3.setIcon(IRPact.ICON_IMAGE);
+        image3.setImage(IRPact.IMAGE_BUCKET_NOV_PNG);
+        image3.setDescription("todo");
+
+        Section image4 = new Section();
+        image4.setPriority(4);
+        image4.setLabel("SOCIAL");
+        image4.setIcon(IRPact.ICON_IMAGE);
+        image4.setImage(IRPact.IMAGE_BUCKET_SOCIAL_PNG);
+        image4.setDescription("todo");
+
+        Section image5 = new Section();
+        image5.setPriority(5);
+        image5.setLabel("LOCAL");
+        image5.setIcon(IRPact.ICON_IMAGE);
+        image5.setImage(IRPact.IMAGE_BUCKET_LOCAL_PNG);
+        image5.setDescription("todo");
+
+        Section image6 = new Section();
+        image6.setPriority(6);
+        image6.setLabel("UTILITY");
+        image6.setIcon(IRPact.ICON_IMAGE);
+        image6.setImage(IRPact.IMAGE_BUCKET_UTILITY_PNG);
         image6.setDescription("todo");
 
         adoptionSections.addAll(image1, image2, image3, image4, image5, image6);

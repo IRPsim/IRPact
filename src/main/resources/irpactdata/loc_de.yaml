@@ -353,6 +353,61 @@ InAdoptionPhaseOverviewImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
 
+InAnnualBucketImage:
+  edn_label: "Jährliche Bereichsanalyse"
+  edn_description: "todo"
+InAnnualBucketImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualBucketImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualBucketImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualBucketImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualBucketImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualBucketImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualBucketImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualBucketImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualBucketImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InAnnualBucketImage_useCustomYRange:
+  gams_identifier: "Benutzerdefinierte Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualBucketImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualBucketImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualBucketImage_bucketSize:
+  gams_identifier: "Bereichsgröße"
+  gams_description: "todo"
+InAnnualBucketImage_fractionDigits:
+  gams_identifier: "Anzahl Nachkommastellen (Legende)"
+  gams_description: "todo"
+InAnnualBucketImage_useCorporateDesign:
+  gams_identifier: "Corporate Design verwenden?"
+  gams_description: "todo"
+InAnnualBucketImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualBucketImage_loggingModule:
+  gams_identifier: "Loggingmodule"
+  gams_description: "todo"
+
 InComparedAnnualImage:
   edn_label: "Adoptionen mit Realdaten"
   edn_description: "todo"
@@ -685,7 +740,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.20.0"
+  edn_description: "IRPact v1.21.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

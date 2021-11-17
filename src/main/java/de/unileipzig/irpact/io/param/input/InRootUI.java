@@ -106,6 +106,7 @@ public class InRootUI {
     public static final EdnPath SETT_VISURESULT2_ADOPTIONPHASE = SETT_VISURESULT2.resolve(InAdoptionPhaseOverviewImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_PROCESSPHASE = SETT_VISURESULT2.resolve(InProcessPhaseOverviewImage.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISURESULT2_INTEREST = SETT_VISURESULT2.resolve(InInterestOverviewImage.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_VISURESULT2_ANNUALBUCKET = SETT_VISURESULT2.resolve(InAnnualBucketImage.thisName()).addTo(PATHS);
 
     public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);

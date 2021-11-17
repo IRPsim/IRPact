@@ -1268,6 +1268,133 @@ PARAMETER par_InAdoptionPhaseOverviewImage_boxWidth(set_InAdoptionPhaseOverviewI
 * - type: Integer
 PARAMETER par_InAdoptionPhaseOverviewImage_customImageId(set_InAdoptionPhaseOverviewImage)
 
+* - identifier: InAnnualBucketImage
+* - type: String
+SET set_InAnnualBucketImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_enabled(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 1, par_InAnnualBucketImage_useR = 0)
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useGnuplot = 1)
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_useGnuplot(set_InAnnualBucketImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - rule: IF (par_InAnnualBucketImage_useR == 1, par_InAnnualBucketImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_useR(set_InAnnualBucketImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_storeScript(set_InAnnualBucketImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_storeData(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_storeImage(set_InAnnualBucketImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualBucketImage_imageWidth(set_InAnnualBucketImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualBucketImage_imageHeight(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: boxWidth
+* - type: Float
+PARAMETER par_InAnnualBucketImage_boxWidth(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierte Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_useCustomYRange(set_InAnnualBucketImage)
+
+* - default: 0
+* - description: todo
+* - identifier: Min Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualBucketImage_minY(set_InAnnualBucketImage)
+
+* - default: 0
+* - description: todo
+* - identifier: Max Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualBucketImage_maxY(set_InAnnualBucketImage)
+
+* - default: 0.1
+* - domain: (0,)
+* - description: todo
+* - identifier: Bereichsgröße
+* - type: Float
+PARAMETER par_InAnnualBucketImage_bucketSize(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: [0,)
+* - description: todo
+* - identifier: Anzahl Nachkommastellen (Legende)
+* - type: Integer
+PARAMETER par_InAnnualBucketImage_fractionDigits(set_InAnnualBucketImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Corporate Design verwenden?
+* - type: Boolean
+PARAMETER par_InAnnualBucketImage_useCorporateDesign(set_InAnnualBucketImage)
+
+* - default: 0
+* - domain: [0,10]
+* - description: todo
+* - identifier: Benutzerdefinierte Bild-Id
+* - type: Integer
+PARAMETER par_InAnnualBucketImage_customImageId(set_InAnnualBucketImage)
+
+* - description: todo
+* - identifier: Loggingmodule
+* - type: Boolean
+PARAMETER par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule(set_InAnnualBucketImage,set_InConsumerAgentCalculationLoggingModule2)
+
 * - identifier: InComparedAnnualImage
 * - type: String
 SET set_InComparedAnnualImage(set_InLoggingResultImage2)
@@ -2024,13 +2151,13 @@ PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extr
 * - type: Float
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
@@ -2059,13 +2186,13 @@ PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extrem
 * - type: Float
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
@@ -2094,13 +2221,13 @@ PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncert
 * - type: Float
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
-* - default: 0
+* - default: 1
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean

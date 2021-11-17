@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.util.gnuplot.builder;
 
+import de.unileipzig.irpact.commons.color.ColorPalette;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotFileScript;
 
@@ -227,6 +228,16 @@ public class GnuPlotBuilder {
         setStyle("fill solid 1.0 border -1");
     }
 
+    public void setStyleLines(int startId, double width, ColorPalette colors) {
+        for(int i = 0; i < colors.size(); i++) {
+            setStyleLine(startId++, width, "#" + colors.getRGBHex(i));
+        }
+    }
+
+    public void setStyleLine(int id, double width, String color) {
+        setStyle("line", id, "lw", width, "lc rgb", quote(color));
+    }
+
     public void setBoxWidthAbsolute(String width) {
         buildSet("boxwidth", width, "absolute");
     }
@@ -312,7 +323,11 @@ public class GnuPlotBuilder {
 
     public void setLegendOutsideRightTop(String label) {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
-        buildSet("key outside right top vertical Left title ", quote(label));
+        if(label == null || label.isEmpty()) {
+            setLegendOutsideRightTop();
+        } else {
+            buildSet("key outside right top vertical Left title ", quote(label));
+        }
     }
 
     public void formatAndSetLegendOutsideRightTop(String label) {
@@ -355,12 +370,16 @@ public class GnuPlotBuilder {
         buildSet("datafile", "separator", quote(separator));
     }
 
-    public void plotGenericData(int arg) {
-        plotGenericData(arg, 1);
+    public void plotGenericDataWithLinestyle(int arg, int maxCycle) {
+        add(new GenericPlotCommandWithLinestyle(arg(arg), maxCycle));
     }
 
-    public void plotGenericData(int arg, int linewidth) {
-        add(new GenericPlotCommand(arg(arg), linewidth));
+    public void plotGenericDataWithLinewidth(int arg) {
+        plotGenericDataWithLinewidth(arg, 1);
+    }
+
+    public void plotGenericDataWithLinewidth(int arg, int linewidth) {
+        add(new GenericPlotCommandWithLinewidth(arg(arg), linewidth));
     }
 
     public void plot3DataColumns(String phase0, String phase1, String phase2, int arg) {
@@ -410,7 +429,7 @@ public class GnuPlotBuilder {
     }
 
     public void setYRange(Object min, Object max) {
-        String range = Objects.equals(min, max)
+        String range = (min == null || max == null || Objects.equals(min, max))
                 ? "[*:*]"
                 : "[" + min + ":" + max + "]";
         buildSet("yrange", range);

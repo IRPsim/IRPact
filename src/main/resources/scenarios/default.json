@@ -125,6 +125,7 @@
       "set_InAgentPopulation" : {
         "PopulationSize" : { }
       },
+      "set_InAnnualBucketImage" : { },
       "set_InAnnualInterestLogger" : { },
       "set_InAttributeInputModule_inputgraphnode" : { },
       "set_InAttributeInputModule_inputgraphnode2" : { },
@@ -292,7 +293,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_15_T_07_14_23" : {
+        "CT_D_2021_11_17_T_06_12_19" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -383,7 +384,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_20_0" : {
+        "v1_21_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -496,6 +497,7 @@
         }
       },
       "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
+      "par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
       "par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : {
