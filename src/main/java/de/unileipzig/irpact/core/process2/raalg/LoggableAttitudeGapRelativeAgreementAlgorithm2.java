@@ -325,9 +325,9 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             return handleDisabled(xi, ui, xj, uj, influence);
         }
 
-        double gab = gab(xi, xj);
+        double gap = gab(xi, xj);
 
-        if(gab < getAttitudeGap()) {
+        if(gap < getAttitudeGap()) {
             return calculateWithinGab(ni, xi, ui, nj, xj, uj, attr, influence, time);
         } else {
             return calculateWithMode(ni, xi, ui, nj, xj, uj, attr, influence, time);
@@ -566,21 +566,24 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     public void closeEntity() {
         if(valueLogger != null) {
             valueLogger.stop();
+            boolean xlsxSuccessful = true;
             if(storeXlsx) {
-                storeXlsx();
+                xlsxSuccessful = storeXlsx();
             }
-            if(!keepCsv) {
+            if(xlsxSuccessful && !keepCsv) {
                 deleteCsv();
             }
         }
     }
 
-    protected void storeXlsx() {
+    protected boolean storeXlsx() {
         try {
             trace("[{}] store xlsx", getBaseName());
             storeXlsx0();
+            return true;
         } catch (Throwable t) {
             error("store xlsx failed", t);
+            return false;
         }
     }
 
@@ -593,7 +596,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
             Path xlsxPath = getDir().resolve(getBaseName() + ".xlsx");
             trace("try store '{}'", xlsxPath);
-            storeXlsxWithTime(xlsxPath, FORMATTER, xlsxData);
+            storeXlsxWithTime_Streaming(xlsxPath, FORMATTER, xlsxData);
             trace("stored '{}': {}", xlsxPath, Files.exists(xlsxPath));
         } else {
             info("file '{}' not found", csvPath);

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -47,8 +48,8 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
         addEntryWithDefault(res, thisClass(), "maxY", VALUE_0);
         addEntryWithDefaultAndDomain(res, thisClass(), "bucketSize", asValue(0.1), DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "fractionDigits", VALUE_1, DOMAIN_GEQ0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useCorporateDesign", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
+        addEntry(res, thisClass(), "colorPalette");
         addEntry(res, thisClass(), "loggingModule");
 
         setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
@@ -109,10 +110,10 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
     public int fractionDigits = 1;
 
     @FieldDefinition
-    public boolean useCorporateDesign = true;
+    public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
     @FieldDefinition
-    public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
+    public InColorPalette[] colorPalette = new InColorPalette[0];
 
     @FieldDefinition
     public InConsumerAgentCalculationLoggingModule2[] loggingModule = new InConsumerAgentCalculationLoggingModule2[0];
@@ -261,20 +262,12 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
         return minY;
     }
 
-    public Double getMinYOrNull() {
-        return isUseCustomYRange() ? getMinY() : null;
-    }
-
     public void setMaxY(double maxY) {
         this.maxY = maxY;
     }
 
     public double getMaxY() {
         return maxY;
-    }
-
-    public Double getMaxYOrNull() {
-        return isUseCustomYRange() ? getMaxY() : null;
     }
 
     public void setCustomImageId(int customImageId) {
@@ -297,12 +290,16 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
         return fractionDigits;
     }
 
-    public void setUseCorporateDesign(boolean useCorporateDesign) {
-        this.useCorporateDesign = useCorporateDesign;
+    public void setColorPalette(InColorPalette colorPalette) {
+        this.colorPalette = new InColorPalette[]{ colorPalette };
     }
 
-    public boolean isUseCorporateDesign() {
-        return useCorporateDesign;
+    public boolean hasColorPalette() {
+        return len(colorPalette) > 0;
+    }
+
+    public InColorPalette getColorPalette() throws ParsingException {
+        return getInstance(colorPalette, "colorPalette");
     }
 
     @Override

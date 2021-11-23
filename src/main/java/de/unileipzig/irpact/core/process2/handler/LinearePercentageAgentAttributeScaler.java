@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -81,10 +82,6 @@ public class LinearePercentageAgentAttributeScaler
         return lin(getFirstYear(environment)) / lin(getLastYear(environment) + 1);
     }
 
-    protected double getGrowth() {
-        return m;
-    }
-
     protected void storeGrowthFactor(ConsumerAgent agent, double value) {
         growthFactors.put(agent, value);
     }
@@ -113,8 +110,8 @@ public class LinearePercentageAgentAttributeScaler
         double scaleFactor = getScaleFactor(environment);
         LOGGER.trace("scaleFactor={}", scaleFactor);
 
-        double growth = getGrowth();
-        LOGGER.trace("growth={}", growth);
+        double growth = (1.0 - scaleFactor) / environment.getSettings().getActualNumberOfSimulationYears();
+        LOGGER.trace("growth={} (= (1 - {} / {}))", growth, scaleFactor, environment.getSettings().getActualNumberOfSimulationYears());
 
         MutableDouble min = MutableDouble.empty();
         MutableDouble max = MutableDouble.empty();
@@ -135,7 +132,7 @@ public class LinearePercentageAgentAttributeScaler
             setValue(environment, ca, scaledValue);
             LOGGER.trace("update '{}' (initial={} -> inRange={} -> scaled={}): {}", ca.getName(), initialValue, rangedValue, scaledValue, getValue(environment, ca));
 
-            double growthFactor = scaledValue * growth;
+            double growthFactor = rangedValue * growth;
             storeGrowthFactor(ca, growthFactor);
             LOGGER.trace("growth factor for '{}': {}", ca.getName(), growthFactor);
         }

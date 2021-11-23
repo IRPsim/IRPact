@@ -12,7 +12,7 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.count.CountMap3D;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
-import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.data.DataLogger;
@@ -208,8 +208,8 @@ public class DataProcessor extends PostProcessor {
         }
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", target);
         XSSFWorkbook book = new XSSFWorkbook();
@@ -268,8 +268,8 @@ public class DataProcessor extends PostProcessor {
         logZipPhaseOverview(zips, years, product, sheets);
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", target);
         writer.write(target, sheets);
@@ -398,8 +398,8 @@ public class DataProcessor extends PostProcessor {
         logZipInterest(zips, years, interestValues, product, sheets);
 
         info("write {}", target);
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(target, sheets);
     }
 
@@ -541,8 +541,8 @@ public class DataProcessor extends PostProcessor {
         }
 
         info("write {}", target);
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(target, sheets);
     }
 
@@ -797,8 +797,8 @@ public class DataProcessor extends PostProcessor {
         data.setString(0, 27, getAllEvalString("columnAdoptionValue"));
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", xlsxFile);
         writer.write(xlsxFile, getAllEvalString("sheet"), data);
@@ -883,8 +883,8 @@ public class DataProcessor extends PostProcessor {
         data.setString(0, 15, getFinString("columnFin"));
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", xlsxFile);
         writer.write(xlsxFile, getFinString("sheet"), data);

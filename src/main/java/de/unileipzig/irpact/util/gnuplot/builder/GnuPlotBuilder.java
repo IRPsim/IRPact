@@ -228,14 +228,29 @@ public class GnuPlotBuilder {
         setStyle("fill solid 1.0 border -1");
     }
 
-    public void setStyleLines(int startId, double width, ColorPalette colors) {
+    public void setStyleLineWithWidthAndRGB(List<Integer> indicies, List<Number> widths, List<String> colors) {
         for(int i = 0; i < colors.size(); i++) {
-            setStyleLine(startId++, width, "#" + colors.getRGBHex(i));
+            setStyleLineWithWidthAndRGB(indicies.get(i), widths.get(i), colors.get(i));
         }
     }
 
-    public void setStyleLine(int id, double width, String color) {
-        setStyle("line", id, "lw", width, "lc rgb", quote(color));
+    public void setStyleLineWithWidthAndTypeAndRGB(List<Integer> indicies, List<Number> widths, List<Integer> types, List<String> colors) {
+        for(int i = 0; i < colors.size(); i++) {
+            setStyleLineWithWidthAndTypeAndRGB(indicies.get(i), widths.get(i), types.get(i), "#" + colors.get(i));
+        }
+    }
+
+    public void setStyleLineWithWidthAndRGB(int index, Number width, String color) {
+        setStyleLineWithWidthAndTypeAndRGB(index, width, null, color);
+    }
+
+    public void setStyleLineWithWidthAndTypeAndRGB(int index, Number width, Integer dashtype, String color) {
+        StyleLineCommand cmd = new StyleLineCommand();
+        cmd.setIndex(index);
+        cmd.setWidth(width);
+        cmd.setType(dashtype);
+        cmd.setRGB(color == null ? null : quote(color));
+        add(cmd);
     }
 
     public void setBoxWidthAbsolute(String width) {
@@ -326,7 +341,7 @@ public class GnuPlotBuilder {
         if(label == null || label.isEmpty()) {
             setLegendOutsideRightTop();
         } else {
-            buildSet("key outside right top vertical Left title ", quote(label));
+            buildSet("key outside right top vertical Left title", quote(label));
         }
     }
 
@@ -351,7 +366,11 @@ public class GnuPlotBuilder {
     }
 
     public void printPngCairo(int width, int height) {
-        buildSet("terminal", "pngcairo", "size", width + "," + height);
+        if(width > 0 && height > 0) {
+            buildSet("terminal", "pngcairo", "size", width + "," + height);
+        } else {
+            printPngCairo();
+        }
     }
 
     public void setRawOutput(String target) {
@@ -368,6 +387,14 @@ public class GnuPlotBuilder {
 
     public void setDataFileSeparator(String separator) {
         buildSet("datafile", "separator", quote(separator));
+    }
+
+    public void plotGenericData(int arg, int linewidth, ColorPalette cp) {
+        if(cp == null) {
+            plotGenericDataWithLinewidth(arg, linewidth);
+        } else {
+            plotGenericDataWithLinestyle(arg, cp.size());
+        }
     }
 
     public void plotGenericDataWithLinestyle(int arg, int maxCycle) {

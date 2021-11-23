@@ -2,16 +2,12 @@ package de.unileipzig.irpact.core.postprocessing.image3.base;
 
 import de.unileipzig.irpact.commons.color.ColorPalette;
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.commons.util.data.Bucket;
-import de.unileipzig.irpact.commons.util.data.BucketFactory;
-import de.unileipzig.irpact.commons.util.data.BucketMap;
-import de.unileipzig.irpact.commons.util.data.DoubleBucketFactory;
+import de.unileipzig.irpact.commons.util.data.*;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InAnnualBucketImage;
-import de.unileipzig.irpact.util.CorporateDesign;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,6 +18,7 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -103,9 +100,35 @@ public abstract class AbstractAnnualBucketImageHandler
     }
 
     protected ColorPalette getPaletteOrNull() {
-        return imageConfiguration.isUseCorporateDesign()
-                ? CorporateDesign.DEFAULT_PALETTE
-                : null;
+        try {
+            return imageConfiguration.hasColorPalette()
+                    ? imageConfiguration.getColorPalette().toPalette()
+                    : null;
+        } catch (ParsingException e) {
+            error("color platte not usable, use default colors", e);
+            return null;
+        }
+    }
+
+    protected Double getMinYOrDefault(Double ifMissing) {
+        return imageConfiguration.isUseCustomYRange()
+                ? imageConfiguration.getMinY()
+                : ifMissing;
+    }
+
+    protected Double getMaxYOrDefault(Double ifMissing) {
+        return imageConfiguration.isUseCustomYRange()
+                ? imageConfiguration.getMaxY()
+                : ifMissing;
+    }
+
+    protected List<String> getHexRGBPaletteOrNull() {
+        ColorPalette palette = getPaletteOrNull();
+        return palette == null
+                ? null
+                : palette.stream()
+                .map(ColorPalette::printRGBHex)
+                .collect(Collectors.toList());
     }
 
     public static Map<Integer, BucketMap<Number, Integer>> createAnnualBucketData(
@@ -200,5 +223,11 @@ public abstract class AbstractAnnualBucketImageHandler
         }
 
         return data;
+    }
+
+    public static void findMinMax(JsonTableData3 csvData, MutableDouble min, MutableDouble max) {
+        for(int c = 1; c < csvData.getNumberOfColumns(); c++) {
+            csvData.getMinMax(c, 1, min, max);
+        }
     }
 }

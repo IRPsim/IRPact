@@ -63,7 +63,7 @@ public class ProcessPhaseOverviewGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InProcessPhaseOverviewImage image) throws Throwable {
+    public GnuPlotBuilder getBuilder(InProcessPhaseOverviewImage image, ImageData data) throws Throwable {
         return GnuPlotFactory.stackedBarChart0(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),

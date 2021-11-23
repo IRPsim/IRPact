@@ -1,9 +1,17 @@
 package de.unileipzig.irpact.util.gnuplot.builder;
 
 import de.unileipzig.irpact.commons.color.ColorPalette;
+import de.unileipzig.irpact.util.gnuplot.builder.plot.PlotCommandBuilder;
+import de.unileipzig.irpact.util.gnuplot.builder.plot.PlotData;
+import de.unileipzig.irpact.util.gnuplot.builder.plot.SimplifiedKeyEntry;
+import de.unileipzig.irpact.util.gnuplot.builder.plot.SimplifiedNaN;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -43,6 +51,74 @@ public final class GnuPlotFactory {
         } else {
             builder.printPngCairo();
         }
+    }
+
+    private static List<Integer> createIndexList1(Collection<?> c) {
+        return createIndexList(c, 1);
+    }
+
+    private static List<Integer> createIndexList(Collection<?> c, int startIndex) {
+        return createIndexList(c.size(), startIndex);
+    }
+
+    private static List<Integer> createIndexList(int count, int startIndex) {
+        List<Integer> list = new ArrayList<>(count);
+        for(int i = 0; i < count; i++) {
+            list.add(startIndex++);
+        }
+        return list;
+    }
+
+    private static <R> List<R> createList(Collection<?> c, R value) {
+        return createList(c.size(), value);
+    }
+
+    private static <R> List<R> createList(int count, R value) {
+        List<R> list = new ArrayList<>(count);
+        for(int i = 0; i < count; i++) {
+            list.add(value);
+        }
+        return list;
+    }
+
+    @SafeVarargs
+    private static <R> List<R> createCycleList(Collection<?> c, R... values) {
+        return createCycleList(c.size(), values);
+    }
+
+    @SafeVarargs
+    private static <R> List<R> createCycleList(int count, R... values) {
+        List<R> list = new ArrayList<>(count);
+        for(int i = 0; i < count; i++) {
+            list.add(values[i % values.length]);
+        }
+        return list;
+    }
+
+    private static List<String> getARGBList(ColorPalette cp) {
+        return cp.stream()
+                .map(ColorPalette::printARGBHex)
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> updateHexColor(Collection<? extends String> c) {
+        return c.stream()
+                .map(str -> {
+                    if(str.startsWith("#")) {
+                        return str;
+                    } else {
+                        return "#" + str;
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    private static int calcIndex(Collection<?> c, int input) {
+        return calcIndex(c.size(), input);
+    }
+
+    private static int calcIndex(int cycle, int input) {
+        return (input % cycle) + 1;
     }
 
     //=========================
@@ -118,6 +194,109 @@ public final class GnuPlotFactory {
         builder.setArgOutput(2);
         builder.setWildcardXYRange();
         builder.replot();
+        return builder;
+    }
+
+    //TODO
+    //year;value0-A;value0-B;...
+    //1: year, even: A (2,4,6,...), odd: B (3,5,7,...)
+    public static GnuPlotBuilder interactionLineChart0_CUSTOM(
+            String title,
+            String xlab, String ylab,
+            String keyTitle0, String keyTitle1,
+            String dashType1Label, String dashType2Label,
+            List<String> colors,
+            int lineWidth,
+            int dashtype1, int dashtype2,
+            String sep,
+            int width, int height,
+            Number minY, Number maxY,
+            int numberOfIndividualColumns) {
+
+        PlotCommandBuilder plot = new PlotCommandBuilder();
+        plot.linebreak();
+        //key
+        //a-Part
+        plot.add(new SimplifiedKeyEntry()
+                .setTi(PlotCommandBuilder.quote(keyTitle0))
+        );
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedNaN()
+                .setLines()
+                .setDt(dashtype1)
+                .setLc(PlotCommandBuilder.quote("black"))
+                .setTi(PlotCommandBuilder.quote(dashType1Label))
+        );
+        //b-Part
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedNaN()
+                .setLines()
+                .setDt(dashtype2)
+                .setLc(PlotCommandBuilder.quote("black"))
+                .setTi(PlotCommandBuilder.quote(dashType2Label))
+        );
+        //data
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedKeyEntry()
+                .setTi(PlotCommandBuilder.quote(keyTitle1))
+        );
+        for(int i = 0; i < numberOfIndividualColumns; i++) {
+            //a-Part
+            int aIndex = (i+1)*2;
+            plot.commaAndLinebreak();
+            if(i == 0) {
+                plot.add(new PlotData()
+                        .setInput(PlotCommandBuilder.arg(1))
+                        .setColumn1(1)
+                        .setColumn2(aIndex)
+                        .setColumn3(PlotCommandBuilder.xtic(1))
+                        .setTi("col")
+                        .setLs(calcIndex(colors, i))
+                        .setDt(dashtype1)
+                );
+            } else {
+                plot.add(new PlotData()
+                        .setInput("''")
+                        .setColumn1(1)
+                        .setColumn2(aIndex)
+                        .setTi("col")
+                        .setLs(calcIndex(colors, i))
+                        .setDt(dashtype1)
+                );
+            }
+
+            //b-Part
+            int bIndex = aIndex + 1;
+            plot.commaAndLinebreak();
+            plot.add(new PlotData()
+                    .setInput("''")
+                    .setColumn1(1)
+                    .setColumn2(bIndex)
+                    .setTi("col")
+                    .setLs(calcIndex(colors, i))
+                    .setDt(dashtype2)
+            );
+        }
+
+        GnuPlotBuilder builder = newBuilder();
+        builder.add(getDate());
+        builder.add(getAutoGenerated());
+        builder.addComment("type: special line chart v0");
+        builder.add(getUsageComment());
+        builder.addComment("===style===");
+        builder.setStyleDataLinesPoints();
+        builder.setLegendOutsideRightTop();
+        builder.setStyleLineWithWidthAndRGB(createIndexList1(colors), createList(colors, lineWidth), updateHexColor(colors));
+        builder.addComment("===labels===");
+        builder.formatAndSetTitle(title);
+        builder.formatAndSetXLabel(xlab);
+        builder.formatAndSetYLabel(ylab);
+        builder.addComment("===plot===");
+        builder.setDataFileSeparator(sep);
+        builder.printPngCairo(width, height);
+        builder.setArgOutput(2);
+        builder.setYRange(minY, maxY);
+        builder.add(plot);
         return builder;
     }
 
@@ -318,6 +497,39 @@ public final class GnuPlotFactory {
             String xlab, String ylab,
             String keylab,
             String sep,
+            double boxWidthAbsolute,
+            Double yMin, Double yMax,
+            int width, int height) {
+        GnuPlotBuilder builder = newBuilder();
+        builder.add(getDate());
+        builder.add(getAutoGenerated());
+        builder.addComment("type: clustered bar chart v0");
+        builder.add(getUsageComment());
+        builder.addComment("===style===");
+        builder.setStyleDataHistograms();
+        builder.setStyleHistrogramClustered();
+        builder.setFillSolid();
+        builder.setBoxWidthAbsolute(boxWidthAbsolute);
+        builder.addComment("===labels===");
+        builder.formatAndSetTitle(title);
+        builder.formatAndSetXLabel(xlab);
+        builder.formatAndSetYLabel(ylab);
+        builder.setLegendOutsideRightTop(keylab);
+        builder.addComment("===output===");
+        setPngCairo(builder, width, height);
+        builder.setArgOutput(2);
+        builder.addComment("===plot===");
+        builder.setYRange(yMin, yMax);
+        builder.setDataFileSeparator(sep);
+        builder.plotGenericDataWithLinewidth(1);
+        return builder;
+    }
+
+    public static GnuPlotBuilder clusteredBarChartWithColorPalette0(
+            String title,
+            String xlab, String ylab,
+            String keylab,
+            String sep,
             double boxWidthAbsolute, ColorPalette cp,
             Double yMin, Double yMax,
             int width, int height) {
@@ -331,10 +543,8 @@ public final class GnuPlotFactory {
         builder.setStyleHistrogramClustered();
         builder.setFillSolid();
         builder.setBoxWidthAbsolute(boxWidthAbsolute);
-        if(cp != null) {
-            builder.addComment("===color===");
-            builder.setStyleLines(1, 1, cp);
-        }
+        builder.addComment("===color===");
+        builder.setStyleLineWithWidthAndRGB(createIndexList(cp.size(), 1), createList(cp.size(), 1), getARGBList(cp));
         builder.addComment("===labels===");
         builder.formatAndSetTitle(title);
         builder.formatAndSetXLabel(xlab);
@@ -346,11 +556,7 @@ public final class GnuPlotFactory {
         builder.addComment("===plot===");
         builder.setYRange(yMin, yMax);
         builder.setDataFileSeparator(sep);
-        if(cp != null) {
-            builder.plotGenericDataWithLinestyle(1, cp.size());
-        } else {
-            builder.plotGenericDataWithLinewidth(1);
-        }
+        builder.plotGenericDataWithLinestyle(1, cp.size());
         return builder;
     }
 

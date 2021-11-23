@@ -352,6 +352,9 @@ InAdoptionPhaseOverviewImage_boxWidth:
 InAdoptionPhaseOverviewImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InAdoptionPhaseOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 
 InAnnualBucketImage:
   edn_label: "Jährliche Bereichsanalyse"
@@ -398,12 +401,12 @@ InAnnualBucketImage_bucketSize:
 InAnnualBucketImage_fractionDigits:
   gams_identifier: "Anzahl Nachkommastellen (Legende)"
   gams_description: "todo"
-InAnnualBucketImage_useCorporateDesign:
-  gams_identifier: "Corporate Design verwenden?"
-  gams_description: "todo"
 InAnnualBucketImage_customImageId:
   gams_identifier: "Benutzerdefinierte Bild-Id"
   gams_description: "todo"
+InAnnualBucketImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InAnnualBucketImage_loggingModule:
   gams_identifier: "Loggingmodule"
   gams_description: "todo"
@@ -450,6 +453,9 @@ InComparedAnnualImage_showUnscaled:
 InComparedAnnualImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InComparedAnnualImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InComparedAnnualImage_realData:
   gams_identifier: "realData"
   gams_description: "todo"
@@ -496,6 +502,9 @@ InComparedAnnualZipImage_showUnscaled:
 InComparedAnnualZipImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InComparedAnnualZipImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InComparedAnnualZipImage_realData:
   gams_identifier: "realData"
   gams_description: "todo"
@@ -536,6 +545,9 @@ InCustomAverageQuantilRangeImage_linewidth:
 InCustomAverageQuantilRangeImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InCustomAverageQuantilRangeImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InCustomAverageQuantilRangeImage_ranges:
   gams_identifier: "ranges"
   gams_description: "todo"
@@ -576,6 +588,9 @@ InInterestOverviewImage_boxWidth:
 InInterestOverviewImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InInterestOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 
 InQuantileRange:
   edn_label: "Quantilbereich"
@@ -620,6 +635,9 @@ InProcessPhaseOverviewImage_boxWidth:
 InProcessPhaseOverviewImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InProcessPhaseOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 
 InSpecialAverageQuantilRangeImage:
   edn_label: "Spezielle Quantilbereiche"
@@ -657,6 +675,9 @@ InSpecialAverageQuantilRangeImage_linewidth:
 InSpecialAverageQuantilRangeImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
+InSpecialAverageQuantilRangeImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InSpecialAverageQuantilRangeImage_loggingModules:
   gams_identifier: "loggingModules"
   gams_description: "todo"
@@ -733,6 +754,38 @@ InGeneral_logFinancialComponent:
   gams_description: "Finanzielle_Komponente.xlsx"
 
 
+color_settings:
+  edn_label: "Farbeinstellungen"
+  edn_description: "Definiert Farben und legt Farbpaletten fest."
+
+InColorPalette:
+  gams_identifier: "Farbpalette"
+  gams_description: "Hier können Farbpaletten definiert werden, welche in Abbildungen verwendet werden können."
+InColorPalette_colors:
+  gams_identifier: "Farben"
+  gams_description: "todo"
+
+InColorARGB:
+  gams_identifier: "Farbe (RGB)"
+  gams_description: "Hier können RGB Farben mit einem Alphawert definiert werden. Die Werte müssen dabei zwischen 0 und 255 liegen."
+InColorARGB_priority:
+  gams_identifier: "Priorität"
+  gams_description: "Legt die Farbpriorität fest. Dieser Wert kann je nach Verwendung einen unterschiedlichen Verwendungszweck haben. Bei der Nutzung von Farbpaletten legt die Priorität die Reihenfolge der Farben fest. Auf diese Weise lassen sich Farben individuell anordnen."
+InColorARGB_alpha:
+  gams_identifier: "Alpha"
+  gams_description: "Legt den Alphawert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_red:
+  gams_identifier: "Rot"
+  gams_description: "Legt den Rotwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_green:
+  gams_identifier: "Grün"
+  gams_description: "Legt den Grünwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_blue:
+  gams_identifier: "Blau"
+  gams_description: "Legt den Blauwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+
+
+
 informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
@@ -740,7 +793,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.21.0"
+  edn_description: "IRPact v1.22.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

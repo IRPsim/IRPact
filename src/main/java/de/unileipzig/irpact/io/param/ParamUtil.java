@@ -68,6 +68,7 @@ public final class ParamUtil {
 
     public static final String DOMAIN_BOOLEAN = "[0|1]";
     public static final String DOMAIN_CLOSED_0_1 = "[0,1]";
+    public static final String DOMAIN_CLOSED_0_255 = "[0,255]";
     public static final String DOMAIN_GEQ0 = "[0,)";
     public static final String DOMAIN_G0 = "(0,)";
 

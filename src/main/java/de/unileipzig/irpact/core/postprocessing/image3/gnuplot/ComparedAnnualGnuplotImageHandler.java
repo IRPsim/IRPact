@@ -65,7 +65,7 @@ public class ComparedAnnualGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InComparedAnnualImage image) throws Throwable {
+    public GnuPlotBuilder getBuilder(InComparedAnnualImage image, ImageData data) throws Throwable {
         int n;
         if(hasValidScale()) {
             if(image.isShowUnscaled()) {

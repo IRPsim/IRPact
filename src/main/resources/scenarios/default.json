@@ -144,6 +144,9 @@
       "set_InBoundedUniformIntegerDistribution" : { },
       "set_InBranchModule_evalgraphnode" : { },
       "set_InBucketAnalyser" : { },
+      "set_InColor" : { },
+      "set_InColorARGB" : { },
+      "set_InColorPalette" : { },
       "set_InCommunicationModule_actiongraphnode2" : { },
       "set_InComparedAnnualImage" : { },
       "set_InComparedAnnualZipImage" : { },
@@ -293,7 +296,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_11_17_T_06_12_19" : {
+        "CT_D_2021_11_23_T_08_04_36" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -384,7 +387,7 @@
       "set_InROutputImage" : { },
       "set_InRunUntilFailureModule_evalgraphnode2" : { },
       "set_InScenarioVersion" : {
-        "v1_21_0" : {
+        "v1_22_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -491,12 +494,14 @@
       "par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge" : { },
       "par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge" : { },
       "par_link_InAddScalarModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
+      "par_link_InAdoptionPhaseOverviewImage_InColorPalette_colorPalette" : { },
       "par_link_InAffinities_InAffinityEntry_entries" : {
         "Affinities" : {
           "TRA_TRA" : 1.0
         }
       },
       "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
+      "par_link_InAnnualBucketImage_InColorPalette_colorPalette" : { },
       "par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
       "par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute" : { },
       "par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute" : { },
@@ -532,8 +537,11 @@
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge" : { },
       "par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onInProcessModule_graphedge" : { },
       "par_link_InBucketAnalyser_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
+      "par_link_InColorPalette_InColor_colors" : { },
       "par_link_InCommunicationModule_actiongraphnode2_InUncertaintySupplier_uncertaintySuppliers" : { },
+      "par_link_InComparedAnnualImage_InColorPalette_colorPalette" : { },
       "par_link_InComparedAnnualImage_InRealAdoptionDataFile_realData" : { },
+      "par_link_InComparedAnnualZipImage_InColorPalette_colorPalette" : { },
       "par_link_InComparedAnnualZipImage_InRealAdoptionDataFile_realData" : { },
       "par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag" : {
         "TRA_TRA" : {
@@ -589,6 +597,7 @@
       "par_link_InConsumerAgentMPMWithAdoptionHandler_InConsumerAgentEvaluationModule_startModule" : { },
       "par_link_InConsumerAgentMPMWithAdoptionHandler_InNewProductHandler_newProductHandlers" : { },
       "par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
+      "par_link_InCustomAverageQuantilRangeImage_InColorPalette_colorPalette" : { },
       "par_link_InCustomAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules" : { },
       "par_link_InCustomAverageQuantilRangeImage_InQuantileRange_ranges" : { },
       "par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentBoolModule2_finCheck_graphedge2" : { },
@@ -664,6 +673,7 @@
       "par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onTrue_graphedge2" : { },
       "par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentBoolModule2_test_graphedge2" : { },
       "par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2" : { },
+      "par_link_InInterestOverviewImage_InColorPalette_colorPalette" : { },
       "par_link_InLinearePercentageAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InLinearePercentageAgentAttributeUpdater_InLinearePercentageAgentAttributeScaler_scaler" : { },
       "par_link_InLocalShareOfAdopterModule_inputgraphnode2_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
@@ -691,6 +701,7 @@
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
       "par_link_InPhaseLoggingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2" : { },
       "par_link_InPhaseUpdateModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2" : { },
+      "par_link_InProcessPhaseOverviewImage_InColorPalette_colorPalette" : { },
       "par_link_InProductGroupThresholdEntry_InProductGroup_productGroups" : { },
       "par_link_InProductGroupThresholdEntry_InUnivariateDoubleDistribution_interestDistribution" : { },
       "par_link_InProductModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2" : { },
@@ -783,6 +794,7 @@
       "par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2_input_graphedge2" : { },
       "par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
       "par_link_InSocialComponentModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
+      "par_link_InSpecialAverageQuantilRangeImage_InColorPalette_colorPalette" : { },
       "par_link_InSpecialAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge" : { },
       "par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge" : { },

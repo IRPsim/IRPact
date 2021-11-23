@@ -2,16 +2,19 @@ package de.unileipzig.irpact.core.postprocessing.image3.gnuplot;
 
 import de.unileipzig.irpact.commons.util.data.Bucket;
 import de.unileipzig.irpact.commons.util.data.BucketMap;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageData;
+import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageDataWithCache;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractAnnualBucketImageHandler;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InAnnualBucketImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
-import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
@@ -26,6 +29,8 @@ public class AnnualBucketGnuplotImageHandler
         implements GnuplotHelperAPI<InAnnualBucketImage> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AnnualBucketGnuplotImageHandler.class);
+
+    private static final double PRETTY_FACTOR = 1.05;
 
     public AnnualBucketGnuplotImageHandler(ImageProcessor2 processor, InAnnualBucketImage imageConfiguration) {
         super(processor, imageConfiguration);
@@ -48,7 +53,7 @@ public class AnnualBucketGnuplotImageHandler
 
     @Override
     public void init() throws Throwable {
-        trace("[{}] use corporate design: {}", imageConfiguration.getName(), imageConfiguration.isUseCorporateDesign());
+        trace("[{}] has color palette: {}", imageConfiguration.getName(), imageConfiguration.hasColorPalette());
     }
 
     @Override
@@ -67,14 +72,16 @@ public class AnnualBucketGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InAnnualBucketImage image) throws Throwable {
-        return GnuPlotFactory.clusteredBarChart0(
+    public GnuPlotBuilder getBuilder(InAnnualBucketImage image, ImageData data) throws Throwable {
+        CsvJsonTableImageDataWithCache imageData = (CsvJsonTableImageDataWithCache) data;
+        return GnuPlotFactory2.clusteredBarChart(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
                 getLocalizedString("keylab"),
                 getCsvDelimiter(),
-                image.getBoxWidth(), getPaletteOrNull(),
-                image.getMinYOrNull(), image.getMaxYOrNull(),
+                getHexRGBPaletteOrNull(),
+                image.getBoxWidth(),
+                getMinYOrDefault(imageData.getFromCacheAuto("min")), getMaxYOrDefault(imageData.getFromCacheAuto("max")),
                 image.getImageWidth(), image.getImageHeight()
         );
     }
@@ -97,9 +104,19 @@ public class AnnualBucketGnuplotImageHandler
                 years,
                 buckets
         );
+        MutableDouble min = MutableDouble.empty();
+        MutableDouble max = MutableDouble.empty();
+        findMinMax(gnuplotData, min, max);
         if(getLoggingModule().isPrintHeader()) {
             addHeader(gnuplotData, buckets);
         }
-        return new CsvJsonTableImageData(gnuplotData, getCsvDelimiter());
+
+        min.modifiy(v -> Math.min(v, 0) * PRETTY_FACTOR);
+        max.modifiy(v -> v * PRETTY_FACTOR);
+
+        CsvJsonTableImageDataWithCache imageData = new CsvJsonTableImageDataWithCache(gnuplotData, getCsvDelimiter());
+        imageData.putInCache("min", min.isEmpty() ? null : min.get());
+        imageData.putInCache("max", max.isEmpty() ? null : max.get());
+        return imageData;
     }
 }

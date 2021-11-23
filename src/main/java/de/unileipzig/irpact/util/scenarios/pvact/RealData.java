@@ -167,16 +167,16 @@ public final class RealData {
     };
 
     public static final double[] REWIRE = {
-            0.5,
-            0.75,
-            1,
-            1,
-            0.75,
-            0.75,
-            0.5,
-            0.25,
-            0.5,
-            1
+            0.005,
+            0.0075,
+            0.01,
+            0.01,
+            0.0075,
+            0.0075,
+            0.005,
+            0.0025,
+            0.005,
+            0.01
     };
 
     public static final Map<Integer, Double> CONST_RATES = CollectionUtil.hashMapOf(

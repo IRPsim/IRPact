@@ -280,7 +280,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.21.0" 
+        :description "IRPact v1.22.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -351,7 +351,7 @@
             :label "Benutzerdefinierte Quantilanalyse" 
             :set "set_InCustomAverageQuantilRangeImage" 
             :description "todo" 
-            :tags [["InCustomAverageQuantilRangeImage" "enabled"] ["InCustomAverageQuantilRangeImage" "useGnuplot"] ["InCustomAverageQuantilRangeImage" "useR"] ["InCustomAverageQuantilRangeImage" "storeScript"] ["InCustomAverageQuantilRangeImage" "storeData"] ["InCustomAverageQuantilRangeImage" "storeImage"] ["InCustomAverageQuantilRangeImage" "printAverage"] ["InCustomAverageQuantilRangeImage" "imageWidth"] ["InCustomAverageQuantilRangeImage" "imageHeight"] ["InCustomAverageQuantilRangeImage" "linewidth"] ["InCustomAverageQuantilRangeImage" "customImageId"] ["link" "InCustomAverageQuantilRangeImage" "InQuantileRange" "ranges"] ["link" "InCustomAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]] 
+            :tags [["InCustomAverageQuantilRangeImage" "enabled"] ["InCustomAverageQuantilRangeImage" "useGnuplot"] ["InCustomAverageQuantilRangeImage" "useR"] ["InCustomAverageQuantilRangeImage" "storeScript"] ["InCustomAverageQuantilRangeImage" "storeData"] ["InCustomAverageQuantilRangeImage" "storeImage"] ["InCustomAverageQuantilRangeImage" "printAverage"] ["InCustomAverageQuantilRangeImage" "imageWidth"] ["InCustomAverageQuantilRangeImage" "imageHeight"] ["InCustomAverageQuantilRangeImage" "linewidth"] ["InCustomAverageQuantilRangeImage" "customImageId"] ["link" "InCustomAverageQuantilRangeImage" "InColorPalette" "colorPalette"] ["link" "InCustomAverageQuantilRangeImage" "InQuantileRange" "ranges"] ["link" "InCustomAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]] 
             :sections [
               {
                 :label "Quantilbereich" 
@@ -365,43 +365,43 @@
             :label "Spezielle Quantilbereiche" 
             :set "set_InSpecialAverageQuantilRangeImage" 
             :description "todo" 
-            :tags [["InSpecialAverageQuantilRangeImage" "enabled"] ["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["InSpecialAverageQuantilRangeImage" "customImageId"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
+            :tags [["InSpecialAverageQuantilRangeImage" "enabled"] ["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["InSpecialAverageQuantilRangeImage" "customImageId"] ["link" "InSpecialAverageQuantilRangeImage" "InColorPalette" "colorPalette"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
           } 
           {
             :label "Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualImage" 
             :description "todo" 
-            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "showUnscaled"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "showUnscaled"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "PLZ-basierte Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualZipImage" 
             :description "todo" 
-            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "showUnscaled"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "showUnscaled"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "Adoptionsphasenübersicht" 
             :set "set_InAdoptionPhaseOverviewImage" 
             :description "todo" 
-            :tags [["InAdoptionPhaseOverviewImage" "enabled"] ["InAdoptionPhaseOverviewImage" "useGnuplot"] ["InAdoptionPhaseOverviewImage" "useR"] ["InAdoptionPhaseOverviewImage" "storeScript"] ["InAdoptionPhaseOverviewImage" "storeData"] ["InAdoptionPhaseOverviewImage" "storeImage"] ["InAdoptionPhaseOverviewImage" "imageWidth"] ["InAdoptionPhaseOverviewImage" "imageHeight"] ["InAdoptionPhaseOverviewImage" "boxWidth"] ["InAdoptionPhaseOverviewImage" "customImageId"]]
+            :tags [["InAdoptionPhaseOverviewImage" "enabled"] ["InAdoptionPhaseOverviewImage" "useGnuplot"] ["InAdoptionPhaseOverviewImage" "useR"] ["InAdoptionPhaseOverviewImage" "storeScript"] ["InAdoptionPhaseOverviewImage" "storeData"] ["InAdoptionPhaseOverviewImage" "storeImage"] ["InAdoptionPhaseOverviewImage" "imageWidth"] ["InAdoptionPhaseOverviewImage" "imageHeight"] ["InAdoptionPhaseOverviewImage" "boxWidth"] ["InAdoptionPhaseOverviewImage" "customImageId"] ["link" "InAdoptionPhaseOverviewImage" "InColorPalette" "colorPalette"]]
           } 
           {
             :label "Prozessphasenübersicht" 
             :set "set_InProcessPhaseOverviewImage" 
             :description "todo" 
-            :tags [["InProcessPhaseOverviewImage" "enabled"] ["InProcessPhaseOverviewImage" "useGnuplot"] ["InProcessPhaseOverviewImage" "useR"] ["InProcessPhaseOverviewImage" "storeScript"] ["InProcessPhaseOverviewImage" "storeData"] ["InProcessPhaseOverviewImage" "storeImage"] ["InProcessPhaseOverviewImage" "imageWidth"] ["InProcessPhaseOverviewImage" "imageHeight"] ["InProcessPhaseOverviewImage" "boxWidth"] ["InProcessPhaseOverviewImage" "customImageId"]]
+            :tags [["InProcessPhaseOverviewImage" "enabled"] ["InProcessPhaseOverviewImage" "useGnuplot"] ["InProcessPhaseOverviewImage" "useR"] ["InProcessPhaseOverviewImage" "storeScript"] ["InProcessPhaseOverviewImage" "storeData"] ["InProcessPhaseOverviewImage" "storeImage"] ["InProcessPhaseOverviewImage" "imageWidth"] ["InProcessPhaseOverviewImage" "imageHeight"] ["InProcessPhaseOverviewImage" "boxWidth"] ["InProcessPhaseOverviewImage" "customImageId"] ["link" "InProcessPhaseOverviewImage" "InColorPalette" "colorPalette"]]
           } 
           {
             :label "Interessensübersicht" 
             :set "set_InInterestOverviewImage" 
             :description "todo" 
-            :tags [["InInterestOverviewImage" "enabled"] ["InInterestOverviewImage" "useGnuplot"] ["InInterestOverviewImage" "useR"] ["InInterestOverviewImage" "storeScript"] ["InInterestOverviewImage" "storeData"] ["InInterestOverviewImage" "storeImage"] ["InInterestOverviewImage" "imageWidth"] ["InInterestOverviewImage" "imageHeight"] ["InInterestOverviewImage" "boxWidth"] ["InInterestOverviewImage" "customImageId"]]
+            :tags [["InInterestOverviewImage" "enabled"] ["InInterestOverviewImage" "useGnuplot"] ["InInterestOverviewImage" "useR"] ["InInterestOverviewImage" "storeScript"] ["InInterestOverviewImage" "storeData"] ["InInterestOverviewImage" "storeImage"] ["InInterestOverviewImage" "imageWidth"] ["InInterestOverviewImage" "imageHeight"] ["InInterestOverviewImage" "boxWidth"] ["InInterestOverviewImage" "customImageId"] ["link" "InInterestOverviewImage" "InColorPalette" "colorPalette"]]
           } 
           {
             :label "Jährliche Bereichsanalyse" 
             :set "set_InAnnualBucketImage" 
             :description "todo" 
-            :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "useCorporateDesign"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
+            :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InColorPalette" "colorPalette"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
           }
         ]
       } 
@@ -419,6 +419,10 @@
             :set "set_InConsumerAgentGroupColor" 
             :description "Agentengruppe, welche im Graphen dargestellt werden sollen." 
             :tags [["InConsumerAgentGroupColor" "rgba"] ["link" "InConsumerAgentGroupColor" "InConsumerAgentGroup" "groups"]]
+          } 
+          {
+            :set "set_InColorPalette" 
+            :tags [["InColorARGB" "priority"] ["InColorARGB" "alpha"] ["InColorARGB" "red"] ["InColorARGB" "green"] ["InColorARGB" "blue"] ["link" "InColorPalette" "InColor" "colors"]]
           }
         ]
       }

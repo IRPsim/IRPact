@@ -25,18 +25,18 @@ public interface GnuplotHelperAPI<I extends InOutputImage2> extends LoggingHelpe
 
     GnuPlotEngine getEngine();
 
-    GnuPlotBuilder getBuilder(I image) throws Throwable;
+    GnuPlotBuilder getBuilder(I image, ImageData data) throws Throwable;
 
     ImageData createData(I image) throws Throwable;
 
     default void handleImage(I image, boolean engineUsable) throws Throwable {
-        GnuPlotBuilder builder = getBuilder(image);
-        if(builder == null) {
+        ImageData data = createData(image);
+        if(data == null) {
             return;
         }
 
-        ImageData data = createData(image);
-        if(data == null) {
+        GnuPlotBuilder builder = getBuilder(image, data);
+        if(builder == null) {
             return;
         }
 

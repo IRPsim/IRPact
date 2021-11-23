@@ -2,13 +2,7 @@ package de.unileipzig.irpact.commons.util.io3.xlsx;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.util.io3.BasicTableData3;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.FormulaError;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,11 +19,92 @@ import java.util.function.Predicate;
 /**
  * @author Daniel Abitz
  */
-public class XlsxSheetWriter3<T> {
+public abstract class XlsxSheetWriter3<T> {
 
     protected CellValueSetter<T> cellHandler;
 
     public XlsxSheetWriter3() {
+    }
+
+    //=========================
+    //writing
+    //=========================
+
+    public Workbook write(
+            Path target,
+            String sheetName,
+            BasicTableData3<T> rows) throws IOException {
+        return write(target, sheetName, rows.getRows());
+    }
+
+    public Workbook write(
+            Path target,
+            String sheetName,
+            Iterable<? extends Iterable<? extends T>> rows) throws IOException {
+        return write(target, sheetName, rows.iterator());
+    }
+
+    public Workbook write(
+            Path target,
+            String sheetName,
+            Iterator<? extends Iterable<? extends T>> rows) throws IOException {
+        Workbook book = newBook();
+        write(book, sheetName, rows);
+        write(target, book);
+        return book;
+    }
+
+    public Workbook write(
+            Path target,
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
+        Workbook book = newBook();
+        write(target, book, sheetData);
+        return book;
+    }
+
+    public void write(
+            Path target,
+            Workbook book,
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
+        write(book, sheetData);
+        write(target, book);
+    }
+
+    public void write(
+            Workbook book,
+            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
+        for(Map.Entry<String, ? extends BasicTableData3<T>> entry: sheetData.entrySet()) {
+            write(book, entry.getKey(), entry.getValue());
+        }
+    }
+
+    public Sheet write(
+            Workbook book,
+            String sheetName,
+            BasicTableData3<T> rows) {
+        return write(book, sheetName, rows.getRows());
+    }
+
+    public Sheet write(
+            Workbook book,
+            String sheetName,
+            Iterable<? extends Iterable<? extends T>> rows) {
+        return write(book, sheetName, rows.iterator());
+    }
+
+    public Sheet write(
+            Workbook book,
+            String sheetName,
+            Iterator<? extends Iterable<? extends T>> rows) {
+        Sheet sheet = newSheet(book, sheetName);
+        write(sheet, rows);
+        return sheet;
+    }
+
+    public void write(Path target, Workbook book) throws IOException {
+        try(OutputStream out = Files.newOutputStream(target)) {
+            book.write(out);
+        }
     }
 
     //=========================
@@ -40,116 +115,21 @@ public class XlsxSheetWriter3<T> {
         this.cellHandler = cellHandler;
     }
 
-    public XSSFWorkbook newBook() {
-        return new XSSFWorkbook();
-    }
+    public abstract Workbook newBook();
+
+    public abstract Sheet newSheet(Workbook book, String name);
 
     //=========================
-    //util write
+    //main-Write
     //=========================
 
-    public XSSFWorkbook write(
-            Path target,
-            String sheetName,
-            BasicTableData3<T> rows) throws IOException {
-        return write(target, sheetName, rows.getRows());
-    }
-
-    public XSSFWorkbook write(
-            Path target,
-            String sheetName,
-            Iterable<? extends Iterable<? extends T>> rows) throws IOException {
-        return write(target, sheetName, rows.iterator());
-    }
-
-    public XSSFWorkbook write(
-            Path target,
-            String sheetName,
-            Iterator<? extends Iterable<? extends T>> rows) throws IOException {
-        XSSFWorkbook book = newBook();
-        write(book, sheetName, rows);
-        write(target, book);
-        return book;
-    }
-
-    public XSSFWorkbook write(
-            Path target,
-            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
-        XSSFWorkbook book = newBook();
-        write(target, book, sheetData);
-        return book;
-    }
-
     public void write(
-            XSSFWorkbook book,
-            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
-        for(Map.Entry<String, ? extends BasicTableData3<T>> entry: sheetData.entrySet()) {
-            write(book, entry.getKey(), entry.getValue());
-        }
-    }
-
-    public void write(
-            Path target,
-            XSSFWorkbook book,
-            Map<String, ? extends BasicTableData3<T>> sheetData) throws IOException {
-        write(book, sheetData);
-        write(target, book);
-    }
-
-    public void write(Path target, XSSFWorkbook book) throws IOException {
-        try(OutputStream out = Files.newOutputStream(target)) {
-            book.write(out);
-        }
-    }
-
-    public XSSFSheet write(
-            XSSFWorkbook book,
-            String sheetName,
-            BasicTableData3<T> rows) {
-        return write(book, sheetName, rows.getRows());
-    }
-
-    public XSSFSheet write(
-            XSSFWorkbook book,
-            String sheetName,
-            Iterable<? extends Iterable<? extends T>> rows) {
-        return write(book, sheetName, rows.iterator());
-    }
-
-    public XSSFSheet write(
-            XSSFWorkbook book,
-            String sheetName,
+            Sheet sheet,
             Iterator<? extends Iterable<? extends T>> rows) {
-        XSSFSheet sheet = sheetName == null
-                ? book.createSheet()
-                : book.createSheet(sheetName);
-        write(sheet, rows);
-        return sheet;
-    }
-
-    public void write(
-            XSSFSheet sheet,
-            BasicTableData3<T> rows) {
-        write(sheet, rows.getRows());
-    }
-
-    public void write(
-            XSSFSheet sheet,
-            Iterable<? extends Iterable<? extends T>> rows) {
-        write(sheet, rows.iterator());
-    }
-
-    //=========================
-    //main write
-    //=========================
-
-    public void write(
-        XSSFSheet sheet,
-        Iterator<? extends Iterable<? extends T>> rows) {
         int rowIndex = 0;
         while(rows.hasNext()) {
             Iterable<? extends T> nextRow = rows.next();
-            XSSFRow sheetRow = sheet.createRow(rowIndex++);
+            Row sheetRow = sheet.createRow(rowIndex++);
 
             if(nextRow == null) {
                 continue; //empty row
@@ -157,7 +137,7 @@ public class XlsxSheetWriter3<T> {
 
             int columnIndex = 0;
             for(T cellValue: nextRow) {
-                XSSFCell sheetCell = sheetRow.createCell(columnIndex++);
+                Cell sheetCell = sheetRow.createCell(columnIndex++);
                 cellHandler.set(sheetCell, cellValue);
             }
         }
@@ -167,7 +147,7 @@ public class XlsxSheetWriter3<T> {
     //util
     //=========================
 
-    public static CellStyle createDefaultDateStyle(XSSFWorkbook book) {
+    public static CellStyle createDefaultDateStyle(Workbook book) {
         CellStyle dateStyle = book.createCellStyle();
         CreationHelper helper = book.getCreationHelper();
         dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy, hh:mm:ss"));

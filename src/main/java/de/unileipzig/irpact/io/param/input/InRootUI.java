@@ -52,6 +52,8 @@ import de.unileipzig.irpact.io.param.input.product.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
+import de.unileipzig.irpact.io.param.input.color.InColorARGB;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGnuPlotOutputImage;
@@ -111,6 +113,10 @@ public class InRootUI {
     public static final EdnPath SETT_VISUNETWORK = SETT.resolve(IOConstants.NETWORK_VISUALISATION).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_GENERAL = SETT_VISUNETWORK.resolve(InGraphvizGeneral.thisName()).addTo(PATHS);
     public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
+
+    public static final EdnPath SETT_COLOR = SETT.resolve(IOConstants.COLOR_SETTINGS).addTo(PATHS);
+    public static final EdnPath SETT_COLOR_PALETTE = SETT_VISUNETWORK.resolve(InColorPalette.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_COLOR_ARGB = SETT_VISUNETWORK.resolve(InColorARGB.thisName()).addTo(PATHS);
 
     public static final EdnPath SPECIALINPUT = ROOT.resolve(IOConstants.SPECIAL_INPUT).addTo(PATHS);
     public static final EdnPath SPECIALINPUT_PVACT = SPECIALINPUT.resolve(IOConstants.SPECIAL_INPUT_PVACT).addTo(PATHS);
