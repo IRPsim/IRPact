@@ -23,6 +23,7 @@ public final class IOConstants {
     public static final String RESULT_VISUALISATION2 = "result_visualisation2";
     public static final String NETWORK_VISUALISATION = "network_visualisation";
     public static final String DATA_OUTPUT = "data_output";
+    public static final String COLOR_SETTINGS = "color_settings";
 
     public static final String SPECIAL_INPUT = "special_input";
     public static final String SPECIAL_INPUT_PVACT = "special_input_pvact";

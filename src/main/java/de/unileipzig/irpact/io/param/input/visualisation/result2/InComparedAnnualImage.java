@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -46,6 +47,7 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
         addEntryWithDefaultAndDomain(res, thisClass(), "showPreYear", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "showUnscaled", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
+        addEntry(res, thisClass(), "colorPalette");
         addEntry(res, thisClass(), "realData");
 
         setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
@@ -96,6 +98,9 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
 
     @FieldDefinition
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
+
+    @FieldDefinition
+    public InColorPalette[] colorPalette = new InColorPalette[0];
 
     @FieldDefinition
     public InRealAdoptionDataFile[] realData = new InRealAdoptionDataFile[0];
@@ -260,6 +265,18 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @Override
     public int getCustomImageId() {
         return customImageId;
+    }
+
+    public void setColorPalette(InColorPalette colorPalette) {
+        this.colorPalette = new InColorPalette[]{ colorPalette };
+    }
+
+    public boolean hasColorPalette() {
+        return len(colorPalette) > 0;
+    }
+
+    public InColorPalette getColorPalette() throws ParsingException {
+        return getInstance(colorPalette, "colorPalette");
     }
 
     public InRealAdoptionDataFile getRealData() throws ParsingException {

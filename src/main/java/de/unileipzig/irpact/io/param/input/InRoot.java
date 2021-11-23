@@ -15,6 +15,9 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.color.InColor;
+import de.unileipzig.irpact.io.param.input.color.InColorARGB;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
@@ -881,6 +884,10 @@ public class InRoot implements RootClass {
 
             InAttributeName.class,
             InName.class,
+
+            InColor.class,
+            InColorARGB.class,
+            InColorPalette.class,
 
             InCompleteGraphTopology.class,
             InDistanceEvaluator.class,

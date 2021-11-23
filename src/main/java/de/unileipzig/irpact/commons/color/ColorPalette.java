@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -38,8 +39,16 @@ public class ColorPalette implements Iterable<Color> {
         return colors.get(i);
     }
 
-    public String getRGBHex(int i) {
-        int rgb = get(i).getRGB() & 0xffffff;
+    public String printRGBHex(int i) {
+        return printRGBHex(get(i));
+    }
+
+    public String printARGBHex(int i) {
+        return printARGBHex(get(i));
+    }
+
+    public static String printRGBHex(Color color) {
+        int rgb = color.getRGB() & 0xffffff;
         StringBuilder sb = new StringBuilder(Integer.toHexString(rgb));
         while(sb.length() < 6) {
             sb.insert(0, "0");
@@ -47,8 +56,21 @@ public class ColorPalette implements Iterable<Color> {
         return sb.toString();
     }
 
+    public static String printARGBHex(Color color) {
+        int argb = color.getRGB();
+        StringBuilder sb = new StringBuilder(Integer.toHexString(argb));
+        while(sb.length() < 8) {
+            sb.insert(0, "0");
+        }
+        return sb.toString();
+    }
+
     public int size() {
         return colors.size();
+    }
+
+    public Stream<Color> stream() {
+        return colors.stream();
     }
 
     @Override

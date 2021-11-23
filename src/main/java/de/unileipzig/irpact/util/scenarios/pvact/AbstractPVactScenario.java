@@ -58,6 +58,7 @@ import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
+import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ModularProcessModelManager;
 
 import java.time.temporal.ChronoUnit;
@@ -752,26 +753,32 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
         InAnnualBucketImage npvBucket = InAnnualBucketImage.NPV;
         npvBucket.setLoggingModule(npvReevalLogger);
+        npvBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(npvBucket);
 
         InAnnualBucketImage envBucket = InAnnualBucketImage.ENV;
         envBucket.setLoggingModule(envReevalLogger);
+        envBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(envBucket);
 
         InAnnualBucketImage novBucket = InAnnualBucketImage.NOV;
         novBucket.setLoggingModule(novReevalLogger);
+        novBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(novBucket);
 
         InAnnualBucketImage socialBucket = InAnnualBucketImage.SOCIAL;
         socialBucket.setLoggingModule(socialReevalLogger);
+        socialBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(socialBucket);
 
         InAnnualBucketImage localBucket = InAnnualBucketImage.LOCAL;
         localBucket.setLoggingModule(localReevalLogger);
+        localBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(localBucket);
 
         InAnnualBucketImage utlityBucket = InAnnualBucketImage.UTILITY;
         utlityBucket.setLoggingModule(utilityReevalLogger);
+        utlityBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
         images.add(utlityBucket);
 
         //Custom-Test

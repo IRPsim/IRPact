@@ -19,13 +19,6 @@ public class CsvJsonTableImageData implements ImageData {
     protected JsonTableData3 data;
     protected String delimiter = ";";
 
-    public CsvJsonTableImageData() {
-    }
-
-    public CsvJsonTableImageData(JsonTableData3 data) {
-        this(data, ";");
-    }
-
     public CsvJsonTableImageData(JsonTableData3 data, String delimiter) {
         setData(data);
         setDelimiter(delimiter);

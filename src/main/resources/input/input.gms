@@ -1268,6 +1268,11 @@ PARAMETER par_InAdoptionPhaseOverviewImage_boxWidth(set_InAdoptionPhaseOverviewI
 * - type: Integer
 PARAMETER par_InAdoptionPhaseOverviewImage_customImageId(set_InAdoptionPhaseOverviewImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InAdoptionPhaseOverviewImage_InColorPalette_colorPalette(set_InAdoptionPhaseOverviewImage,set_InColorPalette)
+
 * - identifier: InAnnualBucketImage
 * - type: String
 SET set_InAnnualBucketImage(set_InLoggingResultImage2)
@@ -1376,19 +1381,17 @@ PARAMETER par_InAnnualBucketImage_bucketSize(set_InAnnualBucketImage)
 * - type: Integer
 PARAMETER par_InAnnualBucketImage_fractionDigits(set_InAnnualBucketImage)
 
-* - default: 1
-* - domain: [0|1]
-* - description: todo
-* - identifier: Corporate Design verwenden?
-* - type: Boolean
-PARAMETER par_InAnnualBucketImage_useCorporateDesign(set_InAnnualBucketImage)
-
 * - default: 0
 * - domain: [0,10]
 * - description: todo
 * - identifier: Benutzerdefinierte Bild-Id
 * - type: Integer
 PARAMETER par_InAnnualBucketImage_customImageId(set_InAnnualBucketImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InAnnualBucketImage_InColorPalette_colorPalette(set_InAnnualBucketImage,set_InColorPalette)
 
 * - description: todo
 * - identifier: Loggingmodule
@@ -1498,6 +1501,11 @@ PARAMETER par_InComparedAnnualImage_showUnscaled(set_InComparedAnnualImage)
 * - type: Integer
 PARAMETER par_InComparedAnnualImage_customImageId(set_InComparedAnnualImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InComparedAnnualImage_InColorPalette_colorPalette(set_InComparedAnnualImage,set_InColorPalette)
+
 * - description: todo
 * - identifier: realData
 * - type: Boolean
@@ -1606,6 +1614,11 @@ PARAMETER par_InComparedAnnualZipImage_showUnscaled(set_InComparedAnnualZipImage
 * - type: Integer
 PARAMETER par_InComparedAnnualZipImage_customImageId(set_InComparedAnnualZipImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InComparedAnnualZipImage_InColorPalette_colorPalette(set_InComparedAnnualZipImage,set_InColorPalette)
+
 * - description: todo
 * - identifier: realData
 * - type: Boolean
@@ -1700,6 +1713,11 @@ PARAMETER par_InCustomAverageQuantilRangeImage_linewidth(set_InCustomAverageQuan
 * - type: Integer
 PARAMETER par_InCustomAverageQuantilRangeImage_customImageId(set_InCustomAverageQuantilRangeImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InCustomAverageQuantilRangeImage_InColorPalette_colorPalette(set_InCustomAverageQuantilRangeImage,set_InColorPalette)
+
 * - description: todo
 * - identifier: ranges
 * - type: Boolean
@@ -1791,6 +1809,11 @@ PARAMETER par_InInterestOverviewImage_boxWidth(set_InInterestOverviewImage)
 * - identifier: customImageId
 * - type: Integer
 PARAMETER par_InInterestOverviewImage_customImageId(set_InInterestOverviewImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InInterestOverviewImage_InColorPalette_colorPalette(set_InInterestOverviewImage,set_InColorPalette)
 
 * - identifier: InLoggingResultImage2
 * - hidden: 1
@@ -1897,6 +1920,11 @@ PARAMETER par_InProcessPhaseOverviewImage_boxWidth(set_InProcessPhaseOverviewIma
 * - type: Integer
 PARAMETER par_InProcessPhaseOverviewImage_customImageId(set_InProcessPhaseOverviewImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InProcessPhaseOverviewImage_InColorPalette_colorPalette(set_InProcessPhaseOverviewImage,set_InColorPalette)
+
 * - identifier: InOutputImage2
 * - hidden: 1
 * - type: String
@@ -1991,6 +2019,11 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_linewidth(set_InSpecialAverageQu
 * - type: Integer
 PARAMETER par_InSpecialAverageQuantilRangeImage_customImageId(set_InSpecialAverageQuantilRangeImage)
 
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InSpecialAverageQuantilRangeImage_InColorPalette_colorPalette(set_InSpecialAverageQuantilRangeImage,set_InColorPalette)
+
 * - description: todo
 * - identifier: loggingModules
 * - type: Boolean
@@ -2037,6 +2070,58 @@ PARAMETER par_InAttributeName_placeholder(set_InAttributeName)
 * - hidden: 1
 * - type: String
 SET set_InName(*)
+
+* - identifier: InColor
+* - hidden: 1
+* - type: String
+SET set_InColor(*)
+
+* - identifier: InColorARGB
+* - type: String
+SET set_InColorARGB(set_InColor)
+
+* - default: 5
+* - description: Legt die Farbpriorität fest. Dieser Wert kann je nach Verwendung einen unterschiedlichen Verwendungszweck haben. Bei der Nutzung von Farbpaletten legt die Priorität die Reihenfolge der Farben fest. Auf diese Weise lassen sich Farben individuell anordnen.
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InColorARGB_priority(set_InColorARGB)
+
+* - default: 255
+* - domain: [0,255]
+* - description: Legt den Alphawert der Farbe fest. Dieser muss zwischen 0 und 255 liegen.
+* - identifier: Alpha
+* - type: Integer
+PARAMETER par_InColorARGB_alpha(set_InColorARGB)
+
+* - default: 0
+* - domain: [0,255]
+* - description: Legt den Rotwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen.
+* - identifier: Rot
+* - type: Integer
+PARAMETER par_InColorARGB_red(set_InColorARGB)
+
+* - default: 0
+* - domain: [0,255]
+* - description: Legt den Grünwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen.
+* - identifier: Grün
+* - type: Integer
+PARAMETER par_InColorARGB_green(set_InColorARGB)
+
+* - default: 0
+* - domain: [0,255]
+* - description: Legt den Blauwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen.
+* - identifier: Blau
+* - type: Integer
+PARAMETER par_InColorARGB_blue(set_InColorARGB)
+
+* - identifier: InColorPalette
+* - type: String
+SET set_InColorPalette(*)
+
+* - description: todo
+* - identifier: Farben
+* - type: Boolean
+PARAMETER par_link_InColorPalette_InColor_colors(set_InColorPalette,set_InColor)
 
 * - identifier: InCompleteGraphTopology
 * - type: String
@@ -2139,13 +2224,13 @@ SET set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion(set_InUnce
 * - type: Float
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
-* - default: 0.05
+* - default: 0.21
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
-* - default: 0.2
+* - default: 0.4
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2174,13 +2259,13 @@ SET set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier(set_InUncert
 * - type: Float
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
-* - default: 0.05
+* - default: 0.21
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
-* - default: 0.2
+* - default: 0.4
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2209,13 +2294,13 @@ SET set_InPVactUpdatableGlobalModerateExtremistUncertainty(set_InUncertaintySupp
 * - type: Float
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
-* - default: 0.05
+* - default: 0.21
 * - description: Legt den Wert der Unsicherheit für Extremisten fest.
 * - identifier: Unsicherheit der Extremisten
 * - type: Float
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
-* - default: 0.2
+* - default: 0.4
 * - description: Legt den Wert der Unsicherheit für Moderate fest.
 * - identifier: Unsicherheit der Moderaten
 * - type: Float
@@ -2359,13 +2444,13 @@ PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
 * - type: Float
 PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
 
-* - default: 0.5
+* - default: 0.1
 * - description: speed of convergence
 * - identifier: speed of convergence
 * - type: Float
 PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
 
-* - default: 0.25
+* - default: 0.1
 * - description: attitude gap
 * - identifier: attitude gap
 * - type: Float
@@ -2721,7 +2806,7 @@ SET set_InValueComponent(set_InComponent)
 * - type: String
 SET set_InModularRAProcessModel(set_InProcessModel)
 
-* - default: 0.5
+* - default: 0.1
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
@@ -3161,7 +3246,7 @@ PARAMETER par_InDefaultActionModule_evalgraphnode_awarePoints(set_InDefaultActio
 * - type: Integer
 PARAMETER par_InDefaultActionModule_evalgraphnode_unknownPoints(set_InDefaultActionModule_evalgraphnode)
 
-* - default: 0.5
+* - default: 0.1
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
@@ -3298,7 +3383,7 @@ PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_awarePoints(set_InDefault
 * - type: Integer
 PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_unknownPoints(set_InDefaultFeasibilityModule_evalgraphnode)
 
-* - default: 0.5
+* - default: 0.1
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
@@ -3365,7 +3450,7 @@ PARAMETER par_InDefaultInterestModule_evalgraphnode_awarePoints(set_InDefaultInt
 * - type: Integer
 PARAMETER par_InDefaultInterestModule_evalgraphnode_unknownPoints(set_InDefaultInterestModule_evalgraphnode)
 
-* - default: 0.5
+* - default: 0.1
 * - description: todo
 * - identifier: speed of convergence
 * - type: Float
@@ -3755,13 +3840,13 @@ PARAMETER par_InCommunicationModule_actiongraphnode2_raKeepCsv(set_InCommunicati
 * - type: Boolean
 PARAMETER par_InCommunicationModule_actiongraphnode2_raStoreXlsx(set_InCommunicationModule_actiongraphnode2)
 
-* - default: 0.5
+* - default: 0.1
 * - description: todo
 * - identifier: Speed of convergence
 * - type: Float
 PARAMETER par_InCommunicationModule_actiongraphnode2_speedOfConvergence(set_InCommunicationModule_actiongraphnode2)
 
-* - default: 0.25
+* - default: 0.1
 * - description: todo
 * - identifier: Attitude gap
 * - type: Float

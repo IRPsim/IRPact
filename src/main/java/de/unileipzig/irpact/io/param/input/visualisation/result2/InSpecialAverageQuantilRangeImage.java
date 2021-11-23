@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -44,6 +45,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
         addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
         addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
+        addEntry(res, thisClass(), "colorPalette");
         addEntry(res, thisClass(), "loggingModules");
 
         setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
@@ -93,6 +95,9 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
 
     @FieldDefinition
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
+
+    @FieldDefinition
+    public InColorPalette[] colorPalette = new InColorPalette[0];
 
     @FieldDefinition
     public InConsumerAgentCalculationLoggingModule2[] loggingModules = new InConsumerAgentCalculationLoggingModule2[0];
@@ -246,6 +251,18 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     @Override
     public int getCustomImageId() {
         return customImageId;
+    }
+
+    public void setColorPalette(InColorPalette colorPalette) {
+        this.colorPalette = new InColorPalette[]{ colorPalette };
+    }
+
+    public boolean hasColorPalette() {
+        return len(colorPalette) > 0;
+    }
+
+    public InColorPalette getColorPalette() throws ParsingException {
+        return getInstance(colorPalette, "colorPalette");
     }
 
     public InConsumerAgentCalculationLoggingModule2 getLoggingModule() throws ParsingException {

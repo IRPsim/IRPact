@@ -11,7 +11,7 @@ import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvPrinter;
-import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
@@ -393,8 +393,8 @@ public abstract class PostProcessor implements LoggingHelper {
     }
 
     public void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(path, sheetData);
     }
 
@@ -405,15 +405,15 @@ public abstract class PostProcessor implements LoggingHelper {
     }
 
     public void storeXlsx(Path path, DateTimeFormatter formatter, Map<String, JsonTableData3> sheetData) throws IOException {
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
         XSSFWorkbook book = writer.newBook();
-        CellStyle dateStyle = XlsxSheetWriter3.createDefaultDateStyle(book);
+        CellStyle dateStyle = DefaultXlsxSheetWriter3.createDefaultDateStyle(book);
 
         writer.setCellHandler(
-                XlsxSheetWriter3.forJson(
-                        XlsxSheetWriter3.testTime(formatter),
-                        XlsxSheetWriter3.toTime(formatter),
-                        XlsxSheetWriter3.toCellStyle(dateStyle)
+                DefaultXlsxSheetWriter3.forJson(
+                        DefaultXlsxSheetWriter3.testTime(formatter),
+                        DefaultXlsxSheetWriter3.toTime(formatter),
+                        DefaultXlsxSheetWriter3.toCellStyle(dateStyle)
                 )
         );
 

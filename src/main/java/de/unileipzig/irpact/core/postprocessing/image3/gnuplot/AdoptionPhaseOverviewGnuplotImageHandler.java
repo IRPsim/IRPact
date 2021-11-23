@@ -4,18 +4,14 @@ import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageData;
+import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageDataWithCache;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractAdoptionPhaseOverviewImageHandler;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InAdoptionPhaseOverviewImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
-import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 
 /**
  * @author Daniel Abitz
@@ -69,39 +65,21 @@ public class AdoptionPhaseOverviewGnuplotImageHandler
     }
 
     @Override
-    public void handleImage(InAdoptionPhaseOverviewImage image, boolean engineUsable) throws Throwable {
-        CustomImageData data = createData(image);
-        if(data == null) {
-            return;
-        }
-
-        GnuPlotBuilder builder = getBuilder(image, data);
-        if(builder == null) {
-            return;
-        }
-
-        execute(image, builder, data, engineUsable);
-    }
-
-    public GnuPlotBuilder getBuilder(InAdoptionPhaseOverviewImage image, CustomImageData data) {
-        return GnuPlotFactory.stackedBarChart1(
-                getLocalizedFormattedString("title", data.getInitial()),
+    public GnuPlotBuilder getBuilder(InAdoptionPhaseOverviewImage image, ImageData data) {
+        CsvJsonTableImageDataWithCache cData = (CsvJsonTableImageDataWithCache) data;
+        return GnuPlotFactory2.stackedBarChartForThreeValuesAndAHiddenValue(
+                getLocalizedFormattedString("title", cData.getFromCache("initial")),
                 getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
-                getLocalizedString("startMid"), getLocalizedString("midEnd"), getLocalizedString("endStart"),
                 getLocalizedString("sep"),
+                getHexRGBPaletteOrNull(),
                 image.getBoxWidth(),
-                image.getImageWidth(), image.getImageHeight(),
-                data.getMinY(), data.getMaxY()
+                cData.getFromCacheAuto("initial"), cData.getFromCacheAuto("total"),
+                image.getImageWidth(), image.getImageHeight()
         );
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InAdoptionPhaseOverviewImage image) throws Throwable {
-        throw new UnsupportedOperationException("use getBuilder with " + CustomImageData.class.getSimpleName());
-    }
-
-    @Override
-    public CustomImageData createData(InAdoptionPhaseOverviewImage image) throws Throwable {
+    public ImageData createData(InAdoptionPhaseOverviewImage image) throws Throwable {
         int initialAdopter = getInitialAdopterCount();
         trace("number of initial agents: {}", initialAdopter);
 
@@ -111,46 +89,9 @@ public class AdoptionPhaseOverviewGnuplotImageHandler
 
         JsonTableData3 data = getTableData();
 
-        return new CustomImageData(
-                new CsvJsonTableImageData(data),
-                initialAdopter,
-                initialAdopter,
-                finalTotalNumberOfAdoptions
-        );
-    }
-
-    /**
-     * @author Daniel Abitz
-     */
-    private static final class CustomImageData implements ImageData {
-
-        private final CsvJsonTableImageData DATA;
-        private final int INITIAL;
-        private final int MIN_Y;
-        private final int MAX_Y;
-
-        public CustomImageData(CsvJsonTableImageData data, int inital, int minY, int maxY) {
-            DATA = data;
-            INITIAL = inital;
-            MIN_Y = minY;
-            MAX_Y = maxY;
-        }
-
-        public int getInitial() {
-            return INITIAL;
-        }
-
-        public int getMinY() {
-            return MIN_Y;
-        }
-
-        public int getMaxY() {
-            return MAX_Y;
-        }
-
-        @Override
-        public void writeTo(Path target, Charset charset) throws IOException {
-            DATA.writeTo(target, charset);
-        }
+        CsvJsonTableImageDataWithCache imageData = new CsvJsonTableImageDataWithCache(data, getCsvDelimiter());
+        imageData.putInCache("initial", initialAdopter);
+        imageData.putInCache("total", finalTotalNumberOfAdoptions);
+        return imageData;
     }
 }

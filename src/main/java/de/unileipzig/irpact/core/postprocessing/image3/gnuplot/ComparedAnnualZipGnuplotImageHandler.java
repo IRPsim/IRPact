@@ -65,7 +65,7 @@ public class ComparedAnnualZipGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InComparedAnnualZipImage image) throws Throwable {
+    public GnuPlotBuilder getBuilder(InComparedAnnualZipImage image, ImageData data) throws Throwable {
         return GnuPlotFactory.interactionLineChart0(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),

@@ -3,6 +3,7 @@ package de.unileipzig.irpact.commons.util.io3;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import de.unileipzig.irpact.commons.util.JsonUtil;
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,14 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
 
     public JsonNodeCreator getCreator() {
         return creator;
+    }
+
+    public void getMinMax(int columnIndex, int startRow, MutableDouble min, MutableDouble max) {
+        for(int rowIndex = startRow; rowIndex < getNumberOfRows(); rowIndex++) {
+            double value = getDouble(rowIndex, columnIndex);
+            min.setMin(value);
+            max.setMax(value);
+        }
     }
 
     public int getInt(int rowIndex, int columnIndex) {

@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.DoubleUnaryOperator;
 
 /**
  * @author Daniel Abitz
@@ -124,6 +125,12 @@ public final class MutableDouble extends Number implements ChecksumComparable {
     public synchronized void syncUpdate(double delta) {
         requiresValue();
         value += delta;
+    }
+
+    public void modifiy(DoubleUnaryOperator op) {
+        if(hasValue()) {
+            set(op.applyAsDouble(get()));
+        }
     }
 
     @SuppressWarnings("unchecked")

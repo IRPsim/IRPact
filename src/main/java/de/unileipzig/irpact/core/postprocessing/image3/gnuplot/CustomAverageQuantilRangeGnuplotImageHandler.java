@@ -65,7 +65,7 @@ public class CustomAverageQuantilRangeGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InCustomAverageQuantilRangeImage image) throws Throwable {
+    public GnuPlotBuilder getBuilder(InCustomAverageQuantilRangeImage image, ImageData data) throws Throwable {
         return GnuPlotFactory.simpleMultiLinePlot0(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),

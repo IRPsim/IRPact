@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
+import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.StreamingXlsxSheetWriter3;
 import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
@@ -11,6 +13,8 @@ import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -125,8 +129,8 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     }
 
     default void storeXlsx(Path path, Map<String, JsonTableData3> sheetData) throws IOException {
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(path, sheetData);
     }
 
@@ -134,8 +138,27 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
             Path path,
             DateTimeFormatter formatter,
             Map<String, JsonTableData3> sheetData) throws IOException {
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        XSSFWorkbook book = writer.newBook();
+        storeXlsxWithTime(path, formatter, sheetData, new DefaultXlsxSheetWriter3<>());
+    }
+
+    default void storeXlsxWithTime_Streaming(
+            Path path,
+            DateTimeFormatter formatter,
+            Map<String, JsonTableData3> sheetData) throws IOException {
+        StreamingXlsxSheetWriter3<JsonNode> writer = new StreamingXlsxSheetWriter3<>();
+        writer.setSheetInitalizer(sheet -> {
+            sheet.setRandomAccessWindowSize(100);
+            return sheet;
+        });
+        storeXlsxWithTime(path, formatter, sheetData, writer);
+    }
+
+    default void storeXlsxWithTime(
+            Path path,
+            DateTimeFormatter formatter,
+            Map<String, JsonTableData3> sheetData,
+            XlsxSheetWriter3<JsonNode> writer) throws IOException {
+        Workbook book = writer.newBook();
         CellStyle dateStyle = XlsxSheetWriter3.createDefaultDateStyle(book);
 
         writer.setCellHandler(
