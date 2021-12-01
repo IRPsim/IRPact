@@ -46,7 +46,7 @@ public class InNOP_actiongraphnode2 implements InConsumerAgentActionModule2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_NOP);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_ACTION_NOP);
         setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
         addEntry(res, thisClass(), "placeholder");

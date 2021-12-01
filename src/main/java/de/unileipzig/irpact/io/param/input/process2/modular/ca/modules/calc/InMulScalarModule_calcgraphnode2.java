@@ -48,7 +48,7 @@ public class InMulScalarModule_calcgraphnode2 implements InConsumerAgentCalculat
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_MULSCALAR);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR);
         setShapeColorFillBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_FILL, CALC_BORDER);
 
         addEntryWithDefault(res, thisClass(), "scalar", VALUE_1);

@@ -56,7 +56,10 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public static InComparedAnnualImage DEFAULT = new InComparedAnnualImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
+    public static InComparedAnnualImage createDefault() {
+        return new InComparedAnnualImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
+    }
+    public static InComparedAnnualImage DEFAULT = createDefault();
 
     public String _name;
 

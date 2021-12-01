@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
-import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.CALCLOG_COLOR;
 
 /**
  * @author Daniel Abitz
@@ -51,9 +50,10 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_CSV);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV);
         setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
 
+        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "logReevaluatorCall", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "logDefaultCall", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "printHeader", VALUE_TRUE, DOMAIN_BOOLEAN);
@@ -75,6 +75,15 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     @Override
     public String getBaseName() {
         return getName();
+    }
+
+    public boolean enabled = true;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @FieldDefinition
@@ -121,7 +130,7 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
                     id = MODULAR_GRAPH,
                     label = CALC_EDGE_LABEL,
                     color = CALC_EDGE_COLOR,
-                    tags = {"InCsvValueLoggingModule input"}
+                    tags = {"InMinimalCsvValueLoggingModule input"}
             )
     )
     public InConsumerAgentCalculationModule2[] input_graphedge2;
@@ -133,6 +142,10 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     public InCsvValueLoggingModule_calcloggraphnode2() {
+    }
+
+    public InCsvValueLoggingModule_calcloggraphnode2(String name) {
+        setName(name);
     }
 
     @Override
@@ -156,6 +169,7 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         CsvValueLoggingModule2 module = new CsvValueLoggingModule2();
         module.setName(getName());
         module.setBaseName(getName());
+        module.setEnabled(isEnabled());
         module.setStoreXlsx(isStoreXlsx());
         module.setLogReevaluatorCall(isLogReevaluatorCall());
         module.setLogDefaultCall(isLogDefaultCall());
@@ -181,13 +195,13 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @Override
-    public int getTimeIndex() {
-        return CsvValueLoggingModule2.TIME_INDEX;
+    public int getProductIndex() {
+        return CsvValueLoggingModule2.PRODUCT_INDEX;
     }
 
     @Override
-    public int getProductIndex() {
-        return CsvValueLoggingModule2.PRODUCT_INDEX;
+    public int getTimeIndex() {
+        return CsvValueLoggingModule2.TIME_INDEX;
     }
 
     @Override

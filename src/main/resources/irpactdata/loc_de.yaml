@@ -759,15 +759,15 @@ color_settings:
   edn_description: "Definiert Farben und legt Farbpaletten fest."
 
 InColorPalette:
-  gams_identifier: "Farbpalette"
-  gams_description: "Hier können Farbpaletten definiert werden, welche in Abbildungen verwendet werden können."
+  edn_label: "Farbpalette"
+  edn_description: "Hier können Farbpaletten definiert werden, welche in Abbildungen verwendet werden können."
 InColorPalette_colors:
   gams_identifier: "Farben"
   gams_description: "todo"
 
 InColorARGB:
-  gams_identifier: "Farbe (RGB)"
-  gams_description: "Hier können RGB Farben mit einem Alphawert definiert werden. Die Werte müssen dabei zwischen 0 und 255 liegen."
+  edn_label: "Farbe (RGB)"
+  edn_description: "Hier können RGB Farben mit einem Alphawert definiert werden. Die Werte müssen dabei zwischen 0 und 255 liegen."
 InColorARGB_priority:
   gams_identifier: "Priorität"
   gams_description: "Legt die Farbpriorität fest. Dieser Wert kann je nach Verwendung einen unterschiedlichen Verwendungszweck haben. Bei der Nutzung von Farbpaletten legt die Priorität die Reihenfolge der Farben fest. Auf diese Weise lassen sich Farben individuell anordnen."
@@ -1609,7 +1609,7 @@ InUpdatableGlobalModerateExtremistUncertainty_attributeNames:
   gams_description: "Legt die Attribute fest, welche eine Unsicherheit erhalten sollen."
 
 InPVactUpdatableGlobalModerateExtremistUncertainty:
-  edn_label: "Zeitlich aktualisierbare Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_label: "Zeitlich aktualisierbare Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 1)"
   edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten und unterstützt zeitbasierte Aktualisierungen. Die verwendeten Attribute sind NOV und ENV."
 InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter:
   gams_identifier: "Extremistenparameter"
@@ -1627,27 +1627,8 @@ InPVactUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion:
-  edn_label: "Hochdynamische Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
-  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die Bereiche werden bei jeder Meinungsänderung angepasst. Die verwendeten Attribute sind NOV und ENV."
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter:
-  gams_identifier: "Extremistenparameter"
-  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty:
-  gams_identifier: "Unsicherheit der Extremisten"
-  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty:
-  gams_identifier: "Unsicherheit der Moderaten"
-  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive:
-  gams_identifier: "Untere Grenze inklusive?"
-  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive:
-  gams_identifier: "Obere Grenze inklusive?"
-  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-
 InPVactIndividualGlobalModerateExtremistUncertaintySupplier:
-  edn_label: "Individuell aktualisierte Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_label: "Individuell aktualisierte Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 2)"
   edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Bei Änderungen passt jeder Agent seine eigene Unsicherheit an. Die verwendeten Attribute sind NOV und ENV."
 InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter:
   gams_identifier: "Extremistenparameter"
@@ -1662,6 +1643,25 @@ InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
 InPVactIndividualGlobalModerateExtremistUncertaintySupplier_upperBoundInclusive:
+  gams_identifier: "Obere Grenze inklusive?"
+  gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
+
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion:
+  edn_label: "Hochdynamische Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 3)"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die Bereiche werden bei jeder Meinungsänderung angepasst. Die verwendeten Attribute sind NOV und ENV."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter:
+  gams_identifier: "Extremistenparameter"
+  gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty:
+  gams_identifier: "Unsicherheit der Extremisten"
+  gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty:
+  gams_identifier: "Unsicherheit der Moderaten"
+  gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive:
+  gams_identifier: "Untere Grenze inklusive?"
+  gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
@@ -2379,6 +2379,86 @@ InWeightedModule_calcgraphnode_input_graphedge:
   gams_description: "todo"
 
 ##########################
+# process model v4
+##########################
+
+process_model4:
+  edn_label: "Prozessmodell"
+  edn_description: "todo"
+
+process_model4_base:
+  edn_label: "Basismodell"
+  edn_description: "todo"
+
+process_model4_uncertainty:
+  edn_label: "Einstellungen für Unsicherheit"
+  edn_description: "todo"
+
+process_model4_distance:
+  edn_label: "Peereffektdistanzeinstellungen"
+  edn_description: "todo"
+
+process_model4_init:
+  edn_label: "Komponenten für die Initialisierung"
+  edn_description: "todo"
+
+process_model4_reeval:
+  edn_label: "Komponenten für die Reevaluierung"
+  edn_description: "todo"
+
+process_model4_generalmodules:
+  edn_label: "Allgemeine Module"
+  edn_description: "todo"
+
+process_model4_generalmodules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_numberinput:
+  edn_label: "Zahlenbasierte Eingabemodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_numbereval:
+  edn_label: "Zahlenbasierte Auswertungsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_bool:
+  edn_label: "Entscheidungsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_system:
+  edn_label: "Systemmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_independent:
+  edn_label: "Unabhängige Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules:
+  edn_label: "PVact-Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_numberinput:
+  edn_label: "Zahlenbasierte Eingabemodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_numberlogging:
+  edn_label: "Zahlenbasierte Loggingmodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_pvgeneral:
+  edn_label: "PV spezifische allgemeine Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules_pvlogging:
+  edn_label: "PV spezifische Loggingmodule"
+  edn_description: "todo"
+
+##########################
 # process model v3
 ##########################
 
@@ -2463,20 +2543,20 @@ InLinearePercentageAgentAttributeUpdater_scaler:
   gams_identifier: "scaler"
   gams_description: "todo"
 
-InReevaluatorModuleLinker:
+InMultiReevaluator:
   edn_label: "ReevaluatorModuleLinker"
   edn_description: "todo"
-InReevaluatorModuleLinker_modules:
+InMultiReevaluator_modules:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
 
-InUncertaintySupplierReevaluator:
+InUncertaintyReevaluator:
   edn_label: "Updater für Unsicherheiten"
   edn_description: "todo"
-InUncertaintySupplierReevaluator_priorty:
+InUncertaintyReevaluator_priorty:
   gams_identifier: "Priorität"
   gams_description: "todo"
-InUncertaintySupplierReevaluator_uncertaintySuppliers:
+InUncertaintyReevaluator_uncertaintySuppliers:
   gams_identifier: "Unsicherheiten:"
   gams_description: "todo"
 
@@ -2518,7 +2598,7 @@ InLinearePercentageAgentAttributeScaler_attribute:
 
 InUncertaintySupplierInitializer:
   edn_label: "Initialisierer für Unsicherheiten"
-  edn_description: "todo; newValue = (oldValue - min) \\/ (max - min)"
+  edn_description: "todo"
 InUncertaintySupplierInitializer_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
@@ -2792,8 +2872,11 @@ InValueModule_inputgraphnode2_value:
 
 #double logging
 InCsvValueLoggingModule_calcloggraphnode2:
-  edn_label: "CsvValueLoggingModule"
+  edn_label: "MinimalCsvValueLoggingModule"
   edn_description: "todo"
+InCsvValueLoggingModule_calcloggraphnode2_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
 InCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall:
   gams_identifier: "Reevaluierungsaufrufe loggen?"
   gams_description: "todo"
@@ -2807,25 +2890,6 @@ InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
   gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
 InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
-InMinimalCsvValueLoggingModule_calcloggraphnode2:
-  edn_label: "MinimalCsvValueLoggingModule"
-  edn_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall:
-  gams_identifier: "Reevaluierungsaufrufe loggen?"
-  gams_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_logDefaultCall:
-  gams_identifier: "Normale Aufrufe loggen?"
-  gams_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_printHeader:
-  gams_identifier: "Kopfzeile schreiben?"
-  gams_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
-  gams_identifier: "Als xlsx speichern?"
-  gams_description: "todo"
-InMinimalCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
@@ -2952,6 +3016,9 @@ InUtilityEvaluatorModule2_evalragraphnode2_utility_graphedge2:
 InYearBasedAdoptionDeciderModule_evalragraphnode2:
   edn_label: "YearBasedAdoptionDeciderModule"
   edn_description: "todo"
+InYearBasedAdoptionDeciderModule_evalragraphnode2_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
 InYearBasedAdoptionDeciderModule_evalragraphnode2_base:
   gams_identifier: "base"
   gams_description: "todo"
@@ -2966,6 +3033,9 @@ InYearBasedAdoptionDeciderModule_evalragraphnode2_input_graphedge2:
 InPhaseLoggingModule_evalragraphnode2:
   edn_label: "PhaseLoggingModule"
   edn_description: "todo"
+InPhaseLoggingModule_evalragraphnode2_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
 InPhaseLoggingModule_evalragraphnode2_input_graphedge2:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"

@@ -36,7 +36,7 @@ public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilt
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_MAX);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_DISTANCE_MAX);
         addEntry(res, thisClass(), "maxDistance");
         addEntry(res, thisClass(), "inclusive");
     }

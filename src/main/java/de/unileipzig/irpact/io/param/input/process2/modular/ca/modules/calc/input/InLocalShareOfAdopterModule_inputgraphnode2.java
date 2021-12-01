@@ -49,7 +49,7 @@ public class InLocalShareOfAdopterModule_inputgraphnode2 implements InConsumerAg
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_INPUT_LOCAL);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL);
         setShapeColorFillBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_COLOR, INPUT_BORDER);
 
         addEntryWithDefault(res, thisClass(), "maxToStore", asValue(1000));

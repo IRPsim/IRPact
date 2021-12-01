@@ -54,12 +54,35 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public static InSpecialAverageQuantilRangeImage NPV = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_NPV);
-    public static InSpecialAverageQuantilRangeImage ENV = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_ENV);
-    public static InSpecialAverageQuantilRangeImage NOV = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_NOV);
-    public static InSpecialAverageQuantilRangeImage SOCIAL = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_SOCIAL);
-    public static InSpecialAverageQuantilRangeImage LOCAL = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_LOCAL);
-    public static InSpecialAverageQuantilRangeImage UTILITY = new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_UTILITY);
+    public static InSpecialAverageQuantilRangeImage NPV() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_NPV);
+    }
+    public static InSpecialAverageQuantilRangeImage NPV = NPV();
+
+    public static InSpecialAverageQuantilRangeImage ENV() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_ENV);
+    }
+    public static InSpecialAverageQuantilRangeImage ENV = ENV();
+
+    public static InSpecialAverageQuantilRangeImage NOV() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_NOV);
+    }
+    public static InSpecialAverageQuantilRangeImage NOV = NOV();
+
+    public static InSpecialAverageQuantilRangeImage SOCIAL() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_SOCIAL);
+    }
+    public static InSpecialAverageQuantilRangeImage SOCIAL = SOCIAL();
+
+    public static InSpecialAverageQuantilRangeImage LOCAL() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_LOCAL);
+    }
+    public static InSpecialAverageQuantilRangeImage LOCAL = LOCAL();
+
+    public static InSpecialAverageQuantilRangeImage UTILITY() {
+        return new InSpecialAverageQuantilRangeImage(IRPact.IMAGE_QUANTILE_UTILITY);
+    }
+    public static InSpecialAverageQuantilRangeImage UTILITY = UTILITY();
 
     public String _name;
 

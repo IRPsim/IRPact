@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.io.param.input;
 
 import de.unileipzig.irpact.commons.util.MultiCounter;
-import de.unileipzig.irpact.develop.TodoException;
 import de.unileipzig.irpact.io.param.EdnPath;
 import de.unileipzig.irpact.io.param.IOConstants;
 import de.unileipzig.irpact.io.param.IOResources;
@@ -33,13 +32,10 @@ import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlo
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
@@ -82,6 +78,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
 public class InRootUI {
 
     public static final List<EdnPath> PATHS = new ArrayList<>();
+
     public static final EdnPath ROOT = new ListEdnPath(IOConstants.ROOT).addTo(PATHS); //!!!
 
     public static final EdnPath INFO = ROOT.resolve(IOConstants.INFORMATIONS).addTo(PATHS);
@@ -115,8 +112,8 @@ public class InRootUI {
     public static final EdnPath SETT_VISUNETWORK_AGENTCOLOR = SETT_VISUNETWORK.resolve(IOConstants.GRAPHVIZ_AGENT_COLOR_MAPPING).addTo(PATHS);
 
     public static final EdnPath SETT_COLOR = SETT.resolve(IOConstants.COLOR_SETTINGS).addTo(PATHS);
-    public static final EdnPath SETT_COLOR_PALETTE = SETT_VISUNETWORK.resolve(InColorPalette.thisName()).addTo(PATHS);
-    public static final EdnPath SETT_COLOR_ARGB = SETT_VISUNETWORK.resolve(InColorARGB.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_COLOR_PALETTE = SETT_COLOR.resolve(InColorPalette.thisName()).addTo(PATHS);
+    public static final EdnPath SETT_COLOR_ARGB = SETT_COLOR.resolve(InColorARGB.thisName()).addTo(PATHS);
 
     public static final EdnPath SPECIALINPUT = ROOT.resolve(IOConstants.SPECIAL_INPUT).addTo(PATHS);
     public static final EdnPath SPECIALINPUT_PVACT = SPECIALINPUT.resolve(IOConstants.SPECIAL_INPUT_PVACT).addTo(PATHS);
@@ -191,84 +188,93 @@ public class InRootUI {
     public static final EdnPath PRODUCTS_INITADOPT_PVACTFILECAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.thisName()).addTo(PATHS);
     public static final EdnPath PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED = PRODUCTS_INITADOPT.resolve(InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.thisName()).addTo(PATHS);
 
-    public static final EdnPath PROCESS2 = ROOT.resolve(IOConstants.PROCESS_MODEL2).addTo(PATHS);
-
-    public static final EdnPath PROCESS_FILTER = PROCESS2.resolve(IOConstants.PROCESS_FILTER).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_DISABLED = PROCESS_FILTER.resolve(InDisabledNodeFilterDistanceScheme.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_ENTIRE = PROCESS_FILTER.resolve(InEntireNetworkNodeFilterDistanceScheme.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_FILTER_MAX = PROCESS_FILTER.resolve(InMaxDistanceNodeFilterDistanceScheme.thisName()).addTo(PATHS);
-
-    public static final EdnPath PROCESS_UNCERT = PROCESS2.resolve(IOConstants.PROCESS_MODEL_RA_UNCERT).addTo(PATHS);
-    //public static final EdnPath PROCESS_UNCERT_GMEU = PROCESS_UNCERT.resolve(InGlobalModerateExtremistUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_PVACTGMEU = PROCESS_UNCERT.resolve(InPVactUpdatableGlobalModerateExtremistUncertainty.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_PVACTMEUOP = PROCESS_UNCERT.resolve(InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_UNCERT_PVACTIMEU = PROCESS_UNCERT.resolve(InPVactIndividualGlobalModerateExtremistUncertaintySupplier.thisName()).addTo(PATHS);
-
-    public static final EdnPath PROCESS_MODULAR3 = PROCESS2.resolve(IOConstants.PROCESS_MODULAR3).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODEL = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODEL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODEL_BASIC = PROCESS_MODULAR3_MODEL.resolve(InBasicCAModularProcessModel.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_REEVAL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_LINKER = PROCESS_MODULAR3_REEVAL.resolve(InReevaluatorModuleLinker.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_INTEREST = PROCESS_MODULAR3_REEVAL.resolve(InAnnualInterestLogger.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_UNCERT = PROCESS_MODULAR3_REEVAL.resolve(InUncertaintySupplierReevaluator.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_CONSTRENO = PROCESS_MODULAR3_REEVAL.resolve(InConstructionRenovationUpdater.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_DEC = PROCESS_MODULAR3_REEVAL.resolve(InDecisionMakingReevaluator.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_IMPEDEDRESET = PROCESS_MODULAR3_REEVAL.resolve(InImpededResetter.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_REEVAL_LINPERUPDATER = PROCESS_MODULAR3_REEVAL.resolve(InLinearePercentageAgentAttributeUpdater.thisName()).addTo(PATHS);
-
-    public static final EdnPath PROCESS_MODULAR3_HANDLER = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_HANDLER).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_INIT).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR = PROCESS_MODULAR3_HANDLER_INIT.resolve(InAgentAttributeScaler.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR = PROCESS_MODULAR3_HANDLER_INIT.resolve(InLinearePercentageAgentAttributeScaler.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_UNCERT = PROCESS_MODULAR3_HANDLER_INIT.resolve(InUncertaintySupplierInitializer.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_HANDLER_NEWPRODUCT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_NEWPRODUCT).addTo(PATHS);
-
-    public static final EdnPath PROCESS_MODULAR3_MODULES = PROCESS_MODULAR3.resolve(IOConstants.PROCESS_MODULAR3_MODULES).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_ACTION).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_COMMU = PROCESS_MODULAR3_MODULES_ACTION.resolve(InCommunicationModule_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_STOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(InStopAfterSuccessfulTaskModule_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_IFELSE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InIfElseActionModule_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_NOP = PROCESS_MODULAR3_MODULES_ACTION.resolve(InNOP_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_ACTION_REWIRE = PROCESS_MODULAR3_MODULES_ACTION.resolve(InRewireModule_actiongraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_BOOL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH = PROCESS_MODULAR3_MODULES_BOOL.resolve(InBernoulliModule_boolgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL_GENERICIFTHRESH = PROCESS_MODULAR3_MODULES_BOOL.resolve(InThresholdReachedModule_boolgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_BOOL_IFDO = PROCESS_MODULAR3_MODULES_BOOL.resolve(InIfDoActionModule_boolgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_CALC).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_MULSCALAR = PROCESS_MODULAR3_MODULES_CALC.resolve(InMulScalarModule_calcgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_ADDSCALAR = PROCESS_MODULAR3_MODULES_CALC.resolve(InAddScalarModule_calcgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_LOGISTIC = PROCESS_MODULAR3_MODULES_CALC.resolve(InLogisticModule_calcgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_SUM = PROCESS_MODULAR3_MODULES_CALC.resolve(InSumModule_calcgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_CSV = PROCESS_MODULAR3_MODULES_CALC.resolve(InCsvValueLoggingModule_calcloggraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_CALC_MINICSV = PROCESS_MODULAR3_MODULES_CALC.resolve(InMinimalCsvValueLoggingModule_calcloggraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_INPUT).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_ATTR = PROCESS_MODULAR3_MODULES_INPUT.resolve(InAttributeInputModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_VALUE = PROCESS_MODULAR3_MODULES_INPUT.resolve(InValueModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_NAN = PROCESS_MODULAR3_MODULES_INPUT.resolve(InNaNModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_GLOBALAVGNPV = PROCESS_MODULAR3_MODULES_INPUT.resolve(InGlobalAvgNPVModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_NPV = PROCESS_MODULAR3_MODULES_INPUT.resolve(InNPVModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_LOCAL = PROCESS_MODULAR3_MODULES_INPUT.resolve(InLocalShareOfAdopterModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_SOCIAL = PROCESS_MODULAR3_MODULES_INPUT.resolve(InSocialShareOfAdopterModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_INPUT_AVGFIN = PROCESS_MODULAR3_MODULES_INPUT.resolve(InAvgFinModule_inputgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_EVAL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL_UNTILFAIL = PROCESS_MODULAR3_MODULES_EVAL.resolve(InRunUntilFailureModule_evalgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVAL_DONOTHING = PROCESS_MODULAR3_MODULES_EVAL.resolve(InDoNothingAndContinueModule_evalgraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_EVALRA).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_YEARBASED = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InYearBasedAdoptionDeciderModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_INTEREST = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InInterestModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_INIT = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InInitializationModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_DOADOPT = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InDoAdoptModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_FEASIBILITY = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InFeasibilityModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_PHASEUPDATER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InPhaseUpdateModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_PHASELOGGER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InPhaseLoggingModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_MAINBRANCH = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InMainBranchingModule_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_DECISIONDECIDER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_NEWDECISIONDECIDER = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InNewDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_EVALRA_UTILITYEVAL = PROCESS_MODULAR3_MODULES_EVALRA.resolve(InUtilityEvaluatorModule2_evalragraphnode2.thisName()).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL = PROCESS_MODULAR3_MODULES.resolve(IOConstants.PROCESS_MODULAR3_MODULES_REEVAL).addTo(PATHS);
-    public static final EdnPath PROCESS_MODULAR3_MODULES_REEVAL_MODULE = PROCESS_MODULAR3_MODULES_REEVAL.resolve(InReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
-
-
+    //process model
+    public static final EdnPath PROCESS_MODULAR4 = ROOT.resolve(IOConstants.PROCESS_MODEL4).addTo(PATHS);
+    //model
+    public static final EdnPath PROCESS_MODULAR4_BASE = PROCESS_MODULAR4.resolve(InBasicCAModularProcessModel.thisName()).addTo(PATHS);
+    //uncert
+    public static final EdnPath PROCESS_MODEL4_UNCERT = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_UNCERT).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_UNCERT_PVACTGMEU = PROCESS_MODEL4_UNCERT.resolve(InPVactUpdatableGlobalModerateExtremistUncertainty.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_UNCERT_PVACTIMEU = PROCESS_MODEL4_UNCERT.resolve(InPVactIndividualGlobalModerateExtremistUncertaintySupplier.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_UNCERT_PVACTMEUOP = PROCESS_MODEL4_UNCERT.resolve(InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.thisName()).addTo(PATHS);
+    //peer
+    public static final EdnPath PROCESS_MODEL4_DISTANCE = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_DISTANCE).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_DISTANCE_DISABLED = PROCESS_MODEL4_DISTANCE.resolve(InDisabledNodeFilterDistanceScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_DISTANCE_ENTIRE = PROCESS_MODEL4_DISTANCE.resolve(InEntireNetworkNodeFilterDistanceScheme.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_DISTANCE_MAX = PROCESS_MODEL4_DISTANCE.resolve(InMaxDistanceNodeFilterDistanceScheme.thisName()).addTo(PATHS);
+    //init
+    public static final EdnPath PROCESS_MODEL4_INIT = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_INIT).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_AGENTATTR = PROCESS_MODEL4_INIT.resolve(InAgentAttributeScaler.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR = PROCESS_MODEL4_INIT.resolve(InLinearePercentageAgentAttributeScaler.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_HANDLER_INIT_UNCERT = PROCESS_MODEL4_INIT.resolve(InUncertaintySupplierInitializer.thisName()).addTo(PATHS);
+    //public static final EdnPath PROCESS_MODULAR3_HANDLER_NEWPRODUCT = PROCESS_MODULAR3_HANDLER.resolve(IOConstants.PROCESS_MODULAR3_HANDLER_NEWPRODUCT).addTo(PATHS);
+    //reeval
+    public static final EdnPath PROCESS_MODEL4_REEVAL = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_REEVAL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_LINKER = PROCESS_MODEL4_REEVAL.resolve(InMultiReevaluator.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_INTEREST = PROCESS_MODEL4_REEVAL.resolve(InAnnualInterestLogger.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_UNCERT = PROCESS_MODEL4_REEVAL.resolve(InUncertaintyReevaluator.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_CONSTRENO = PROCESS_MODEL4_REEVAL.resolve(InConstructionRenovationUpdater.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_DEC = PROCESS_MODEL4_REEVAL.resolve(InDecisionMakingReevaluator.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_IMPEDEDRESET = PROCESS_MODEL4_REEVAL.resolve(InImpededResetter.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODULAR3_REEVAL_LINPERUPDATER = PROCESS_MODEL4_REEVAL.resolve(InLinearePercentageAgentAttributeUpdater.thisName()).addTo(PATHS);
+    //general modules
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES).addTo(PATHS);
+    //action
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_ACTION).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE = PROCESS_MODEL4_GENERALMODULES_ACTION.resolve(InIfElseActionModule_actiongraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_NOP = PROCESS_MODEL4_GENERALMODULES_ACTION.resolve(InNOP_actiongraphnode2.thisName()).addTo(PATHS);
+    //bool
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_BOOL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI = PROCESS_MODEL4_GENERALMODULES_BOOL.resolve(InBernoulliModule_boolgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD = PROCESS_MODEL4_GENERALMODULES_BOOL.resolve(InThresholdReachedModule_boolgraphnode2.thisName()).addTo(PATHS);
+    //number input
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_VALUE = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InValueModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InNaNModule_inputgraphnode2.thisName()).addTo(PATHS);
+    //number eval
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InMulScalarModule_calcgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_ADDSCALAR = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InAddScalarModule_calcgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_LOGISTIC = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InLogisticModule_calcgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InSumModule_calcgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT = PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT.resolve(InProductModule_calcgraphnode2.thisName()).addTo(PATHS);
+    //system
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_SYSTEM = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_SYSTEM).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_SYSTEM_UNTILFAIL = PROCESS_MODEL4_GENERALMODULES_SYSTEM.resolve(InRunUntilFailureModule_evalgraphnode2.thisName()).addTo(PATHS);
+    //independent
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_INDEPENDENT = PROCESS_MODEL4_GENERALMODULES.resolve(IOConstants.PROCESS_MODEL4_GENERALMODULES_INDEPENDENT).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL = PROCESS_MODEL4_GENERALMODULES_INDEPENDENT.resolve(InReevaluatorModule_reevalgraphnode2.thisName()).addTo(PATHS);
+    //general modules
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES = PROCESS_MODULAR4.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES).addTo(PATHS);
+    //action
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION = PROCESS_MODEL4_PVACTMODULES.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES_ACTION).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU = PROCESS_MODEL4_PVACTMODULES_ACTION.resolve(InCommunicationModule_actiongraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_REWIRE = PROCESS_MODEL4_PVACTMODULES_ACTION.resolve(InRewireModule_actiongraphnode2.thisName()).addTo(PATHS);
+    //number input
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT = PROCESS_MODEL4_PVACTMODULES.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_ATTR = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InAttributeInputModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_GLOBALAVGNPV = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InGlobalAvgNPVModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InNPVModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InLocalShareOfAdopterModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_SOCIAL = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InSocialShareOfAdopterModule_inputgraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AVGFIN = PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT.resolve(InAvgFinModule_inputgraphnode2.thisName()).addTo(PATHS);
+    //number logging
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING = PROCESS_MODEL4_PVACTMODULES.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV = PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING.resolve(InCsvValueLoggingModule_calcloggraphnode2.thisName()).addTo(PATHS);
+    //pv general
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL = PROCESS_MODEL4_PVACTMODULES.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES_PVGENERAL).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InDecisionMakingDeciderModule2_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DOADOPT = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InDoAdoptModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_FEASIBILITY = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InFeasibilityModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INIT = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InInitializationModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INTEREST = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InInterestModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_MAINBRANCH = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InMainBranchingModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASEUPDATER = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InPhaseUpdateModule_evalragraphnode2.thisName()).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED = PROCESS_MODEL4_PVACTMODULES_PVGENERAL.resolve(InYearBasedAdoptionDeciderModule_evalragraphnode2.thisName()).addTo(PATHS);
+    //pv logging
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVLOGGING = PROCESS_MODEL4_PVACTMODULES.resolve(IOConstants.PROCESS_MODEL4_PVACTMODULES_PVLOGGING).addTo(PATHS);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER = PROCESS_MODEL4_PVACTMODULES_PVLOGGING.resolve(InPhaseLoggingModule_evalragraphnode2.thisName()).addTo(PATHS);
+    //====
 
     public static final EdnPath SPATIAL = ROOT.resolve(IOConstants.SPATIAL).addTo(PATHS);
     public static final EdnPath SPATIAL_MODEL = SPATIAL.resolve(IOConstants.SPATIAL_MODEL).addTo(PATHS);
@@ -293,7 +299,7 @@ public class InRootUI {
     public static EdnPath DEV_TEST = DEV.resolve(IOConstants.TEST).addTo(PATHS);
     public static EdnPath DEV_TEST_DATA = DEV_TEST.resolve(InTestData.thisName()).addTo(PATHS);
 
-    //!!!
+    //DEPRECATED
     public static EdnPath DEV_DEPRECATED = DEV.resolve(IOConstants.DEPRECATED).addTo(PATHS);
 
     //SETT
@@ -375,9 +381,5 @@ public class InRootUI {
         res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE.getLast()));
         res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
         res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
-    }
-
-    public static EdnPath requiresPath() {
-        throw new TodoException();
     }
 }

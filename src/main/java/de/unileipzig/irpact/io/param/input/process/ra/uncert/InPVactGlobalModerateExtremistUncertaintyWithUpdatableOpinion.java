@@ -33,7 +33,7 @@ public class InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion imple
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_PVACTMEUOP);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_UNCERT_PVACTMEUOP);
 
         addEntry(res, thisClass(), "extremistParameter");
         addEntry(res, thisClass(), "extremistUncertainty");

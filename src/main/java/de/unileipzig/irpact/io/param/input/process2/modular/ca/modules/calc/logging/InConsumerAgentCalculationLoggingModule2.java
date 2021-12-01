@@ -24,6 +24,8 @@ public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgen
         return getBaseName() + ".csv";
     }
 
+    boolean isEnabled();
+
     boolean isPrintHeader();
 
     boolean isLogReevaluatorCall();

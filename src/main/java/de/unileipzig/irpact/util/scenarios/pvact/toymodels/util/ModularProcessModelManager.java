@@ -17,6 +17,10 @@ public class ModularProcessModelManager {
     public ModularProcessModelManager() {
     }
 
+    public boolean has(String name) {
+        return modules.containsKey(name);
+    }
+
     public InModule2 findModule(String name) {
         InModule2 module = modules.get(name);
         if(module == null) {
@@ -45,5 +49,10 @@ public class ModularProcessModelManager {
     @SuppressWarnings("unchecked")
     public <R extends InModule2> R findModuleAuto(String name) {
         return (R) findModule(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <R extends InModule2> R registerIfNotExists(String name, Function<? super String, ? extends R> func) {
+        return (R) modules.computeIfAbsent(name, func);
     }
 }

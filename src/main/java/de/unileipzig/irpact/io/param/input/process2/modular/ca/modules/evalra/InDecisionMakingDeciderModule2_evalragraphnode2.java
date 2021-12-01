@@ -49,7 +49,7 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_DECISIONDECIDER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
         addEntryWithDefaultAndDomain(res, thisClass(), "forceEvaluation", VALUE_FALSE, DOMAIN_BOOLEAN);

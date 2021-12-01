@@ -34,7 +34,7 @@ public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFi
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_ENTIRE);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_DISTANCE_ENTIRE);
         addEntry(res, thisClass(), "placeholder");
     }
 

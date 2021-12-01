@@ -50,7 +50,7 @@ public class InThresholdReachedModule_boolgraphnode2 implements InConsumerAgentB
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_GENERICIFTHRESH);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD);
         setShapeColorFillBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_FILL, BOOL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));

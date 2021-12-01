@@ -53,8 +53,6 @@ public final class IOConstants {
     public static final String INITAL_ADOPTERS = "initial_adopters";
 
     public static final String PROCESS_MODEL = "process_model";
-    public static final String PROCESS_FILTER = "process_filter";
-    public static final String PROCESS_MODEL_RA_UNCERT = "process_model_ra_uncert";
     public static final String PROCESS_MODULAR_COMPONENTS = "process_modular_components";
     public static final String PROCESS_MODULAR2 = "process_modular2";
     public static final String PROCESS_MODULAR2_MODEL = "process_modular2_model";
@@ -62,21 +60,24 @@ public final class IOConstants {
     public static final String PROCESS_MODULAR2_COMPONENTS_CALC = "process_modular2_components_calc";
     public static final String PROCESS_MODULAR2_COMPONENTS_EVAL = "process_modular2_components_eval";
 
-    public static final String PROCESS_MODEL2 = "process_model2";
-    public static final String PROCESS_MODULAR3 = "process_modular3";
-    public static final String PROCESS_MODULAR3_MODEL = "process_modular3_PV_model";
-    public static final String PROCESS_MODULAR3_REEVAL = "process_modular3_PV_reeval";
-    public static final String PROCESS_MODULAR3_HANDLER = "process_modular3_PV_handler";
-    public static final String PROCESS_MODULAR3_HANDLER_INIT = "process_modular3_PV_handler_init";
-    public static final String PROCESS_MODULAR3_HANDLER_NEWPRODUCT = "process_modular3_PV_handler_newproduct";
-    public static final String PROCESS_MODULAR3_MODULES = "process_modular3_PV_modules";
-    public static final String PROCESS_MODULAR3_MODULES_ACTION = "process_modular3_PV_modules_action";
-    public static final String PROCESS_MODULAR3_MODULES_BOOL = "process_modular3_PV_modules_bool";
-    public static final String PROCESS_MODULAR3_MODULES_CALC = "process_modular3_PV_modules_calc";
-    public static final String PROCESS_MODULAR3_MODULES_INPUT = "process_modular3_PV_modules_input";
-    public static final String PROCESS_MODULAR3_MODULES_EVAL = "process_modular3_PV_modules_eval";
-    public static final String PROCESS_MODULAR3_MODULES_EVALRA = "process_modular3_PV_modules_evalra";
-    public static final String PROCESS_MODULAR3_MODULES_REEVAL = "process_modular3_PV_modules_reeval";
+    public static final String PROCESS_MODEL4 = "process_model4";
+    public static final String PROCESS_MODEL4_UNCERT = "process_model4_uncertainty";
+    public static final String PROCESS_MODEL4_DISTANCE = "process_model4_distance";
+    public static final String PROCESS_MODEL4_INIT = "process_model4_init";
+    public static final String PROCESS_MODEL4_REEVAL = "process_model4_reeval";
+    public static final String PROCESS_MODEL4_GENERALMODULES = "process_model4_generalmodules";
+    public static final String PROCESS_MODEL4_GENERALMODULES_ACTION = "process_model4_generalmodules_action";
+    public static final String PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT = "process_model4_generalmodules_numberinput";
+    public static final String PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL = "process_model4_generalmodules_numbereval";
+    public static final String PROCESS_MODEL4_GENERALMODULES_BOOL = "process_model4_generalmodules_bool";
+    public static final String PROCESS_MODEL4_GENERALMODULES_SYSTEM = "process_model4_generalmodules_system";
+    public static final String PROCESS_MODEL4_GENERALMODULES_INDEPENDENT = "process_model4_generalmodules_independent";
+    public static final String PROCESS_MODEL4_PVACTMODULES = "process_model4_pvactmodules";
+    public static final String PROCESS_MODEL4_PVACTMODULES_ACTION = "process_model4_pvactmodules_action";
+    public static final String PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT = "process_model4_pvactmodules_numberinput";
+    public static final String PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING = "process_model4_pvactmodules_numberlogging";
+    public static final String PROCESS_MODEL4_PVACTMODULES_PVGENERAL = "process_model4_pvactmodules_pvgeneral";
+    public static final String PROCESS_MODEL4_PVACTMODULES_PVLOGGING = "process_model4_pvactmodules_pvlogging";
 
     public static final String SPATIAL = "spatial";
     public static final String SPATIAL_MODEL = "spatial_model";

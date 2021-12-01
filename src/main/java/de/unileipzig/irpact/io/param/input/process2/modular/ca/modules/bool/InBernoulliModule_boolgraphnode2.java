@@ -49,7 +49,7 @@ public class InBernoulliModule_boolgraphnode2 implements InConsumerAgentBoolModu
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_BOOL_IFTHRESH);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI);
         setShapeColorFillBorder(res, thisClass(), BOOL_SHAPE, BOOL_COLOR, BOOL_FILL, BOOL_BORDER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Module2.NORM_PRIORITY));

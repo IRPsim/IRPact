@@ -47,8 +47,12 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_YEARBASED);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
+
+        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
+        addEntryWithDefault(res, thisClass(), "base", VALUE_1);
+        addEntryWithDefault(res, thisClass(), "factor", VALUE_1);
 
         addEntry(res, thisClass(), "input_graphedge2");
     }
@@ -65,7 +69,16 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
     }
 
     @FieldDefinition
-    public double base;
+    public boolean enabled = true;
+    public boolean isEnabled() {
+        return enabled;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @FieldDefinition
+    public double base = 1;
     public double getBase() {
         return base;
     }
@@ -74,7 +87,7 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
     }
 
     @FieldDefinition
-    public double factor;
+    public double factor = 1;
     public double getFactor() {
         return factor;
     }
@@ -125,6 +138,7 @@ public class InYearBasedAdoptionDeciderModule_evalragraphnode2 implements InCons
 
         YearBasedAdoptionDeciderModule2 module = new YearBasedAdoptionDeciderModule2();
         module.setName(getName());
+        module.setEnabled(isEnabled());
         module.setBase(getBase());
         module.setFactor(getFactor());
         module.setSubmodule(parser.parseEntityTo(getInput()));

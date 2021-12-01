@@ -30,6 +30,7 @@ public abstract class AbstractCANumberLogging2
     protected Path dir;
     protected String baseName;
     protected SimplifiedLogger valueLogger;
+    protected boolean enabled = true;
     protected boolean logReevaluatorCall;
     protected boolean logDefaultCall;
     protected boolean printHeader;
@@ -59,6 +60,18 @@ public abstract class AbstractCANumberLogging2
 
     public String getBaseName() {
         return baseName;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public boolean isDisabled() {
+        return !enabled;
     }
 
     public void setLogReevaluatorCall(boolean logReevaluatorCall) {
@@ -178,22 +191,28 @@ public abstract class AbstractCANumberLogging2
 
     @Override
     protected void validateSelf() throws Throwable {
-        if(baseName == null) {
-            throw new NullPointerException("missing baseName");
-        }
-        if(dir == null) {
-            throw new NullPointerException("missing dir");
+        if(isEnabled()) {
+            if(baseName == null) {
+                throw new NullPointerException("missing baseName");
+            }
+            if(dir == null) {
+                throw new NullPointerException("missing dir");
+            }
         }
     }
 
     @Override
     protected void initializeSelf(SimulationEnvironment environment) throws Throwable {
-        trace("register on close: {}", environment.registerIfNotRegistered(this));
-        resource = load(environment);
-        if(resource == null) {
-            throw new NullPointerException("resource not found");
+        if(isEnabled()) {
+            trace("[{}] register on close: {}", getName(), environment.registerIfNotRegistered(this));
+            resource = load(environment);
+            if(resource == null) {
+                throw new NullPointerException("resource not found");
+            }
+            createCsvLogger(dir, baseName);
+        } else {
+            trace("[{}] disabled", getName());
         }
-        createCsvLogger(dir, baseName);
     }
 
     @Override
@@ -211,10 +230,12 @@ public abstract class AbstractCANumberLogging2
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
-        if(doLog()) {
-            runLog(input, value);
-        } else {
-            trace("[{}] skip reevaluator call", getName());
+        if(isEnabled()) {
+            if(doLog()) {
+                runLog(input, value);
+            } else {
+                trace("[{}] skip call", getName());
+            }
         }
         return value;
     }

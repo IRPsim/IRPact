@@ -48,7 +48,7 @@ public class InProductModule_calcgraphnode2 implements InConsumerAgentCalculatio
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_CALC_SUM);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT);
         setShapeColorFillBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_FILL, CALC_BORDER);
 
         addEntry(res, thisClass(), "input_graphedge2");

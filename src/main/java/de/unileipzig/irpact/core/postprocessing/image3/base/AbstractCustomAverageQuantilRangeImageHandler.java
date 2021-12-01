@@ -3,9 +3,6 @@ package de.unileipzig.irpact.core.postprocessing.image3.base;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InCustomAverageQuantilRangeImage;
 
 /**
@@ -23,11 +20,6 @@ public abstract class AbstractCustomAverageQuantilRangeImageHandler
 
     @Override
     protected void validate() throws Throwable {
-        InConsumerAgentCalculationLoggingModule2 module = imageConfiguration.getLoggingModule();
-        if(!(module instanceof InCsvValueLoggingModule_calcloggraphnode2
-                || module instanceof InMinimalCsvValueLoggingModule_calcloggraphnode2)) {
-            throw new IllegalArgumentException("unsupported module type for '" + module.getName() + "': " + module.getClass());
-        }
     }
 
     public static void updateNames(

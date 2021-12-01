@@ -41,7 +41,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODEL_BASIC);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR4_BASE);
 
         addEntry(res, thisClass(), "startModule");
         addEntry(res, thisClass(), "initializationHandlers");

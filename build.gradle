@@ -90,7 +90,7 @@ ext {
     jacksonVersion = '2.12.2'
     jadexDistVersion = '4.0.241' //'4.0.187'
     logbackVersion = '1.2.3'
-    apachePoiVersion = '5.0.0'
+    apachePoiVersion = '5.1.0'
     geotoolsVersion = '25.1'
 }
 

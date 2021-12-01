@@ -58,12 +58,35 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public static InAnnualBucketImage NPV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NPV);
-    public static InAnnualBucketImage ENV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_ENV);
-    public static InAnnualBucketImage NOV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NOV);
-    public static InAnnualBucketImage SOCIAL = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_SOCIAL);
-    public static InAnnualBucketImage LOCAL = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_LOCAL);
-    public static InAnnualBucketImage UTILITY = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_UTILITY);
+    public static InAnnualBucketImage NPV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NPV);
+    }
+    public static InAnnualBucketImage NPV = NPV();
+
+    public static InAnnualBucketImage ENV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_ENV);
+    }
+    public static InAnnualBucketImage ENV = ENV();
+
+    public static InAnnualBucketImage NOV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NOV);
+    }
+    public static InAnnualBucketImage NOV = NOV();
+
+    public static InAnnualBucketImage SOCIAL() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_SOCIAL);
+    }
+    public static InAnnualBucketImage SOCIAL = SOCIAL();
+
+    public static InAnnualBucketImage LOCAL() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_LOCAL);
+    }
+    public static InAnnualBucketImage LOCAL = LOCAL();
+
+    public static InAnnualBucketImage UTILITY() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_UTILITY);
+    }
+    public static InAnnualBucketImage UTILITY = UTILITY();
 
     public String _name;
 

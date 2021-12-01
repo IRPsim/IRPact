@@ -40,15 +40,12 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsume
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InIfDoActionModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InMinimalCsvValueLoggingModule_calcloggraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InDoNothingAndContinueModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
@@ -978,11 +975,9 @@ public class InRoot implements RootClass {
             InIfElseActionModule_actiongraphnode2.class,
             InNOP_actiongraphnode2.class,
             InRewireModule_actiongraphnode2.class,
-            InStopAfterSuccessfulTaskModule_actiongraphnode2.class,
             //bool
             InConsumerAgentBoolModule2.class,
             InThresholdReachedModule_boolgraphnode2.class,
-            InIfDoActionModule_boolgraphnode2.class,
             InBernoulliModule_boolgraphnode2.class,
             //calc
             InAddScalarModule_calcgraphnode2.class,
@@ -1004,10 +999,8 @@ public class InRoot implements RootClass {
             //calc-logging
             InConsumerAgentCalculationLoggingModule2.class,
             InCsvValueLoggingModule_calcloggraphnode2.class,
-            InMinimalCsvValueLoggingModule_calcloggraphnode2.class,
             //eval
             InConsumerAgentEvalModule2.class,
-            InDoNothingAndContinueModule_evalgraphnode2.class,
             InRunUntilFailureModule_evalgraphnode2.class,
             //evalra
             InConsumerAgentEvalRAModule2.class,
@@ -1031,8 +1024,8 @@ public class InRoot implements RootClass {
             InDecisionMakingReevaluator.class,
             InImpededResetter.class,
             InLinearePercentageAgentAttributeUpdater.class,
-            InReevaluatorModuleLinker.class,
-            InUncertaintySupplierReevaluator.class,
+            InMultiReevaluator.class,
+            InUncertaintyReevaluator.class,
             //reeval-general
             InReevaluator2.class,
             //handler-init
@@ -1144,135 +1137,8 @@ public class InRoot implements RootClass {
 
     public static void initRes(TreeAnnotationResource res) {
         InRootUI.initRes(res);
-        //TODO remove
-//        IOResources.Data userData = res.getUserDataAs();
-//        MultiCounter counter = userData.getCounter();
-//
-//        addPathElement(res, INFORMATIONS, ROOT);
-//                addPathElement(res, ABOUT_IRPACT, INFORMATIONS);
-//                addPathElement(res, InScenarioVersion.thisName(), INFORMATIONS);
-//                addPathElement(res, InInformation.thisName(), INFORMATIONS);
-//
-//        addPathElement(res, GENERAL_SETTINGS, ROOT);
-//                addPathElement(res, LOGGING, GENERAL_SETTINGS);
-//                        addPathElement(res, LOGGING_GENERAL, LOGGING);
-//                        addPathElement(res, LOGGING_DATA, LOGGING);
-//                        addPathElement(res, LOGGING_RESULT, LOGGING);
-//                        addPathElement(res, LOGGING_SCRIPT, LOGGING);
-//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
-//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
-//                addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
-//                        addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
-//
-//        addPathElement(res, InAttributeName.thisName(), ROOT);
-//
-//        addPathElement(res, FILES, ROOT);
-//            addPathElement(res, InPVFile.thisName(), FILES);
-//            addPathElement(res, InSpatialTableFile.thisName(), FILES);
-//
-//        addPathElement(res, DISTRIBUTIONS, ROOT);
-//            addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InDiracUnivariateDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
-//                addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
-//            addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InSlowTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
-//
-//        addPathElement(res, AGENTS, ROOT);
-//                addPathElement(res, CONSUMER, AGENTS);
-//                        addPathElement(res, CONSUMER_GROUP, CONSUMER);
-//                                addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-//                        addPathElement(res, CONSUMER_ATTR, CONSUMER);
-//                                addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-//                        addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
-//                                addPathElement(res, InAffinities.thisName(), CONSUMER_AFFINITY);
-//                                addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
-//                                addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
-//                        addPathElement(res, CONSUMER_INTEREST, CONSUMER);
-//                                addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
-//                                        addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
-//                addPathElement(res, POPULATION, AGENTS);
-//                        addPathElement(res, InFixConsumerAgentPopulation.thisName(), POPULATION);
-//                        addPathElement(res, InFileBasedConsumerAgentPopulation.thisName(), POPULATION);
-//                        addPathElement(res, InFileBasedPVactConsumerAgentPopulation.thisName(), POPULATION);
-//
-//        addPathElement(res, NETWORK, ROOT);
-//                addPathElement(res, TOPOLOGY, NETWORK);
-//                        addPathElement(res, InUnlinkedGraphTopology.thisName(), TOPOLOGY);
-//                        addPathElement(res, InCompleteGraphTopology.thisName(), TOPOLOGY);
-//                        addPathElement(res, InFreeNetworkTopology.thisName(), TOPOLOGY);
-//                                addPathElement(res, InNumberOfTies.thisName(), InFreeNetworkTopology.thisName());
-//                addPathElement(res, DIST_FUNC, NETWORK);
-//                        addPathElement(res, InNoDistance.thisName(), DIST_FUNC);
-//                        addPathElement(res, InInverse.thisName(), DIST_FUNC);
-//
-//        addPathElement(res, PRODUCTS, ROOT);
-//                addPathElement(res, PRODUCTS_GROUP, PRODUCTS);
-//                        addPathElement(res, InBasicProductGroup.thisName(), PRODUCTS_GROUP);
-//                addPathElement(res, PRODUCTS_ATTR, PRODUCTS);
-//                        addPathElement(res, InBasicProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-//                        addPathElement(res, InNameSplitProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-//                addPathElement(res, InFixProduct.thisName(), PRODUCTS);
-//                addPathElement(res, InFixProductAttribute.thisName(), PRODUCTS);
-//                addPathElement(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
-//                        addPathElement(res, InFixProductFindingScheme.thisName(), PRODUCTS_FINDING_SCHEME);
-//
-//        addPathElement(res, PROCESS_MODEL, ROOT);
-//                addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
-//                        addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
-//                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
-//                        addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
-//                        addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
-//                        addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
-//
-//        addPathElement(res, SPATIAL, ROOT);
-//                addPathElement(res, SPATIAL_MODEL, SPATIAL);
-//                        addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
-//                addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
-//                        addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
-//                                //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
-//                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-//                                        addPathElement(res, InFileBasedSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedPVactMilieuSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedPVactMilieuZipSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//
-//        addPathElement(res, TIME, ROOT);
-//                addPathElement(res, InDiscreteTimeModel.thisName(), TIME);
-//                addPathElement(res, InUnitStepDiscreteTimeModel.thisName(), TIME);
-//
-//        res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
-//                .setEdnPriority(counter.getAndInc(ROOT));
-//
-//                addPathElement(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
-//
-//        addPathElement(res, SUBMODULE, ROOT);
-//                addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
-//
-//        addPathElement(res, DEV, ROOT);
-//                addPathElement(res, TEST, DEV);
-//                        addPathElement(res, InTestData.thisName(), TEST);
     }
     public static void applyRes(TreeAnnotationResource res) {
         InRootUI.applyRes(res);
-        //TODO remove
-//        res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
-//        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
     }
 }

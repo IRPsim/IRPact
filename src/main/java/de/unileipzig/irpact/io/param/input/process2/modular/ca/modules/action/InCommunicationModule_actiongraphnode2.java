@@ -50,7 +50,7 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_ACTION_COMMU);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU);
         setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
         addEntryWithDefault(res, thisClass(), "adopterPoints", asValue(RAModelData.DEFAULT_ADOPTER_POINTS));
@@ -229,7 +229,7 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
 
     @FieldDefinition
     public InUncertaintySupplier[] uncertaintySuppliers;
-    public void setUncertainty(InUncertaintySupplier uncertainty) {
+    public void setUncertaintySupplier(InUncertaintySupplier uncertainty) {
         this.uncertaintySuppliers = new InUncertaintySupplier[]{uncertainty};
     }
     public void setUncertaintySuppliers(InUncertaintySupplier[] uncertaintySuppliers) {

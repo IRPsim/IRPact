@@ -33,7 +33,7 @@ public class InPVactIndividualGlobalModerateExtremistUncertaintySupplier impleme
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_PVACTIMEU);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_UNCERT_PVACTIMEU);
 
         addEntry(res, thisClass(), "extremistParameter");
         addEntry(res, thisClass(), "extremistUncertainty");

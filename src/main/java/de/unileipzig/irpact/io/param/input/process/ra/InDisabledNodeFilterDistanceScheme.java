@@ -34,7 +34,7 @@ public class InDisabledNodeFilterDistanceScheme implements InNodeDistanceFilterS
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_DISABLED);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_DISTANCE_DISABLED);
         addEntry(res, thisClass(), "placeholder");
     }
 

@@ -49,7 +49,7 @@ public class InReevaluatorModule_reevalgraphnode2 implements InConsumerAgentReev
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_REEVAL_MODULE);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL);
         setShapeColorFillBorder(res, thisClass(), REEVAL_SHAPE, REEVAL_COLOR, REEVAL_FILL, REEVAL_BORDER);
 
         addEntry(res, thisClass(), "input_graphedge2");

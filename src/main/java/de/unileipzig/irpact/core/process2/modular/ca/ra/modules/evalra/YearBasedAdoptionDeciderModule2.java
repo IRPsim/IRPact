@@ -21,7 +21,7 @@ public class YearBasedAdoptionDeciderModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(YearBasedAdoptionDeciderModule2.class);
 
-    protected boolean enabled = false;
+    protected boolean enabled = true;
     protected double base = 1.0;
     protected double factor = 1.0;
 
@@ -91,6 +91,7 @@ public class YearBasedAdoptionDeciderModule2
                 trace("[{}]@[{}] threshold == {}: (auto) IMPEDED", input.getAgentName(), getName(), threshold);
                 return RAStage2.IMPEDED;
             }
+
             if(threshold >= 1.0) {
                 trace("[{}]@[{}] threshold == {}: (auto) ADOPTED", input.getAgentName(), getName(), threshold);
                 return RAStage2.ADOPTED;

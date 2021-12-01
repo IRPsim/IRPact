@@ -48,9 +48,10 @@ public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEva
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_MODULES_EVALRA_PHASELOGGER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
+        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "input_graphedge2");
     }
 
@@ -68,6 +69,15 @@ public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEva
     @Override
     public String getBaseName() {
         return getName();
+    }
+
+    @FieldDefinition
+    public boolean enabled = true;
+    public boolean isEnabled() {
+        return enabled;
+    }
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @FieldDefinition(
@@ -113,6 +123,7 @@ public class InPhaseLoggingModule_evalragraphnode2 implements InConsumerAgentEva
 
         PhaseLoggingModule2 module = new PhaseLoggingModule2();
         module.setName(getName());
+        module.setEnabled(isEnabled());
         module.setSubmodule(parser.parseEntityTo(getInput()));
 
         return module;

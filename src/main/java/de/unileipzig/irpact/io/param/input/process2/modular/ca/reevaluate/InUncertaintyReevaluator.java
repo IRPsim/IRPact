@@ -3,13 +3,12 @@ package de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
-import de.unileipzig.irpact.core.process2.modular.reevaluate.MultiReevaluator;
+import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
+import de.unileipzig.irpact.core.process2.modular.reevaluate.UncertaintyReevaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InConsumerAgentReevaluationModule2;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -25,7 +24,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InReevaluatorModuleLinker implements InReevaluator2 {
+public class InUncertaintyReevaluator implements InReevaluator2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -38,9 +37,10 @@ public class InReevaluatorModuleLinker implements InReevaluator2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_LINKER);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_UNCERT);
 
-        addEntry(res, thisClass(), "modules");
+        addEntryWithDefault(res, thisClass(), "priorty", asValue(InitializationHandler.NORM_PRIORITY));
+        addEntry(res, thisClass(), "uncertaintySuppliers");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
@@ -55,41 +55,49 @@ public class InReevaluatorModuleLinker implements InReevaluator2 {
     }
 
     @FieldDefinition
-    public InConsumerAgentReevaluationModule2[] modules;
-    public InConsumerAgentReevaluationModule2[] getModules() throws ParsingException {
-        return ParamUtil.getNonEmptyArray(modules, "modules");
+    public int priorty = InitializationHandler.NORM_PRIORITY;
+    public int getPriorty() {
+        return priorty;
     }
-    public void setModules(InConsumerAgentReevaluationModule2... modules) {
-        this.modules = modules;
+    public void setPriorty(int priorty) {
+        this.priorty = priorty;
     }
 
-    public InReevaluatorModuleLinker() {
+    @FieldDefinition
+    public InUncertaintySupplier[] uncertaintySuppliers;
+    public void setUncertaintySuppliers(InUncertaintySupplier... uncertaintySuppliers) {
+        this.uncertaintySuppliers = uncertaintySuppliers;
+    }
+    public InUncertaintySupplier[] getUncertaintySuppliers() throws ParsingException {
+        return getNonEmptyArray(uncertaintySuppliers, "uncertaintySuppliers");
     }
 
     @Override
-    public InReevaluatorModuleLinker copy(CopyCache cache) {
+    public InUncertaintyReevaluator copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InReevaluatorModuleLinker newCopy(CopyCache cache) {
-        InReevaluatorModuleLinker copy = new InReevaluatorModuleLinker();
+    public InUncertaintyReevaluator newCopy(CopyCache cache) {
+        InUncertaintyReevaluator copy = new InUncertaintyReevaluator();
         return Dev.throwException();
     }
 
     @Override
-    public MultiReevaluator<ConsumerAgentData2> parse(IRPactInputParser parser) throws ParsingException {
+    public UncertaintyReevaluator<?> parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse {} '{}'", thisName(), getName());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse {} '{}", thisName(), getName());
 
-        MultiReevaluator<ConsumerAgentData2> wrapper = new MultiReevaluator<>();
-        wrapper.setName(getName());
-        for(InConsumerAgentReevaluationModule2 module: getModules()) {
-            wrapper.addReevaluator(parser.parseEntityTo(module));
+        UncertaintyReevaluator<?> reeval = new UncertaintyReevaluator<>();
+        reeval.setName(getName());
+        reeval.setPriority(getPriorty());
+
+        for(InUncertaintySupplier supplier: getUncertaintySuppliers()) {
+            reeval.addSupplier(parser.parseEntityTo(supplier));
         }
 
-        return wrapper;
+        return reeval;
     }
 }

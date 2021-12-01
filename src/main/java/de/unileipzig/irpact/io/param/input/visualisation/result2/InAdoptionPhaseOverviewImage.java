@@ -51,7 +51,10 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public static InAdoptionPhaseOverviewImage DEFAULT = new InAdoptionPhaseOverviewImage(IRPact.IMAGE_PHASE_OVERVIEW);
+    public static InAdoptionPhaseOverviewImage createDefault() {
+        return new InAdoptionPhaseOverviewImage(IRPact.IMAGE_PHASE_OVERVIEW);
+    }
+    public static InAdoptionPhaseOverviewImage DEFAULT = createDefault();
 
     public String _name;
 
