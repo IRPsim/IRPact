@@ -99,7 +99,6 @@ public final class IOConstants {
     public static final String TEST = "test_data";
     public static final String DEPRECATED = "deprecated";
 
-
     public static final String EDN_LABEL = "edn_label";
     public static final String EDN_DESCRIPTION = "edn_description";
     public static final String EDN_DELTA = "edn_delta";
@@ -110,6 +109,19 @@ public final class IOConstants {
     public static final String GAMS_UNIT = "gams_unit";
     public static final String GAMS_DOMAIN = "gams_domain";
     public static final String GAMS_DEFAULT = "gams_default";
+
+    public static final String GRAPH_LABEL = "graph_label";
+    public static final String GRAPH_DESCRIPTION = "graph_description";
+    public static final String GRAPH_COLORHEADING = "graph_colorheading";
+    public static final String GRAPH_BORDERHEADING = "graph_borderheading";
+    public static final String GRAPH_SHAPEHEADING = "graph_shapeheading";
+    public static final String GRAPH_ICONHEADING = "graph_iconheading";
+
+    public static final String GRAPHNODE_COLORLABEL = "graphnode_colorlabel";
+    public static final String GRAPHNODE_BORDERLABEL = "graphnode_borderlabel";
+    public static final String GRAPHNODE_SHAPELABEL = "graphnode_shapelabel";
+
+    public static final String GRAPHEDGE_LABEL = "graphedge_label";
 
     private IOConstants() {
     }

@@ -1,13 +1,13 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate;
+package de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate.ConstructionRenovationUpdater;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate.AnnualInterestLogger;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -23,7 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
-public class InConstructionRenovationUpdater implements InReevaluator2 {
+public class InAnnualInterestLogger implements InReevaluator2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -36,7 +36,7 @@ public class InConstructionRenovationUpdater implements InReevaluator2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_CONSTRENO);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_INTEREST);
 
         addEntry(res, thisClass(), "placeholder");
     }
@@ -56,24 +56,24 @@ public class InConstructionRenovationUpdater implements InReevaluator2 {
     public double placeholder = 0;
 
     @Override
-    public InConstructionRenovationUpdater copy(CopyCache cache) {
+    public InAnnualInterestLogger copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InConstructionRenovationUpdater newCopy(CopyCache cache) {
-        InConstructionRenovationUpdater copy = new InConstructionRenovationUpdater();
+    public InAnnualInterestLogger newCopy(CopyCache cache) {
+        InAnnualInterestLogger copy = new InAnnualInterestLogger();
         return Dev.throwException();
     }
 
     @Override
-    public ConstructionRenovationUpdater parse(IRPactInputParser parser) throws ParsingException {
+    public AnnualInterestLogger parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse {} '{}", thisName(), getName());
 
-        ConstructionRenovationUpdater wrapper = new ConstructionRenovationUpdater();
+        AnnualInterestLogger wrapper = new AnnualInterestLogger();
         wrapper.setName(getName());
 
         return wrapper;

@@ -2,6 +2,7 @@ package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
@@ -66,6 +67,29 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         setValidString(getString(key, GAMS_DEFAULT), builder::setGamsDefault);
     }
 
+    protected void setGraphString(TreeAnnotationResource.EntryBuilder builder, String key) {
+        setValidString(getString(key, GRAPH_LABEL), value -> builder.setCustom(Constants.GRAPH_LABEL, value));
+        setValidString(getString(key, GRAPH_DESCRIPTION), value -> builder.setCustom(Constants.GRAPH_DESCRIPTION, value));
+        setValidString(getString(key, GRAPH_COLORHEADING), value -> builder.setCustom(Constants.GRAPH_COLOR_HEADING, value));
+        setValidString(getString(key, GRAPH_BORDERHEADING), value -> builder.setCustom(Constants.GRAPH_BORDER_HEADING, value));
+        setValidString(getString(key, GRAPH_SHAPEHEADING), value -> builder.setCustom(Constants.GRAPH_SHAPE_HEADING, value));
+        setValidString(getString(key, GRAPH_ICONHEADING), value -> builder.setCustom(Constants.GRAPH_ICON_HEADING, value));
+    }
+
+    protected void setGraphNodeString(TreeAnnotationResource.EntryBuilder builder, String key) {
+        setValidString(getString(key, GRAPHNODE_COLORLABEL), value -> builder.setCustom(Constants.GRAPHNODE_COLOR_LABEL, value));
+        setValidString(getString(key, GRAPHNODE_SHAPELABEL), value -> builder.setCustom(Constants.GRAPHNODE_SHAPE_LABEL, value));
+        setValidString(getString(key, GRAPHNODE_BORDERLABEL), value -> builder.setCustom(Constants.GRAPHNODE_BORDER_LABEL, value));
+    }
+
+    protected void setGraphEdgeString(TreeAnnotationResource.EntryBuilder builder, String key0, String key1) {
+        setGraphEdgeString(builder, key0 + keyDelimiter + key1);
+    }
+
+    protected void setGraphEdgeString(TreeAnnotationResource.EntryBuilder builder, String key) {
+        setValidString(getString(key, GRAPHEDGE_LABEL), value -> builder.setCustom(Constants.GRAPHEDGE_LABEL, value));
+    }
+
     protected void setEdnStrings(TreeAnnotationResource.PathElementBuilder builder, String key) {
         setValidString(getString(key, EDN_LABEL), builder::setEdnLabel);
         setValidString(getString(key, EDN_DESCRIPTION), builder::setEdnDescription);
@@ -111,6 +135,8 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         if(entry == null) {
             TreeAnnotationResource.EntryBuilder builder = newEntryBuilder();
             setGamsStrings(builder, c.getSimpleName());
+            setGraphString(builder, c.getSimpleName()); //graph is class only
+            setGraphNodeString(builder, c.getSimpleName()); //node is class only
             builder.store(c);
             return builder;
         } else {
@@ -124,6 +150,7 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         if(entry == null) {
             TreeAnnotationResource.EntryBuilder builder = newEntryBuilder();
             setGamsStrings(builder, c.getSimpleName(), field);
+            setGraphEdgeString(builder, c.getSimpleName(), field); //edge is field only
             builder.store(c, field);
             return builder;
         } else {

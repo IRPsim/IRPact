@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.handler;
+package de.unileipzig.irpact.io.param.input.process2.modular.components.init;
 
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

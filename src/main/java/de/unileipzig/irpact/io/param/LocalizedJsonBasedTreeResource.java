@@ -1,11 +1,10 @@
 package de.unileipzig.irpact.io.param;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.JsonUtil;
-import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +13,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 /**
  * @author Daniel Abitz
@@ -21,8 +21,17 @@ import java.util.Locale;
 public abstract class LocalizedJsonBasedTreeResource extends LocalizedTreeResource {
 
     protected ObjectNode root;
+    private boolean escapeQuotes = true;
 
     public LocalizedJsonBasedTreeResource() {
+    }
+
+    public void setEscapeQuotes(boolean escapeQuotes) {
+        this.escapeQuotes = escapeQuotes;
+    }
+
+    public boolean isEscapeQuotes() {
+        return escapeQuotes;
     }
 
     protected abstract String getFileNameBase();
@@ -30,6 +39,35 @@ public abstract class LocalizedJsonBasedTreeResource extends LocalizedTreeResour
     protected abstract String getFileExtension();
 
     protected abstract ObjectMapper getMapper();
+
+    @Override
+    protected String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException {
+        JsonNode keyNode = root.get(key);
+        if(keyNode == null) {
+            throw new NoSuchElementException(key);
+        }
+        if(!keyNode.isObject()) {
+            throw new IllegalArgumentException("no object: " + key);
+        }
+        JsonNode paramNode = keyNode.get(tag);
+        if(paramNode == null) {
+            return null;
+        } else {
+            if(paramNode.isTextual()) {
+                return formatJson(paramNode.textValue());
+            } else {
+                throw new IllegalArgumentException("no text: " + key + " -> " + tag);
+            }
+        }
+    }
+
+    protected String formatJson(String input) {
+        String formatted = input;
+        if(escapeQuotes) {
+            formatted = formatted.replace("\"", "\\\"");
+        }
+        return formatted;
+    }
 
     public void load(ResourceLoader loader, Locale locale) throws IOException {
         InputStream in = loader.getLocalized(getFileNameBase(), locale, getFileExtension());

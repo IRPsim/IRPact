@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.reevaluate;
+package de.unileipzig.irpact.io.param.input.process2.modular.components.reeval;
 
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;

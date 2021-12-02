@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.process2.handler;
 
-import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;

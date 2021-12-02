@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca.reevaluate;
+package de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate.ImpededResett
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;

@@ -1,14 +1,15 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.handler;
+package de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
-import de.unileipzig.irpact.core.process2.handler.UncertaintySupplierInitializer;
+import de.unileipzig.irpact.core.process2.modular.reevaluate.UncertaintyReevaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -23,7 +24,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
-public class InUncertaintySupplierInitializer implements InInitializationHandler {
+public class InUncertaintyReevaluator implements InReevaluator2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -36,9 +37,9 @@ public class InUncertaintySupplierInitializer implements InInitializationHandler
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_HANDLER_INIT_UNCERT);
+        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_UNCERT);
 
-        addEntryWithDefault(res, thisClass(), "priority", asValue(InitializationHandler.NORM_PRIORITY));
+        addEntryWithDefault(res, thisClass(), "priorty", asValue(InitializationHandler.NORM_PRIORITY));
         addEntry(res, thisClass(), "uncertaintySuppliers");
     }
 
@@ -54,12 +55,12 @@ public class InUncertaintySupplierInitializer implements InInitializationHandler
     }
 
     @FieldDefinition
-    public int priority = InitializationHandler.NORM_PRIORITY;
-    public int getPriority() {
-        return priority;
+    public int priorty = InitializationHandler.NORM_PRIORITY;
+    public int getPriorty() {
+        return priorty;
     }
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setPriorty(int priorty) {
+        this.priorty = priorty;
     }
 
     @FieldDefinition
@@ -72,31 +73,31 @@ public class InUncertaintySupplierInitializer implements InInitializationHandler
     }
 
     @Override
-    public InUncertaintySupplierInitializer copy(CopyCache cache) {
+    public InUncertaintyReevaluator copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InUncertaintySupplierInitializer newCopy(CopyCache cache) {
-        InUncertaintySupplierInitializer copy = new InUncertaintySupplierInitializer();
+    public InUncertaintyReevaluator newCopy(CopyCache cache) {
+        InUncertaintyReevaluator copy = new InUncertaintyReevaluator();
         return Dev.throwException();
     }
 
     @Override
-    public UncertaintySupplierInitializer parse(IRPactInputParser parser) throws ParsingException {
+    public UncertaintyReevaluator<?> parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse {} '{}", thisName(), getName());
 
-        UncertaintySupplierInitializer initializer = new UncertaintySupplierInitializer();
-        initializer.setName(getName());
-        initializer.setPriority(getPriority());
+        UncertaintyReevaluator<?> reeval = new UncertaintyReevaluator<>();
+        reeval.setName(getName());
+        reeval.setPriority(getPriorty());
 
         for(InUncertaintySupplier supplier: getUncertaintySuppliers()) {
-            initializer.add(parser.parseEntityTo(supplier));
+            reeval.addSupplier(parser.parseEntityTo(supplier));
         }
 
-        return initializer;
+        return reeval;
     }
 }

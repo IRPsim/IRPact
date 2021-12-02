@@ -9,8 +9,8 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
  */
 public class LocalizedYamlBasedTreeResource extends LocalizedJsonBasedTreeResource {
 
-    private static final String FILE_NAME = "loc";
-    private static final String FILE_EXTENSION = "yaml";
+    public static final String FILE_NAME = "loc";
+    public static final String FILE_EXTENSION = "yaml";
 
     protected ObjectNode root;
 

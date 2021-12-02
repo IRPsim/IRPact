@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.io.param.input.process2.modular.ca;
+package de.unileipzig.irpact.io.param.input.process2.modular.models.ca;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -10,8 +10,8 @@ import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.handler.InInitializationHandler;
-import de.unileipzig.irpact.io.param.input.process2.modular.reevaluate.InReevaluator2;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
