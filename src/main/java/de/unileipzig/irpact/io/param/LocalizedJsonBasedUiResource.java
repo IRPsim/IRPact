@@ -18,12 +18,12 @@ import java.util.NoSuchElementException;
 /**
  * @author Daniel Abitz
  */
-public abstract class LocalizedJsonBasedTreeResource extends LocalizedTreeResource {
+public abstract class LocalizedJsonBasedUiResource extends LocalizedUiResource {
 
     protected ObjectNode root;
     private boolean escapeQuotes = true;
 
-    public LocalizedJsonBasedTreeResource() {
+    public LocalizedJsonBasedUiResource() {
     }
 
     public void setEscapeQuotes(boolean escapeQuotes) {

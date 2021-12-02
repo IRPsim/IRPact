@@ -3,9 +3,11 @@ package de.unileipzig.irpact.io.param.input.visualisation.result;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -20,6 +22,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InROutputImage implements InOutputImage {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,10 +33,12 @@ public class InROutputImage implements InOutputImage {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_R);
+        putClassPath(res, thisClass(), TreeViewStructure.SETT_VISURESULT_R);
         addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntriesWithDefaultAndDomain(res, thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
@@ -50,7 +55,8 @@ public class InROutputImage implements InOutputImage {
         setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
     public boolean annualZip = true;
@@ -117,7 +123,7 @@ public class InROutputImage implements InOutputImage {
 
     public InROutputImage newCopy(CopyCache cache) {
         InROutputImage copy = new InROutputImage();
-        copy._name = _name;
+        copy.name = name;
         copy.annualZip = annualZip;
         copy.annualZipWithReal = annualZipWithReal;
         copy.annualZipWithRealTotal = annualZipWithRealTotal;
@@ -142,12 +148,12 @@ public class InROutputImage implements InOutputImage {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override

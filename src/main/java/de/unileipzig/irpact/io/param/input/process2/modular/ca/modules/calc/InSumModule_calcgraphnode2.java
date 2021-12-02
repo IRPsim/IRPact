@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.process2.modular.modules.calc.SumModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
@@ -48,7 +48,7 @@ public class InSumModule_calcgraphnode2 implements InConsumerAgentCalculationMod
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM);
         setShapeColorFillBorder(res, thisClass(), CALC_SHAPE, CALC_COLOR, CALC_FILL, CALC_BORDER);
 
         addEntry(res, thisClass(), "input_graphedge2");

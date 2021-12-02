@@ -11,8 +11,9 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.develop.ToRemove;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -30,6 +31,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InDefaultHandleDecisionMakingComponent implements InEvaluableComponent {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -40,10 +42,12 @@ public class InDefaultHandleDecisionMakingComponent implements InEvaluableCompon
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MRA_COMPONENTS_DEFDEC);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MRA_COMPONENTS_DEFDEC);
 
         addEntry(res, thisClass(), "a");
         addEntry(res, thisClass(), "b");

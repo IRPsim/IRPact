@@ -2,7 +2,7 @@ package de.unileipzig.irpact.io.param.input.visualisation.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -48,7 +48,7 @@ public class InGraphvizGeneral implements Copyable {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISUNETWORK_GENERAL);
+        putClassPath(res, thisClass(), TreeViewStructure.SETT_VISUNETWORK_GENERAL);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeEndImage", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "storeDotFile", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageWidth", VALUE_1000, DOMAIN_GEQ0);

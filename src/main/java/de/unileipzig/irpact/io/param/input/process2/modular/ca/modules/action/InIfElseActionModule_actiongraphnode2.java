@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.process2.modular.modules.action.IfElseActionMod
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -50,7 +50,7 @@ public class InIfElseActionModule_actiongraphnode2 implements InConsumerAgentAct
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE);
         setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
 
         addEntry(res, thisClass(), "test_graphedge2");

@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.product.handler.WeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -39,7 +39,7 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED);
+        putClassPath(res, thisClass(), TreeViewStructure.PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED);
         addEntryWithDefaultAndDomain(res, thisClass(), "scale", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "fixError", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntry(res, thisClass(), "file");

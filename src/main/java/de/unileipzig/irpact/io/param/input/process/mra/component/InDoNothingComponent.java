@@ -5,7 +5,8 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.mra.component.general.DoNothingComponent;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -20,6 +21,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InDoNothingComponent implements InEvaluableComponent {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,10 +32,12 @@ public class InDoNothingComponent implements InEvaluableComponent {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MRA_COMPONENTS_NOTHING);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MRA_COMPONENTS_NOTHING);
 
         addEntry(res, thisClass(), "placeholder");
 

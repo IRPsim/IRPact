@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.BasicCAModularProcessModel2
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
@@ -41,7 +41,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR4_BASE);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR4_BASE);
 
         addEntry(res, thisClass(), "startModule");
         addEntry(res, thisClass(), "initializationHandlers");

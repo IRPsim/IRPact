@@ -83,18 +83,18 @@ public class InGeneral implements Copyable {
         setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
 
         //logging
-        putFieldPathAndAddEntry(res, thisClass(), "levelOff", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelTrace", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelDebug", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelInfo", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelWarn", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelError", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelAll", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAll", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", InRootUI.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelOff", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelTrace", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelDebug", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelInfo", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelWarn", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelError", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "levelAll", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAll", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", TreeViewStructure.SETT_GENERAL_LOG);
+        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", TreeViewStructure.SETT_GENERAL_LOG);
 
         setDomain(res, thisClass(), logLevelFieldNames, DOMAIN_BOOLEAN);
         setDomain(res, thisClass(), "logAll", DOMAIN_BOOLEAN);
@@ -114,29 +114,29 @@ public class InGeneral implements Copyable {
         setRules(res, thisClass(), logLevelFieldNames, logLevelBuilder);
 
         //special
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runOptActDemo", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runPVAct", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printStacktraceImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", InRootUI.SETT_SPECIAL, VALUE_0, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "outerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runOptActDemo", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runPVAct", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runMode", TreeViewStructure.SETT_SPECIAL, VALUE_NEG_ONE, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "scenarioMode", TreeViewStructure.SETT_SPECIAL, VALUE_NEG_ONE, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "copyLogIfPossible", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "passErrorMessageToOutput", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printStacktraceImage", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", TreeViewStructure.SETT_SPECIAL, VALUE_0, null);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "outerParallelism", TreeViewStructure.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", TreeViewStructure.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
 
         //data
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPerformance", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPhaseOverview", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", InRootUI.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialComponent", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logResultAdoptionsAll", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPerformance", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPhaseOverview", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", TreeViewStructure.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialComponent", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);

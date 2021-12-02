@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.modules.calc.input.NaNModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.GraphNode;
@@ -46,7 +46,7 @@ public class InNaNModule_inputgraphnode2 implements InConsumerAgentInputModule2 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN);
         setShapeColorFillBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_COLOR, INPUT_BORDER);
 
         addEntryWithDefault(res, thisClass(), "placeholder", VALUE_0);

@@ -13,7 +13,6 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 
@@ -36,7 +35,7 @@ public class InScenarioVersion implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.INFO_ABOUTSCENARIO);
+        putClassPath(res, thisClass(), TreeViewStructure.INFO_ABOUTSCENARIO);
         addEntry(res, thisClass());
         addEntry(res, thisClass(), "placeholder");
     }

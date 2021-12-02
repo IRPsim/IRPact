@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.evalra.DecisionM
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -49,7 +49,7 @@ public class InDecisionMakingDeciderModule2_evalragraphnode2 implements InConsum
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER);
         setShapeColorFillBorder(res, thisClass(), EVALRA_SHAPE, EVALRA_COLOR, EVALRA_FILL, EVALRA_BORDER);
 
         addEntryWithDefaultAndDomain(res, thisClass(), "forceEvaluation", VALUE_FALSE, DOMAIN_BOOLEAN);

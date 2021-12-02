@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
 import de.unileipzig.irpact.core.process2.handler.UncertaintySupplierInitializer;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -37,7 +37,7 @@ public class InUncertaintySupplierInitializer implements InInitializationHandler
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_HANDLER_INIT_UNCERT);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR3_HANDLER_INIT_UNCERT);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(InitializationHandler.NORM_PRIORITY));
         addEntry(res, thisClass(), "uncertaintySuppliers");

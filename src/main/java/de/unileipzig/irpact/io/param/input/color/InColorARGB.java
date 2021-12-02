@@ -2,8 +2,9 @@ package de.unileipzig.irpact.io.param.input.color;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -11,12 +12,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.awt.*;
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_COLOR_ARGB;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_COLOR_ARGB)
 public class InColorARGB implements InColor {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -27,33 +29,53 @@ public class InColorARGB implements InColor {
         return thisClass().getSimpleName();
     }
 
-
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_COLOR_ARGB);
-        addEntryWithDefault(res, thisClass(), "priority", asValue(5));
-        addEntryWithDefaultAndDomain(res, thisClass(), "alpha", asValue(255), DOMAIN_CLOSED_0_255);
-        addEntryWithDefaultAndDomain(res, thisClass(), "red", VALUE_0, DOMAIN_CLOSED_0_255);
-        addEntryWithDefaultAndDomain(res, thisClass(), "green", VALUE_0, DOMAIN_CLOSED_0_255);
-        addEntryWithDefaultAndDomain(res, thisClass(), "blue", VALUE_0, DOMAIN_CLOSED_0_255);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public int priority = 0;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 5
+    )
+    public int priority = 5;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed0255Domain = true,
+            intDefault = 255
+    )
     public int alpha = 255;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed0255Domain = true,
+            intDefault = 0
+    )
     public int red = 0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed0255Domain = true,
+            intDefault = 0
+    )
     public int green = 0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed0255Domain = true,
+            intDefault = 0
+    )
     public int blue = 0;
 
     public InColorARGB() {
@@ -82,12 +104,12 @@ public class InColorARGB implements InColor {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setPriority(int priority) {

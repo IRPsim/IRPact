@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.handler.AttributeBasedInitialAdoption;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -36,7 +36,7 @@ public class InPVactAttributeBasedInitialAdoption implements InNewProductHandler
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PRODUCTS_INITADOPT_PVACTATTRBASED);
+        putClassPath(res, thisClass(), TreeViewStructure.PRODUCTS_INITADOPT_PVACTATTRBASED);
         addEntry(res, thisClass(), "placeholder");
     }
 

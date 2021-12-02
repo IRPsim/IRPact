@@ -8,7 +8,7 @@ import de.unileipzig.irpact.core.process2.handler.LinearePercentageAgentAttribut
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -39,7 +39,7 @@ public class InLinearePercentageAgentAttributeScaler implements InInitialization
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR3_HANDLER_INIT_LINPERATTR);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(InitializationHandler.NORM_PRIORITY));
         addEntryWithDefault(res, thisClass(), "mValue", VALUE_1);

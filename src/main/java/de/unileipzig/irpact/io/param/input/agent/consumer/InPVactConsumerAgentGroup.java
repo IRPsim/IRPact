@@ -9,14 +9,15 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -24,13 +25,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.core.process.ra.RAConstants.*;
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_GROUP_PVACT;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_GROUP_PVACT)
 public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -41,77 +42,84 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
-        addEntry(res, thisClass(), "noveltySeeking");
-        addEntry(res, thisClass(), "dependentJudgmentMaking");
-        addEntry(res, thisClass(), "environmentalConcern");
-        addEntry(res, thisClass(), "interestThreshold");
-        addEntry(res, thisClass(), "financialThreshold");
-        addEntry(res, thisClass(), "adoptionThreshold");
-        addEntry(res, thisClass(), "communication");
-        addEntry(res, thisClass(), "rewire");
-        addEntry(res, thisClass(), "initialAdopter");
-        addEntry(res, thisClass(), "rateOfConvergence");
-        addEntry(res, thisClass(), "initialProductInterest");
-        addEntry(res, thisClass(), "initialProductAwareness");
-        addEntry(res, thisClass(), "constructionRate");
-        addEntry(res, thisClass(), "renovationRate");
-        addEntry(res, thisClass(), "spatialDistribution");
-
-        setDelta(res, thisClass(), "constructionRate");
-        setDelta(res, thisClass(), "renovationRate");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] noveltySeeking;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] dependentJudgmentMaking;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] environmentalConcern;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] interestThreshold;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] financialThreshold;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] adoptionThreshold;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] communication;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] rewire;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] initialAdopter;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] rateOfConvergence;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] initialProductInterest;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] initialProductAwareness;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] constructionRate;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] renovationRate;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InSpatialDistribution[] spatialDistribution;
 
     public InGeneralConsumerAgentAnnualGroupAttribute[] dummyAnnuals;
@@ -157,7 +165,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     public InPVactConsumerAgentGroup newCopy(CopyCache cache) {
         InPVactConsumerAgentGroup copy = new InPVactConsumerAgentGroup();
-        copy._name = _name;
+        copy.name = name;
         copy.noveltySeeking = cache.copyArray(noveltySeeking);
         copy.dependentJudgmentMaking = cache.copyArray(dependentJudgmentMaking);
         copy.environmentalConcern = cache.copyArray(environmentalConcern);
@@ -179,11 +187,11 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String _name) {
-        this._name = _name;
+        this.name = _name;
     }
 
     public InUnivariateDoubleDistribution getNoveltySeeking() throws ParsingException {

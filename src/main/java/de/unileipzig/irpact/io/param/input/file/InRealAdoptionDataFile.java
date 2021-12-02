@@ -11,8 +11,9 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.data3.XlsxRealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,11 +23,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.FILES_REALADOPTION;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(FILES_REALADOPTION)
 public class InRealAdoptionDataFile implements InFile {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,25 +40,27 @@ public class InRealAdoptionDataFile implements InFile {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.FILES_REALADOPTION);
-        addEntry(res, thisClass(), "placeholder");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InRealAdoptionDataFile.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double placeholder;
 
     public InRealAdoptionDataFile() {
     }
 
     public InRealAdoptionDataFile(String fileNameWithoutExtension) {
-        _name = fileNameWithoutExtension;
+        name = fileNameWithoutExtension;
     }
 
     @Override
@@ -65,18 +70,18 @@ public class InRealAdoptionDataFile implements InFile {
 
     public InRealAdoptionDataFile newCopy(CopyCache cache) {
         InRealAdoptionDataFile copy = new InRealAdoptionDataFile();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     @Override
     public String getFileNameWithoutExtension() {
-        return _name;
+        return name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override

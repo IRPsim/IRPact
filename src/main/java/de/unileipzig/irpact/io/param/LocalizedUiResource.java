@@ -2,27 +2,33 @@ package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
-import java.util.Locale;
-import java.util.NoSuchElementException;
+import java.lang.annotation.*;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static de.unileipzig.irpact.io.param.IOConstants.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class LocalizedTreeResource extends TreeAnnotationResource {
+public abstract class LocalizedUiResource extends TreeAnnotationResource {
 
     protected final MultiCounter COUNTER = new MultiCounter();
     protected String keyDelimiter = "_";
     protected Locale locale;
     protected boolean initalized = false;
 
-    public LocalizedTreeResource() {
+    public LocalizedUiResource() {
     }
 
     public Locale getLocale() {
@@ -162,6 +168,28 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
     //set
     //=========================
 
+    public void setDelta(
+            Class<?> c) {
+        getBuilder(c).setEdnDelta(true);
+    }
+
+    public void setDelta(
+            Class<?> c,
+            String field) {
+        getBuilder(c, field).setEdnDelta(true);
+    }
+
+    public void setHidden(
+            Class<?> c) {
+        getBuilder(c).setGamsHidden(true);
+    }
+
+    public void setHidden(
+            Class<?> c,
+            String field) {
+        getBuilder(c, field).setGamsHidden(true);
+    }
+
     public void setDefault(
             Class<?> c,
             Object[] defaults) {
@@ -176,6 +204,15 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
             Object[] defaults) {
         if(defaults != null && defaults.length > 0) {
             getBuilder(c, field).setGamsDefault(StringUtil.concat(", ", defaults));
+        }
+    }
+
+    public void setDefault(
+            Class<?> c,
+            String field,
+            String defaultValue) {
+        if(defaultValue != null && !defaultValue.isEmpty()) {
+            getBuilder(c, field).setGamsDefault(defaultValue);
         }
     }
 
@@ -219,7 +256,7 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
             Class<?> c,
             String field,
             String domain) {
-        if(domain != null) {
+        if(domain != null && !domain.isEmpty()) {
             getBuilder(c, field).setGamsDomain(domain);
         }
     }
@@ -401,7 +438,7 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         computePathBuilderIfAbsent(dataKey, priorityKey);
     }
 
-    public void putClassPath(Class<?> c, String... keys) {
+    protected void putClassPath(Class<?> c, String... keys) {
         putPath(c, getCachedElements(keys));
     }
 
@@ -409,7 +446,7 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         putClassPath(c, path.toArrayWithoutRoot());
     }
 
-    public void putFieldPath(Class<?> c, String field, String... keys) {
+    protected void putFieldPath(Class<?> c, String field, String... keys) {
         putPath(c, field, getCachedElements(keys));
     }
 
@@ -437,5 +474,227 @@ public abstract class LocalizedTreeResource extends TreeAnnotationResource {
         putFieldPathAndAddEntry(c, field, path);
         setDefault(c, field, defaults);
         setDomain(c, field, domain);
+    }
+
+    //==================================================
+    //meta
+    //==================================================
+
+    protected static boolean isTrueOrFalse(String str) {
+        return Constants.TRUE1.equals(str) || Constants.FALSE0.equals(str);
+    }
+
+    protected static boolean isTrue(String str) {
+        return Constants.TRUE1.equals(str);
+    }
+
+    protected static boolean isTrueOrFalse(int i) {
+        return i == 1 || i == 0;
+    }
+
+    protected static boolean isTrue(int i) {
+        return i == 1;
+    }
+
+    protected static <A extends Annotation> A getAnnotationOrNull(AnnotatedElement e, Class<A> a) {
+        return e.isAnnotationPresent(a)
+                ? e.getAnnotation(a)
+                : null;
+    }
+
+    public <T> void parseAnnotations(
+            Iterable<? extends T> c,
+            Function<? super T, ? extends Class<?>> func) {
+        for(T t: c) {
+            parseAnnotations(func.apply(t));
+        }
+    }
+
+    public void parseAnnotations(Iterable<? extends Class<?>> c) {
+        for(Class<?> clazz: c) {
+            parseAnnotations(clazz);
+        }
+    }
+
+    public void parseAnnotations(Class<?> c) {
+        if(c.isAnnotationPresent(Ignore.class)) {
+            return;
+        }
+
+        parseClass(c);
+        parseFields(c);
+    }
+
+    protected void parseClass(Class<?> c) {
+        PutClassPath pcp = getAnnotationOrNull(c, PutClassPath.class);
+        if(pcp != null) {
+            apply(c, pcp);
+        }
+    }
+
+    protected void parseFields(Class<?> c) {
+        handleAddEntry(c);
+        handleSimpleSet(c);
+    }
+
+    protected void handleAddEntry(Class<?> c) {
+        Field[] fields = c.getDeclaredFields();
+
+        //sort via map
+        Map<Integer, List<Field>> validSortedFields = new TreeMap<>();
+        for(Field f: fields) {
+            AddEntry add = getAnnotationOrNull(f, AddEntry.class);
+            if(add != null) {
+                validSortedFields.computeIfAbsent(add.priority(), _priority -> new ArrayList<>()).add(f);
+            }
+        }
+
+        for(List<Field> fList: validSortedFields.values()) {
+            for(Field f: fList) {
+                AddEntry add = f.getAnnotation(AddEntry.class);
+                apply(c, f, add);
+            }
+        }
+    }
+
+    protected void handleSimpleSet(Class<?> c) {
+        Field[] fields = c.getDeclaredFields();
+
+        for(Field f: fields) {
+            if(f.isAnnotationPresent(SimpleSet.class)) {
+                apply(c, f, f.getAnnotation(SimpleSet.class));
+            }
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Ignore {
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface PutClassPath {
+
+        TreeViewStructureEnum value();
+    }
+
+    protected void apply(Class<?> c, PutClassPath anno) {
+        putClassPath(c, anno.value().getPath());
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface AddEntry {
+
+        TreeViewStructureEnum value() default TreeViewStructureEnum.NULL;
+
+        int priority() default 0;
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface SimpleSet {
+
+        boolean boolDefault() default false; //only works with boolDomain==true
+        long intDefault() default Long.MIN_VALUE; //only works if != MIN_VALUE
+        double decDefault() default Double.NaN; //only works if != NaN
+        String defaultValue() default "";
+        String[] defaultValues() default {};
+        boolean customImageDefault() default false;
+
+        String unit() default "";
+        boolean pixelUnit() default false;
+
+        String domain() default "";
+        boolean boolDomain() default false;
+        boolean g0Domain() default false;
+        boolean geq0Domain() default false;
+        boolean customImageDomain() default false;
+        boolean closed01Domain() default false;
+        boolean closed0255Domain() default false;
+
+        boolean hidden() default false;
+    }
+
+    protected void apply(Class<?> c, Field f, AddEntry add) {
+        String fieldName = f.getName();
+        if(add.value().isNotNull()) {
+            putFieldPath(c, fieldName, add.value().getPath());
+        }
+        addEntry(c, fieldName);
+    }
+
+    protected void apply(Class<?> c, Field f, SimpleSet set) {
+        String fieldName = f.getName();
+        addEntry(c, fieldName);
+
+        //defaults
+        setDefault(c, fieldName, set.defaultValue());
+        setDefault(c, fieldName, set.defaultValues());
+        if(set.intDefault() != Long.MIN_VALUE) {
+            setDefault(c, fieldName, Long.toString(set.intDefault()));
+        }
+        if(!Double.isNaN(set.decDefault())) {
+            setDefault(c, fieldName, Double.toString(set.decDefault()));
+        }
+        if(set.boolDomain()) {
+            setDefault(c, fieldName, set.boolDefault() ? TRUE1 : FALSE0);
+        }
+        if(set.customImageDefault()) {
+            setDefault(c, fieldName, Long.toString(IRPact.INVALID_CUSTOM_IMAGE));
+        }
+
+        //unit
+        setUnit(c, fieldName, set.unit());
+        if(set.pixelUnit()) {
+            setUnit(c, fieldName, UNIT_PIXEL);
+        }
+
+        //domain
+        setDomain(c, fieldName, set.domain());
+        if(set.boolDomain()) {
+            setDomain(c, fieldName, DOMAIN_BOOLEAN);
+        }
+        if(set.g0Domain()) {
+            setDefault(c, fieldName, DOMAIN_G0);
+        }
+        if(set.geq0Domain()) {
+            setDefault(c, fieldName, DOMAIN_GEQ0);
+        }
+        if(set.customImageDomain()) {
+            setDomain(c, fieldName, DOMAIN_CUSTOM_IMAGE);
+        }
+        if(set.closed01Domain()) {
+            setDefault(c, fieldName, DOMAIN_CLOSED_0_1);
+        }
+        if(set.closed0255Domain()) {
+            setDefault(c, fieldName, DOMAIN_CLOSED_0_255);
+        }
+
+        //hidden
+        if(set.hidden()) {
+            setHidden(c, fieldName);
+        }
     }
 }

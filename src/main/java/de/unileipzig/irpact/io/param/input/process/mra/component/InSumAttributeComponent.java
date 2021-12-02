@@ -5,7 +5,8 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.mra.component.general.SumAttributeComponent;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -21,6 +22,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InSumAttributeComponent implements InValueComponent {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,10 +33,12 @@ public class InSumAttributeComponent implements InValueComponent {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MRA_COMPONENTS_SUMATTR);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MRA_COMPONENTS_SUMATTR);
 
         addEntry(res, thisClass(), "weight");
         addEntry(res, thisClass(), "attributeNames");

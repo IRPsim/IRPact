@@ -1135,10 +1135,20 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    public static void initRes(TreeAnnotationResource res) {
-        InRootUI.initRes(res);
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
+        for(TreeViewStructureEnum structure: TreeViewStructureEnum.getAllPaths()) {
+            if(structure.isNotRoot()) {
+                res.addPathElement(structure.getPath());
+            }
+        }
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        InRootUI.applyRes(res);
+
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        //optact rest
+        res.getCachedElement("OPTACT").setParent(res.getCachedElement(TreeViewStructure.SUBMODULE.getLast()));
+        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+        res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
     }
 }

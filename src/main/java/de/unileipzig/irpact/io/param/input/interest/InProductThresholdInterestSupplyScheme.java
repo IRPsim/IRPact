@@ -7,11 +7,13 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.ProductGroup;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,14 +21,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_INTEREST_THRESHOLD;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_INTEREST_THRESHOLD)
 public class InProductThresholdInterestSupplyScheme implements InProductInterestSupplyScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,19 +38,21 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_INTEREST, thisName());
-        addEntry(res, thisClass(), "entries");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InProductGroupThresholdEntry[] entries;
+    @LocalizedUiResource.AddEntry
+    public InProductGroupThresholdEntry[] entries = new InProductGroupThresholdEntry[0];
 
     public InProductThresholdInterestSupplyScheme() {
     }
@@ -61,18 +64,18 @@ public class InProductThresholdInterestSupplyScheme implements InProductInterest
 
     public InProductThresholdInterestSupplyScheme newCopy(CopyCache cache) {
         InProductThresholdInterestSupplyScheme copy = new InProductThresholdInterestSupplyScheme();
-        copy._name = _name;
+        copy.name = name;
         copy.entries = cache.copyArray(entries);
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setEntries(InProductGroupThresholdEntry[] entries) {

@@ -7,14 +7,14 @@ import de.unileipzig.irpact.commons.util.JsonUtil;
 /**
  * @author Daniel Abitz
  */
-public class LocalizedYamlBasedTreeResource extends LocalizedJsonBasedTreeResource {
+public class LocalizedYamlBasedUiResource extends LocalizedJsonBasedUiResource {
 
     public static final String FILE_NAME = "loc";
     public static final String FILE_EXTENSION = "yaml";
 
     protected ObjectNode root;
 
-    public LocalizedYamlBasedTreeResource() {
+    public LocalizedYamlBasedUiResource() {
     }
 
     @Override

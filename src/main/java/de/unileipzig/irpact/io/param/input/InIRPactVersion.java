@@ -7,7 +7,6 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
 
 /**
@@ -27,7 +26,7 @@ public class InIRPactVersion implements InIRPactEntity {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.INFO_ABOUTIRPACT);
+        putClassPath(res, thisClass(), TreeViewStructure.INFO_ABOUTIRPACT);
         addEntry(res, thisClass(), "placeholder");
     }
 

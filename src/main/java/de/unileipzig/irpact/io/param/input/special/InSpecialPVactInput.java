@@ -2,14 +2,17 @@ package de.unileipzig.irpact.io.param.input.special;
 
 import de.unileipzig.irpact.commons.distribution.DiracUnivariateDoubleDistribution;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.agent.consumer.attribute.*;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentAnnualGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAnnualGroupAttribute;
+import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -21,7 +24,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SPECIALINPUT_PVACT_CONSTRATE;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SPECIALINPUT_PVACT_RENORATE;
 
 /**
  * @author Daniel Abitz
@@ -39,44 +43,22 @@ public class InSpecialPVactInput implements Copyable {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        applyConstructionRates(res);
-        applyRenovationRates(res);
     }
 
     //=========================
     //construction rates
     //=========================
 
-    private static final String[] CONST_FIELDS = {
-            "const2008",
-            "const2009",
-            "const2010",
-            "const2011",
-            "const2012",
-            "const2013",
-            "const2014",
-            "const2015",
-            "const2016",
-            "const2017",
-            "const2018",
-            "const2019",
-            "const2020"
-    };
-
-    private static void applyConstructionRates(TreeAnnotationResource res) {
-        putFieldPathAndAddEntry(res, thisClass(), "useConstRates", InRootUI.SPECIALINPUT_PVACT_CONSTRATE);
-        putFieldPathAndAddEntries(res, thisClass(), CONST_FIELDS, InRootUI.SPECIALINPUT_PVACT_CONSTRATE);
-
-        setDefault(res, thisClass(), "useConstRates", VALUE_FALSE);
-        setDefault(res, thisClass(), CONST_FIELDS, VALUE_0);
-
-        setDomain(res, thisClass(), "useConstRates", DOMAIN_BOOLEAN);
-    }
-
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useConstRates = false;
     public void setUseConstructionRates(boolean useConstRates) {
         this.useConstRates = useConstRates;
@@ -86,30 +68,82 @@ public class InSpecialPVactInput implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2008 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2009 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2010 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2011 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2012 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2013 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2014 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2015 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2016 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2017 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2018 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2019 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double const2020 = 0.0;
 
     public void setConstructionRates(Map<? extends Number, ? extends Number> data) {
@@ -168,33 +202,11 @@ public class InSpecialPVactInput implements Copyable {
     //reno
     //=========================
 
-    private static final String[] RENO_FIELDS = {
-            "reno2008",
-            "reno2009",
-            "reno2010",
-            "reno2011",
-            "reno2012",
-            "reno2013",
-            "reno2014",
-            "reno2015",
-            "reno2016",
-            "reno2017",
-            "reno2018",
-            "reno2019",
-            "reno2020"
-    };
-
-    private static void applyRenovationRates(TreeAnnotationResource res) {
-        putFieldPathAndAddEntry(res, thisClass(), "useRenoRates", InRootUI.SPECIALINPUT_PVACT_RENORATE);
-        putFieldPathAndAddEntries(res, thisClass(), RENO_FIELDS, InRootUI.SPECIALINPUT_PVACT_RENORATE);
-
-        setDefault(res, thisClass(), "useRenoRates", VALUE_FALSE);
-        setDefault(res, thisClass(), RENO_FIELDS, VALUE_0);
-
-        setDomain(res, thisClass(), "useRenoRates", DOMAIN_BOOLEAN);
-    }
-
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useRenoRates = false;
     public void setUseRenovationRates(boolean useRenoRates) {
         this.useRenoRates = useRenoRates;
@@ -204,30 +216,82 @@ public class InSpecialPVactInput implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2008 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2009 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2010 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2011 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2012 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2013 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2014 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2015 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2016 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2017 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2018 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2019 = 0.0;
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double reno2020 = 0.0;
 
     public void setRenovationRates(Map<? extends Number, ? extends Number> data) {

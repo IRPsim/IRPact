@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate.LinearePercen
 import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -37,7 +37,7 @@ public class InLinearePercentageAgentAttributeUpdater implements InReevaluator2 
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_LINPERUPDATER);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR3_REEVAL_LINPERUPDATER);
 
         addEntryWithDefault(res, thisClass(), "priority", asValue(Reevaluator.NORM_PRIORITY));
         addEntry(res, thisClass(), "scaler");

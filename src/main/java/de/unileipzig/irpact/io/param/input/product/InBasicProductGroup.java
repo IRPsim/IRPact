@@ -6,9 +6,11 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,11 +21,13 @@ import java.lang.invoke.MethodHandles;
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_GROUP_BASIC;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_GROUP_BASIC)
 public class InBasicProductGroup implements InProductGroup {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -34,25 +38,29 @@ public class InBasicProductGroup implements InProductGroup {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
         putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_GROUP, thisName());
         addEntry(res, thisClass(), "pgAttributes");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InDependentProductGroupAttribute[] pgAttributes;
+    @LocalizedUiResource.AddEntry
+    public InDependentProductGroupAttribute[] pgAttributes = new InDependentProductGroupAttribute[0];
 
     public InBasicProductGroup() {
     }
 
     public InBasicProductGroup(String name, InDependentProductGroupAttribute[] attributes) {
-        this._name = name;
+        this.name = name;
         this.pgAttributes = attributes;
     }
 
@@ -63,13 +71,13 @@ public class InBasicProductGroup implements InProductGroup {
 
     public InBasicProductGroup newCopy(CopyCache cache) {
         InBasicProductGroup copy = new InBasicProductGroup();
-        copy._name = _name;
+        copy.name = name;
         copy.pgAttributes = cache.copyArray(pgAttributes);
         return copy;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public InDependentProductGroupAttribute[] getAttributes() throws ParsingException {

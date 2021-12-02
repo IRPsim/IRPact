@@ -1,25 +1,26 @@
 package de.unileipzig.irpact.io.param.input.interest;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.product.InProductGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_INTEREST_THRESHOLD_ENTRY;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_INTEREST_THRESHOLD_ENTRY)
 public class InProductGroupThresholdEntry implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,21 +31,23 @@ public class InProductGroupThresholdEntry implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_INTEREST, InProductThresholdInterestSupplyScheme.thisName(), thisName());
-        addEntry(res, thisClass(), "interestDistribution");
-        addEntry(res, thisClass(), "productGroups");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] interestDistribution;
+    @LocalizedUiResource.AddEntry
+    public InUnivariateDoubleDistribution[] interestDistribution = new InUnivariateDoubleDistribution[0];
 
     @FieldDefinition
-    public InProductGroup[] productGroups;
+    @LocalizedUiResource.AddEntry
+    public InProductGroup[] productGroups = new InProductGroup[0];
 
     public InProductGroupThresholdEntry() {
     }
@@ -56,7 +59,7 @@ public class InProductGroupThresholdEntry implements InIRPactEntity {
 
     public InProductGroupThresholdEntry newCopy(CopyCache cache) {
         InProductGroupThresholdEntry copy = new InProductGroupThresholdEntry();
-        copy._name = _name;
+        copy.name = name;
         copy.interestDistribution = cache.copyArray(interestDistribution);
         copy.productGroups = cache.copyArray(productGroups);
         return copy;
@@ -64,11 +67,11 @@ public class InProductGroupThresholdEntry implements InIRPactEntity {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public InUnivariateDoubleDistribution getDistribution() throws ParsingException {

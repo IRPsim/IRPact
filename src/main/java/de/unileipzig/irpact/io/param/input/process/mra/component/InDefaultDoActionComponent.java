@@ -7,7 +7,8 @@ import de.unileipzig.irpact.core.process.mra.component.special.DefaultDoActionCo
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
@@ -22,6 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InDefaultDoActionComponent implements InEvaluableComponent {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -32,10 +34,12 @@ public class InDefaultDoActionComponent implements InEvaluableComponent {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MRA_COMPONENTS_DEFACTION);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MRA_COMPONENTS_DEFACTION);
 
         addEntry(res, thisClass(), "adopterPoints");
         addEntry(res, thisClass(), "interestedPoints");

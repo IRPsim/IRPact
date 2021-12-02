@@ -12,6 +12,7 @@ import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
+import de.unileipzig.irpact.develop.ToRemove;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
@@ -20,6 +21,7 @@ import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -28,13 +30,14 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.IOConstants.PROCESS_MODEL;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructure.PROCESS_RA;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InRAProcessModel implements InProcessModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -45,10 +48,12 @@ public class InRAProcessModel implements InProcessModel {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PROCESS_MODEL, thisName());
+        putClassPath(res, thisClass(), PROCESS_RA);
 
         addEntry(res, thisClass(), "skipAwareness");
         addEntry(res, thisClass(), "skipFeasibility");
@@ -126,7 +131,8 @@ public class InRAProcessModel implements InProcessModel {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
     public boolean skipAwareness = false;
@@ -267,11 +273,11 @@ public class InRAProcessModel implements InProcessModel {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setDefaultValues() {

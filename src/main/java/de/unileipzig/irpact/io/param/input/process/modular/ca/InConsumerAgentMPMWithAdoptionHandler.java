@@ -10,8 +10,9 @@ import de.unileipzig.irpact.core.process.modular.ca.model.ConsumerAgentMPMWithAd
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.develop.ToRemove;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -29,6 +30,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentModularProcessModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -39,10 +41,12 @@ public class InConsumerAgentMPMWithAdoptionHandler implements InConsumerAgentMod
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR2_MODEL_SIMPLE);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR2_MODEL_SIMPLE);
 
         addEntry(res, thisClass(), "startModule");
     }

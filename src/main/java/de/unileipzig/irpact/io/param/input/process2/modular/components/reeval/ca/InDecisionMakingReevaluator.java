@@ -7,7 +7,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.reevaluate.DecisionMakin
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
@@ -38,7 +38,7 @@ public class InDecisionMakingReevaluator implements InReevaluator2 {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MODULAR3_REEVAL_DEC);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR3_REEVAL_DEC);
 
         addEntry(res, thisClass(), "modules");
     }

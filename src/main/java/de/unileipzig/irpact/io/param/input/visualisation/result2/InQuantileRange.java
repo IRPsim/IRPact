@@ -1,21 +1,23 @@
 package de.unileipzig.irpact.io.param.input.visualisation.result2;
 
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
-import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE)
 public class InQuantileRange implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -26,12 +28,11 @@ public class InQuantileRange implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_CUSTOMAVGQUANTIL_RANGE);
-        addEntryWithDefaultAndDomain(res, thisClass(), "lowerBound", VALUE_0, DOMAIN_CLOSED_0_1);
-        addEntryWithDefaultAndDomain(res, thisClass(), "upperBound", VALUE_1, DOMAIN_CLOSED_0_1);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     public static final InQuantileRange QUANTILE_0_10 = new InQuantileRange("DEFAULT_QUANTILE_0_10", 0, 0.1);
@@ -41,12 +42,23 @@ public class InQuantileRange implements InIRPactEntity {
     public static final InQuantileRange QUANTILE_75_90 = new InQuantileRange("DEFAULT_QUANTILE_75_90", 0.75, 0.9);
     public static final InQuantileRange QUANTILE_90_100 = new InQuantileRange("DEFAULT_QUANTILE_90_100", 0.9, 1);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed01Domain = true,
+            intDefault = 0
+    )
     public double lowerBound = 0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed01Domain = true,
+            intDefault = 1
+    )
     public double upperBound = 1;
 
     public InQuantileRange() {
@@ -68,12 +80,12 @@ public class InQuantileRange implements InIRPactEntity {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setLowerBound(double lowerBound) {

@@ -6,12 +6,16 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentAnnu
 import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoubleGroupAttribute;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
+import de.unileipzig.irptools.defstructure.annotation.EdnParameter;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,12 +23,12 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_ATTR_SPLITANNUAL;
 
 /**
  * @author Daniel Abitz
  */
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_ATTR_SPLITANNUAL)
 public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndependentConsumerAgentGroupAttribute {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -35,20 +39,27 @@ public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndepende
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
-        addEntry(res, thisClass(), "distribution");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        res.addEntry(thisClass(), "distribution");
 
-        setDelta(res, thisClass(), "distribution");
+        res.setDelta(thisClass(), "distribution");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            edn = @EdnParameter(
+                    delta = Constants.TRUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] distribution;
 
     private int customYear;
@@ -81,7 +92,7 @@ public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndepende
 
     public InNameSplitConsumerAgentAnnualGroupAttribute newCopy(CopyCache cache) {
         InNameSplitConsumerAgentAnnualGroupAttribute copy = new InNameSplitConsumerAgentAnnualGroupAttribute();
-        copy._name = _name;
+        copy.name = name;
         copy.distribution = cache.copyArray(distribution);
         copy.customYear = customYear;
         copy.hasCustomYear = hasCustomYear;
@@ -108,11 +119,11 @@ public class InNameSplitConsumerAgentAnnualGroupAttribute implements InIndepende
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override

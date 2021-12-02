@@ -3,10 +3,12 @@ package de.unileipzig.irpact.io.param.input.visualisation.result;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,6 +24,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InGenericOutputImage implements InOutputImage {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -39,10 +42,12 @@ public class InGenericOutputImage implements InOutputImage {
             .withFalseValue(Constants.FALSE0)
             .withKeys(engineFieldNames);
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_GENERIC);
+        putClassPath(res, thisClass(), TreeViewStructure.SETT_VISURESULT_GENERIC);
         addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
         addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
@@ -115,7 +120,8 @@ public class InGenericOutputImage implements InOutputImage {
     //...
     //=========================
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
     public boolean useGnuplot = true;
@@ -186,7 +192,7 @@ public class InGenericOutputImage implements InOutputImage {
 
     public InGenericOutputImage newCopy(CopyCache cache) {
         InGenericOutputImage copy = new InGenericOutputImage();
-        copy._name = _name;
+        copy.name = name;
         copy.useGnuplot = useGnuplot;
         copy.useR = useR;
         copy.annualZip = annualZip;
@@ -214,12 +220,12 @@ public class InGenericOutputImage implements InOutputImage {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setEngine(SupportedEngine engine) {

@@ -11,7 +11,7 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.mra.component.InEvaluableComponent;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
@@ -42,7 +42,7 @@ public class InModularRAProcessModel implements InProcessModel {
     public static void initRes(TreeAnnotationResource res) {
     }
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_MRA);
+        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MRA);
 
         addEntry(res, thisClass(), "speedOfConvergence");
         addEntry(res, thisClass(), "attitudeGap");

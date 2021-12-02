@@ -71,6 +71,7 @@ public final class ParamUtil {
     public static final String DOMAIN_CLOSED_0_255 = "[0,255]";
     public static final String DOMAIN_GEQ0 = "[0,)";
     public static final String DOMAIN_G0 = "(0,)";
+    public static final String DOMAIN_CUSTOM_IMAGE = "[0," + IRPact.CUSTOM_IMAGE_SECTION_SIZE + "]";
 
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
@@ -83,6 +84,14 @@ public final class ParamUtil {
     public static final Object[] VALUE_0_25 = {"0.25"};
     public static final Object[] VALUE_0_5 = {"0.5"};
     public static final Object[] VALUE_0_1 = {"0.1"};
+
+    public static final String TRUE1 = "1";
+    public static final String FALSE0 = "0";
+
+    public static final String VALUE1 = "1";
+    public static final String VALUENEG1 = "-1";
+    public static final String VALUE0 = "0";
+
 
     private ParamUtil() {
     }

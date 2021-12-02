@@ -6,10 +6,12 @@ import de.unileipzig.irpact.core.product.BasicProduct;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,14 +20,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_FIX;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_FIX)
 public class InFixProduct implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -36,29 +39,31 @@ public class InFixProduct implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PRODUCTS_FIX);
-        addEntry(res, thisClass(), "refPG");
-        addEntry(res, thisClass(), "fixPAttrs");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InProductGroup[] refPG;
+    @LocalizedUiResource.AddEntry
+    public InProductGroup[] refPG = new InProductGroup[0];
 
     @FieldDefinition
-    public InFixProductAttribute[] fixPAttrs;
+    @LocalizedUiResource.AddEntry
+    public InFixProductAttribute[] fixPAttrs = new InFixProductAttribute[0];
 
     public InFixProduct() {
     }
 
     public InFixProduct(String name, InProductGroup grp, InFixProductAttribute[] attrs) {
-        this._name = name;
+        this.name = name;
         setProductGroup(grp);
         this.fixPAttrs = attrs;
     }
@@ -70,7 +75,7 @@ public class InFixProduct implements InIRPactEntity {
 
     public InFixProduct newCopy(CopyCache cache) {
         InFixProduct copy = new InFixProduct();
-        copy._name = _name;
+        copy.name = name;
         copy.refPG = cache.copyArray(refPG);
         copy.fixPAttrs = cache.copyArray(fixPAttrs);
         return copy;
@@ -78,11 +83,11 @@ public class InFixProduct implements InIRPactEntity {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setProductGroup(InProductGroup refPG) {
