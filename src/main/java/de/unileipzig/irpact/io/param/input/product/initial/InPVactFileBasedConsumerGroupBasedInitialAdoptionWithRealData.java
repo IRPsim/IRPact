@@ -10,9 +10,10 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.product.handler.ConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -20,12 +21,14 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.getInstance;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_INITADOPT_PVACTFILECAGBASED;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_INITADOPT_PVACTFILECAGBASED)
 public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData implements InNewProductHandler {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -36,18 +39,20 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData imple
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.PRODUCTS_INITADOPT_PVACTFILECAGBASED);
-        addEntry(res, thisClass(), "file");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
 
     public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData() {
@@ -60,17 +65,17 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData imple
 
     public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData newCopy(CopyCache cache) {
         InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData copy = new InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData();
-        copy._name = _name;
+        copy.name = name;
         copy.file = cache.copyArray(file);
         return copy;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setFile(InRealAdoptionDataFile file) {

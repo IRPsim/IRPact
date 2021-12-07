@@ -12,8 +12,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InIndependentProductGroupAttribute extends InProductGroupAttribute {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

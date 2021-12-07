@@ -8,35 +8,50 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NPVMo
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
+import de.unileipzig.irpact.io.param.input.process2.modular.util.CAMPMGraphSettings;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.Subsets;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
-        graphNode = @GraphNode(
-                id = MODULAR_GRAPH,
-                label = INPUT_LABEL,
-                shape = INPUT_SHAPE,
-                color = INPUT_COLOR,
-                border = INPUT_BORDER,
-                tags = {INPUT_GRAPHNODE}
+//        graphNode = @GraphNode(
+//                id = MODULAR_GRAPH,
+//                label = INPUT_LABEL,
+//                shape = INPUT_SHAPE,
+//                color = INPUT_COLOR,
+//                border = INPUT_BORDER,
+//                tags = {INPUT_GRAPHNODE}
+//        )
+        graphNode3 = @GraphNode(
+                graphId = CAMPMGraphSettings.GRAPH_ID,
+                subsetsColor = @Subsets(
+                        value = CAMPMGraphSettings.INPUT_COLOR
+                ),
+                subsetsBorder = @Subsets(
+                        value = CAMPMGraphSettings.INPUT_BORDER
+                ),
+                subsetsShape = @Subsets(
+                        value = CAMPMGraphSettings.INPUT_SHAPE
+                )
         )
 )
-public class InNPVModule_inputgraphnode2 implements InConsumerAgentInputModule2 {
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV)
+public class InNPVModule3 implements InConsumerAgentInputModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -46,27 +61,28 @@ public class InNPVModule_inputgraphnode2 implements InConsumerAgentInputModule2 
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV);
-        setShapeColorFillBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_COLOR, INPUT_BORDER);
-
-        addEntry(res, thisClass(), "pvFile");
+//        setShapeColorFillBorder(res, thisClass(), INPUT_SHAPE, INPUT_COLOR, INPUT_COLOR, INPUT_BORDER);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InPVFile[] pvFile;
     public boolean hasPvFile() {
         return pvFile != null && pvFile.length > 0;
@@ -78,25 +94,25 @@ public class InNPVModule_inputgraphnode2 implements InConsumerAgentInputModule2 
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public InNPVModule_inputgraphnode2() {
+    public InNPVModule3() {
     }
 
-    public InNPVModule_inputgraphnode2(String name) {
+    public InNPVModule3(String name) {
         setName(name);
     }
 
-    public InNPVModule_inputgraphnode2(String name, InPVFile pvFile) {
+    public InNPVModule3(String name, InPVFile pvFile) {
         setName(name);
         setPvFile(pvFile);
     }
 
     @Override
-    public InNPVModule_inputgraphnode2 copy(CopyCache cache) {
+    public InNPVModule3 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InNPVModule_inputgraphnode2 newCopy(CopyCache cache) {
-        InNPVModule_inputgraphnode2 copy = new InNPVModule_inputgraphnode2();
+    public InNPVModule3 newCopy(CopyCache cache) {
+        InNPVModule3 copy = new InNPVModule3();
         return Dev.throwException();
     }
 

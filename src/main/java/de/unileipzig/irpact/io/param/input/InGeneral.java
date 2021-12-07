@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irptools.Constants;
@@ -59,9 +60,11 @@ public class InGeneral implements Copyable {
             .withFalseValue(Constants.FALSE0)
             .withKeys(logLevelFieldNames);
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
         //general
         putClassPath(res, thisClass(), GENERAL_SETTINGS);
 

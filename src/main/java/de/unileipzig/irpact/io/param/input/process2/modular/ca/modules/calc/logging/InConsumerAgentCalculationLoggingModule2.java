@@ -13,8 +13,10 @@ import java.time.ZonedDateTime;
 @Definition
 public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgentCalculationModule2 {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels.util;
 
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InMulScalarModule_calcgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InMulScalarModule3;
 
 /**
  * @author Daniel Abitz
@@ -30,16 +30,16 @@ public class PVactModularProcessModelManager extends ModularProcessModelManager 
         this.npvWeightName = npvWeightName;
     }
 
-    public InMulScalarModule_calcgraphnode2 getNpvWeightModule() {
-        return findModule(nonNull(npvWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getNpvWeightModule() {
+        return findModule(nonNull(npvWeightName), InMulScalarModule3.class);
     }
 
     public void setPpWeightName(String ppWeightName) {
         this.ppWeightName = ppWeightName;
     }
 
-    public InMulScalarModule_calcgraphnode2 getPpWeightModule() {
-        return findModule(nonNull(ppWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getPpWeightModule() {
+        return findModule(nonNull(ppWeightName), InMulScalarModule3.class);
     }
 
     public void setNovWeightName(String novWeightName) {
@@ -50,35 +50,35 @@ public class PVactModularProcessModelManager extends ModularProcessModelManager 
         this.commuName = commuName;
     }
 
-    public InCommunicationModule_actiongraphnode2 getCommunicationModule() {
-        return findModule(nonNull(commuName), InCommunicationModule_actiongraphnode2.class);
+    public InCommunicationModule3 getCommunicationModule() {
+        return findModule(nonNull(commuName), InCommunicationModule3.class);
     }
 
-    public InMulScalarModule_calcgraphnode2 getNovWeightModule() {
-        return findModule(nonNull(novWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getNovWeightModule() {
+        return findModule(nonNull(novWeightName), InMulScalarModule3.class);
     }
 
     public void setEnvWeightName(String envWeightName) {
         this.envWeightName = envWeightName;
     }
 
-    public InMulScalarModule_calcgraphnode2 getEnvWeightModule() {
-        return findModule(nonNull(envWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getEnvWeightModule() {
+        return findModule(nonNull(envWeightName), InMulScalarModule3.class);
     }
 
     public void setLocalWeightName(String localWeightName) {
         this.localWeightName = localWeightName;
     }
 
-    public InMulScalarModule_calcgraphnode2 getLocalWeightModule() {
-        return findModule(nonNull(localWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getLocalWeightModule() {
+        return findModule(nonNull(localWeightName), InMulScalarModule3.class);
     }
 
     public void setSocialWeightName(String socialWeightName) {
         this.socialWeightName = socialWeightName;
     }
 
-    public InMulScalarModule_calcgraphnode2 getSocialWeightModule() {
-        return findModule(nonNull(socialWeightName), InMulScalarModule_calcgraphnode2.class);
+    public InMulScalarModule3 getSocialWeightModule() {
+        return findModule(nonNull(socialWeightName), InMulScalarModule3.class);
     }
 }

@@ -9,11 +9,13 @@ import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,14 +24,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SPATIAL_DIST_FILE_FILEPOS_PVMILIEU;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SPATIAL_DIST_FILE_FILEPOS_PVMILIEU)
 public class InFileBasedPVactMilieuSupplier implements InSpatialDistributionWithCollection {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -40,19 +41,21 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistributionWith
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());
-        addEntry(res, thisClass(), "attrFile");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InSpatialTableFile[] file;
+    @LocalizedUiResource.AddEntry
+    public InSpatialTableFile[] file = new InSpatialTableFile[0];
 
     public InFileBasedPVactMilieuSupplier() {
     }
@@ -64,18 +67,18 @@ public class InFileBasedPVactMilieuSupplier implements InSpatialDistributionWith
 
     public InFileBasedPVactMilieuSupplier newCopy(CopyCache cache) {
         InFileBasedPVactMilieuSupplier copy = new InFileBasedPVactMilieuSupplier();
-        copy._name = _name;
+        copy.name = name;
         copy.file = cache.copyArray(file);
         return copy;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setFile(InSpatialTableFile file) {

@@ -2379,6 +2379,74 @@ InWeightedModule_calcgraphnode_input_graphedge:
   gams_description: "todo"
 
 ##########################
+# graph anchor&aliases for copy&paste:
+##########################
+
+_ANCHORS:
+  # modules
+  ACTION_MODULE_LABEL: &ACTION_MODULE_LABEL "Aktionsmodule"
+  BOOL_MODULE_LABEL: &BOOL_MODULE_LABEL "Entscheidungsmodule"
+  CALC_MODULE_LABEL: &CALC_MODULE_LABEL "Berechnungsmodule"
+  INPUT_MODULE_LABEL: &INPUT_MODULE_LABEL "Eingabemodule"
+  LOGGING_MODULE_LABEL: &LOGGING_MODULE_LABEL "Loggingmodule"
+  SYSTEM_MODULE_LABEL: &SYSTEM_MODULE_LABEL "Systemmodule"
+  PVACT_MODULE_LABEL: &PVACT_MODULE_LABEL "PVact-Module"
+  REEVAL_MODULE_LABEL: &REEVAL_MODULE_LABEL "Reevaluierungsmodule"
+  # edges
+  ACTION_EDGE_LABEL: &ACTION_EDGE_LABEL "Aktionskante"
+  BOOL_EDGE_LABEL: &BOOL_EDGE_LABEL "Entscheidungskante"
+  CALC_EDGE_LABEL: &CALC_EDGE_LABEL "Berechnungskante"
+  SYSTEM_EDGE_LABEL: &SYSTEM_EDGE_LABEL "Systemkante"
+  PVACT_EDGE_LABEL: &PVACT_EDGE_LABEL "PVact-Kante"
+  REEVAL_EDGE_LABEL: &REEVAL_EDGE_LABEL "Systemkante"
+
+_ACTION_HELPER:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+  graphedge_label: *ACTION_EDGE_LABEL
+
+_BOOL_HELPER:
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+  graphedge_label: *BOOL_EDGE_LABEL
+
+_CALC_HELPER:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+  graphedge_label: *CALC_EDGE_LABEL
+
+_INPUT_HELPER:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+
+_LOGGING_HELPER:
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+
+_SYSTEM_HELPER:
+  graphnode_colorlabel: *SYSTEM_MODULE_LABEL
+  graphnode_borderlabel: *SYSTEM_MODULE_LABEL
+  graphnode_shapelabel: *SYSTEM_MODULE_LABEL
+  graphedge_label: *SYSTEM_EDGE_LABEL
+
+_PVACT_HELPER:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+  graphedge_label: *PVACT_EDGE_LABEL
+
+_REEVAL_HELPER:
+  graphnode_colorlabel: *REEVAL_MODULE_LABEL
+  graphnode_borderlabel: *REEVAL_MODULE_LABEL
+  graphnode_shapelabel: *REEVAL_MODULE_LABEL
+  graphedge_label: *REEVAL_EDGE_LABEL
+
+##########################
 # process model v4
 ##########################
 
@@ -2461,6 +2529,15 @@ process_model4_pvactmodules_pvlogging:
 ##########################
 # process model v3
 ##########################
+
+InModularProcessModel2:
+  graph_label: "GRAPH-TEST-LABEL"
+  graph_description: "GRAPH-TEST-DESC"
+  graph_edgeheading: "GRAPH-TEST-EH"
+  graph_colorheading: "GRAPH-TEST-CH"
+  graph_borderheading: "GRAPH-TEST-BH"
+  graph_shapeheading: "GRAPH-TEST-SH"
+  graph_iconheading: "GRAPH-TEST-IH"
 
 process_model2:
   edn_label: "Prozessmodell"
@@ -2621,93 +2698,101 @@ process_modular3_PV_modules_action:
   edn_label: "Aktionsmodule"
   edn_description: "todo"
 
-InCommunicationModule_actiongraphnode2:
+InCommunicationModule3:
   edn_label: "Kommunikationsmodul"
   edn_description: "todo"
-InCommunicationModule_actiongraphnode2_adopterPoints:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InCommunicationModule3_adopterPoints:
   gams_identifier: "Adopter points"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_interestedPoints:
+InCommunicationModule3_interestedPoints:
   gams_identifier: "Interested points"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_awarePoints:
+InCommunicationModule3_awarePoints:
   gams_identifier: "Aware points"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_unknownPoints:
+InCommunicationModule3_unknownPoints:
   gams_identifier: "Unknown üpoints"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_raEnabled:
+InCommunicationModule3_raEnabled:
   gams_identifier: "Relative agreement nutzen?"
   gams_description: "Diese Option aktiviert bzw. deaktiviert das relative agreement."
-InCommunicationModule_actiongraphnode2_raLoggingEnabled:
+InCommunicationModule3_raLoggingEnabled:
   gams_identifier: "Relative agreement loggen?"
   gams_description: "Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!"
-InCommunicationModule_actiongraphnode2_raPrintHeader:
+InCommunicationModule3_raPrintHeader:
   gams_identifier: "Kopfzeile schreiben?"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_raOpinionLogging:
+InCommunicationModule3_raOpinionLogging:
   gams_identifier: "Meinung loggen?"
   gams_description: "Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt."
-InCommunicationModule_actiongraphnode2_raUnceraintyLogging:
+InCommunicationModule3_raUnceraintyLogging:
   gams_identifier: "Unsicherheit loggen?"
   gams_description: "Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt."
-InCommunicationModule_actiongraphnode2_raKeepCsv:
+InCommunicationModule3_raKeepCsv:
   gams_identifier: "Als csv speichern?"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_raStoreXlsx:
+InCommunicationModule3_raStoreXlsx:
   gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_speedOfConvergence:
+InCommunicationModule3_speedOfConvergence:
   gams_identifier: "Speed of convergence"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_attitudeGap:
+InCommunicationModule3_attitudeGap:
   gams_identifier: "Attitude gap"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_chanceNeutral:
+InCommunicationModule3_chanceNeutral:
   gams_identifier: "Wahrscheinllichkeit: Neutral"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_chanceConvergence:
+InCommunicationModule3_chanceConvergence:
   gams_identifier: "Wahrscheinllichkeit: Konvergenz"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_chanceDivergence:
+InCommunicationModule3_chanceDivergence:
   gams_identifier: "Wahrscheinllichkeit: Divergenz"
   gams_description: "todo"
-InCommunicationModule_actiongraphnode2_uncertaintySuppliers:
+InCommunicationModule3_uncertaintySuppliers:
   gams_identifier: "Unsicherheiten"
   gams_description: "todo"
 
-InIfElseActionModule_actiongraphnode2:
+InIfElseActionModule3:
   edn_label: "IfElseActionModule"
   edn_description: "todo"
-InIfElseActionModule_actiongraphnode2_test_graphedge2:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InIfElseActionModule3_testModule:
   gams_identifier: "test"
   gams_description: "todo"
-InIfElseActionModule_actiongraphnode2_onTrue_graphedge2:
+  graphedge_label: *BOOL_EDGE_LABEL
+InIfElseActionModule3_onTrueModule:
   gams_identifier: "onTrue"
   gams_description: "todo"
-InIfElseActionModule_actiongraphnode2_onFalse_graphedge2:
+  graphedge_label: *ACTION_EDGE_LABEL
+InIfElseActionModule3_onFalseModule:
   gams_identifier: "onFalse"
   gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
 
-InNOP_actiongraphnode2:
+InNOPModule3:
   edn_label: "NOP"
   edn_description: "todo"
-InNOP_actiongraphnode2_placeholder:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InNOPModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
-InRewireModule_actiongraphnode2:
+InRewireModule3:
   edn_label: "Rewiremodul"
   edn_description: "todo"
-InRewireModule_actiongraphnode2_placeholder:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InRewireModule3_placeholder:
   gams_identifier: "---"
-  gams_description: "todo"
-
-InStopAfterSuccessfulTaskModule_actiongraphnode2:
-  edn_label: "StopAfterSuccessfulTaskModule"
-  edn_description: "todo"
-InStopAfterSuccessfulTaskModule_actiongraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodule"
   gams_description: "todo"
 
 # boolean
@@ -2715,362 +2800,407 @@ process_modular3_PV_modules_bool:
   edn_label: "Entscheidungsmodule"
   edn_description: "todo"
 
-InBernoulliModule_boolgraphnode2:
+InBernoulliModule3:
   edn_label: "BernoulliModule"
   edn_description: "todo"
-InBernoulliModule_boolgraphnode2_priority:
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+InBernoulliModule3_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
-InBernoulliModule_boolgraphnode2_input_graphedge2:
+InBernoulliModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InIfDoActionModule_boolgraphnode2:
-  edn_label: "IfDoActionModule"
-  edn_description: "todo"
-InIfDoActionModule_boolgraphnode2_priority:
-  gams_identifier: "Priorität"
-  gams_description: "todo"
-InIfDoActionModule_boolgraphnode2_ifInput_graphedge2:
-  gams_identifier: "IfModule"
-  gams_description: "todo"
-InIfDoActionModule_boolgraphnode2_taskInput_graphedge2:
-  gams_identifier: "TaskModule"
-  gams_description: "todo"
-
-InThresholdReachedModule_boolgraphnode2:
+InThresholdReachedModule3:
   edn_label: "ThresholdReachedModule"
   edn_description: "todo"
-InThresholdReachedModule_boolgraphnode2_priority:
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+InThresholdReachedModule3_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
-InThresholdReachedModule_boolgraphnode2_draw_graphedge2:
+InThresholdReachedModule3_drawModule:
   gams_identifier: "Vergleichswertmodul"
   gams_description: "todo"
-InThresholdReachedModule_boolgraphnode2_threshold_graphedge2:
+  graphedge_label: *CALC_EDGE_LABEL
+InThresholdReachedModule3_thresholdModule:
   gams_identifier: "Grenzwertmodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
 # double
 process_modular3_PV_modules_calc:
   edn_label: "Berechnungsmodule"
   edn_description: "todo"
 
-InAddScalarModule_calcgraphnode2:
+InAddScalarModule3:
   edn_label: "AddScalarModule"
   edn_description: "todo"
-InAddScalarModule_calcgraphnode2_scalar:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InAddScalarModule3_scalar:
   gams_identifier: "scalar"
   gams_description: "todo"
-InAddScalarModule_calcgraphnode2_input_graphedge2:
+InAddScalarModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InLogisticModule_calcgraphnode2:
+InLogisticModule3:
   edn_label: "LogisticModule"
   edn_description: "L\\/(1+e^(-k*(x-x0)))"
-InLogisticModule_calcgraphnode2_valueL:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InLogisticModule3_valueL:
   gams_identifier: "L"
   gams_description: "todo"
-InLogisticModule_calcgraphnode2_valueK:
+InLogisticModule3_valueK:
   gams_identifier: "k"
   gams_description: "todo"
-InLogisticModule_calcgraphnode2_xinput_graphedge2:
+InLogisticModule3_xinputModule:
   gams_identifier: "x Modul"
   gams_description: "todo"
-InLogisticModule_calcgraphnode2_x0input_graphedge2:
+  graphedge_label: *CALC_EDGE_LABEL
+InLogisticModule3_x0inputModule:
   gams_identifier: "x0 Modul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InMulScalarModule_calcgraphnode2:
+InMulScalarModule3:
   edn_label: "MulScalarModule"
   edn_description: "todo"
-InMulScalarModule_calcgraphnode2_scalar:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InMulScalarModule3_scalar:
   gams_identifier: "scalar"
   gams_description: "todo"
-InMulScalarModule_calcgraphnode2_input_graphedge2:
+InMulScalarModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InProductModule_calcgraphnode2:
+InProductModule3:
   edn_label: "ProductModule"
   edn_description: "todo"
-InProductModule_calcgraphnode2_input_graphedge2:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InProductModule3_inputModule:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InSumModule_calcgraphnode2:
+InSumModule3:
   edn_label: "SumModule"
   edn_description: "todo"
-InSumModule_calcgraphnode2_input_graphedge2:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InSumModule3_inputModule:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
 # double - input
 process_modular3_PV_modules_input:
   edn_label: "Eingabemodule"
   edn_description: "todo"
 
-InAttributeInputModule_inputgraphnode2:
+InAttributeInputModule3:
   edn_label: "Attributmodul"
   edn_description: "todo"
-InAttributeInputModule_inputgraphnode2_attribute:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAttributeInputModule3_attribute:
   gams_identifier: "attribute"
   gams_description: "todo"
 
-InAvgFinModule_inputgraphnode2:
+InAvgFinModule3:
   edn_label: "AvgFinModule"
   edn_description: "todo"
-InAvgFinModule_inputgraphnode2_placeholder:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAvgFinModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
-InGlobalAvgNPVModule_inputgraphnode2:
+InGlobalAvgNPVModule3:
   edn_label: "GlobalAvgNPVModule"
   edn_description: "todo"
-InGlobalAvgNPVModule_inputgraphnode2_pvFile:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalAvgNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
-InLocalShareOfAdopterModule_inputgraphnode2:
+InLocalShareOfAdopterModule3:
   edn_label: "LocalShareOfAdopterModule"
   edn_description: "todo"
-InLocalShareOfAdopterModule_inputgraphnode2_maxToStore:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InLocalShareOfAdopterModule3_maxToStore:
   gams_identifier: "maxToStore"
   gams_description: "todo"
-InLocalShareOfAdopterModule_inputgraphnode2_nodeFilterScheme:
+InLocalShareOfAdopterModule3_nodeFilterScheme:
   gams_identifier: "nodeFilterScheme"
   gams_description: "todo"
 
-InNaNModule_inputgraphnode2:
+InNaNModule3:
   edn_label: "NaNModule"
   edn_description: "Gibt NaN (not a number) zurück."
-InNaNModule_inputgraphnode2_placeholder:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNaNModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
-InNPVModule_inputgraphnode2:
+InNPVModule3:
   edn_label: "NPVModule"
   edn_description: "todo"
-InNPVModule_inputgraphnode2_pvFile:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
-InSocialShareOfAdopterModule_inputgraphnode2:
+InSocialShareOfAdopterModule3:
   edn_label: "SocialShareOfAdopterModule"
   edn_description: "todo"
-InSocialShareOfAdopterModule_inputgraphnode2_placeholder:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InSocialShareOfAdopterModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
-InValueModule_inputgraphnode2:
+InValueModule3:
   edn_label: "ValueModule"
   edn_description: "todo"
-InValueModule_inputgraphnode2_value:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InValueModule3_value:
   gams_identifier: "Rückgabewert"
   gams_description: "todo"
 
 #double logging
-InCsvValueLoggingModule_calcloggraphnode2:
+InCsvValueLoggingModule3:
   edn_label: "MinimalCsvValueLoggingModule"
   edn_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_enabled:
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+InCsvValueLoggingModule3_enabled:
   gams_identifier: "Modul verwenden?"
   gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall:
+InCsvValueLoggingModule3_logReevaluatorCall:
   gams_identifier: "Reevaluierungsaufrufe loggen?"
   gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_logDefaultCall:
+InCsvValueLoggingModule3_logDefaultCall:
   gams_identifier: "Normale Aufrufe loggen?"
   gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_printHeader:
+InCsvValueLoggingModule3_printHeader:
   gams_identifier: "Kopfzeile schreiben?"
   gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_storeXlsx:
+InCsvValueLoggingModule3_storeXlsx:
   gams_identifier: "Als xlsx speichern?"
   gams_description: "todo"
-InCsvValueLoggingModule_calcloggraphnode2_input_graphedge2:
+InCsvValueLoggingModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
 # plan
 process_modular3_PV_modules_eval:
   edn_label: "Planauswertungsmodule"
   edn_description: "todo"
 
-InRunUntilFailureModule_evalgraphnode2:
+InRunUntilFailureModule3:
   edn_label: "RunUntilFailureModule"
   edn_description: "todo"
-InRunUntilFailureModule_evalgraphnode2_input_graphedge2:
+  graphnode_colorlabel: *SYSTEM_MODULE_LABEL
+  graphnode_borderlabel: *SYSTEM_MODULE_LABEL
+  graphnode_shapelabel: *SYSTEM_MODULE_LABEL
+InRunUntilFailureModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
-
-InDoNothingAndContinueModule_evalgraphnode2:
-  edn_label: "DoNothingAndContinueModule"
-  edn_description: "todo"
-InDoNothingAndContinueModule_evalgraphnode2_placeholder:
-  gams_identifier: "---"
-  gams_description: "todo"
+  graphedge_label: *SYSTEM_EDGE_LABEL
 
 # stage
 process_modular3_PV_modules_evalra:
   edn_label: "PVact-Auswertungsmodule"
   edn_description: "todo"
 
-InDecisionMakingDeciderModule2_evalragraphnode2:
+InDecisionMakingDeciderModule3:
   edn_label: "DecisionMakingDeciderModule"
   edn_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_forceEvaluation:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InDecisionMakingDeciderModule3_forceEvaluation:
   gams_identifier: "forceEvaluation"
   gams_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_finCheck_graphedge2:
+InDecisionMakingDeciderModule3_finCheckModule:
   gams_identifier: "Finanz-Testmodul"
   gams_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_threshold_graphedge2:
+  graphedge_label: *BOOL_EDGE_LABEL
+InDecisionMakingDeciderModule3_thresholdModule:
   gams_identifier: "Grenzwertmodul"
   gams_description: "todo"
-InDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
+  graphedge_label: *CALC_EDGE_LABEL
+InDecisionMakingDeciderModule3_utilityModule:
   gams_identifier: "Utilitymodul"
   gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
 
-InDoAdoptModule_evalragraphnode2:
+InDoAdoptModule3:
   edn_label: "DoAdoptModule"
   edn_description: "todo"
-InDoAdoptModule_evalragraphnode2_input_graphedge2:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InDoAdoptModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
 
-InFeasibilityModule_evalragraphnode2:
+InFeasibilityModule3:
   edn_label: "FeasibilityModule"
   edn_description: "todo"
-InFeasibilityModule_evalragraphnode2_input_graphedge2:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InFeasibilityModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
 
-InInitializationModule_evalragraphnode2:
+InInitializationModule3:
   edn_label: "InitializationModule"
   edn_description: "todo"
-InInitializationModule_evalragraphnode2_placeholder:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InInitializationModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
-InInterestModule_evalragraphnode2:
+InInterestModule3:
   edn_label: "InterestModule"
   edn_description: "todo"
-InInterestModule_evalragraphnode2_input_graphedge2:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InInterestModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
 
-InMainBranchingModule_evalragraphnode2:
+InMainBranchingModule3:
   edn_label: "MainBranchingModule"
   edn_description: "todo"
-InMainBranchingModule_evalragraphnode2_init_graphedge2:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InMainBranchingModule3_initModule:
   gams_identifier: "init"
   gams_description: "todo"
-InMainBranchingModule_evalragraphnode2_awareness_graphedge2:
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_awarenessModule:
   gams_identifier: "awareness"
   gams_description: "todo"
-InMainBranchingModule_evalragraphnode2_feasibility_graphedge2:
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_feasibilityModule:
   gams_identifier: "feasiblity"
   gams_description: "todo"
-InMainBranchingModule_evalragraphnode2_decision_graphedge2:
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_decisionModule:
   gams_identifier: "decision"
   gams_description: "todo"
-InMainBranchingModule_evalragraphnode2_adopted_graphedge2:
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_adoptedModule:
   gams_identifier: "adopted"
   gams_description: "todo"
-InMainBranchingModule_evalragraphnode2_impeded_graphedge2:
+  graphedge_label: *ACTION_EDGE_LABEL
+InMainBranchingModule3_impededModule:
   gams_identifier: "impeded"
   gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
 
-InNewDecisionMakingDeciderModule2_evalragraphnode2:
-  edn_label: "NewDecisionMakingDeciderModule"
-  edn_description: "todo"
-InNewDecisionMakingDeciderModule2_evalragraphnode2_finCheck_forceEvaluation:
-  gams_identifier: "forceEvaluation"
-  gams_description: "todo"
-InNewDecisionMakingDeciderModule2_evalragraphnode2_finCheck_graphedge2:
-  gams_identifier: "finCheck"
-  gams_description: "todo"
-InNewDecisionMakingDeciderModule2_evalragraphnode2_utility_graphedge2:
-  gams_identifier: "utility"
-  gams_description: "todo"
-
-InPhaseUpdateModule_evalragraphnode2:
+InPhaseUpdateModule3:
   edn_label: "PhaseUpdateModule"
   edn_description: "todo"
-InPhaseUpdateModule_evalragraphnode2_input_graphedge2:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InPhaseUpdateModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
 
-InUtilityEvaluatorModule2_evalragraphnode2:
-  edn_label: "InUtilityEvaluatorModule2"
-  edn_description: "todo"
-InUtilityEvaluatorModule2_evalragraphnode2_threshold_graphedge2:
-  gams_identifier: "threshold"
-  gams_description: "todo"
-InUtilityEvaluatorModule2_evalragraphnode2_utility_graphedge2:
-  gams_identifier: "utility"
-  gams_description: "todo"
-
-InYearBasedAdoptionDeciderModule_evalragraphnode2:
+InYearBasedAdoptionDeciderModule3:
   edn_label: "YearBasedAdoptionDeciderModule"
   edn_description: "todo"
-InYearBasedAdoptionDeciderModule_evalragraphnode2_enabled:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InYearBasedAdoptionDeciderModule3_enabled:
   gams_identifier: "Modul verwenden?"
   gams_description: "todo"
-InYearBasedAdoptionDeciderModule_evalragraphnode2_base:
+InYearBasedAdoptionDeciderModule3_base:
   gams_identifier: "base"
   gams_description: "todo"
-InYearBasedAdoptionDeciderModule_evalragraphnode2_factor:
+InYearBasedAdoptionDeciderModule3_factor:
   gams_identifier: "factor"
   gams_description: "todo"
-InYearBasedAdoptionDeciderModule_evalragraphnode2_input_graphedge2:
+InYearBasedAdoptionDeciderModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
 
 # stage logging
-InPhaseLoggingModule_evalragraphnode2:
+InPhaseLoggingModule3:
   edn_label: "PhaseLoggingModule"
   edn_description: "todo"
-InPhaseLoggingModule_evalragraphnode2_enabled:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InPhaseLoggingModule3_enabled:
   gams_identifier: "Modul verwenden?"
   gams_description: "todo"
-InPhaseLoggingModule_evalragraphnode2_input_graphedge2:
+InPhaseLoggingModule3_inputModule:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
 
 # reeval
 process_modular3_PV_modules_reeval:
   edn_label: "Reevaluierungsmodule"
   edn_description: "todo"
 
-InCsvValueReevaluatorModule_reevalgraphnode2:
-  edn_label: "CsvValueReevaluatorModule"
-  edn_description: "todo"
-InCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx:
-  gams_identifier: "Als xlsx speichern?"
-  gams_description: "todo"
-InCsvValueReevaluatorModule_reevalgraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
-InMinimalCsvValueReevaluatorModule_reevalgraphnode2:
-  edn_label: "MinimalCsvValueReevaluatorModule"
-  edn_description: "todo"
-InMinimalCsvValueReevaluatorModule_reevalgraphnode2_storeXlsx:
-  gams_identifier: "Als xlsx speichern?"
-  gams_description: "todo"
-InMinimalCsvValueReevaluatorModule_reevalgraphnode2_input_graphedge2:
-  gams_identifier: "Eingabemodul"
-  gams_description: "todo"
-
-InReevaluatorModule_reevalgraphnode2:
+InReevaluatorModule3:
   edn_label: "InReevaluatorModule"
   edn_description: "todo"
-InReevaluatorModule_reevalgraphnode2_input_graphedge2:
+  graphnode_colorlabel: *REEVAL_MODULE_LABEL
+  graphnode_borderlabel: *REEVAL_MODULE_LABEL
+  graphnode_shapelabel: *REEVAL_MODULE_LABEL
+InReevaluatorModule3_inputModule:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
+  graphedge_label: *REEVAL_EDGE_LABEL
 
 ##########################
 #
@@ -3130,14 +3260,14 @@ InFileBasedSpatialInformationSupplier_yPositionKey:
 InFileBasedSpatialInformationSupplier_idKey:
   gams_identifier: "ID-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname)."
-InFileBasedSpatialInformationSupplier_attrFile:
+InFileBasedSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
 InFileBasedSelectSpatialInformationSupplier:
   edn_label: "Zugeordnet"
   edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen."
-InFileBasedSelectSpatialInformationSupplier_attrFile:
+InFileBasedSelectSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 InFileBasedSelectSpatialInformationSupplier_xPositionKey:
@@ -3156,7 +3286,7 @@ InFileBasedSelectSpatialInformationSupplier_selectKey:
 InFileBasedSelectGroupSpatialInformationSupplier:
   edn_label: "Zugeordnet und gewichtet"
   edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
-InFileBasedSelectGroupSpatialInformationSupplier_attrFile:
+InFileBasedSelectGroupSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 InFileBasedSelectGroupSpatialInformationSupplier_xPositionKey:
@@ -3178,7 +3308,7 @@ InFileBasedSelectGroupSpatialInformationSupplier_groupKey:
 InFileBasedPVactMilieuSupplier:
   edn_label: "PVact - Milieu"
   edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet."
-InFileBasedPVactMilieuSupplier_attrFile:
+InFileBasedPVactMilieuSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 

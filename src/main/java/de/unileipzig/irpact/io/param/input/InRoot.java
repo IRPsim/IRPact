@@ -39,19 +39,19 @@ import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAM
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InConsumerAgentReevaluationModule2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
@@ -116,6 +116,8 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -647,18 +649,36 @@ public class InRoot implements RootClass {
     }
 
     @Override
+    //TODO remove
     public AnnotationResource getResources() {
-        return new IOResources();
+//        return new IOResources();
+        throw new UnsupportedOperationException(); //REMOVE
     }
 
     @Override
+    //TODO update
     public AnnotationResource getResource(Path pathToFile) {
-        return new IOResources(pathToFile);
+//        return new IOResources(pathToFile);
+        try {
+            LocalizedSnakeYamlBasedUiResource res = new LocalizedSnakeYamlBasedUiResource();
+            res.load(pathToFile);
+            setupStructure(res);
+            res.add(INPUT_WITH_ROOT);
+            //TODO hack -> ENTFERNEN
+            IOResources oldStuff = new IOResources();
+            oldStuff.init(res);
+            //===
+            res.update();
+            return res;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public AnnotationResource getResource(Locale locale) {
-        return new IOResources(locale);
+//        return new IOResources(locale);
+        throw new UnsupportedOperationException(); //ResourceLoader...
     }
 
     @Override
@@ -970,54 +990,54 @@ public class InRoot implements RootClass {
             InBasicCAModularProcessModel.class,
             InConsumerAgentModule2.class,
             //action
-            InCommunicationModule_actiongraphnode2.class,
+            InCommunicationModule3.class,
             InConsumerAgentActionModule2.class,
-            InIfElseActionModule_actiongraphnode2.class,
-            InNOP_actiongraphnode2.class,
-            InRewireModule_actiongraphnode2.class,
+            InIfElseActionModule3.class,
+            InNOPModule3.class,
+            InRewireModule3.class,
             //bool
             InConsumerAgentBoolModule2.class,
-            InThresholdReachedModule_boolgraphnode2.class,
-            InBernoulliModule_boolgraphnode2.class,
+            InThresholdReachedModule3.class,
+            InBernoulliModule3.class,
             //calc
-            InAddScalarModule_calcgraphnode2.class,
+            InAddScalarModule3.class,
             InConsumerAgentCalculationModule2.class,
-            InLogisticModule_calcgraphnode2.class,
-            InMulScalarModule_calcgraphnode2.class,
-            InProductModule_calcgraphnode2.class,
-            InSumModule_calcgraphnode2.class,
+            InLogisticModule3.class,
+            InMulScalarModule3.class,
+            InProductModule3.class,
+            InSumModule3.class,
             //calc-input
-            InAttributeInputModule_inputgraphnode2.class,
-            InAvgFinModule_inputgraphnode2.class,
+            InAttributeInputModule3.class,
+            InAvgFinModule3.class,
             InConsumerAgentInputModule2.class,
-            InGlobalAvgNPVModule_inputgraphnode2.class,
-            InLocalShareOfAdopterModule_inputgraphnode2.class,
-            InNaNModule_inputgraphnode2.class,
-            InNPVModule_inputgraphnode2.class,
-            InSocialShareOfAdopterModule_inputgraphnode2.class,
-            InValueModule_inputgraphnode2.class,
+            InGlobalAvgNPVModule3.class,
+            InLocalShareOfAdopterModule3.class,
+            InNaNModule3.class,
+            InNPVModule3.class,
+            InSocialShareOfAdopterModule3.class,
+            InValueModule3.class,
             //calc-logging
             InConsumerAgentCalculationLoggingModule2.class,
-            InCsvValueLoggingModule_calcloggraphnode2.class,
+            InCsvValueLoggingModule3.class,
             //eval
             InConsumerAgentEvalModule2.class,
-            InRunUntilFailureModule_evalgraphnode2.class,
+            InRunUntilFailureModule3.class,
             //evalra
             InConsumerAgentEvalRAModule2.class,
-            InDecisionMakingDeciderModule2_evalragraphnode2.class,
-            InDoAdoptModule_evalragraphnode2.class,
-            InFeasibilityModule_evalragraphnode2.class,
-            InInitializationModule_evalragraphnode2.class,
-            InInterestModule_evalragraphnode2.class,
-            InMainBranchingModule_evalragraphnode2.class,
-            InPhaseUpdateModule_evalragraphnode2.class,
-            InYearBasedAdoptionDeciderModule_evalragraphnode2.class,
+            InDecisionMakingDeciderModule3.class,
+            InDoAdoptModule3.class,
+            InFeasibilityModule3.class,
+            InInitializationModule3.class,
+            InInterestModule3.class,
+            InMainBranchingModule3.class,
+            InPhaseUpdateModule3.class,
+            InYearBasedAdoptionDeciderModule3.class,
             //reeval-modules
             InConsumerAgentReevaluationModule2.class,
-            InReevaluatorModule_reevalgraphnode2.class,
+            InReevaluatorModule3.class,
             //reeval-modules logging
             InConsumerAgentEvalRALoggingModule2.class,
-            InPhaseLoggingModule_evalragraphnode2.class,
+            InPhaseLoggingModule3.class,
             //reeval-ca
             InAnnualInterestLogger.class,
             InConstructionRenovationUpdater.class,
@@ -1073,7 +1093,7 @@ public class InRoot implements RootClass {
             InGraphvizGeneral.class,
             InConsumerAgentGroupColor.class,
 
-            InGeneral.class,
+            InGeneral.class, //TODO
             InInformation.class,
             InIRPactVersion.class,
             InScenarioVersion.class,
@@ -1103,19 +1123,17 @@ public class InRoot implements RootClass {
             )
     );
 
+    private static final List<ParserInput> ROOT = ParserInput.listOf(DefinitionType.INPUT, InRoot.class);
+
     public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
             IRPOPT,
-            ParserInput.listOf(DefinitionType.INPUT,
-                    InRoot.class
-            )
+            ROOT
     );
 
     public static final List<ParserInput> INPUT_WITH_TEMPLATE_AND_ROOT = ParserInput.merge(
             INPUT_WITH_TEMPLATES,
-            ParserInput.listOf(DefinitionType.INPUT,
-                    InRoot.class
-            )
+            ROOT
     );
 
     public static final List<ParserInput> INPUT_WITHOUT_GRAPHVIZ = ParserInput.merge(
@@ -1135,13 +1153,16 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    @TreeAnnotationResource.Init
-    public static void initRes(LocalizedUiResource res) {
+    private static void setupStructure(LocalizedUiResource res) {
         for(TreeViewStructureEnum structure: TreeViewStructureEnum.getAllPaths()) {
             if(structure.isNotRoot()) {
                 res.addPathElement(structure.getPath());
             }
         }
+    }
+
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
 
     @TreeAnnotationResource.Apply

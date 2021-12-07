@@ -14,7 +14,7 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -80,7 +80,7 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 //        uncertainty.setDefaultValues();
 //        uncertainty.setConsumerAgentGroups(cags);
 
-        InRunUntilFailureModule_evalgraphnode2 startModule = new InRunUntilFailureModule_evalgraphnode2();
+        InRunUntilFailureModule3 startModule = new InRunUntilFailureModule3();
         startModule.setName("DO_NOTHING");
 
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();

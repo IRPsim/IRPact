@@ -35,19 +35,19 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactIndividualGlobalModerateExtremistUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlobalModerateExtremistUncertainty;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InIfElseActionModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InNOP_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InIfElseActionModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InNOPModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
@@ -221,59 +221,59 @@ public final class TreeViewStructure {
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES = resolve(PROCESS_MODULAR4, IOConstants.PROCESS_MODEL4_GENERALMODULES);
     //action
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_ACTION);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE = resolve(PROCESS_MODEL4_GENERALMODULES_ACTION, InIfElseActionModule_actiongraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_NOP = resolve(PROCESS_MODEL4_GENERALMODULES_ACTION, InNOP_actiongraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE = resolve(PROCESS_MODEL4_GENERALMODULES_ACTION, InIfElseActionModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_ACTION_NOP = resolve(PROCESS_MODEL4_GENERALMODULES_ACTION, InNOPModule3.class);
     //bool
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_BOOL);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI = resolve(PROCESS_MODEL4_GENERALMODULES_BOOL, InBernoulliModule_boolgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD = resolve(PROCESS_MODEL4_GENERALMODULES_BOOL, InThresholdReachedModule_boolgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI = resolve(PROCESS_MODEL4_GENERALMODULES_BOOL, InBernoulliModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD = resolve(PROCESS_MODEL4_GENERALMODULES_BOOL, InThresholdReachedModule3.class);
     //number input
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_VALUE = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InValueModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InNaNModule_inputgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_VALUE = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InValueModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InNaNModule3.class);
     //number eval
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InMulScalarModule_calcgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_ADDSCALAR = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InAddScalarModule_calcgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_LOGISTIC = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InLogisticModule_calcgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InSumModule_calcgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InProductModule_calcgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InMulScalarModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_ADDSCALAR = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InAddScalarModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_LOGISTIC = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InLogisticModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InSumModule3.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT = resolve(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InProductModule3.class);
     //system
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_SYSTEM = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_SYSTEM);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_SYSTEM_UNTILFAIL = resolve(PROCESS_MODEL4_GENERALMODULES_SYSTEM, InRunUntilFailureModule_evalgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_SYSTEM_UNTILFAIL = resolve(PROCESS_MODEL4_GENERALMODULES_SYSTEM, InRunUntilFailureModule3.class);
     //independent
     public static final EdnPath PROCESS_MODEL4_GENERALMODULES_INDEPENDENT = resolve(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_INDEPENDENT);
-    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL = resolve(PROCESS_MODEL4_GENERALMODULES_INDEPENDENT, InReevaluatorModule_reevalgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL = resolve(PROCESS_MODEL4_GENERALMODULES_INDEPENDENT, InReevaluatorModule3.class);
     //general modules
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES = resolve(PROCESS_MODULAR4, IOConstants.PROCESS_MODEL4_PVACTMODULES);
     //action
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION = resolve(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_ACTION);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU = resolve(PROCESS_MODEL4_PVACTMODULES_ACTION, InCommunicationModule_actiongraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_REWIRE = resolve(PROCESS_MODEL4_PVACTMODULES_ACTION, InRewireModule_actiongraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU = resolve(PROCESS_MODEL4_PVACTMODULES_ACTION, InCommunicationModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_ACTION_REWIRE = resolve(PROCESS_MODEL4_PVACTMODULES_ACTION, InRewireModule3.class);
     //number input
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT = resolve(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_ATTR = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAttributeInputModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_GLOBALAVGNPV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InGlobalAvgNPVModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InNPVModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InLocalShareOfAdopterModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_SOCIAL = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InSocialShareOfAdopterModule_inputgraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AVGFIN = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAvgFinModule_inputgraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_ATTR = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAttributeInputModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_GLOBALAVGNPV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InGlobalAvgNPVModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InNPVModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InLocalShareOfAdopterModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_SOCIAL = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InSocialShareOfAdopterModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AVGFIN = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAvgFinModule3.class);
     //number logging
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING = resolve(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InCsvValueLoggingModule_calcloggraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV = resolve(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InCsvValueLoggingModule3.class);
     //pv general
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL = resolve(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_PVGENERAL);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDecisionMakingDeciderModule2_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DOADOPT = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDoAdoptModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_FEASIBILITY = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InFeasibilityModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INIT = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInitializationModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INTEREST = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInterestModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_MAINBRANCH = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InMainBranchingModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASEUPDATER = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InPhaseUpdateModule_evalragraphnode2.class);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InYearBasedAdoptionDeciderModule_evalragraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDecisionMakingDeciderModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DOADOPT = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDoAdoptModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_FEASIBILITY = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InFeasibilityModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INIT = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInitializationModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INTEREST = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInterestModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_MAINBRANCH = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InMainBranchingModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASEUPDATER = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InPhaseUpdateModule3.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED = resolve(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InYearBasedAdoptionDeciderModule3.class);
     //pv logging
     public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVLOGGING = resolve(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_PVLOGGING);
-    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER = resolve(PROCESS_MODEL4_PVACTMODULES_PVLOGGING, InPhaseLoggingModule_evalragraphnode2.class);
+    public static final EdnPath PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER = resolve(PROCESS_MODEL4_PVACTMODULES_PVLOGGING, InPhaseLoggingModule3.class);
     //====
 
     public static final EdnPath SPATIAL = resolve(ROOT, IOConstants.SPATIAL);

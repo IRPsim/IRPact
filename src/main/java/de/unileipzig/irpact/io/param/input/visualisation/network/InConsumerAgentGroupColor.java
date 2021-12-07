@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.io.param.input.visualisation.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -14,11 +15,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISUNETWORK_AGENTCOLOR;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_VISUNETWORK_AGENTCOLOR)
 public class InConsumerAgentGroupColor implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -29,12 +32,11 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.SETT_VISUNETWORK_AGENTCOLOR);
-        addEntry(res, thisClass(), "rgba");
-        addEntry(res, thisClass(), "groups");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     public static final InConsumerAgentGroupColor BLACK = new InConsumerAgentGroupColor("BLACK", Color.BLACK);
@@ -59,12 +61,18 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
                 .toArray(InConsumerAgentGroupColor[]::new);
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
     public long rgba = Integer.toUnsignedLong(Color.BLACK.getRGB());
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] groups = new InConsumerAgentGroup[0];
 
     public InConsumerAgentGroupColor() {
@@ -75,7 +83,7 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
     }
 
     public InConsumerAgentGroupColor(String name, long rgba, InConsumerAgentGroup... groups) {
-        this._name = name;
+        this.name = name;
         this.groups = groups;
         this.rgba = rgba;
     }
@@ -87,7 +95,7 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
 
     public InConsumerAgentGroupColor newCopy(CopyCache cache) {
         InConsumerAgentGroupColor copy = new InConsumerAgentGroupColor();
-        copy._name = _name;
+        copy.name = name;
         copy.rgba = rgba;
         copy.groups = cache.copyArray(groups);
         return copy;
@@ -120,10 +128,10 @@ public class InConsumerAgentGroupColor implements InIRPactEntity {
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setGroups(InConsumerAgentGroup... groups) {

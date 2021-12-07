@@ -6,13 +6,16 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.CsvValueLoggingModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InConsumerAgentCalculationModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.util.CAMPMGraphSettings;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphEdge;
-import de.unileipzig.irptools.defstructure.annotation.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.GraphEdge;
+import de.unileipzig.irptools.defstructure.annotation.graph.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.Subsets;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -21,23 +24,35 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
-        graphNode = @GraphNode(
-                id = MODULAR_GRAPH,
-                label = CALCLOG_LABEL,
-                shape = CALCLOG_SHAPE,
-                color = CALCLOG_COLOR,
-                border = CALCLOG_BORDER,
-                tags = {CALCLOG_GRAPHNODE}
+//        graphNode = @GraphNode(
+//                id = MODULAR_GRAPH,
+//                label = CALCLOG_LABEL,
+//                shape = CALCLOG_SHAPE,
+//                color = CALCLOG_COLOR,
+//                border = CALCLOG_BORDER,
+//                tags = {CALCLOG_GRAPHNODE}
+//        )
+        graphNode3 = @GraphNode(
+                graphId = CAMPMGraphSettings.GRAPH_ID,
+                subsetsColor = @Subsets(
+                        value = CAMPMGraphSettings.CALCLOG_COLOR
+                ),
+                subsetsBorder = @Subsets(
+                        value = CAMPMGraphSettings.CALCLOG_BORDER
+                ),
+                subsetsShape = @Subsets(
+                        value = CAMPMGraphSettings.CALCLOG_SHAPE
+                )
         )
 )
-public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgentCalculationLoggingModule2 {
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV)
+public class InCsvValueLoggingModule3 implements InConsumerAgentCalculationLoggingModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -47,29 +62,24 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV);
-        setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
-
-        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "logReevaluatorCall", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "logDefaultCall", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "printHeader", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntry(res, thisClass(), "input_graphedge2");
+//        setShapeColorFillBorder(res, thisClass(), CALCLOG_SHAPE, CALCLOG_COLOR, CALCLOG_FILL, CALCLOG_BORDER);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -77,6 +87,12 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
         return getName();
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean enabled = true;
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -87,6 +103,10 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean logReevaluatorCall = false;
     public void setLogReevaluatorCall(boolean logReevaluatorCall) {
         this.logReevaluatorCall = logReevaluatorCall;
@@ -97,6 +117,11 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean logDefaultCall = true;
     public void setLogDefaultCall(boolean logDefaultCall) {
         this.logDefaultCall = logDefaultCall;
@@ -107,6 +132,11 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean printHeader = true;
     public void setPrintHeader(boolean printHeader) {
         this.printHeader = printHeader;
@@ -117,6 +147,10 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeXlsx = false;
     public void setStoreXlsx(boolean storeXlsx) {
         this.storeXlsx = storeXlsx;
@@ -126,35 +160,41 @@ public class InCsvValueLoggingModule_calcloggraphnode2 implements InConsumerAgen
     }
 
     @FieldDefinition(
-            graphEdge = @GraphEdge(
-                    id = MODULAR_GRAPH,
-                    label = CALC_EDGE_LABEL,
-                    color = CALC_EDGE_COLOR,
-                    tags = {"InMinimalCsvValueLoggingModule input"}
+//            graphEdge = @GraphEdge(
+//                    id = MODULAR_GRAPH,
+//                    label = CALC_EDGE_LABEL,
+//                    color = CALC_EDGE_COLOR,
+//                    tags = {"InMinimalCsvValueLoggingModule input"}
+//            )
+            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
+            graphEdge3 = @GraphEdge(
+                    graphId = CAMPMGraphSettings.GRAPH_ID,
+                    color = CAMPMGraphSettings.CALC_EDGE_COLOR
             )
     )
-    public InConsumerAgentCalculationModule2[] input_graphedge2;
+    @LocalizedUiResource.AddEntry
+    public InConsumerAgentCalculationModule2[] inputModule;
     public InConsumerAgentCalculationModule2 getInput() throws ParsingException {
-        return ParamUtil.getInstance(input_graphedge2, "x");
+        return ParamUtil.getInstance(inputModule, "x");
     }
     public void setInput(InConsumerAgentCalculationModule2 first) {
-        this.input_graphedge2 = new InConsumerAgentCalculationModule2[]{first};
+        this.inputModule = new InConsumerAgentCalculationModule2[]{first};
     }
 
-    public InCsvValueLoggingModule_calcloggraphnode2() {
+    public InCsvValueLoggingModule3() {
     }
 
-    public InCsvValueLoggingModule_calcloggraphnode2(String name) {
+    public InCsvValueLoggingModule3(String name) {
         setName(name);
     }
 
     @Override
-    public InCsvValueLoggingModule_calcloggraphnode2 copy(CopyCache cache) {
+    public InCsvValueLoggingModule3 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InCsvValueLoggingModule_calcloggraphnode2 newCopy(CopyCache cache) {
-        InCsvValueLoggingModule_calcloggraphnode2 copy = new InCsvValueLoggingModule_calcloggraphnode2();
+    public InCsvValueLoggingModule3 newCopy(CopyCache cache) {
+        InCsvValueLoggingModule3 copy = new InCsvValueLoggingModule3();
         return Dev.throwException();
     }
 

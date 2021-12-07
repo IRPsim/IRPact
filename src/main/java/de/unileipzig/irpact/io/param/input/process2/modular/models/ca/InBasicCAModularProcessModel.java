@@ -6,14 +6,15 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process2.modular.ca.BasicCAModularProcessModel2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,12 +23,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.addAll;
+import static de.unileipzig.irpact.io.param.ParamUtil.len;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODULAR4_BASE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PROCESS_MODULAR4_BASE)
 public class InBasicCAModularProcessModel implements InModularProcessModel2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -38,32 +42,27 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODULAR4_BASE);
-
-        addEntry(res, thisClass(), "startModule");
-        addEntry(res, thisClass(), "initializationHandlers");
-        addEntry(res, thisClass(), "newProductHandlers");
-        addEntry(res, thisClass(), "initializationReevaluators");
-        addEntry(res, thisClass(), "startOfYearReevaluators");
-        addEntry(res, thisClass(), "midOfYearReevaluators");
-        addEntry(res, thisClass(), "endOfYearReevaluators");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentEvalModule2[] startModule = new InConsumerAgentEvalModule2[0];
     public void setStartModule(InConsumerAgentEvalModule2 startModule) {
         this.startModule = new InConsumerAgentEvalModule2[]{startModule};
@@ -73,6 +72,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InInitializationHandler[] initializationHandlers = new InInitializationHandler[0];
     public void setInitializationHandlers(InInitializationHandler[] initializationHandlers) {
         this.initializationHandlers = initializationHandlers;
@@ -91,6 +91,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InNewProductHandler[] newProductHandlers = new InNewProductHandler[0];
     public void setNewProductHandlers(InNewProductHandler[] newProductHandlers) {
         this.newProductHandlers = newProductHandlers;
@@ -109,6 +110,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InReevaluator2[] initializationReevaluators = new InReevaluator2[0];
     public void setInitializationReevaluators(InReevaluator2[] initializationReevaluators) {
         this.initializationReevaluators = initializationReevaluators;
@@ -127,6 +129,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InReevaluator2[] startOfYearReevaluators = new InReevaluator2[0];
     public void setStartOfYearReevaluators(InReevaluator2[] startOfYearReevaluators) {
         this.startOfYearReevaluators = startOfYearReevaluators;
@@ -145,6 +148,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InReevaluator2[] midOfYearReevaluators = new InReevaluator2[0];
     public void setMidOfYearReevaluators(InReevaluator2[] midOfYearReevaluators) {
         this.midOfYearReevaluators = midOfYearReevaluators;
@@ -163,6 +167,7 @@ public class InBasicCAModularProcessModel implements InModularProcessModel2 {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InReevaluator2[] endOfYearReevaluators = new InReevaluator2[0];
     public void setEndOfYearReevaluators(InReevaluator2[] newProductHandlers) {
         this.endOfYearReevaluators = newProductHandlers;

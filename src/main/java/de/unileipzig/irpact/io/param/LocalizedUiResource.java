@@ -5,12 +5,16 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
+import de.unileipzig.irptools.defstructure.ParserInput;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
+import de.unileipzig.irptools.util.XorWithDefaultRuleBuilder;
+import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 
 import java.lang.annotation.*;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -76,6 +80,7 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     protected void setGraphString(TreeAnnotationResource.EntryBuilder builder, String key) {
         setValidString(getString(key, GRAPH_LABEL), value -> builder.setCustom(Constants.GRAPH_LABEL, value));
         setValidString(getString(key, GRAPH_DESCRIPTION), value -> builder.setCustom(Constants.GRAPH_DESCRIPTION, value));
+        setValidString(getString(key, GRAPH_EDGEHEADING), value -> builder.setCustom(Constants.GRAPH_EDGE_HEADING, value));
         setValidString(getString(key, GRAPH_COLORHEADING), value -> builder.setCustom(Constants.GRAPH_COLOR_HEADING, value));
         setValidString(getString(key, GRAPH_BORDERHEADING), value -> builder.setCustom(Constants.GRAPH_BORDER_HEADING, value));
         setValidString(getString(key, GRAPH_SHAPEHEADING), value -> builder.setCustom(Constants.GRAPH_SHAPE_HEADING, value));
@@ -123,7 +128,7 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
 
     @SuppressWarnings("UnusedReturnValue")
     protected TreeAnnotationResource.PathElementBuilder computePathBuilderIfAbsent(String dataKey, String priorityKey) {
-        TreeAnnotationResource.PathElementBuilder builder = getCacheAs(dataKey);
+        TreeAnnotationResource.PathElementBuilder builder = getCacheAsOr(dataKey, null);
         if(builder == null) {
             builder = newElementBuilder();
             setEdnStrings(builder, dataKey);
@@ -240,6 +245,15 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
             RuleBuilder builder) {
         for(String field: fields) {
             setRules(c, field, builder.buildFor(field));
+        }
+    }
+
+    protected void setRules(
+            Class<?> c,
+            Collection<Field> fields,
+            RuleBuilder builder) {
+        for(Field field: fields) {
+            setRules(c, field.getName(), builder.buildFor(field.getName()));
         }
     }
 
@@ -439,7 +453,16 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     }
 
     protected void putClassPath(Class<?> c, String... keys) {
-        putPath(c, getCachedElements(keys));
+        try {
+            putPath(c, getCachedElements(keys));
+        } catch (NullPointerException e) {
+            throw new NullPointerException(StringUtil.format(
+                    "class={}, keys={} (msg: {})",
+                    c.getName(),
+                    Arrays.toString(keys),
+                    e.getMessage()
+            ));
+        }
     }
 
     public void putClassPath(Class<?> c, EdnPath path) {
@@ -480,6 +503,14 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     //meta
     //==================================================
 
+    protected static boolean isValid(String str) {
+        return str != null && !str.isEmpty();
+    }
+
+    protected static String bool2str(boolean value) {
+        return value ? Constants.TRUE1 : Constants.FALSE0;
+    }
+
     protected static boolean isTrueOrFalse(String str) {
         return Constants.TRUE1.equals(str) || Constants.FALSE0.equals(str);
     }
@@ -500,6 +531,17 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         return e.isAnnotationPresent(a)
                 ? e.getAnnotation(a)
                 : null;
+    }
+
+    public void add(Iterable<? extends ParserInput> c) {
+        //1. parse annotations
+        parseAnnotations(c, ParserInput::getClazz);
+        //2. call init/apply
+        try {
+            callInitAndApply(c, ParserInput::getClazz);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public <T> void parseAnnotations(
@@ -523,6 +565,10 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
 
         parseClass(c);
         parseFields(c);
+        //special
+        handlePutGraph(c);
+        handleXorWithoutUnselectRule(c);
+        handleXorWithDefaultRule(c);
     }
 
     protected void parseClass(Class<?> c) {
@@ -584,6 +630,28 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     @Documented
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
+    public @interface PutGraph {
+
+        TreeViewStructureEnum value();
+    }
+
+    protected void handlePutGraph(Class<?> c) {
+        PutGraph anno = getAnnotationOrNull(c, PutGraph.class);
+        if(anno != null) {
+            if(anno.value().isNotNull()) {
+                putClassPath(c, anno.value().getPath());
+            }
+            addEntry(c);
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
     public @interface PutClassPath {
 
         TreeViewStructureEnum value();
@@ -605,6 +673,14 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         TreeViewStructureEnum value() default TreeViewStructureEnum.NULL;
 
         int priority() default 0;
+    }
+
+    protected void apply(Class<?> c, Field f, AddEntry add) {
+        String fieldName = f.getName();
+        if(add.value().isNotNull()) {
+            putFieldPath(c, fieldName, add.value().getPath());
+        }
+        addEntry(c, fieldName);
     }
 
     /**
@@ -635,14 +711,6 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         boolean closed0255Domain() default false;
 
         boolean hidden() default false;
-    }
-
-    protected void apply(Class<?> c, Field f, AddEntry add) {
-        String fieldName = f.getName();
-        if(add.value().isNotNull()) {
-            putFieldPath(c, fieldName, add.value().getPath());
-        }
-        addEntry(c, fieldName);
     }
 
     protected void apply(Class<?> c, Field f, SimpleSet set) {
@@ -695,6 +763,243 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         //hidden
         if(set.hidden()) {
             setHidden(c, fieldName);
+        }
+    }
+
+    //=========================
+    //SimpleRule
+    //=========================
+
+    public static final String DEFAULT_GROUP = "DEFAULT_GROUP";
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface TodoAddSimpleRuler {
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface XorWithoutUnselectRules {
+
+        XorWithoutUnselectRule[] value() default {};
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Repeatable(XorWithoutUnselectRules.class)
+    public @interface XorWithoutUnselectRule {
+
+        String value() default DEFAULT_GROUP;
+
+        String rawTrue() default "";
+        boolean trueValue() default true;
+
+        String rawFalse() default "";
+        boolean falseValue() default false;
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface XorWithoutUnselectRuleEntry {
+
+        String value() default DEFAULT_GROUP;
+    }
+
+    protected void handleXorWithoutUnselectRule(Class<?> c) {
+        XorWithoutUnselectRules rules = getAnnotationOrNull(c, XorWithoutUnselectRules.class);
+        if(rules == null || rules.value().length == 0) {
+            return;
+        }
+
+        //init mappings
+        Map<String, XorWithoutUnselectRule> groupedRules = new HashMap<>();
+        Map<String, List<Field>> groupedFields = new HashMap<>();
+
+        for(XorWithoutUnselectRule rule: rules.value()) {
+            if(groupedRules.containsKey(rule.value())) {
+                throw new IllegalArgumentException("XorWithoutUnselectRule '" + rule.value() + "' already exists.");
+            }
+
+            groupedRules.put(rule.value(), rule);
+            groupedFields.put(rule.value(), new ArrayList<>());
+        }
+
+        //group fields
+        Field[] fields = c.getDeclaredFields();
+        for(Field f: fields) {
+            XorWithoutUnselectRuleEntry entry = getAnnotationOrNull(f, XorWithoutUnselectRuleEntry.class);
+            if(entry != null) {
+                if(!groupedFields.containsKey(entry.value())) {
+                    throw new IllegalArgumentException("'" + entry.value() + "' not found");
+                }
+
+                groupedFields.get(entry.value()).add(f);
+            }
+        }
+
+        //build
+        for(Map.Entry<String, List<Field>> entry: groupedFields.entrySet()) {
+            List<Field> fieldList = entry.getValue();
+            if(fieldList.size() > 0) {
+                XorWithoutUnselectRule rule = groupedRules.get(entry.getKey());
+
+                XorWithoutUnselectRuleBuilder builder = new XorWithoutUnselectRuleBuilder();
+                builder.setKeyModifier(ParamUtil.buildDefaultParameterNameOperator(c));
+                if(isValid(rule.rawTrue())) {
+                    builder.setTrueValue(rule.rawTrue());
+                } else {
+                    builder.setTrueValue(bool2str(rule.trueValue()));
+                }
+                if(isValid(rule.rawFalse())) {
+                    builder.setFalseValue(rule.rawFalse());
+                } else {
+                    builder.setFalseValue(bool2str(rule.trueValue()));
+                }
+                for(Field field: fieldList) {
+                    builder.addKey(field.getName());
+                }
+
+                setRules(c, fieldList, builder);
+            }
+        }
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface XorWithDefaultRules {
+
+        XorWithDefaultRule[] value() default {};
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @Repeatable(XorWithDefaultRules.class)
+    public @interface XorWithDefaultRule {
+
+        String value() default DEFAULT_GROUP;
+
+        String rawTrue() default "";
+        boolean trueValue() default true;
+
+        String rawFalse() default "";
+        boolean falseValue() default false;
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    @Inherited
+    @Documented
+    @Target(ElementType.FIELD)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface XorWithDefaultRuleEntry {
+
+        String value() default DEFAULT_GROUP;
+
+        boolean isDefault() default false;
+    }
+
+    protected void handleXorWithDefaultRule(Class<?> c) {
+        XorWithDefaultRules rules = getAnnotationOrNull(c, XorWithDefaultRules.class);
+        if(rules == null || rules.value().length == 0) {
+            return;
+        }
+
+        //init mappings
+        Map<String, XorWithDefaultRule> groupedRules = new HashMap<>();
+        Map<String, List<Field>> groupedFields = new HashMap<>();
+
+        for(XorWithDefaultRule rule: rules.value()) {
+            if(groupedRules.containsKey(rule.value())) {
+                throw new IllegalArgumentException("XorWithDefaultRule '" + rule.value() + "' already exists.");
+            }
+
+            groupedRules.put(rule.value(), rule);
+            groupedFields.put(rule.value(), new ArrayList<>());
+        }
+
+        //group fields
+        Field defaultField = null;
+
+        Field[] fields = c.getDeclaredFields();
+        for(Field f: fields) {
+            XorWithDefaultRuleEntry entry = getAnnotationOrNull(f, XorWithDefaultRuleEntry.class);
+            if(entry != null) {
+                if(!groupedFields.containsKey(entry.value())) {
+                    throw new IllegalArgumentException("'" + entry.value() + "' not found");
+                }
+
+                groupedFields.get(entry.value()).add(f);
+
+                if(entry.isDefault()) {
+                    if(defaultField == null) {
+                        defaultField = f;
+                    } else {
+                        throw new IllegalArgumentException("multiple default fields: " + defaultField.getName() + " and " + f.getName());
+                    }
+                }
+            }
+        }
+
+        if(defaultField == null) {
+            throw new IllegalStateException("missing default field");
+        }
+
+        //build
+        for(Map.Entry<String, List<Field>> entry: groupedFields.entrySet()) {
+            List<Field> fieldList = entry.getValue();
+            if(fieldList.size() > 0) {
+                XorWithDefaultRule rule = groupedRules.get(entry.getKey());
+
+                XorWithDefaultRuleBuilder builder = new XorWithDefaultRuleBuilder();
+                builder.setKeyModifier(ParamUtil.buildDefaultParameterNameOperator(c));
+                builder.setDefaultKey(defaultField.getName());
+                if(isValid(rule.rawTrue())) {
+                    builder.setTrueValue(rule.rawTrue());
+                } else {
+                    builder.setTrueValue(bool2str(rule.trueValue()));
+                }
+                if(isValid(rule.rawFalse())) {
+                    builder.setFalseValue(rule.rawFalse());
+                } else {
+                    builder.setFalseValue(bool2str(rule.trueValue()));
+                }
+                for(Field field: fieldList) {
+                    builder.addKey(field.getName());
+                }
+
+                setRules(c, fieldList, builder);
+            }
         }
     }
 }

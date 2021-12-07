@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.io.param.output;
 
-import de.unileipzig.irpact.commons.util.MultiCounter;
-import de.unileipzig.irpact.io.param.IOResources;
+import de.unileipzig.irpact.io.param.LocalizedSnakeYamlBasedUiResource;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.SimpleCopyCache;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
@@ -19,6 +19,8 @@ import de.unileipzig.irptools.uiedn.Sections;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
@@ -98,18 +100,31 @@ public class OutRoot implements RootClass {
     }
 
     @Override
+    //TODO remove
     public AnnotationResource getResources() {
-        return new IOResources();
+//        return new IOResources();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public AnnotationResource getResource(Path pathToFile) {
-        return new IOResources(pathToFile);
+//        return new IOResources(pathToFile);
+        try {
+            LocalizedSnakeYamlBasedUiResource res = new LocalizedSnakeYamlBasedUiResource();
+            res.load(pathToFile);
+            res.add(INPUT_WITH_ROOT);
+            res.update();
+            return res;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
+    //TODO update
     public AnnotationResource getResource(Locale locale) {
-        return new IOResources(locale);
+//        return new IOResources(locale);
+        throw new UnsupportedOperationException();
     }
 
     public OutRoot copy() {
@@ -154,18 +169,15 @@ public class OutRoot implements RootClass {
     //UI
     //=========================
 
-    @SuppressWarnings("unused")
-    public static void initRes(TreeAnnotationResource res) {
-        IOResources.Data userData = res.getUserDataAs();
-        MultiCounter counter = userData.getCounter();
-
-        addPathElement(res, INFORMATIONS_OUT, ROOT);
-                addPathElement(res, OutInformation.thisName(), INFORMATIONS_OUT);
-
-        addPathElement(res, OutConsumerAgentGroup.thisName(), ROOT);
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
+        res.addPathElement(INFORMATIONS_OUT, ROOT);
+        res.addPathElement(OutInformation.thisName(), INFORMATIONS_OUT);
+        res.addPathElement(OutConsumerAgentGroup.thisName(), ROOT);
     }
 
-    public static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     @Override

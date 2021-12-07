@@ -44,7 +44,7 @@ public abstract class LocalizedJsonBasedUiResource extends LocalizedUiResource {
     protected String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException {
         JsonNode keyNode = root.get(key);
         if(keyNode == null) {
-            throw new NoSuchElementException(key);
+            throw new NoSuchElementException("missing: " + key);
         }
         if(!keyNode.isObject()) {
             throw new IllegalArgumentException("no object: " + key);

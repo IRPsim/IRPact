@@ -6,11 +6,13 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,11 +24,13 @@ import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
 import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS_ATTR;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_ATTR_SPLIT;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_ATTR_SPLIT)
 public class InNameSplitProductGroupAttribute implements InIndependentProductGroupAttribute {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,19 +41,21 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_ATTR, thisName());
-        addEntry(res, thisClass(), "dist");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InNameSplitProductGroupAttribute.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] dist;
+    @LocalizedUiResource.AddEntry
+    public InUnivariateDoubleDistribution[] dist = new InUnivariateDoubleDistribution[0];
 
     public InNameSplitProductGroupAttribute() {
     }
@@ -61,14 +67,14 @@ public class InNameSplitProductGroupAttribute implements InIndependentProductGro
 
     public InNameSplitProductGroupAttribute newCopy(CopyCache cache) {
         InNameSplitProductGroupAttribute copy = new InNameSplitProductGroupAttribute();
-        copy._name = _name;
+        copy.name = name;
         copy.dist = cache.copyArray(dist);
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override

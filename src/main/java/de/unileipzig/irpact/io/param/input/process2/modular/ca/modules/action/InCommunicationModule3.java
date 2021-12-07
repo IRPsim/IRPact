@@ -10,34 +10,49 @@ import de.unileipzig.irpact.core.process2.raalg.AttitudeGap;
 import de.unileipzig.irpact.core.process2.raalg.LoggableAttitudeGapRelativeAgreementAlgorithm2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
+import de.unileipzig.irpact.io.param.input.process2.modular.util.CAMPMGraphSettings;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.GraphNode;
+import de.unileipzig.irptools.defstructure.annotation.graph.Subsets;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.process2.modular.ca.MPM2Settings.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(
-        graphNode = @GraphNode(
-                id = MODULAR_GRAPH,
-                label = ACTION_LABEL,
-                shape = ACTION_SHAPE,
-                color = ACTION_COLOR,
-                border = ACTION_BORDER,
-                tags = {ACTION_GRAPHNODE}
+//        graphNode = @GraphNode(
+//                id = MODULAR_GRAPH,
+//                label = ACTION_LABEL,
+//                shape = ACTION_SHAPE,
+//                color = ACTION_COLOR,
+//                border = ACTION_BORDER,
+//                tags = {ACTION_GRAPHNODE}
+//        ),
+        graphNode3 = @GraphNode(
+                graphId = CAMPMGraphSettings.GRAPH_ID,
+                subsetsColor = @Subsets(
+                        value = CAMPMGraphSettings.ACTION_COLOR
+                ),
+                subsetsBorder = @Subsets(
+                        value = CAMPMGraphSettings.ACTION_BORDER
+                ),
+                subsetsShape = @Subsets(
+                        value = CAMPMGraphSettings.ACTION_SHAPE
+                )
         )
 )
-public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentActionModule2 {
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU)
+public class InCommunicationModule3 implements InConsumerAgentActionModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -47,43 +62,31 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU);
-        setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
-
-        addEntryWithDefault(res, thisClass(), "adopterPoints", asValue(RAModelData.DEFAULT_ADOPTER_POINTS));
-        addEntryWithDefault(res, thisClass(), "interestedPoints", asValue(RAModelData.DEFAULT_INTERESTED_POINTS));
-        addEntryWithDefault(res, thisClass(), "awarePoints", asValue(RAModelData.DEFAULT_AWARE_POINTS));
-        addEntryWithDefault(res, thisClass(), "unknownPoints", asValue(RAModelData.DEFAULT_UNKNOWN_POINTS));
-        addEntryWithDefaultAndDomain(res, thisClass(), "raEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raLoggingEnabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raOpinionLogging", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raUnceraintyLogging", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raPrintHeader", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raKeepCsv", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "raStoreXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefault(res, thisClass(), "speedOfConvergence", asValue(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE));
-        addEntryWithDefault(res, thisClass(), "attitudeGap", asValue(RAConstants.DEFAULT_ATTIDUTE_GAP));
-        addEntryWithDefault(res, thisClass(), "chanceNeutral", asValue(RAConstants.DEFAULT_NEUTRAL_CHANCE));
-        addEntryWithDefault(res, thisClass(), "chanceConvergence", asValue(RAConstants.DEFAULT_CONVERGENCE_CHANCE));
-        addEntryWithDefault(res, thisClass(), "chanceDivergence", asValue(RAConstants.DEFAULT_DIVERGENCE_CHANCE));
-        addEntry(res, thisClass(), "uncertaintySuppliers");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        //setShapeColorFillBorder(res, thisClass(), ACTION_SHAPE, ACTION_COLOR, ACTION_FILL, ACTION_BORDER);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = RAModelData.DEFAULT_ADOPTER_POINTS
+    )
     public int adopterPoints = RAModelData.DEFAULT_ADOPTER_POINTS;
     public int getAdopterPoints() {
         return adopterPoints;
@@ -93,6 +96,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = RAModelData.DEFAULT_INTERESTED_POINTS
+    )
     public int interestedPoints = RAModelData.DEFAULT_INTERESTED_POINTS;
     public int getInterestedPoints() {
         return interestedPoints;
@@ -102,6 +109,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = RAModelData.DEFAULT_AWARE_POINTS
+    )
     public int awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
     public int getAwarePoints() {
         return awarePoints;
@@ -111,6 +122,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = RAModelData.DEFAULT_UNKNOWN_POINTS
+    )
     public int unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
     public int getUnknownPoints() {
         return unknownPoints;
@@ -120,6 +135,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raEnabled = true;
     public void setRaEnabled(boolean raEnabled) {
         this.raEnabled = raEnabled;
@@ -129,6 +149,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raLoggingEnabled = true;
     public void setRaLoggingEnabled(boolean raLoggingEnabled) {
         this.raLoggingEnabled = raLoggingEnabled;
@@ -138,6 +163,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raOpinionLogging = true;
     public void setRaOpinionLogging(boolean raOpinionLogging) {
         this.raOpinionLogging = raOpinionLogging;
@@ -147,6 +177,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raUnceraintyLogging = true;
     public void setRaUnceraintyLogging(boolean raUnceraintyLogging) {
         this.raUnceraintyLogging = raUnceraintyLogging;
@@ -156,6 +191,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raPrintHeader = true;
     public void setRaPrintHeader(boolean raPrintHeader) {
         this.raPrintHeader = raPrintHeader;
@@ -165,6 +205,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean raKeepCsv = false;
     public void setRaKeepCsv(boolean raKeepCsv) {
         this.raKeepCsv = raKeepCsv;
@@ -174,6 +218,11 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean raStoreXlsx = true;
     public void setRaStoreXlsx(boolean raStoreXlsx) {
         this.raStoreXlsx = raStoreXlsx;
@@ -183,6 +232,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_SPEED_OF_CONVERGENCE
+    )
     public double speedOfConvergence = RAConstants.DEFAULT_SPEED_OF_CONVERGENCE;
     public void setSpeedOfConvergence(double speedOfConvergence) {
         this.speedOfConvergence = speedOfConvergence;
@@ -192,6 +245,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_ATTIDUTE_GAP
+    )
     public double attitudeGap = RAConstants.DEFAULT_ATTIDUTE_GAP;
     public void setAttitudeGap(double attitudeGap) {
         this.attitudeGap = attitudeGap;
@@ -201,6 +258,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_NEUTRAL_CHANCE
+    )
     public double chanceNeutral = RAConstants.DEFAULT_NEUTRAL_CHANCE;
     public void setChanceNeutral(double chanceNeutral) {
         this.chanceNeutral = chanceNeutral;
@@ -210,6 +271,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_CONVERGENCE_CHANCE
+    )
     public double chanceConvergence = RAConstants.DEFAULT_CONVERGENCE_CHANCE;
     public void setChanceConvergence(double chanceConvergence) {
         this.chanceConvergence = chanceConvergence;
@@ -219,6 +284,10 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_DIVERGENCE_CHANCE
+    )
     public double chanceDivergence = RAConstants.DEFAULT_DIVERGENCE_CHANCE;
     public void setChanceDivergence(double chanceDivergence) {
         this.chanceDivergence = chanceDivergence;
@@ -228,6 +297,7 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUncertaintySupplier[] uncertaintySuppliers;
     public void setUncertaintySupplier(InUncertaintySupplier uncertainty) {
         this.uncertaintySuppliers = new InUncertaintySupplier[]{uncertainty};
@@ -239,20 +309,20 @@ public class InCommunicationModule_actiongraphnode2 implements InConsumerAgentAc
         return uncertaintySuppliers;
     }
 
-    public InCommunicationModule_actiongraphnode2() {
+    public InCommunicationModule3() {
     }
 
-    public InCommunicationModule_actiongraphnode2(String name) {
+    public InCommunicationModule3(String name) {
         setName(name);
     }
 
     @Override
-    public InCommunicationModule_actiongraphnode2 copy(CopyCache cache) {
+    public InCommunicationModule3 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InCommunicationModule_actiongraphnode2 newCopy(CopyCache cache) {
-        InCommunicationModule_actiongraphnode2 copy = new InCommunicationModule_actiongraphnode2();
+    public InCommunicationModule3 newCopy(CopyCache cache) {
+        InCommunicationModule3 copy = new InCommunicationModule3();
         return Dev.throwException();
     }
 

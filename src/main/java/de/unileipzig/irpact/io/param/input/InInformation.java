@@ -1,19 +1,21 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.INFO_INFO;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(INFO_INFO)
 public class InInformation implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -24,17 +26,22 @@ public class InInformation implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.INFO_INFO);
-        addEntry(res, thisClass(), "placeholder");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public double placeholder;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
+    public double placeholder = 0;
 
     public InInformation() {
     }
@@ -45,11 +52,11 @@ public class InInformation implements InIRPactEntity {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -59,7 +66,7 @@ public class InInformation implements InIRPactEntity {
 
     public InInformation newCopy(CopyCache cache) {
         InInformation copy = new InInformation();
-        copy._name = _name;
+        copy.name = name;
         copy.placeholder = placeholder;
         return copy;
     }

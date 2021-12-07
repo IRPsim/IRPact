@@ -10,8 +10,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InConsumerAgentEvalRAModule2 extends InConsumerAgentModule2 {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 }

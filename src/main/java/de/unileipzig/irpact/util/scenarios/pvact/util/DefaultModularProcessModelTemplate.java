@@ -14,17 +14,17 @@ import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySuppli
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InLogisticModule_calcgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InMulScalarModule_calcgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InSumModule_calcgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InLogisticModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InMulScalarModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.InSumModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
@@ -722,16 +722,16 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return mpmm.findModuleAuto(name);
     }
 
-    public InMulScalarModule_calcgraphnode2 findWeightModule(String name) {
+    public InMulScalarModule3 findWeightModule(String name) {
         return findModule(name);
     }
 
-    public InCsvValueLoggingModule_calcloggraphnode2 findLoggingModule(String name) {
+    public InCsvValueLoggingModule3 findLoggingModule(String name) {
         return findModule(name);
     }
 
-    protected InCsvValueLoggingModule_calcloggraphnode2 createDefaultLoggingModule(String name) {
-        InCsvValueLoggingModule_calcloggraphnode2 module = new InCsvValueLoggingModule_calcloggraphnode2();
+    protected InCsvValueLoggingModule3 createDefaultLoggingModule(String name) {
+        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
         module.setName(name);
         module.setEnabled(true);
         module.setPrintHeader(true);
@@ -741,8 +741,8 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return module;
     }
 
-    protected InCsvValueLoggingModule_calcloggraphnode2 createReevaluatorLoggingModule(String name) {
-        InCsvValueLoggingModule_calcloggraphnode2 module = new InCsvValueLoggingModule_calcloggraphnode2();
+    protected InCsvValueLoggingModule3 createReevaluatorLoggingModule(String name) {
+        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
         module.setName(name);
         module.setEnabled(true);
         module.setPrintHeader(true);
@@ -752,7 +752,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return module;
     }
 
-    protected void setupCommunicationModule(InCommunicationModule_actiongraphnode2 module) {
+    protected void setupCommunicationModule(InCommunicationModule3 module) {
         module.setRaEnabled(true);
         module.setRaLoggingEnabled(true);
         module.setRaStoreXlsx(true);
@@ -771,14 +771,14 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         module.setUncertaintySupplier(getValidUncertaintySupplier());
     }
 
-    protected void setupNPVLogisticModule(InLogisticModule_calcgraphnode2 module) {
+    protected void setupNPVLogisticModule(InLogisticModule3 module) {
         module.setValueL(1.0);
         module.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
         module.setXInput(findModule(getNpvModuleName()));
         module.setX0Input(findModule(getAvgNPVModuleName()));
     }
 
-    protected void setupPPLogisticModule(InLogisticModule_calcgraphnode2 module) {
+    protected void setupPPLogisticModule(InLogisticModule3 module) {
         module.setValueL(1.0);
         module.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
         module.setXInput(findModule(getPpInputModuleName()));
@@ -799,13 +799,13 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         findWeightModule(getRewireFactorModuleName()).setScalar(1.0);
     }
 
-    protected void setupYearBasedAdoptionDecider(InYearBasedAdoptionDeciderModule_evalragraphnode2 module) {
+    protected void setupYearBasedAdoptionDecider(InYearBasedAdoptionDeciderModule3 module) {
         module.setEnabled(true);
         module.setBase(1);
         module.setFactor(1);
     }
 
-    protected void setupPhaseLogger(InPhaseLoggingModule_evalragraphnode2 module) {
+    protected void setupPhaseLogger(InPhaseLoggingModule3 module) {
         module.setEnabled(true);
     }
 
@@ -860,12 +860,12 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     }
 
     protected boolean addImages(InBasicCAModularProcessModel mpm, Collection<? super InOutputImage2> images) {
-        InCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = findLoggingModule(getNovReevalLoggerModuleName());
-        InCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = findLoggingModule(getEnvReevalLoggerName());
-        InCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = findLoggingModule(getNpvReevalLoggerModuleName());
-        InCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = findLoggingModule(getSocialShareReevalLoggerModuleName());
-        InCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = findLoggingModule(getLocalShareReevalLoggerModuleName());
-        InCsvValueLoggingModule_calcloggraphnode2 utilityReevalLogger = findLoggingModule(getUtilityReevalLoggerModuleName());
+        InCsvValueLoggingModule3 novReevalLogger = findLoggingModule(getNovReevalLoggerModuleName());
+        InCsvValueLoggingModule3 envReevalLogger = findLoggingModule(getEnvReevalLoggerName());
+        InCsvValueLoggingModule3 npvReevalLogger = findLoggingModule(getNpvReevalLoggerModuleName());
+        InCsvValueLoggingModule3 socialReevalLogger = findLoggingModule(getSocialShareReevalLoggerModuleName());
+        InCsvValueLoggingModule3 localReevalLogger = findLoggingModule(getLocalShareReevalLoggerModuleName());
+        InCsvValueLoggingModule3 utilityReevalLogger = findLoggingModule(getUtilityReevalLoggerModuleName());
 
         InSpecialAverageQuantilRangeImage novQuantile1 = InSpecialAverageQuantilRangeImage.NOV();
         novQuantile1.setLoggingModule(novReevalLogger);
@@ -1045,10 +1045,10 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     }
 
     protected void applyEndOfYear(InBasicCAModularProcessModel mpm) {
-        InPhaseLoggingModule_evalragraphnode2 decisionReevalPhaseLogger = mpmm.create("PHASE_REEVAL_LOGGER", InPhaseLoggingModule_evalragraphnode2::new);
+        InPhaseLoggingModule3 decisionReevalPhaseLogger = mpmm.create("PHASE_REEVAL_LOGGER", InPhaseLoggingModule3::new);
         decisionReevalPhaseLogger.setInput(findModule(getReallyAdoptModuleName()));
 
-        InPhaseUpdateModule_evalragraphnode2 decisionReevalPhaseUpdater = mpmm.create("PHASE_REEVAL_UPDATER", InPhaseUpdateModule_evalragraphnode2::new);
+        InPhaseUpdateModule3 decisionReevalPhaseUpdater = mpmm.create("PHASE_REEVAL_UPDATER", InPhaseUpdateModule3::new);
         decisionReevalPhaseUpdater.setInput(decisionReevalPhaseLogger);
 
         InAnnualInterestLogger annualInterestLogger = new InAnnualInterestLogger();
@@ -1058,7 +1058,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         decisionMakingReevaluator.setName("DECISION_REEVALUATOR");
         decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
 
-        InReevaluatorModule_reevalgraphnode2 reevalNode = mpmm.create("REEVAL", InReevaluatorModule_reevalgraphnode2::new);
+        InReevaluatorModule3 reevalNode = mpmm.create("REEVAL", InReevaluatorModule3::new);
         reevalNode.setInput(
                 findLoggingModule(getNpvReevalLoggerModuleName()),
                 findLoggingModule(getEnvReevalLoggerName()),
@@ -1097,37 +1097,37 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
     protected InConsumerAgentActionModule2 createActionPart(String moduleName) {
         //communication
-        InAttributeInputModule_inputgraphnode2 commuAttr = mpmm.create(getCommuAttrModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 commuAttr = mpmm.create(getCommuAttrModuleName(), InAttributeInputModule3::new);
         commuAttr.setAttribute(anm.get(getCommunicationFrequencySNAttributeName()));
 
-        InMulScalarModule_calcgraphnode2 commuAttrWeight = mpmm.create(getCommunicationFactorModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 commuAttrWeight = mpmm.create(getCommunicationFactorModuleName(), InMulScalarModule3::new);
         commuAttrWeight.setInput(commuAttr);
 
-        InBernoulliModule_boolgraphnode2 commuIf = mpmm.create(getTestCommunicationModuleName(), InBernoulliModule_boolgraphnode2::new);
+        InBernoulliModule3 commuIf = mpmm.create(getTestCommunicationModuleName(), InBernoulliModule3::new);
         commuIf.setInput(commuAttrWeight);
 
-        InCommunicationModule_actiongraphnode2 commuAction = mpmm.create(getCommunicationModuleName(), InCommunicationModule_actiongraphnode2::new);
+        InCommunicationModule3 commuAction = mpmm.create(getCommunicationModuleName(), InCommunicationModule3::new);
         setupCommunicationModule(commuAction);
 
         //rewire
-        InAttributeInputModule_inputgraphnode2 rewireAttr = mpmm.create(getRewireAttrModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 rewireAttr = mpmm.create(getRewireAttrModuleName(), InAttributeInputModule3::new);
         rewireAttr.setAttribute(anm.get(getRewireRateAttributeName()));
-        InMulScalarModule_calcgraphnode2 rewireAttrWeight = mpmm.create(getRewireFactorModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 rewireAttrWeight = mpmm.create(getRewireFactorModuleName(), InMulScalarModule3::new);
         rewireAttrWeight.setInput(rewireAttr);
-        InBernoulliModule_boolgraphnode2 rewireIf = mpmm.create(getTestRewireModuleName(), InBernoulliModule_boolgraphnode2::new);
+        InBernoulliModule3 rewireIf = mpmm.create(getTestRewireModuleName(), InBernoulliModule3::new);
         rewireIf.setInput(rewireAttrWeight);
-        InRewireModule_actiongraphnode2 rewireAction = mpmm.create(getRewireModuleName(), InRewireModule_actiongraphnode2::new);
+        InRewireModule3 rewireAction = mpmm.create(getRewireModuleName(), InRewireModule3::new);
 
         //nop
-        InNOP_actiongraphnode2 nop = mpmm.create(getNopModuleName(), InNOP_actiongraphnode2::new);
+        InNOPModule3 nop = mpmm.create(getNopModuleName(), InNOPModule3::new);
 
         //action / if-else
-        InIfElseActionModule_actiongraphnode2 ifElseRewire = mpmm.create(getIfElseRewireModuleName(), InIfElseActionModule_actiongraphnode2::new);
+        InIfElseActionModule3 ifElseRewire = mpmm.create(getIfElseRewireModuleName(), InIfElseActionModule3::new);
         ifElseRewire.setTestModule(rewireIf);
         ifElseRewire.setOnTrueModule(rewireAction);
         ifElseRewire.setOnFalseModule(nop);
 
-        InIfElseActionModule_actiongraphnode2 ifElseCommu = mpmm.create(moduleName, InIfElseActionModule_actiongraphnode2::new);
+        InIfElseActionModule3 ifElseCommu = mpmm.create(moduleName, InIfElseActionModule3::new);
         ifElseCommu.setTestModule(commuIf);
         ifElseCommu.setOnTrueModule(commuAction);
         ifElseCommu.setOnFalseModule(ifElseRewire);
@@ -1141,112 +1141,112 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return mpmm.registerIfNotExists(getIfElseCommunicationModuleName(), this::createActionPart);
     }
 
-    protected InSumModule_calcgraphnode2 createUtilityPart(String moduleName) {
+    protected InSumModule3 createUtilityPart(String moduleName) {
         //npv
-        InGlobalAvgNPVModule_inputgraphnode2 avgNPV = mpmm.create(getAvgNPVModuleName(), InGlobalAvgNPVModule_inputgraphnode2::new);
+        InGlobalAvgNPVModule3 avgNPV = mpmm.create(getAvgNPVModuleName(), InGlobalAvgNPVModule3::new);
         avgNPV.setPvFile(getValidPvFile());
 
-        InNPVModule_inputgraphnode2 npv = mpmm.create(getNpvModuleName(), InNPVModule_inputgraphnode2::new);
+        InNPVModule3 npv = mpmm.create(getNpvModuleName(), InNPVModule3::new);
         npv.setPvFile(getValidPvFile());
 
-        InLogisticModule_calcgraphnode2 logisticNPV = mpmm.create(getLogisticNpvModuleName(), InLogisticModule_calcgraphnode2::new);
+        InLogisticModule3 logisticNPV = mpmm.create(getLogisticNpvModuleName(), InLogisticModule3::new);
         setupNPVLogisticModule(logisticNPV);
 
         //npv logging
-        InCsvValueLoggingModule_calcloggraphnode2 npvLogger = mpmm.create(getNpvLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 npvLogger = mpmm.create(getNpvLoggerModuleName(), this::createDefaultLoggingModule);
         npvLogger.setInput(logisticNPV);
 
-        InCsvValueLoggingModule_calcloggraphnode2 npvReevalLogger = mpmm.create(getNpvReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 npvReevalLogger = mpmm.create(getNpvReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
         npvReevalLogger.setInput(logisticNPV);
 
         //pp
-        InAttributeInputModule_inputgraphnode2 pp = mpmm.create(getPpInputModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 pp = mpmm.create(getPpInputModuleName(), InAttributeInputModule3::new);
         pp.setAttribute(anm.get(getPurchasePowerEurAttributeName()));
 
-        InAvgFinModule_inputgraphnode2 avgPP = mpmm.create(getAvgPpInputModuleName(), InAvgFinModule_inputgraphnode2::new);
+        InAvgFinModule3 avgPP = mpmm.create(getAvgPpInputModuleName(), InAvgFinModule3::new);
 
-        InLogisticModule_calcgraphnode2 logisticPP = mpmm.create(getLogiticPpModuleName(), InLogisticModule_calcgraphnode2::new);
+        InLogisticModule3 logisticPP = mpmm.create(getLogiticPpModuleName(), InLogisticModule3::new);
         setupPPLogisticModule(logisticPP);
 
         //fin comp
-        InMulScalarModule_calcgraphnode2 npvWeight = mpmm.create(getNpvWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 npvWeight = mpmm.create(getNpvWeightModuleName(), InMulScalarModule3::new);
         npvWeight.setInput(npvLogger);
 
-        InMulScalarModule_calcgraphnode2 ppWeight = mpmm.create(getPpWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 ppWeight = mpmm.create(getPpWeightModuleName(), InMulScalarModule3::new);
         ppWeight.setInput(logisticPP);
 
-        InSumModule_calcgraphnode2 finComp = mpmm.create(getFinComponentModuleName(), InSumModule_calcgraphnode2::new);
+        InSumModule3 finComp = mpmm.create(getFinComponentModuleName(), InSumModule3::new);
         finComp.setInput(npvWeight, ppWeight);
 
         //env comp
-        InAttributeInputModule_inputgraphnode2 envAttr = mpmm.create(getEnvInputModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 envAttr = mpmm.create(getEnvInputModuleName(), InAttributeInputModule3::new);
         envAttr.setAttribute(anm.get(getEnvironmentalConcernAttributeName()));
 
         //env logging
-        InCsvValueLoggingModule_calcloggraphnode2 envLogger = mpmm.create(getEnvLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 envLogger = mpmm.create(getEnvLoggerModuleName(), this::createDefaultLoggingModule);
         envLogger.setInput(envAttr);
 
-        InCsvValueLoggingModule_calcloggraphnode2 envReevalLogger = mpmm.create(getEnvReevalLoggerName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 envReevalLogger = mpmm.create(getEnvReevalLoggerName(), this::createReevaluatorLoggingModule);
         envReevalLogger.setInput(envAttr);
 
-        InMulScalarModule_calcgraphnode2 envWeight = mpmm.create(getEnvWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 envWeight = mpmm.create(getEnvWeightModuleName(), InMulScalarModule3::new);
         envWeight.setInput(envLogger);
 
         //nov comp
-        InAttributeInputModule_inputgraphnode2 novAttr = mpmm.create(getNovInputModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 novAttr = mpmm.create(getNovInputModuleName(), InAttributeInputModule3::new);
         novAttr.setAttribute(anm.get(getNoveltySeekingAttributeName()));
 
-        InCsvValueLoggingModule_calcloggraphnode2 novLogger = mpmm.create(getNovLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 novLogger = mpmm.create(getNovLoggerModuleName(), this::createDefaultLoggingModule);
         novLogger.setInput(novAttr);
 
-        InCsvValueLoggingModule_calcloggraphnode2 novReevalLogger = mpmm.create(getNovReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 novReevalLogger = mpmm.create(getNovReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
         novReevalLogger.setInput(novAttr);
 
-        InMulScalarModule_calcgraphnode2 novWeight = mpmm.create(getNovWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 novWeight = mpmm.create(getNovWeightModuleName(), InMulScalarModule3::new);
         novWeight.setInput(novLogger);
 
         //local
-        InLocalShareOfAdopterModule_inputgraphnode2 localShare = mpmm.create(getLocalShareModuleName(), InLocalShareOfAdopterModule_inputgraphnode2::new);
+        InLocalShareOfAdopterModule3 localShare = mpmm.create(getLocalShareModuleName(), InLocalShareOfAdopterModule3::new);
         localShare.setMaxToStore(2000);
         localShare.setNodeFilterScheme(getValidDistanceFilterScheme());
 
-        InCsvValueLoggingModule_calcloggraphnode2 localLogger = mpmm.create(getLocalShareLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 localLogger = mpmm.create(getLocalShareLoggerModuleName(), this::createDefaultLoggingModule);
         localLogger.setInput(localShare);
 
-        InCsvValueLoggingModule_calcloggraphnode2 localReevalLogger = mpmm.create(getLocalShareReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 localReevalLogger = mpmm.create(getLocalShareReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
         localReevalLogger.setInput(localShare);
 
         //social
-        InSocialShareOfAdopterModule_inputgraphnode2 socialShare = mpmm.create(getSocialShareModuleName(), InSocialShareOfAdopterModule_inputgraphnode2::new);
+        InSocialShareOfAdopterModule3 socialShare = mpmm.create(getSocialShareModuleName(), InSocialShareOfAdopterModule3::new);
 
-        InCsvValueLoggingModule_calcloggraphnode2 socialLogger = mpmm.create(getSocialShareLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 socialLogger = mpmm.create(getSocialShareLoggerModuleName(), this::createDefaultLoggingModule);
         socialLogger.setInput(socialShare);
 
-        InCsvValueLoggingModule_calcloggraphnode2 socialReevalLogger = mpmm.create(getSocialShareReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 socialReevalLogger = mpmm.create(getSocialShareReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
         socialReevalLogger.setInput(socialShare);
 
         //soc component
-        InMulScalarModule_calcgraphnode2 localWeight = mpmm.create(getLocalShareWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 localWeight = mpmm.create(getLocalShareWeightModuleName(), InMulScalarModule3::new);
         localWeight.setInput(localLogger);
 
-        InMulScalarModule_calcgraphnode2 socialWeight = mpmm.create(getSocialShareWeightModuleName(), InMulScalarModule_calcgraphnode2::new);
+        InMulScalarModule3 socialWeight = mpmm.create(getSocialShareWeightModuleName(), InMulScalarModule3::new);
         socialWeight.setInput(socialLogger);
 
-        InSumModule_calcgraphnode2 socComp = mpmm.create(getSocialComponentModuleName(), InSumModule_calcgraphnode2::new);
+        InSumModule3 socComp = mpmm.create(getSocialComponentModuleName(), InSumModule3::new);
         socComp.setInput(localWeight, socialWeight);
 
         //utility
-        InAttributeInputModule_inputgraphnode2 finThreshold = mpmm.create(getFinThresholdInputModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 finThreshold = mpmm.create(getFinThresholdInputModuleName(), InAttributeInputModule3::new);
         finThreshold.setAttribute(anm.get(getFinancialThresholdAttributeName()));
 
-        InThresholdReachedModule_boolgraphnode2 finCheck = mpmm.create(getFinThresholdCheckModuleName(), InThresholdReachedModule_boolgraphnode2::new);
+        InThresholdReachedModule3 finCheck = mpmm.create(getFinThresholdCheckModuleName(), InThresholdReachedModule3::new);
         finCheck.setDraw(pp);
         finCheck.setThreshold(finThreshold);
 
-        InAttributeInputModule_inputgraphnode2 adoptThreshold = mpmm.create(getAdoptThresholdInputModuleName(), InAttributeInputModule_inputgraphnode2::new);
+        InAttributeInputModule3 adoptThreshold = mpmm.create(getAdoptThresholdInputModuleName(), InAttributeInputModule3::new);
         adoptThreshold.setAttribute(anm.get(getAdoptionThresholdAttributeName()));
 
-        InSumModule_calcgraphnode2 utilitySum = mpmm.create(moduleName, InSumModule_calcgraphnode2::new);
+        InSumModule3 utilitySum = mpmm.create(moduleName, InSumModule3::new);
         utilitySum.setInput(
                 finComp,
                 envWeight,
@@ -1254,10 +1254,10 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
                 socComp
         );
 
-        InCsvValueLoggingModule_calcloggraphnode2 utilityLogger = mpmm.create(getUtilityLoggerModuleName(), this::createDefaultLoggingModule);
+        InCsvValueLoggingModule3 utilityLogger = mpmm.create(getUtilityLoggerModuleName(), this::createDefaultLoggingModule);
         utilityLogger.setInput(utilitySum);
 
-        InCsvValueLoggingModule_calcloggraphnode2 utilityReevalLogger = mpmm.create(getUtilityReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
+        InCsvValueLoggingModule3 utilityReevalLogger = mpmm.create(getUtilityReevalLoggerModuleName(), this::createReevaluatorLoggingModule);
         utilityReevalLogger.setInput(utilitySum);
 
         //final
@@ -1265,53 +1265,53 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
         return utilitySum;
     }
-    protected InSumModule_calcgraphnode2 getUtilityPart() {
+    protected InSumModule3 getUtilityPart() {
         return mpmm.registerIfNotExists(getUtilityModuleName(), this::createUtilityPart);
     }
 
-    protected InDoAdoptModule_evalragraphnode2 createDecisionMakingPart(String moduleName) {
-        InSumModule_calcgraphnode2 utilitySum = getUtilityPart();
+    protected InDoAdoptModule3 createDecisionMakingPart(String moduleName) {
+        InSumModule3 utilitySum = getUtilityPart();
 
-        InDecisionMakingDeciderModule2_evalragraphnode2 decisionMaking = mpmm.create(getDecisionMakingModuleName(), InDecisionMakingDeciderModule2_evalragraphnode2::new);
+        InDecisionMakingDeciderModule3 decisionMaking = mpmm.create(getDecisionMakingModuleName(), InDecisionMakingDeciderModule3::new);
         decisionMaking.setFinCheck(findModule(getFinThresholdCheckModuleName()));
         decisionMaking.setThreshold(findModule(getAdoptThresholdInputModuleName()));
         decisionMaking.setUtility(utilitySum);
 
-        InYearBasedAdoptionDeciderModule_evalragraphnode2 reallyDecider = mpmm.create(getReallyAdoptModuleName(), InYearBasedAdoptionDeciderModule_evalragraphnode2::new);
+        InYearBasedAdoptionDeciderModule3 reallyDecider = mpmm.create(getReallyAdoptModuleName(), InYearBasedAdoptionDeciderModule3::new);
         reallyDecider.setInput(decisionMaking);
         setupYearBasedAdoptionDecider(reallyDecider);
 
-        InDoAdoptModule_evalragraphnode2 adoptModule = mpmm.create(moduleName, InDoAdoptModule_evalragraphnode2::new);
+        InDoAdoptModule3 adoptModule = mpmm.create(moduleName, InDoAdoptModule3::new);
         adoptModule.setInput(reallyDecider);
 
         return adoptModule;
     }
-    protected InDoAdoptModule_evalragraphnode2 getDecisionMakingPart() {
+    protected InDoAdoptModule3 getDecisionMakingPart() {
         return mpmm.registerIfNotExists(getDoAdoptModuleName(), this::createDecisionMakingPart);
     }
 
-    protected InInitializationModule_evalragraphnode2 createInitPart(String moduleName) {
-        return mpmm.create(moduleName, InInitializationModule_evalragraphnode2::new);
+    protected InInitializationModule3 createInitPart(String moduleName) {
+        return mpmm.create(moduleName, InInitializationModule3::new);
     }
-    protected InInitializationModule_evalragraphnode2 getInitPart() {
+    protected InInitializationModule3 getInitPart() {
         return mpmm.registerIfNotExists(getInitModuleName(), this::createInitPart);
     }
 
-    protected InInterestModule_evalragraphnode2 createInterestPart(String moduleName) {
-        InInterestModule_evalragraphnode2 interest = mpmm.create(moduleName, InInterestModule_evalragraphnode2::new);
+    protected InInterestModule3 createInterestPart(String moduleName) {
+        InInterestModule3 interest = mpmm.create(moduleName, InInterestModule3::new);
         interest.setInput(getActionPart());
         return interest;
     }
-    protected InInterestModule_evalragraphnode2 getInterestPart() {
+    protected InInterestModule3 getInterestPart() {
         return mpmm.registerIfNotExists(getInterestModuleName(), this::createInterestPart);
     }
 
-    protected InFeasibilityModule_evalragraphnode2 createFeasibilityPart(String moduleName) {
-        InFeasibilityModule_evalragraphnode2 feasibility = mpmm.create(moduleName, InFeasibilityModule_evalragraphnode2::new);
+    protected InFeasibilityModule3 createFeasibilityPart(String moduleName) {
+        InFeasibilityModule3 feasibility = mpmm.create(moduleName, InFeasibilityModule3::new);
         feasibility.setInput(getActionPart());
         return feasibility;
     }
-    protected InFeasibilityModule_evalragraphnode2 getFeasibilityPart() {
+    protected InFeasibilityModule3 getFeasibilityPart() {
         return mpmm.registerIfNotExists(getFeasibilityModuleName(), this::createFeasibilityPart);
     }
 
@@ -1323,8 +1323,8 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return getActionPart();
     }
 
-    protected InMainBranchingModule_evalragraphnode2 createMainBranch(String moduleName) {
-        InMainBranchingModule_evalragraphnode2 mainBranch = mpmm.create(moduleName, InMainBranchingModule_evalragraphnode2::new);
+    protected InMainBranchingModule3 createMainBranch(String moduleName) {
+        InMainBranchingModule3 mainBranch = mpmm.create(moduleName, InMainBranchingModule3::new);
         mainBranch.setInit(getInitPart());
         mainBranch.setAwareness(getInterestPart());
         mainBranch.setFeasibility(getFeasibilityPart());
@@ -1333,26 +1333,26 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         mainBranch.setAdopted(getAdoptedPart());
         return mainBranch;
     }
-    protected InMainBranchingModule_evalragraphnode2 getMainBranch() {
+    protected InMainBranchingModule3 getMainBranch() {
         return mpmm.registerIfNotExists(getMainBranchingModuleName(), this::createMainBranch);
     }
 
-    protected InPhaseUpdateModule_evalragraphnode2 createCorePart(String moduleName) {
-        InPhaseLoggingModule_evalragraphnode2 phaseLogger = mpmm.create(getPhaseLoggerModuleName(), InPhaseLoggingModule_evalragraphnode2::new);
+    protected InPhaseUpdateModule3 createCorePart(String moduleName) {
+        InPhaseLoggingModule3 phaseLogger = mpmm.create(getPhaseLoggerModuleName(), InPhaseLoggingModule3::new);
         setupPhaseLogger(phaseLogger);
         phaseLogger.setInput(getMainBranch());
 
-        InPhaseUpdateModule_evalragraphnode2 phaseUpdater = mpmm.create(moduleName, InPhaseUpdateModule_evalragraphnode2::new);
+        InPhaseUpdateModule3 phaseUpdater = mpmm.create(moduleName, InPhaseUpdateModule3::new);
         phaseUpdater.setInput(phaseLogger);
 
         return phaseUpdater;
     }
-    protected InPhaseUpdateModule_evalragraphnode2 getCorePart() {
+    protected InPhaseUpdateModule3 getCorePart() {
         return mpmm.registerIfNotExists(getPhaseUpdaterModuleName(), this::createCorePart);
     }
 
     public InBasicCAModularProcessModel createModel() {
-        InRunUntilFailureModule_evalgraphnode2 startModule = mpmm.create("START", InRunUntilFailureModule_evalgraphnode2::new);
+        InRunUntilFailureModule3 startModule = mpmm.create("START", InRunUntilFailureModule3::new);
         startModule.setInput(getCorePart());
 
         InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();

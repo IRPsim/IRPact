@@ -3,18 +3,19 @@ package de.unileipzig.irpact.io.param.input;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.INFO_ABOUTSCENARIO;
 
 /**
  * Stores the version of IRPact for which this scenario was created.
@@ -22,6 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(INFO_ABOUTSCENARIO)
 public class InScenarioVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -32,22 +34,26 @@ public class InScenarioVersion implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.INFO_ABOUTSCENARIO);
-        addEntry(res, thisClass());
-        addEntry(res, thisClass(), "placeholder");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     public static String deriveSetName() {
         return Constants.SET + ParamUtil.getClassNameWithoutClassSuffix(thisClass());
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public int placeholder;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int placeholder = 0;
 
     public InScenarioVersion() {
     }
@@ -59,7 +65,7 @@ public class InScenarioVersion implements InIRPactEntity {
 
     public InScenarioVersion newCopy(CopyCache cache) {
         InScenarioVersion copy = new InScenarioVersion();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
@@ -75,27 +81,27 @@ public class InScenarioVersion implements InIRPactEntity {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setVersion(String version) {
-        this._name = version.startsWith("v")
+        this.name = version.startsWith("v")
                 ? version
                 : "v" + version;
     }
 
     public String getVersion() {
-        if(_name == null) {
+        if(name == null) {
             return null;
         } else {
-            if(_name.startsWith("v")) {
-                return _name.substring(1);
+            if(name.startsWith("v")) {
+                return name.substring(1);
             } else {
-                return _name;
+                return name;
             }
         }
     }

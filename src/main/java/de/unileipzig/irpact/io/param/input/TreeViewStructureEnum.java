@@ -35,19 +35,20 @@ import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactIndividualGlobalModerateExtremistUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlobalModerateExtremistUncertainty;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InIfElseActionModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InNOP_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule_actiongraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule_boolgraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule_boolgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InIfElseActionModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InNOPModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InRewireModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule_calcloggraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule_evalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule_evalragraphnode2;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule_reevalgraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
@@ -188,6 +189,8 @@ public enum TreeViewStructureEnum {
     
     //process model
     PROCESS_MODULAR4(ROOT, IOConstants.PROCESS_MODEL4),
+    //graph
+    PROCESS_MODULAR4_GRAPH(PROCESS_MODULAR4, InModularProcessModel2.class),
     //model
     PROCESS_MODULAR4_BASE(PROCESS_MODULAR4, InBasicCAModularProcessModel.class),
     //uncert
@@ -219,59 +222,59 @@ public enum TreeViewStructureEnum {
     PROCESS_MODEL4_GENERALMODULES(PROCESS_MODULAR4, IOConstants.PROCESS_MODEL4_GENERALMODULES),
     //action
     PROCESS_MODEL4_GENERALMODULES_ACTION(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_ACTION),
-    PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE(PROCESS_MODEL4_GENERALMODULES_ACTION, InIfElseActionModule_actiongraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_ACTION_NOP(PROCESS_MODEL4_GENERALMODULES_ACTION, InNOP_actiongraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_ACTION_IFELSE(PROCESS_MODEL4_GENERALMODULES_ACTION, InIfElseActionModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_ACTION_NOP(PROCESS_MODEL4_GENERALMODULES_ACTION, InNOPModule3.class),
     //bool
     PROCESS_MODEL4_GENERALMODULES_BOOL(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_BOOL),
-    PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI(PROCESS_MODEL4_GENERALMODULES_BOOL, InBernoulliModule_boolgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD(PROCESS_MODEL4_GENERALMODULES_BOOL, InThresholdReachedModule_boolgraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_BOOL_BERNOULLI(PROCESS_MODEL4_GENERALMODULES_BOOL, InBernoulliModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_BOOL_THRESHOLD(PROCESS_MODEL4_GENERALMODULES_BOOL, InThresholdReachedModule3.class),
     //number input
     PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT),
-    PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_VALUE(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InValueModule_inputgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InNaNModule_inputgraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_VALUE(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InValueModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT_NAN(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InNaNModule3.class),
     //number eval
     PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL),
-    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InMulScalarModule_calcgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_ADDSCALAR(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InAddScalarModule_calcgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_LOGISTIC(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InLogisticModule_calcgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InSumModule_calcgraphnode2.class),
-    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InProductModule_calcgraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_MULSCALAR(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InMulScalarModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_ADDSCALAR(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InAddScalarModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_LOGISTIC(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InLogisticModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_SUM(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InSumModule3.class),
+    PROCESS_MODEL4_GENERALMODULES_NUMBEREVAL_PRODUCT(PROCESS_MODEL4_GENERALMODULES_NUMBERINPUT, InProductModule3.class),
     //system
     PROCESS_MODEL4_GENERALMODULES_SYSTEM(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_SYSTEM),
-    PROCESS_MODEL4_GENERALMODULES_SYSTEM_UNTILFAIL(PROCESS_MODEL4_GENERALMODULES_SYSTEM, InRunUntilFailureModule_evalgraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_SYSTEM_UNTILFAIL(PROCESS_MODEL4_GENERALMODULES_SYSTEM, InRunUntilFailureModule3.class),
     //independent
     PROCESS_MODEL4_GENERALMODULES_INDEPENDENT(PROCESS_MODEL4_GENERALMODULES, IOConstants.PROCESS_MODEL4_GENERALMODULES_INDEPENDENT),
-    PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL(PROCESS_MODEL4_GENERALMODULES_INDEPENDENT, InReevaluatorModule_reevalgraphnode2.class),
+    PROCESS_MODEL4_GENERALMODULES_INDEPENDENT_REEVAL(PROCESS_MODEL4_GENERALMODULES_INDEPENDENT, InReevaluatorModule3.class),
     //general modules
     PROCESS_MODEL4_PVACTMODULES(PROCESS_MODULAR4, IOConstants.PROCESS_MODEL4_PVACTMODULES),
     //action
     PROCESS_MODEL4_PVACTMODULES_ACTION(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_ACTION),
-    PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU(PROCESS_MODEL4_PVACTMODULES_ACTION, InCommunicationModule_actiongraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_ACTION_REWIRE(PROCESS_MODEL4_PVACTMODULES_ACTION, InRewireModule_actiongraphnode2.class),
+    PROCESS_MODEL4_PVACTMODULES_ACTION_COMMU(PROCESS_MODEL4_PVACTMODULES_ACTION, InCommunicationModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_ACTION_REWIRE(PROCESS_MODEL4_PVACTMODULES_ACTION, InRewireModule3.class),
     //number input
     PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_ATTR(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAttributeInputModule_inputgraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_GLOBALAVGNPV(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InGlobalAvgNPVModule_inputgraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InNPVModule_inputgraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InLocalShareOfAdopterModule_inputgraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_SOCIAL(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InSocialShareOfAdopterModule_inputgraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AVGFIN(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAvgFinModule_inputgraphnode2.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_ATTR(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAttributeInputModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_GLOBALAVGNPV(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InGlobalAvgNPVModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_NPV(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InNPVModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_LOCAL(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InLocalShareOfAdopterModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_SOCIAL(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InSocialShareOfAdopterModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AVGFIN(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT, InAvgFinModule3.class),
     //number logging
     PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING),
-    PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InCsvValueLoggingModule_calcloggraphnode2.class),
+    PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InCsvValueLoggingModule3.class),
     //pv general
     PROCESS_MODEL4_PVACTMODULES_PVGENERAL(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_PVGENERAL),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDecisionMakingDeciderModule2_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DOADOPT(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDoAdoptModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_FEASIBILITY(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InFeasibilityModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INIT(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInitializationModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INTEREST(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInterestModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_MAINBRANCH(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InMainBranchingModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASEUPDATER(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InPhaseUpdateModule_evalragraphnode2.class),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InYearBasedAdoptionDeciderModule_evalragraphnode2.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDecisionMakingDeciderModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DOADOPT(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDoAdoptModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_FEASIBILITY(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InFeasibilityModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INIT(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInitializationModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_INTEREST(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InInterestModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_MAINBRANCH(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InMainBranchingModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASEUPDATER(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InPhaseUpdateModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_YEARBASED(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InYearBasedAdoptionDeciderModule3.class),
     //pv logging
     PROCESS_MODEL4_PVACTMODULES_PVLOGGING(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_PVLOGGING),
-    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER(PROCESS_MODEL4_PVACTMODULES_PVLOGGING, InPhaseLoggingModule_evalragraphnode2.class),
+    PROCESS_MODEL4_PVACTMODULES_PVGENERAL_PHASELOGGER(PROCESS_MODEL4_PVACTMODULES_PVLOGGING, InPhaseLoggingModule3.class),
     //====
 
     SPATIAL(ROOT, IOConstants.SPATIAL),

@@ -3,10 +3,12 @@ package de.unileipzig.irpact.io.param.input.time;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.FixedUnitStepDiscreteTimeModel;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -20,11 +22,14 @@ import java.util.List;
 
 import static de.unileipzig.irpact.io.param.IOConstants.TIME;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.TIME_UNITDISCRET;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(TIME_UNITDISCRET)
+@LocalizedUiResource.TodoAddSimpleRuler
 public class InUnitStepDiscreteTimeModel implements InTimeModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -42,61 +47,82 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
             .withFalseValue(Constants.FALSE0)
             .withKeys(timeUnitFieldNames);
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TIME, thisName());
-        addEntry(res, thisClass(), "amountOfTime");
-        addEntry(res, thisClass(), "useMs");
-        addEntry(res, thisClass(), "useSec");
-        addEntry(res, thisClass(), "useMin");
-        addEntry(res, thisClass(), "useH");
-        addEntry(res, thisClass(), "useD");
-        addEntry(res, thisClass(), "useW");
-        addEntry(res, thisClass(), "useM");
-
-        setDomain(res, thisClass(), "amountOfTime", DOMAIN_G0);
-
-        setDefault(res, thisClass(), "amountOfTime", varargs(1));
-        setDefault(res, thisClass(), new String[]{"useMs", "useSec", "useMin", "useH", "useD", "useM"}, VALUE_FALSE);
-        setDefault(res, thisClass(), "useW", VALUE_TRUE);
-
-        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        res.setRules(thisClass(), timeUnitFieldNames, timeUnitBuilder);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            g0Domain = true,
+            intDefault = 1
+    )
     public long amountOfTime;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useMs;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useSec;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useMin;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useH;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useD;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean useW;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useM;
 
     public InUnitStepDiscreteTimeModel() {
     }
 
     public InUnitStepDiscreteTimeModel(String name, long amountOfTime, ChronoUnit unit) {
-        this._name = name;
+        this.name = name;
         setAmountOfTime(amountOfTime);
         setUnit(unit);
     }
@@ -108,7 +134,7 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
 
     public InUnitStepDiscreteTimeModel newCopy(CopyCache cache) {
         InUnitStepDiscreteTimeModel copy = new InUnitStepDiscreteTimeModel();
-        copy._name = _name;
+        copy.name = name;
         copy.amountOfTime = amountOfTime;
         copy.useMs = useMs;
         copy.useSec = useSec;
@@ -122,11 +148,11 @@ public class InUnitStepDiscreteTimeModel implements InTimeModel {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setAmountOfTime(long amountOfTime) {
