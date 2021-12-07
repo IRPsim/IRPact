@@ -55,7 +55,7 @@ public class InSpecialPVactInput implements Copyable {
     //=========================
 
     @FieldDefinition
-    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_CONSTRATE)
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )
@@ -203,7 +203,7 @@ public class InSpecialPVactInput implements Copyable {
     //=========================
 
     @FieldDefinition
-    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.AddEntry(SPECIALINPUT_PVACT_RENORATE)
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )

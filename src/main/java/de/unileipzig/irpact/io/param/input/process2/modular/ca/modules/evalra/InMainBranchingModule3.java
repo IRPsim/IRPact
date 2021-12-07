@@ -87,7 +87,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule init"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR
@@ -109,7 +108,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule awareness"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR
@@ -131,7 +129,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule feasibility"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR
@@ -153,7 +150,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule decision"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR
@@ -175,7 +171,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule adopted"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.ACTION_EDGE_COLOR
@@ -197,7 +192,6 @@ public class InMainBranchingModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InMainBranchingModule impeded"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.ACTION_EDGE_COLOR

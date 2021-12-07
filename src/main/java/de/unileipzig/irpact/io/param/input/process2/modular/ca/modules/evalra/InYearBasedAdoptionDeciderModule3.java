@@ -123,7 +123,6 @@ public class InYearBasedAdoptionDeciderModule3 implements InConsumerAgentEvalRAM
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InYearBasedAdoptionDeciderModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @de.unileipzig.irptools.defstructure.annotation.graph.GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR

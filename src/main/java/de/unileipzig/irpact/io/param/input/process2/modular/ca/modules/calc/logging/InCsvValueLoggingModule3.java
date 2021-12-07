@@ -166,7 +166,6 @@ public class InCsvValueLoggingModule3 implements InConsumerAgentCalculationLoggi
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InMinimalCsvValueLoggingModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

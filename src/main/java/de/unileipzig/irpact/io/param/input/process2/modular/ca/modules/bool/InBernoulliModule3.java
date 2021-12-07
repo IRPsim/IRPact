@@ -99,12 +99,12 @@ public class InBernoulliModule3 implements InConsumerAgentBoolModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InBernoulliModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR
             )
     )
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentCalculationModule2[] inputModule = new InConsumerAgentCalculationModule2[0];
     public InConsumerAgentCalculationModule2 getInput() throws ParsingException {
         return ParamUtil.getInstance(inputModule, "input");

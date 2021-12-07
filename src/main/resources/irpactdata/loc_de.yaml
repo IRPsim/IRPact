@@ -28,6 +28,12 @@ InGeneral_timeoutUseMin:
 InGeneral_lastSimulationYear:
   gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
   gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
+InGeneral_a:
+  gams_identifier: "Jahreszahl"
+  gams_description: "Einlesen des zu optimierenden Jahres"
+InGeneral_deltaii:
+  gams_identifier: "Zeitschrittlänge"
+  gams_description: "Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)"
 
 logging:
   edn_label: "Logging"
@@ -98,7 +104,7 @@ InGeneral_passErrorMessageToOutput:
 InGeneral_printStacktraceImage:
   gams_identifier: "Stacktrace als Bild ausgeben"
   gams_description: "Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis."
-InGeneral_printNoErrorImage:
+InGeneral_printNonErrorImage:
   gams_identifier: "Ersatzbild bei keinem Fehler erstellen"
   gams_description: "Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt."
 InGeneral_skipPersist:
@@ -793,7 +799,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.22.0"
+  edn_description: "IRPact v1.23.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2531,8 +2537,8 @@ process_model4_pvactmodules_pvlogging:
 ##########################
 
 InModularProcessModel2:
-  graph_label: "GRAPH-TEST-LABEL"
-  graph_description: "GRAPH-TEST-DESC"
+  edn_label: "GRAPH-TEST-LABEL"
+  edn_description: "GRAPH-TEST-DESC"
   graph_edgeheading: "GRAPH-TEST-EH"
   graph_colorheading: "GRAPH-TEST-CH"
   graph_borderheading: "GRAPH-TEST-BH"
@@ -3749,14 +3755,6 @@ InGeneral_logCalculateDecisionMaking:
 logging_script:
   edn_label: "Ausgabe von Skripten und Daten"
   edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben."
-InGeneral_logScriptAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ (line)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben."
-  gams_domain: "[0|1]"
-InGeneral_logScriptAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
-  gams_domain: "[0|1]"
 
 #deprecated
 names:

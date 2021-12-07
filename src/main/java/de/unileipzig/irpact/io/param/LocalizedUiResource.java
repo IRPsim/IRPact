@@ -10,6 +10,7 @@ import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.XorWithDefaultRuleBuilder;
 import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.annotation.*;
 import java.lang.reflect.AnnotatedElement;
@@ -57,6 +58,10 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     //resource access
     //=========================
 
+    protected abstract IRPLogger getLogger();
+
+    public abstract String printAll(String key);
+
     protected abstract String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException;
 
     protected void setValidString(String str, Consumer<? super String> set) {
@@ -78,8 +83,6 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     }
 
     protected void setGraphString(TreeAnnotationResource.EntryBuilder builder, String key) {
-        setValidString(getString(key, GRAPH_LABEL), value -> builder.setCustom(Constants.GRAPH_LABEL, value));
-        setValidString(getString(key, GRAPH_DESCRIPTION), value -> builder.setCustom(Constants.GRAPH_DESCRIPTION, value));
         setValidString(getString(key, GRAPH_EDGEHEADING), value -> builder.setCustom(Constants.GRAPH_EDGE_HEADING, value));
         setValidString(getString(key, GRAPH_COLORHEADING), value -> builder.setCustom(Constants.GRAPH_COLOR_HEADING, value));
         setValidString(getString(key, GRAPH_BORDERHEADING), value -> builder.setCustom(Constants.GRAPH_BORDER_HEADING, value));
@@ -655,10 +658,15 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     public @interface PutClassPath {
 
         TreeViewStructureEnum value();
+
+        boolean addEntry() default false;
     }
 
     protected void apply(Class<?> c, PutClassPath anno) {
         putClassPath(c, anno.value().getPath());
+        if(anno.addEntry()) {
+            addEntry(c);
+        }
     }
 
     /**
@@ -679,6 +687,9 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         String fieldName = f.getName();
         if(add.value().isNotNull()) {
             putFieldPath(c, fieldName, add.value().getPath());
+        }
+        if(add.value().isNull()) {
+            addEntry(c);
         }
         addEntry(c, fieldName);
     }
@@ -745,19 +756,19 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
             setDomain(c, fieldName, DOMAIN_BOOLEAN);
         }
         if(set.g0Domain()) {
-            setDefault(c, fieldName, DOMAIN_G0);
+            setDomain(c, fieldName, DOMAIN_G0);
         }
         if(set.geq0Domain()) {
-            setDefault(c, fieldName, DOMAIN_GEQ0);
+            setDomain(c, fieldName, DOMAIN_GEQ0);
         }
         if(set.customImageDomain()) {
             setDomain(c, fieldName, DOMAIN_CUSTOM_IMAGE);
         }
         if(set.closed01Domain()) {
-            setDefault(c, fieldName, DOMAIN_CLOSED_0_1);
+            setDomain(c, fieldName, DOMAIN_CLOSED_0_1);
         }
         if(set.closed0255Domain()) {
-            setDefault(c, fieldName, DOMAIN_CLOSED_0_255);
+            setDomain(c, fieldName, DOMAIN_CLOSED_0_255);
         }
 
         //hidden

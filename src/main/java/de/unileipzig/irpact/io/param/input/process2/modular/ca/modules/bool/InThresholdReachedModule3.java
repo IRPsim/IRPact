@@ -102,7 +102,6 @@ public class InThresholdReachedModule3 implements InConsumerAgentBoolModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InThresholdReachedModule draw"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR
@@ -124,7 +123,6 @@ public class InThresholdReachedModule3 implements InConsumerAgentBoolModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InThresholdReachedModule threshold"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

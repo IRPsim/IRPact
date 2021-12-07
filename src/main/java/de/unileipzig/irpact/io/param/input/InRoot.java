@@ -22,17 +22,6 @@ import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
-import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.InModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
-import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
@@ -650,6 +639,7 @@ public class InRoot implements RootClass {
 
     @Override
     //TODO remove
+    @Todo
     public AnnotationResource getResources() {
 //        return new IOResources();
         throw new UnsupportedOperationException(); //REMOVE
@@ -657,6 +647,7 @@ public class InRoot implements RootClass {
 
     @Override
     //TODO update
+    @Todo
     public AnnotationResource getResource(Path pathToFile) {
 //        return new IOResources(pathToFile);
         try {
@@ -667,6 +658,7 @@ public class InRoot implements RootClass {
             //TODO hack -> ENTFERNEN
             IOResources oldStuff = new IOResources();
             oldStuff.init(res);
+            finishSetup(res);
             //===
             res.update();
             return res;
@@ -676,6 +668,7 @@ public class InRoot implements RootClass {
     }
 
     @Override
+    @Todo
     public AnnotationResource getResource(Locale locale) {
 //        return new IOResources(locale);
         throw new UnsupportedOperationException(); //ResourceLoader...
@@ -922,65 +915,64 @@ public class InRoot implements RootClass {
 
             InDisabledNodeFilterDistanceScheme.class,
             InEntireNetworkNodeFilterDistanceScheme.class,
-            InRAProcessModel.class,
             InMaxDistanceNodeFilterDistanceScheme.class,
             InNodeDistanceFilterScheme.class,
             InProcessModel.class,
             InNodeFilterScheme.class,
 
-            InComponent.class,
-            InDefaultDoActionComponent.class,
-            InDefaultHandleDecisionMakingComponent.class,
-            InDefaultHandleFeasibilityComponent.class,
-            InDefaultHandleInterestComponent.class,
-            InDoNothingComponent.class,
-            InEvaluableComponent.class,
-            InSumAttributeComponent.class,
-            InSumIntermediateComponent.class,
-            InSumThresholdComponent.class,
-            InValueComponent.class,
-            InModularRAProcessModel.class,
-
-            //MPM v2
-            InAddModule_calcgraphnode.class,
-            InAttributeInputModule_inputgraphnode.class,
-            InDisaggregatedFinancialModule_inputgraphnode.class,
-            InDisaggregatedNPVModule_inputgraphnode.class,
-            InEnvironmentalConcernModule_inputgraphnode.class,
-            InFinancialComponentModule_inputgraphnode.class,
-            InLogisticModule_calcgraphnode.class,
-            InNoveltySeekingModule_inputgraphnode.class,
-            InNPVModule_inputgraphnode.class,
-            InProductModule_calcgraphnode.class,
-            InPurchasePowerModule_inputgraphnode.class,
-            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
-            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
-            InSocialComponentModule_inputgraphnode.class,
-            InSumModule_calcgraphnode.class,
-            InWeightedAddModule_calcgraphnode.class,
-            InWeightedModule_calcgraphnode.class,
-
-            InBranchModule_evalgraphnode.class,
-            InDefaultActionModule_evalgraphnode.class,
-            InDefaultDecisionMakingModule_evalgraphnode.class,
-            InDefaultFeasibilityModule_evalgraphnode.class,
-            InDefaultInterestModule_evalgraphnode.class,
-            InDoNothingModule_evalgraphnode.class,
-            InFilterModule_evalgraphnode.class,
-            InSimpleGetPhaseModule_evalgraphnode.class,
-            InStageEvaluationModule_evalgraphnode.class,
-            InSumThresholdEvaluationModule_evalgraphnode.class,
-            InThresholdEvaluationModule_evalgraphnode.class,
-
-            InConsumerAgentCalculationModule.class,
-            InConsumerAgentEvaluationModule.class,
-            InConsumerAgentModule.class,
-
-            InConsumerAgentModularProcessModel.class,
-            InConsumerAgentMPMWithAdoptionHandler.class,
-
-            InModularProcessModel.class,
-            InModule.class,
+//            InComponent.class,
+//            InDefaultDoActionComponent.class,
+//            InDefaultHandleDecisionMakingComponent.class,
+//            InDefaultHandleFeasibilityComponent.class,
+//            InDefaultHandleInterestComponent.class,
+//            InDoNothingComponent.class,
+//            InEvaluableComponent.class,
+//            InSumAttributeComponent.class,
+//            InSumIntermediateComponent.class,
+//            InSumThresholdComponent.class,
+//            InValueComponent.class,
+//            InModularRAProcessModel.class,
+//
+//            //MPM v2
+//            InAddModule_calcgraphnode.class,
+//            InAttributeInputModule_inputgraphnode.class,
+//            InDisaggregatedFinancialModule_inputgraphnode.class,
+//            InDisaggregatedNPVModule_inputgraphnode.class,
+//            InEnvironmentalConcernModule_inputgraphnode.class,
+//            InFinancialComponentModule_inputgraphnode.class,
+//            InLogisticModule_calcgraphnode.class,
+//            InNoveltySeekingModule_inputgraphnode.class,
+//            InNPVModule_inputgraphnode.class,
+//            InProductModule_calcgraphnode.class,
+//            InPurchasePowerModule_inputgraphnode.class,
+//            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
+//            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
+//            InSocialComponentModule_inputgraphnode.class,
+//            InSumModule_calcgraphnode.class,
+//            InWeightedAddModule_calcgraphnode.class,
+//            InWeightedModule_calcgraphnode.class,
+//
+//            InBranchModule_evalgraphnode.class,
+//            InDefaultActionModule_evalgraphnode.class,
+//            InDefaultDecisionMakingModule_evalgraphnode.class,
+//            InDefaultFeasibilityModule_evalgraphnode.class,
+//            InDefaultInterestModule_evalgraphnode.class,
+//            InDoNothingModule_evalgraphnode.class,
+//            InFilterModule_evalgraphnode.class,
+//            InSimpleGetPhaseModule_evalgraphnode.class,
+//            InStageEvaluationModule_evalgraphnode.class,
+//            InSumThresholdEvaluationModule_evalgraphnode.class,
+//            InThresholdEvaluationModule_evalgraphnode.class,
+//
+//            InConsumerAgentCalculationModule.class,
+//            InConsumerAgentEvaluationModule.class,
+//            InConsumerAgentModule.class,
+//
+//            InConsumerAgentModularProcessModel.class,
+//            InConsumerAgentMPMWithAdoptionHandler.class,
+//
+//            InModularProcessModel.class,
+//            InModule.class,
             //===
 
             //MPM3
@@ -1161,6 +1153,12 @@ public class InRoot implements RootClass {
         }
     }
 
+    private static void finishSetup(LocalizedUiResource res) {
+        res.getCachedElement("OPTACT").setParent(res.getCachedElement(TreeViewStructureEnum.SUBMODULE.getPath().getLast()));
+        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+        res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
+    }
+
     @TreeAnnotationResource.Init
     public static void initRes(LocalizedUiResource res) {
     }
@@ -1168,8 +1166,5 @@ public class InRoot implements RootClass {
     @TreeAnnotationResource.Apply
     public static void applyRes(LocalizedUiResource res) {
         //optact rest
-        res.getCachedElement("OPTACT").setParent(res.getCachedElement(TreeViewStructure.SUBMODULE.getLast()));
-        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
-        res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
     }
 }

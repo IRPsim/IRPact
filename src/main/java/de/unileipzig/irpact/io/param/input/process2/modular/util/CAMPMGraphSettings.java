@@ -10,7 +10,6 @@ public class CAMPMGraphSettings {
     public static final String NODE_SET = "set_InModule2";
 
     public static final String GRAPH_ID = "campmgraph";
-    public static final String GRAPH_EDGE = "graphedge3";
     public static final String GRAPH_ICON = "glyphicon glyphicon-globe";
 
     public static final String ACTION_SHAPE = ParamUtil.SHAPE_OCTAGON;

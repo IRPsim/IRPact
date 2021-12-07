@@ -104,7 +104,6 @@ public class InPhaseLoggingModule3 implements InConsumerAgentEvalRALoggingModule
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InPhaseLoggingModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR

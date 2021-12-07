@@ -87,7 +87,6 @@ public class InReevaluatorModule3 implements InConsumerAgentReevaluationModule2 
 //                    color = EVAL_EDGE_COLOR,
 //                    tags = {"InReevaluatorModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.REEVAL_EDGE_COLOR

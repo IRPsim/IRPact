@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.filter.DisabledNodeFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -16,8 +15,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_DISTANCE_DISABLED;
 
 /**

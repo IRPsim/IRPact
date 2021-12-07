@@ -51,7 +51,6 @@ import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InNoDistance;
 import de.unileipzig.irpact.io.param.input.network.InNumberOfTies;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
@@ -360,25 +359,25 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         return scheme;
     }
 
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence) {
-        return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
-    }
-
-    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeDistanceFilterScheme scheme) {
-        InRAProcessModel processModel = new InRAProcessModel();
-        processModel.setName(name);
-        processModel.setDefaultValues();
-        processModel.setPvFile(getPVFile());
-        processModel.setUncertainty(uncertainty);
-        processModel.setSpeedOfConvergence(speedOfConvergence);
-        processModel.setSkipAwareness(false);
-        processModel.setSkipFeasibility(false);
-        processModel.setForceEvaluate(true);
-        processModel.setAdoptionCertaintyBase(1.0);
-        processModel.setAdoptionCertaintyFactor(1.0);
-        processModel.setNodeFilterScheme(scheme);
-        return processModel;
-    }
+//    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence) {
+//        return createDefaultProcessModel(name, uncertainty, speedOfConvergence, null);
+//    }
+//
+//    public InRAProcessModel createDefaultProcessModel(String name, InUncertaintySupplier uncertainty, double speedOfConvergence, InNodeDistanceFilterScheme scheme) {
+//        InRAProcessModel processModel = new InRAProcessModel();
+//        processModel.setName(name);
+//        processModel.setDefaultValues();
+//        processModel.setPvFile(getPVFile());
+//        processModel.setUncertainty(uncertainty);
+//        processModel.setSpeedOfConvergence(speedOfConvergence);
+//        processModel.setSkipAwareness(false);
+//        processModel.setSkipFeasibility(false);
+//        processModel.setForceEvaluate(true);
+//        processModel.setAdoptionCertaintyBase(1.0);
+//        processModel.setAdoptionCertaintyFactor(1.0);
+//        processModel.setNodeFilterScheme(scheme);
+//        return processModel;
+//    }
 
     public InBasicCAModularProcessModel createDefaultModularProcessModel(
             String name,

@@ -4,6 +4,7 @@ import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.util.CAMPMGraphSettings;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.graph.*;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
@@ -29,13 +30,15 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
 //                colorHeading = "Fuellfarbe",
 //                shapeHeading = "Form"
 //        ),
+        edn = @Edn(
+                icon = CAMPMGraphSettings.GRAPH_ICON
+        ),
         graph3 = @Graph(
                 id = CAMPMGraphSettings.GRAPH_ID,
                 ui = @UiSettings(
-                        icon = CAMPMGraphSettings.GRAPH_ICON
+                        useEdnSettings = true
                 ),
                 edges = @EdgesSettings(
-                        tags = CAMPMGraphSettings.GRAPH_EDGE
                 ),
                 nodes = @NodesSettings(
                         set = CAMPMGraphSettings.NODE_SET,

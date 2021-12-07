@@ -101,7 +101,6 @@ public class InDecisionMakingDeciderModule3 implements InConsumerAgentEvalRAModu
 //                    color = BOOL_EDGE_COLOR,
 //                    tags = {"InDecisionMakingDeciderModule2 finCheck"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.BOOL_EDGE_COLOR
@@ -123,7 +122,6 @@ public class InDecisionMakingDeciderModule3 implements InConsumerAgentEvalRAModu
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InDecisionMakingDeciderModule2 threshold"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR
@@ -145,7 +143,6 @@ public class InDecisionMakingDeciderModule3 implements InConsumerAgentEvalRAModu
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InDecisionMakingDeciderModule2 utility"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

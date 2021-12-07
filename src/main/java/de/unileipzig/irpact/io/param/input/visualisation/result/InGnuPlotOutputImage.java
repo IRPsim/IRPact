@@ -1,10 +1,11 @@
 package de.unileipzig.irpact.io.param.input.visualisation.result;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
-import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
+import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.develop.ToRemove;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
@@ -34,25 +35,25 @@ public class InGnuPlotOutputImage implements InOutputImage {
     }
 
     @TreeAnnotationResource.Init
-    public static void initRes(TreeAnnotationResource res) {
+    public static void initRes(LocalizedUiResource res) {
     }
     @TreeAnnotationResource.Apply
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TreeViewStructure.SETT_VISURESULT_GNU);
-        addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntriesWithDefaultAndDomain(res, thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
-        addEntry(res, thisClass(), "realAdoptionDataFile");
+    public static void applyRes(LocalizedUiResource res) {
+        res.putClassPath(thisClass(), TreeViewStructureEnum.SETT_VISURESULT_GNU.getPath());
+        res.addEntryWithDefaultAndDomain(thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
+        res.addEntriesWithDefaultAndDomain(thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
+        res.addEntryWithDefaultAndDomain(thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
+        res.addEntryWithDefaultAndDomain(thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
+        res.addEntry(thisClass(), "realAdoptionDataFile");
 
-        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
+        res.setRules(thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
 
-        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
-        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
+        res.setUnit(thisClass(), "imageWidth", UNIT_PIXEL);
+        res.setUnit(thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
     @DefinitionName

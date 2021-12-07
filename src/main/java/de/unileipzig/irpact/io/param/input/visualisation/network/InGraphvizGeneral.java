@@ -3,8 +3,6 @@ package de.unileipzig.irpact.io.param.input.visualisation.network;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
-import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
@@ -14,7 +12,6 @@ import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -23,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISUNETWORK_GENERAL;
 
 /**

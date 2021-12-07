@@ -113,7 +113,6 @@ public class InLogisticModule3 implements InConsumerAgentCalculationModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InLogisticModule xinput"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR
@@ -135,7 +134,6 @@ public class InLogisticModule3 implements InConsumerAgentCalculationModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InLogisticModule x0input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

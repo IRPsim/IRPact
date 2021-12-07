@@ -85,7 +85,6 @@ public class InProductModule3 implements InConsumerAgentCalculationModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InProductModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

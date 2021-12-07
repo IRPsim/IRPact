@@ -88,7 +88,6 @@ public class InIfElseActionModule3 implements InConsumerAgentActionModule2 {
 //                    color = BOOL_EDGE_COLOR,
 //                    tags = {"InIfElseActionModule test"}
 //            ),
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.BOOL_EDGE_COLOR
@@ -110,7 +109,6 @@ public class InIfElseActionModule3 implements InConsumerAgentActionModule2 {
 //                    color = ACTION_EDGE_COLOR,
 //                    tags = {"InIfElseActionModule onTrue"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.ACTION_EDGE_COLOR
@@ -132,7 +130,6 @@ public class InIfElseActionModule3 implements InConsumerAgentActionModule2 {
 //                    color = ACTION_EDGE_COLOR,
 //                    tags = {"InIfElseActionModule onFalse"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.ACTION_EDGE_COLOR

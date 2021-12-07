@@ -6,7 +6,6 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process2.uncert.GlobalModerateExtremistUncertaintyWithUpdatableOpinion;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -16,7 +15,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_UNCERT_PVACTMEUOP;
 
 /**

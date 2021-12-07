@@ -2,6 +2,8 @@ package de.unileipzig.irpact.io.param;
 
 import de.unileipzig.irpact.commons.resource.LocaleUtil;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.NoSuchElementException;
  */
 //for using aliasses
 public class LocalizedSnakeYamlBasedUiResource extends LocalizedUiResource {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(LocalizedSnakeYamlBasedUiResource.class);
 
     public static final String FILE_NAME = "loc";
     public static final String FILE_EXTENSION = "yaml";
@@ -45,12 +49,33 @@ public class LocalizedSnakeYamlBasedUiResource extends LocalizedUiResource {
         return FILE_EXTENSION;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException {
+    protected void checkData() {
         if(data == null) {
             throw new IllegalStateException("no data loaded");
         }
+    }
+
+    @Override
+    protected IRPLogger getLogger() {
+        return LOGGER;
+    }
+
+    @Override
+    public String printAll(String key) {
+        checkData();
+
+        Object keyObj = data.get(key);
+        if(keyObj == null) {
+            return "null";
+        } else {
+            return keyObj.toString();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException {
+        checkData();
 
         Object keyObj = data.get(key);
         if(keyObj == null) {

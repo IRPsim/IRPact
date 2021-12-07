@@ -23,15 +23,9 @@ import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.network.*;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
 import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
-import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.mra.component.*;
 import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InEntireNetworkNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactIndividualGlobalModerateExtremistUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactUpdatableGlobalModerateExtremistUncertainty;
@@ -74,6 +68,7 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public final class TreeViewStructure {
 
     private static final List<EdnPath> ALL_PATHS = new ArrayList<>();
@@ -309,54 +304,54 @@ public final class TreeViewStructure {
     public static final EdnPath SETT_VISURESULT_R = resolve(SETT_VISURESULT, InROutputImage.class);
     //SETT
     public static final EdnPath SETT_DATAOUTPUT = resolve(DEV_DEPRECATED, IOConstants.DATA_OUTPUT);
-    //ROOT
-    public static final EdnPath PROCESS = resolve(DEV_DEPRECATED, IOConstants.PROCESS_MODEL);
-    public static final EdnPath PROCESS_RA = resolve(PROCESS, InRAProcessModel.class);
-    public static final EdnPath PROCESS_MRA = resolve(PROCESS, InModularRAProcessModel.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS = resolve(PROCESS_MRA, IOConstants.PROCESS_MODULAR_COMPONENTS);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFINTEREST = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleInterestComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFFEAS = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleFeasibilityComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFDEC = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleDecisionMakingComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFACTION = resolve(PROCESS_MRA_COMPONENTS, InDefaultDoActionComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMATTR = resolve(PROCESS_MRA_COMPONENTS, InSumAttributeComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMINTER = resolve(PROCESS_MRA_COMPONENTS, InSumIntermediateComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMTHRESH = resolve(PROCESS_MRA_COMPONENTS, InSumThresholdComponent.class);
-    public static final EdnPath PROCESS_MRA_COMPONENTS_NOTHING = resolve(PROCESS_MRA_COMPONENTS, InDoNothingComponent.class);
-
-    public static final EdnPath PROCESS_MODULAR2 = resolve(PROCESS, IOConstants.PROCESS_MODULAR2);
-    public static final EdnPath PROCESS_MODULAR2_MODEL = resolve(PROCESS_MODULAR2, IOConstants.PROCESS_MODULAR2_MODEL);
-    public static final EdnPath PROCESS_MODULAR2_MODEL_SIMPLE = resolve(PROCESS_MODULAR2_MODEL, InConsumerAgentMPMWithAdoptionHandler.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS = resolve(PROCESS_MODULAR2, IOConstants.PROCESS_MODULAR2_COMPONENTS);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC = resolve(PROCESS_MODULAR2_COMPONENTS, IOConstants.PROCESS_MODULAR2_COMPONENTS_CALC);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_ADD = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InAddModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_INPUTATTR = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InAttributeInputModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_DISFIN = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InDisaggregatedFinancialModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_DISNPV = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InDisaggregatedNPVModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_ENVCON = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InEnvironmentalConcernModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_FINCOMP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InFinancialComponentModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_LOGISTIC = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InLogisticModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NOVSEEK = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InNoveltySeekingModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NPV = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InNPVModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PRODUCT = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InProductModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InPurchasePowerModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARELOCAL = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InShareOfAdopterInLocalNetworkModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARESOCIAL = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InShareOfAdopterInSocialNetworkModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SOCIALCOMP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InSocialComponentModule_inputgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SUM = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InSumModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTEDADD = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InWeightedAddModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTED = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InWeightedModule_calcgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL = resolve(PROCESS_MODULAR2_COMPONENTS, IOConstants.PROCESS_MODULAR2_COMPONENTS_EVAL);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_BRANCH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InBranchModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultActionModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultDecisionMakingModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultFeasibilityModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultInterestModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DONOTHING = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDoNothingModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_FILTER = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InFilterModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SIMPLEGET = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InSimpleGetPhaseModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InStageEvaluationModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SUMTHRESH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InSumThresholdEvaluationModule_evalgraphnode.class);
-    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_THRESH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InThresholdEvaluationModule_evalgraphnode.class);
+//    //ROOT
+//    public static final EdnPath PROCESS = resolve(DEV_DEPRECATED, IOConstants.PROCESS_MODEL);
+//    public static final EdnPath PROCESS_RA = resolve(PROCESS, InRAProcessModel.class);
+//    public static final EdnPath PROCESS_MRA = resolve(PROCESS, InModularRAProcessModel.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS = resolve(PROCESS_MRA, IOConstants.PROCESS_MODULAR_COMPONENTS);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFINTEREST = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleInterestComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFFEAS = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleFeasibilityComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFDEC = resolve(PROCESS_MRA_COMPONENTS, InDefaultHandleDecisionMakingComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_DEFACTION = resolve(PROCESS_MRA_COMPONENTS, InDefaultDoActionComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMATTR = resolve(PROCESS_MRA_COMPONENTS, InSumAttributeComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMINTER = resolve(PROCESS_MRA_COMPONENTS, InSumIntermediateComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_SUMTHRESH = resolve(PROCESS_MRA_COMPONENTS, InSumThresholdComponent.class);
+//    public static final EdnPath PROCESS_MRA_COMPONENTS_NOTHING = resolve(PROCESS_MRA_COMPONENTS, InDoNothingComponent.class);
+//
+//    public static final EdnPath PROCESS_MODULAR2 = resolve(PROCESS, IOConstants.PROCESS_MODULAR2);
+//    public static final EdnPath PROCESS_MODULAR2_MODEL = resolve(PROCESS_MODULAR2, IOConstants.PROCESS_MODULAR2_MODEL);
+//    public static final EdnPath PROCESS_MODULAR2_MODEL_SIMPLE = resolve(PROCESS_MODULAR2_MODEL, InConsumerAgentMPMWithAdoptionHandler.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS = resolve(PROCESS_MODULAR2, IOConstants.PROCESS_MODULAR2_COMPONENTS);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC = resolve(PROCESS_MODULAR2_COMPONENTS, IOConstants.PROCESS_MODULAR2_COMPONENTS_CALC);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_ADD = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InAddModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_INPUTATTR = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InAttributeInputModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_DISFIN = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InDisaggregatedFinancialModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_DISNPV = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InDisaggregatedNPVModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_ENVCON = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InEnvironmentalConcernModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_FINCOMP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InFinancialComponentModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_LOGISTIC = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InLogisticModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NOVSEEK = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InNoveltySeekingModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_NPV = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InNPVModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PRODUCT = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InProductModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_PP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InPurchasePowerModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARELOCAL = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InShareOfAdopterInLocalNetworkModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SHARESOCIAL = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InShareOfAdopterInSocialNetworkModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SOCIALCOMP = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InSocialComponentModule_inputgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_SUM = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InSumModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTEDADD = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InWeightedAddModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_CALC_WEIGHTED = resolve(PROCESS_MODULAR2_COMPONENTS_CALC, InWeightedModule_calcgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL = resolve(PROCESS_MODULAR2_COMPONENTS, IOConstants.PROCESS_MODULAR2_COMPONENTS_EVAL);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_BRANCH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InBranchModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTACTION = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultActionModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTDECISION = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultDecisionMakingModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTFEAS = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultFeasibilityModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DEFAULTINTEREST = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDefaultInterestModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_DONOTHING = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InDoNothingModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_FILTER = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InFilterModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SIMPLEGET = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InSimpleGetPhaseModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_STAGEEVAL = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InStageEvaluationModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_SUMTHRESH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InSumThresholdEvaluationModule_evalgraphnode.class);
+//    public static final EdnPath PROCESS_MODULAR2_COMPONENTS_EVAL_THRESH = resolve(PROCESS_MODULAR2_COMPONENTS_EVAL, InThresholdEvaluationModule_evalgraphnode.class);
 
     private TreeViewStructure() {
     }

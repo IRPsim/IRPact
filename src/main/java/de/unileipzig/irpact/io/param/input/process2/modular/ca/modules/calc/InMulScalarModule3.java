@@ -98,7 +98,6 @@ public class InMulScalarModule3 implements InConsumerAgentCalculationModule2 {
 //                    color = CALC_EDGE_COLOR,
 //                    tags = {"InMulScalarModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.CALC_EDGE_COLOR

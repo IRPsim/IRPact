@@ -6,9 +6,9 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.BasicProductGroup;
 import de.unileipzig.irpact.core.product.BasicProductManager;
 import de.unileipzig.irpact.core.product.attribute.ProductGroupAttribute;
+import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
@@ -18,9 +18,6 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_GROUP_BASIC;
 
 /**
@@ -43,8 +40,6 @@ public class InBasicProductGroup implements InProductGroup {
     }
     @TreeAnnotationResource.Apply
     public static void applyRes(LocalizedUiResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_GROUP, thisName());
-        addEntry(res, thisClass(), "pgAttributes");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());

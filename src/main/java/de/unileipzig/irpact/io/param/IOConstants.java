@@ -110,8 +110,6 @@ public final class IOConstants {
     public static final String GAMS_DOMAIN = "gams_domain";
     public static final String GAMS_DEFAULT = "gams_default";
 
-    public static final String GRAPH_LABEL = "graph_label";
-    public static final String GRAPH_DESCRIPTION = "graph_description";
     public static final String GRAPH_EDGEHEADING = "graph_edgeheading";
     public static final String GRAPH_COLORHEADING = "graph_colorheading";
     public static final String GRAPH_BORDERHEADING = "graph_borderheading";

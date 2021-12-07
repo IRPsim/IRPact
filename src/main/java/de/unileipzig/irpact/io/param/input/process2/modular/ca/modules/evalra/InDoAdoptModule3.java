@@ -84,7 +84,6 @@ public class InDoAdoptModule3 implements InConsumerAgentEvalRAModule2 {
 //                    color = EVALRA_EDGE_COLOR,
 //                    tags = {"InDoAdoptModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVALRA_EDGE_COLOR

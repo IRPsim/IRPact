@@ -41,6 +41,11 @@ public abstract class LocalizedJsonBasedUiResource extends LocalizedUiResource {
     protected abstract ObjectMapper getMapper();
 
     @Override
+    public String printAll(String key) {
+        throw new UnsupportedOperationException("TODO");
+    }
+
+    @Override
     protected String getString(String key, String tag) throws NoSuchElementException, IllegalArgumentException {
         JsonNode keyNode = root.get(key);
         if(keyNode == null) {

@@ -87,7 +87,6 @@ public class InRunUntilFailureModule3 implements InConsumerAgentEvalModule2 {
 //                    color = EVAL_EDGE_COLOR,
 //                    tags = {"InRunUntilFailureModule input"}
 //            )
-            additionalNameTags = CAMPMGraphSettings.GRAPH_EDGE,
             graphEdge3 = @GraphEdge(
                     graphId = CAMPMGraphSettings.GRAPH_ID,
                     color = CAMPMGraphSettings.EVAL_EDGE_COLOR

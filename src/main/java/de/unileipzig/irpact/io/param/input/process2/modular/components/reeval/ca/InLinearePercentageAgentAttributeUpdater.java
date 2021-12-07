@@ -8,7 +8,6 @@ import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
-import de.unileipzig.irpact.io.param.input.TreeViewStructure;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
@@ -20,7 +19,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.getInstance;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODULAR3_REEVAL_LINPERUPDATER;
 
 /**
