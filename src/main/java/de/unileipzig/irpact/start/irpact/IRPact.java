@@ -82,6 +82,7 @@ public final class IRPact implements IRPActAccess {
     private static final String SIMULATION_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI.class";
     private static final String AGENTMANAGER_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexIRPactAgentManagerAgentBDI.class";
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
+
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
     //reminder: change version in loc_XX.yaml

@@ -4,7 +4,7 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
@@ -147,8 +147,8 @@ public class ToyModel_S_7_1 extends AbstractToyModel {
     }
 
     @Override
-    protected int getSimulationLength() {
-        return 10;
+    protected void initThisCustom() {
+        simulationLength = 10;
     }
 
     @Override
@@ -162,11 +162,8 @@ public class ToyModel_S_7_1 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpm) {
-        mpm.getNpvWeightModule().setScalar(0);
-        mpm.getPpWeightModule().setScalar(0);
-        mpm.getLocalWeightModule().setScalar(0);
-        mpm.getSocialWeightModule().setScalar(0);
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setAllWeights(0);
         mpm.getEnvWeightModule().setScalar(0.5);
         mpm.getNovWeightModule().setScalar(0.5);
     }

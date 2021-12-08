@@ -1,8 +1,8 @@
 package de.unileipzig.irpact.util.scenarios.pvact.util;
 
 import de.unileipzig.irpact.util.scenarios.pvact.RealData;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ModularProcessModelManager;
 import de.unileipzig.irpact.util.scenarios.util.AttributeNameManager;
+import de.unileipzig.irpact.util.scenarios.util.ModuleManager;
 
 /**
  * @author Daniel Abitz
@@ -13,8 +13,8 @@ public class RealDataModularProcessModelTemplate extends DefaultModularProcessMo
         super(mpmName);
     }
 
-    public RealDataModularProcessModelTemplate(ModularProcessModelManager mpmm, AttributeNameManager anm, String mpmName) {
-        super(mpmm, anm, mpmName);
+    public RealDataModularProcessModelTemplate(ModuleManager mm, AttributeNameManager anm, String mpmName) {
+        super(mm, anm, mpmName);
     }
 
     @Override

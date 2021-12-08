@@ -4,7 +4,7 @@ import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
@@ -128,8 +128,8 @@ public class ToyModel_S_7_3 extends AbstractToyModel {
     }
 
     @Override
-    protected int getSimulationLength() {
-        return 10;
+    protected void initThisCustom() {
+        simulationLength = 10;
     }
 
     @Override
@@ -143,16 +143,13 @@ public class ToyModel_S_7_3 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpmm) {
-        mpmm.getNpvWeightModule().setScalar(0);
-        mpmm.getPpWeightModule().setScalar(0);
-        mpmm.getLocalWeightModule().setScalar(0);
-        mpmm.getSocialWeightModule().setScalar(0);
-        mpmm.getEnvWeightModule().setScalar(0.5);
-        mpmm.getNovWeightModule().setScalar(0.5);
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setAllWeights(0);
+        mpm.getEnvWeightModule().setScalar(0.5);
+        mpm.getNovWeightModule().setScalar(0.5);
 
-        mpmm.getCommunicationModule().setAdopterPoints(1);
-        mpmm.getCommunicationModule().setInterestedPoints(1);
-        mpmm.getCommunicationModule().setAwarePoints(1);
+        mpm.getCommunicationModule().setAdopterPoints(1);
+        mpm.getCommunicationModule().setInterestedPoints(1);
+        mpm.getCommunicationModule().setAwarePoints(1);
     }
 }

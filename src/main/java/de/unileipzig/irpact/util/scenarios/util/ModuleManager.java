@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.util.scenarios.pvact.toymodels.util;
+package de.unileipzig.irpact.util.scenarios.util;
 
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
 
@@ -10,12 +10,11 @@ import java.util.function.Function;
 /**
  * @author Daniel Abitz
  */
-@Deprecated
-public class ModularProcessModelManager {
+public class ModuleManager {
 
     protected final Map<String, InModule2> modules = new HashMap<>();
 
-    public ModularProcessModelManager() {
+    public ModuleManager() {
     }
 
     public boolean has(String name) {

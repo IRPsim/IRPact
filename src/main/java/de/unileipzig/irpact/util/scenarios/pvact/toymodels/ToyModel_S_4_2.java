@@ -3,7 +3,7 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
@@ -81,12 +81,12 @@ public class ToyModel_S_4_2 extends AbstractToyModel {
     }
 
     @Override
-    protected int getSimulationLength() {
-        return 10;
+    protected void initThisCustom() {
+        simulationLength = 10;
     }
 
     @Override
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpm) {
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.getNpvWeightModule().setScalar(0.125);
         mpm.getPpWeightModule().setScalar(0.125);
         mpm.getLocalWeightModule().setScalar(0.125);
