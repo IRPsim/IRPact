@@ -26,6 +26,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -37,8 +38,8 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //global keys
     //shared keys
     Object AVG_FIN_KEY = new Object();
-    Object LOCAL_NEIGHBOURS = new Object();
-    Object LOCAL_NEIGHBOURS_TOO_LARGE = new Object();
+    Object NEIGHBOURS_KEY = new Object();
+    Object NEIGHBOURS_CHECKED_KEY = new Object();
     //individual keys
     Object NODE_FILTER = new Object();
     Object UTILITY = new Object();
@@ -87,7 +88,7 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         return input.getEnvironment().getTimeModel().getFirstSimulationYear();
     }
 
-    default int getYearDelta(ConsumerAgentData2 input) {
+    default int getSimulationYearDelta(ConsumerAgentData2 input) {
         return getCurrentYear(input) - getStartYear(input);
     }
 
@@ -399,97 +400,125 @@ public interface RAHelperAPI2 extends HelperAPI2 {
         }
     }
 
-    default double getShareOfAdopterInLocalNetwork(ConsumerAgentData2 input, NodeFilter filter, int maxToStore) {
-        List<ConsumerAgent> neighbours = getSharedData().getAuto(LOCAL_NEIGHBOURS, input.getAgent());
-        if(maxToStore > 0 && neighbours != null) {
-            double adopter = 0;
-            for(ConsumerAgent agent: neighbours) {
+    //==========
+    //local
+    //==========
+
+    default double getShareOfAdopterInLocalNetwork(
+            ConsumerAgentData2 input,
+            NodeFilter filter,
+            int maxToStore) {
+
+        if(maxToStore < 1) {
+            return getShareOfAdopterInLocalNetwork(input, filter);
+        }
+
+        boolean neighboursChecked = getSharedData().contains(input.getAgent(), NEIGHBOURS_CHECKED_KEY);
+
+        if(neighboursChecked) {
+            List<ConsumerAgent> neighbours = getSharedData().getAuto(input.getAgent(), NEIGHBOURS_KEY);
+            if(neighbours == null) {
+                return getShareOfAdopterInLocalNetwork(input, filter);
+            } else {
+                return getShareOfAdopterInNeighbourhood(input, neighbours);
+            }
+        } else {
+            getSharedData().put(input.getAgent(), NEIGHBOURS_CHECKED_KEY, true);
+            return getShareOfAdopterInLocalNetworkAndTryToCache(input, filter, maxToStore);
+        }
+    }
+
+    default double getShareOfAdopterInLocalNetworkAndTryToCache(
+            ConsumerAgentData2 input,
+            NodeFilter filter,
+            int maxToStore) {
+
+        MutableDouble totalGlobal = MutableDouble.zero();
+        MutableDouble adopterGlobal = MutableDouble.zero();
+
+        MutableBoolean addNeighbours = MutableBoolean.trueValue();
+        List<ConsumerAgent> neighbours = new ArrayList<>(maxToStore);
+
+        streamNeighbours(input.getEnvironment(), input.getAgent(), filter)
+                .forEach(target -> {
+                    //update list
+                    if(addNeighbours.isTrue()) {
+                        if(neighbours.size() >= maxToStore) {
+                            addNeighbours.setFalse();
+                            neighbours.clear();
+                        } else {
+                            neighbours.add(target);
+                        }
+                    }
+                    //check
+                    if(isFeasibleAndFinancialNeighbour(target, input.getProduct())) {
+                        totalGlobal.inc();
+                        if(target.hasAdopted(input.getProduct())) {
+                            adopterGlobal.inc();
+                        }
+                    }
+                });
+
+        if(addNeighbours.isTrue()) {
+            getSharedData().put(input.getAgent(), NEIGHBOURS_KEY, neighbours);
+        }
+
+        if(totalGlobal.isZero()) {
+            return 0.0;
+        } else {
+            return adopterGlobal.get() / totalGlobal.get();
+        }
+    }
+
+    default double getShareOfAdopterInNeighbourhood(
+            ConsumerAgentData2 input,
+            Collection<? extends ConsumerAgent> neighbours) {
+        double total = 0.0;
+        double adopter = 0.0;
+        for(ConsumerAgent agent: neighbours) {
+            if(isFeasibleAndFinancialNeighbour(agent, input.getProduct())) {
+                total++;
                 if(agent.hasAdopted(input.getProduct())) {
                     adopter++;
                 }
             }
-            return adopter / (double) neighbours.size();
-        } else {
-            boolean tooLarge = getSharedData().getOr(LOCAL_NEIGHBOURS_TOO_LARGE, input.getAgent(), false);
-            if(maxToStore < 1 || tooLarge) {
-                return getShareOfAdopterInLocalNetwork(input, filter);
-            } else {
-                return getShareOfAdopterInLocalNetworkAndTryToStore(input, filter, maxToStore);
-            }
         }
+        return total == 0.0
+                ? 0.0
+                : adopter / total;
     }
 
-    default double getShareOfAdopterInLocalNetwork(ConsumerAgentData2 input, NodeFilter filter) {
-        MutableDouble totalLocal = MutableDouble.zero();
-        MutableDouble adopterLocal = MutableDouble.zero();
 
-        getShareOfAdopterInLocalNetwork(
-                input,
-                filter,
-                -1,
-                totalLocal,
-                adopterLocal
-        );
-
-        if(totalLocal.isZero()) {
-            return 0;
-        } else {
-            return adopterLocal.get() / totalLocal.get();
-        }
-    }
-
-    default double getShareOfAdopterInLocalNetworkAndTryToStore(ConsumerAgentData2 input, NodeFilter filter, int maxToStore) {
-        MutableDouble totalLocal = MutableDouble.zero();
-        MutableDouble adopterLocal = MutableDouble.zero();
-
-        getShareOfAdopterInLocalNetwork(
-                input,
-                filter,
-                maxToStore,
-                totalLocal,
-                adopterLocal
-        );
-
-        if(totalLocal.isZero()) {
-            return 0;
-        } else {
-            return adopterLocal.get() / totalLocal.get();
-        }
-    }
-
-    default void getShareOfAdopterInLocalNetwork(
+    default double getShareOfAdopterInLocalNetwork(
             ConsumerAgentData2 input,
-            NodeFilter filter,
-            int maxToStore,
-            MutableDouble totalLocal,
-            MutableDouble adopterLocal) {
-        MutableBoolean valid = new MutableBoolean(maxToStore > 0);
+            NodeFilter filter) {
+        MutableDouble totalGlobal = MutableDouble.zero();
+        MutableDouble adopterGlobal = MutableDouble.zero();
 
-        List<ConsumerAgent> neighbours = new ArrayList<>();
         streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), filter)
-                .forEach(agent -> {
-                    if(valid.isTrue()) {
-                        neighbours.add(agent);
-                        if(neighbours.size() > maxToStore) {
-                            valid.setFalse();
-                            neighbours.clear();
-                        }
-                    }
-
-                    totalLocal.inc();
-                    if(agent.hasAdopted(input.getProduct())) {
-                        adopterLocal.inc();
+                .forEach(target -> {
+                    totalGlobal.inc();
+                    if(target.hasAdopted(input.getProduct())) {
+                        adopterGlobal.inc();
                     }
                 });
 
-        if(maxToStore > 0) {
-            trace("[{}] getShareOfAdopterInLocalNetworkAndTryToStore: valid={}, neighbours={}, maxToStore={}", input.getAgentName(), valid.get(), neighbours.size(), maxToStore);
-            if(valid.isTrue()) {
-                getSharedData().put(LOCAL_NEIGHBOURS, input.getAgent(), neighbours);
-            } else {
-                getSharedData().put(LOCAL_NEIGHBOURS_TOO_LARGE, input.getAgent(), true);
-            }
+        if(totalGlobal.isZero()) {
+            return 0.0;
+        } else {
+            return adopterGlobal.get() / totalGlobal.get();
         }
+    }
+
+    default Stream<ConsumerAgent> streamNeighbours(
+            SimulationEnvironment environment,
+            ConsumerAgent source,
+            NodeFilter filter) {
+        return environment.getNetwork().getGraph().streamNodes()
+                .filter(node -> node.is(ConsumerAgent.class))
+                .filter(node -> node.getAgent() != source)
+                .filter(filter)
+                .map(node -> node.getAgent(ConsumerAgent.class));
     }
 
     default Stream<ConsumerAgent> streamFeasibleAndFinancialNeighbours(
@@ -497,13 +526,13 @@ public interface RAHelperAPI2 extends HelperAPI2 {
             ConsumerAgent source,
             Product product,
             NodeFilter filter) {
-        return environment.getNetwork().getGraph().streamNodes()
-                .filter(node -> node.is(ConsumerAgent.class))
-                .filter(node -> node.getAgent() != source)
-                .filter(filter)
-                .map(node -> node.getAgent(ConsumerAgent.class))
+        return streamNeighbours(environment, source, filter)
                 .filter(target -> isFeasibleAndFinancialNeighbour(target, product));
     }
+
+    //==========
+    //social
+    //==========
 
     default double getShareOfAdopterInSocialNetwork(ConsumerAgentData2 input) {
         MutableDouble totalGlobal = MutableDouble.zero();

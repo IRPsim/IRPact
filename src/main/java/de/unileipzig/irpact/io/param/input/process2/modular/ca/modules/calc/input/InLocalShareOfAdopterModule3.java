@@ -84,9 +84,9 @@ public class InLocalShareOfAdopterModule3 implements InConsumerAgentInputModule2
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            intDefault = 1000
+            intDefault = 0
     )
-    public int maxToStore = 1000;
+    public int maxToStore = 0;
     public void setMaxToStore(int maxToStore) {
         this.maxToStore = maxToStore;
     }

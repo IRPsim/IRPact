@@ -52,6 +52,7 @@ public final class ParamUtil {
     public static final String SHAPE_TRIANGLE_DOWN = "triangle-down";
     public static final String SHAPE_TRIANGLE_UP = "triangle-up";
 
+    public static final String COLOR_WHITE = "White";
     public static final String COLOR_DARK_CYAN = "DarkCyan";
     public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
     public static final String COLOR_GREEN = "Green";

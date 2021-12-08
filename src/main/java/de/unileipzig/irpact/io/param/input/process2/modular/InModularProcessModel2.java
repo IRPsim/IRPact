@@ -42,6 +42,9 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
                 ),
                 nodes = @NodesSettings(
                         set = CAMPMGraphSettings.NODE_SET,
+                        color = @ColorSettings(
+                                fix = @Fix(CAMPMGraphSettings.GRAPH_COLOR)
+                        ),
                         icon = @IconSettings(
                                 enabled = false
                         )

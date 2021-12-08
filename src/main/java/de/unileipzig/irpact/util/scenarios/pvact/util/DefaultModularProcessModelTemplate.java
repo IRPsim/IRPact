@@ -1196,7 +1196,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         InAttributeInputModule3 pp = mm.create(getPpInputModuleName(), InAttributeInputModule3::new);
         pp.setAttribute(anm.get(getPurchasePowerEurAttributeName()));
 
-        InAvgFinModule3 avgPP = mm.create(getAvgPpInputModuleName(), InAvgFinModule3::new);
+        InAvgFinModule3 avgPP = mm.create(getAvgPpInputModuleName(), InAvgFinModule3::new); //set via setup
 
         InLogisticModule3 logisticPP = mm.create(getLogiticPpModuleName(), InLogisticModule3::new);
         setupPPLogisticModule(logisticPP);
@@ -1240,7 +1240,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
         //local
         InLocalShareOfAdopterModule3 localShare = mm.create(getLocalShareModuleName(), InLocalShareOfAdopterModule3::new);
-        localShare.setMaxToStore(2000);
+        localShare.setMaxToStore(0);
         localShare.setNodeFilterScheme(getValidDistanceFilterScheme());
 
         InCsvValueLoggingModule3 localLogger = mm.create(getLocalShareLoggerModuleName(), this::createDefaultLoggingModule);

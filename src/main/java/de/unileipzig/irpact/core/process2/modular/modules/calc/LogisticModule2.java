@@ -85,7 +85,11 @@ public class LogisticModule2<I>
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
         double x = getX().calculate(input, actions);
+        checkAndWarnNaN(input, x, "x");
         double x0 = getX0().calculate(input, actions);
-        return MathUtil.logistic(getL(), getK(), x, x0);
+        checkAndWarnNaN(input, x0, "x0");
+        double r = MathUtil.logistic(getL(), getK(), x, x0);
+        checkAndWarnNaN(input, r, "result");
+        return r;
     }
 }

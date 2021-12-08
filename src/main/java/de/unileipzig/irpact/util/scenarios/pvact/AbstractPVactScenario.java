@@ -541,7 +541,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 
         //soc
         InLocalShareOfAdopterModule3 localShare = mmp.create("LOCAL_SHARE", InLocalShareOfAdopterModule3::new);
-        localShare.setMaxToStore(2000);
+        localShare.setMaxToStore(0);
         localShare.setNodeFilterScheme(scheme);
         InCsvValueLoggingModule3 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, this::createDefaultLoggingModule);
         localLogger.setInput(localShare);

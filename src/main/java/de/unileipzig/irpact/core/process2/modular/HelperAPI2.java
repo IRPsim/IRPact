@@ -14,8 +14,6 @@ import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -54,19 +52,33 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
     }
 
     default void traceSetSharedData() {
-        trace3("[{}] set shared data ({})", getName(), getClass().getSimpleName());
+        trace3("[{}] set shared data ({})", getName(), printThisClass());
     }
 
     default void traceNewInput(Object input) {
-        trace3("[{}] initalize new input '{}' ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+        trace3("[{}] initalize new input '{}' ({})", getName(), printInputInfo(input), printThisClass());
     }
 
     default void traceModuleCall(Object input) {
-        trace3("[{}]@[{}] call module ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+        trace3("[{}]@[{}] call module ({})", getName(), printInputInfo(input), printThisClass());
     }
 
     default void traceReevaluatorInfo(Object input) {
-        trace3("[{}]@[{}] call reevaluator ({})", getName(), printInputInfo(input), getClass().getSimpleName());
+        trace3("[{}]@[{}] call reevaluator ({})", getName(), printInputInfo(input), printThisClass());
+    }
+
+    default void checkAndWarnNaN(Object input, double value) {
+        checkAndWarnNaN(input, value, "");
+    }
+
+    default void checkAndWarnNaN(Object input, double value, String msg) {
+        if(Double.isNaN(value)) {
+            warn("[{}]@[{}] ({}) NaN detected (msg: '{}') ", getName(), printInputInfo(input), printThisClass(), msg);
+        }
+    }
+
+    default String printThisClass() {
+        return getClass().getSimpleName();
     }
 
     default String printInputInfo(Object obj) {

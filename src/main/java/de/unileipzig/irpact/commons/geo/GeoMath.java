@@ -1,5 +1,7 @@
 package de.unileipzig.irpact.commons.geo;
 
+import de.unileipzig.irpact.commons.util.Rnd;
+
 /**
  * @author Daniel Abitz
  */
@@ -9,6 +11,14 @@ public final class GeoMath {
     public static final double EARTH_RADIUS_KILOMETER = 6371;
 
     private GeoMath() {
+    }
+
+    public static double randomLatitude(Rnd rnd) {
+        return rnd.nextDouble(-90, 90);
+    }
+
+    public static double randomLongitude(Rnd rnd) {
+        return rnd.nextDouble(-180, 180);
     }
 
     public static double haversineDistance(

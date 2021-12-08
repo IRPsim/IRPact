@@ -12,6 +12,8 @@ public class CAMPMGraphSettings {
     public static final String GRAPH_ID = "campmgraph";
     public static final String GRAPH_ICON = "glyphicon glyphicon-globe";
 
+    public static final String GRAPH_COLOR = ParamUtil.COLOR_WHITE;
+
     public static final String ACTION_SHAPE = ParamUtil.SHAPE_OCTAGON;
     public static final String ACTION_COLOR = ParamUtil.COLOR_DARK_CYAN;
     public static final String ACTION_BORDER = ParamUtil.COLOR_DARK_CYAN;

@@ -22,7 +22,7 @@ public class LocalShareOfAdopterModule2
     private static final IRPLogger LOGGER = IRPLogging.getLogger(LocalShareOfAdopterModule2.class);
 
     protected NodeFilterScheme nodeFilterScheme;
-    protected int maxToStore = -1;
+    protected int maxToStore = 0;
 
     public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;

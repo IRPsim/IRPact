@@ -3159,7 +3159,7 @@ InPhaseUpdateModule3_inputModule:
 
 InYearBasedAdoptionDeciderModule3:
   edn_label: "YearBasedAdoptionDeciderModule"
-  edn_description: "todo"
+  edn_description: "rnd.draw < base * pow(factor, currentYear - adoptionYear)"
   graphnode_colorlabel: *PVACT_MODULE_LABEL
   graphnode_borderlabel: *PVACT_MODULE_LABEL
   graphnode_shapelabel: *PVACT_MODULE_LABEL

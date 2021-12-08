@@ -18,6 +18,7 @@ CsvValueLoggingModule2:
   productGroupName: "Produktgruppe"
   time: "Datum"
   value: "Wert"
+  nan: "NaN"
   sheetName: "Daten"
 
 LoggableAttitudeGapRelativeAgreementAlgorithm2:

@@ -26,6 +26,7 @@ public class CsvValueLoggingModule2
     public static final int PRODUCT_INDEX = 2;
     public static final int TIME_INDEX = 3;
     public static final int VALUE_INDEX = 4;
+    public static final int ISNAN_INDEX = 5;
 
     public CsvValueLoggingModule2() {
     }
@@ -63,7 +64,8 @@ public class CsvValueLoggingModule2
                 getLocalizedString("agentId"),
                 getLocalizedString("productName"),
                 getLocalizedString("time"),
-                getLocalizedString("value")
+                getLocalizedString("value"),
+                getLocalizedString("nan")
         );
     }
 
@@ -75,6 +77,7 @@ public class CsvValueLoggingModule2
         int from = startIndexInFile();
         xlsxData.mapStringColumnToDouble(VALUE_INDEX, from, Double::parseDouble);
         xlsxData.mapStringColumnToLong(ID_INDEX, from, Long::parseLong);
+        xlsxData.mapStringColumnToBoolean(ISNAN_INDEX, from, Boolean::parseBoolean);
 
         xlsxSheetData.put(getLocalizedString("sheetName"), xlsxData);
 
@@ -98,24 +101,25 @@ public class CsvValueLoggingModule2
 
     @Override
     protected void runLog(ConsumerAgentData2 input, double value) {
-        double logValue = mapToLogValue(value);
         log(
                 input.getAgentName(),
                 getId(input),
                 input.getProductName(),
                 fromTime(getTime(input)),
-                logValue
+                mapToLogValue(value),
+                isNaN(value)
         );
     }
 
-    protected void log(Object agentName, Object agentId, Object productName, Object time, Object value) {
+    protected void log(Object agentName, Object agentId, Object productName, Object time, Object value, Object isNaN) {
         getValueLogger().log(
                 "{};{};{};{};{}",
                 agentName,
                 agentId,
                 productName,
                 time,
-                value
+                value,
+                isNaN
         );
     }
 
