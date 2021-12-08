@@ -227,9 +227,8 @@
     ]
   } 
   {
-    :label "Adoptionen der Konsumergruppen" 
+    :label "set_OutConsumerAgentGroup" 
     :set "set_OutConsumerAgentGroup" 
-    :description "todo" 
     :tags [["OutConsumerAgentGroup" "adoptionsThisPeriod"] ["OutConsumerAgentGroup" "initialAdoptionsThisPeriod"] ["OutConsumerAgentGroup" "adoptionsCumulative"] ["OutConsumerAgentGroup" "initialAdoptionsCumulative"]]
   } 
   {

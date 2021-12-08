@@ -29,6 +29,8 @@ import de.unileipzig.irpact.io.param.input.process2.modular.components.init.gene
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.*;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.util.AttributeNameManager;
@@ -39,11 +41,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz
  */
+@SuppressWarnings("unused")
 public class DefaultModularProcessModelTemplate implements ModularProcessModelTemplate {
 
     protected ModuleManager mm;
@@ -58,6 +62,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     protected Supplier<? extends InNodeDistanceFilterScheme> distanceFilterSupplier;
     protected Supplier<? extends InPVFile> pvFileSupplier;
     protected Supplier<? extends InRealAdoptionDataFile> realAdoptionFileSupplier;
+    protected Consumer<? super InBasicCAModularProcessModel> applyNewProductHandler;
 
     public DefaultModularProcessModelTemplate(String mpmName) {
         this(new ModuleManager(), new AttributeNameManager(), mpmName);
@@ -67,6 +72,49 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         this.mm = mm;
         this.anm = anm;
         this.mpmName = mpmName;
+
+        setupInitialAdopter();
+    }
+
+    //=========================
+    //default settings
+    //=========================
+
+    protected void setupInitialAdopter() {
+        useDefaultInitialAdopter();
+    }
+
+    public void useDefaultInitialAdopter() {
+        setApplyNewProductHandler(_mpm -> {
+            InPVactAttributeBasedInitialAdoption initAdopter = new InPVactAttributeBasedInitialAdoption();
+            initAdopter.setName(getInitAdopterHandlerName());
+
+            _mpm.addNewProductHandlers(initAdopter);
+        });
+    }
+
+    public void useRealDataBasedInitialAdopter() {
+        setApplyNewProductHandler(_mpm -> {
+            InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
+            initAdopter.setName(getInitAdopterHandlerName());
+            initAdopter.setFile(getValidRealAdoptionFile());
+            initAdopter.setScale(true);
+            initAdopter.setFixError(true);
+
+            _mpm.addNewProductHandlers(initAdopter);
+        });
+    }
+
+    //=========================
+    //util names
+    //=========================
+
+    protected String initAdopterHandlerName = "DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER";
+    public void setInitAdopterHandlerName(String initAdopterHandlerName) {
+        this.initAdopterHandlerName = initAdopterHandlerName;
+    }
+    public String getInitAdopterHandlerName() {
+        return initAdopterHandlerName;
     }
 
     //=========================
@@ -735,6 +783,10 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return distanceFilterScheme;
     }
 
+    public void setApplyNewProductHandler(Consumer<? super InBasicCAModularProcessModel> applyNewProductHandler) {
+        this.applyNewProductHandler = applyNewProductHandler;
+    }
+
     //=========================
     //moduls
     //=========================
@@ -1008,6 +1060,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     //=========================
 
     protected void applyComponents(InBasicCAModularProcessModel mpm) {
+        applyNewProductHandler(mpm);
         applyInitComponents(mpm);
         applyStartOfYear(mpm);
         applyMidOfYear(mpm);
@@ -1034,6 +1087,12 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         mpm.addMidOfYearReevaluators(
                 envUpdater
         );
+    }
+
+    protected void applyNewProductHandler(InBasicCAModularProcessModel mpm) {
+        if(applyNewProductHandler != null) {
+            applyNewProductHandler.accept(mpm);
+        }
     }
 
     protected void applyInitComponents(InBasicCAModularProcessModel mpm) {
@@ -1384,7 +1443,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return mm.registerIfNotExists(getPhaseUpdaterModuleName(), this::createCorePart);
     }
 
-    public InBasicCAModularProcessModel createModel() {
+    public InBasicCAModularProcessModel createNewModel() {
         InRunUntilFailureModule3 startModule = mm.create("START", InRunUntilFailureModule3::new);
         startModule.setInput(getCorePart());
 
@@ -1396,21 +1455,25 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return processModel;
     }
 
-    public InBasicCAModularProcessModel createModel(
+    public InBasicCAModularProcessModel createNewModel(
             Collection<? super InOutputImage2> images,
             Collection<? super InPostDataAnalysis> postDatas) {
 
-        InBasicCAModularProcessModel mpm = createModel();
+        InBasicCAModularProcessModel mpm = createNewModel();
         addImages(mpm, images);
         addPostData(mpm, postDatas);
 
         return mpm;
     }
 
+    public void createModel() {
+        getModel();
+    }
+
     @Override
     public InBasicCAModularProcessModel getModel() {
         if(mpm == null) {
-            mpm = createModel();
+            mpm = createNewModel();
 
             images = new ArrayList<>();
             addImages(mpm, images);

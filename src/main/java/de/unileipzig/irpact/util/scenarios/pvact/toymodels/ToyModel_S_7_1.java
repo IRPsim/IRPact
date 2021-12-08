@@ -17,14 +17,14 @@ public class ToyModel_S_7_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-    public ToyModel_S_7_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, resultConsumer);
+    public ToyModel_S_7_1(
+            String name,
+            String creator,
+            String description,
+            String spatialDataName,
+            BiConsumer<InRoot, OutRoot> resultConsumer) {
+        super(name, creator, description, spatialDataName, resultConsumer);
         setRevision(REVISION);
-    }
-
-    @Override
-    protected void setToyModelInputFile() {
-        setSpatialDataName("Datensatz_ToyModel_S_7_1");
     }
 
     @Override

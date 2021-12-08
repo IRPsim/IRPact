@@ -18,6 +18,11 @@ public class RealDataModularProcessModelTemplate extends DefaultModularProcessMo
     }
 
     @Override
+    protected void setupInitialAdopter() {
+        useRealDataBasedInitialAdopter();
+    }
+
+    @Override
     protected void setupWeights() {
         findWeightModule(getNpvWeightModuleName()).setScalar(RealData.WEIGHT_NPV);
         findWeightModule(getPpWeightModuleName()).setScalar(RealData.WEIGHT_EK);

@@ -48,7 +48,7 @@ public class AttributeBasedInitialAdoption extends NameableBase implements NewPr
                 boolean isAdopter = draw < chance;
                 LOGGER.trace(
                         IRPSection.INITIALIZATION_PARAMETER,
-                        "Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})",
+                        "Is consumer agent '{}' initial adopter of product '{}': {} ({} < {})",
                         ca.getName(), product.getName(), isAdopter, draw, chance
                 );
                 if(isAdopter) {

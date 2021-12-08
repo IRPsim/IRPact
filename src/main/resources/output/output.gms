@@ -1,31 +1,25 @@
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
+* - identifier: placeholder
 * - type: Float
 PARAMETER par_out_OutInformation_placeholder(set_OutInformation)
 
-* - description: todo
-* - identifier: Adoptionen
+* - identifier: adoptionsThisPeriod
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_adoptionsThisPeriod(set_OutConsumerAgentGroup)
 
-* - description: todo
-* - identifier: initiale Adoptionen
+* - identifier: initialAdoptionsThisPeriod
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_initialAdoptionsThisPeriod(set_OutConsumerAgentGroup)
 
-* - description: todo
-* - identifier: kumulierte Adoptionen
+* - identifier: adoptionsCumulative
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_adoptionsCumulative(set_OutConsumerAgentGroup)
 
-* - description: todo
-* - identifier: kumulierte initiale Adoptionen
+* - identifier: initialAdoptionsCumulative
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_initialAdoptionsCumulative(set_OutConsumerAgentGroup)
 
-* - description: Einzigartige ID der Daten.
 * - hidden: 1
-* - identifier: BinaryPersistDataID
+* - identifier: id
 * - type: Integer
 PARAMETER par_out_BinaryPersistData_id(set_BinaryPersistData)
 

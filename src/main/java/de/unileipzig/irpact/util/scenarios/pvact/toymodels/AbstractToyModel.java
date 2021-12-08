@@ -15,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.AbstractPVactScenario;
@@ -84,8 +85,10 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
             String name,
             String creator,
             String description,
+            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description);
+        setSpatialDataName(spatialDataName);
         this.resultConsumer = Objects.requireNonNull(resultConsumer);
         init();
     }
@@ -108,7 +111,15 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         initThis();
         setInputFiles();
         initTestData();
+        applySpatialDist();
         initCagManager();
+    }
+
+    protected void applySpatialDist() {
+        InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
+        cagManager.registerForAll(_cag -> {
+            _cag.setSpatialDistribution(spatialDist);
+        });
     }
 
     protected void initThis() {
@@ -122,12 +133,9 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     }
 
     protected void setInputFiles() {
-        setToyModelInputFile();
         setPvDataName(DEFAULT_PV_DATA_NAME);
         setRealAdoptionDataName(LEIPZIG_ADOPTION_DATA);
     }
-
-    protected abstract void setToyModelInputFile();
 
     protected abstract void initTestData();
 
@@ -201,6 +209,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         mpm.setDistanceFilterSupplierInstance(createNodeFilter());
         mpm.setPvFileSupplier(this::getPVFile);
         mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        mpm.createModel();
 
         setupProcessModel(mpm);
 
@@ -248,10 +257,6 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
         timeModel.setAmountOfTime(1);
         root.setTimeModel(timeModel);
-
-        createToyModelAffinities(root, "affinities");
-
-        createTopology(root, "Topo");
 
         initCustomParts(root);
 

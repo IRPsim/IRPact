@@ -53,6 +53,9 @@ public class ModuleManager {
 
     @SuppressWarnings("unchecked")
     public <R extends InModule2> R registerIfNotExists(String name, Function<? super String, ? extends R> func) {
-        return (R) modules.computeIfAbsent(name, func);
+        if(!modules.containsKey(name)) {
+            modules.put(name, func.apply(name));
+        }
+        return (R) modules.get(name);
     }
 }
