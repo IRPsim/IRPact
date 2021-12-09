@@ -1065,6 +1065,7 @@ public class InRoot implements RootClass {
 
             InNewProductHandler.class,
             InPVactAttributeBasedInitialAdoption.class,
+            InPVactDefaultAwarenessInterestHandler.class,
             InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class,
             InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.class,
 

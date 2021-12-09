@@ -282,13 +282,6 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
                 tick
         );
 
-        if(newNowStamp.getTime().getHour() == 23) {
-            System.out.println(nowStamp == null ? "NULL" : nowStamp.getTime());
-            System.out.println(newNowStamp.getTime());
-            System.out.println("duration: " + dateModifier);
-            throw new IllegalArgumentException("KILL");
-        }
-
         this.nowStamp = newNowStamp;
         return newNowStamp;
     }

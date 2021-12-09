@@ -1157,13 +1157,23 @@ initial_adopters:
 InPVactAttributeBasedInitialAdoption:
   edn_label: "Attributbasierte initiale Adopter"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden."
-InPVactAttributeBasedInitialAdoption_placeholder:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+InPVactAttributeBasedInitialAdoption_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDefaultAwarenessInterestHandler:
+  edn_label: "Standardinitialisierung von Interesse und Awareness"
+  edn_description: "todo"
+InPVactDefaultAwarenessInterestHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
@@ -1171,6 +1181,9 @@ InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Gewichtete initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_scale:
   gams_identifier: "Automatische Skalierung"
   gams_description: "Ermöglicht das automatische Skalieren der Werte. Die Skalierung selber orientiert sich dabei an der Agentenpopulation."

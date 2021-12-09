@@ -20,6 +20,7 @@ public class SumModule2<I>
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SumModule2.class);
 
     protected boolean checkNaN = true;
+    protected boolean logWholeSum = true;
 
     @Override
     protected void validateSelf() throws Throwable {
@@ -51,10 +52,29 @@ public class SumModule2<I>
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
         if(checkNaN) {
-            return calculateWithNaNCheck(input, actions);
+            if(logWholeSum) {
+                return calculateWithoutNaNCheckAndLogSum(input, actions);
+            } else {
+                return calculateWithNaNCheck(input, actions);
+            }
         } else {
             return calculateWithoutNaNCheck(input, actions);
         }
+    }
+
+    protected double calculateWithoutNaNCheckAndLogSum(I input, List<PostAction2> actions) throws Throwable {
+        double sum = 0.0;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < getSubmoduleCount(); i++) {
+            if(i > 0) {
+                sb.append(", ");
+            }
+            double temp = getNonnullSubmodule(i).calculate(input, actions);
+            sb.append(getNonnullSubmodule(i).getName()).append("=").append(temp);
+            sum += temp;
+        }
+        trace("[{}]@[{}] (sum) {} = [{}]", getName(), printInputInfo(input), sum, sb);
+        return sum;
     }
 
     protected double calculateWithoutNaNCheck(I input, List<PostAction2> actions) throws Throwable {

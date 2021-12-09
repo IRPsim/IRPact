@@ -25,11 +25,10 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRu
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactDefaultAwarenessInterestHandler;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
@@ -64,6 +63,8 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     protected Supplier<? extends InRealAdoptionDataFile> realAdoptionFileSupplier;
     protected Consumer<? super InBasicCAModularProcessModel> applyNewProductHandler;
 
+    protected boolean raEnabled = true;
+
     public DefaultModularProcessModelTemplate(String mpmName) {
         this(new ModuleManager(), new AttributeNameManager(), mpmName);
     }
@@ -86,28 +87,54 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
     public void useDefaultInitialAdopter() {
         setApplyNewProductHandler(_mpm -> {
+            InPVactDefaultAwarenessInterestHandler awaini = new InPVactDefaultAwarenessInterestHandler();
+            awaini.setName(getAwarenessInterestHandlerName());
+            awaini.setPriority(1);
+
             InPVactAttributeBasedInitialAdoption initAdopter = new InPVactAttributeBasedInitialAdoption();
             initAdopter.setName(getInitAdopterHandlerName());
+            initAdopter.setPriority(2);
 
-            _mpm.addNewProductHandlers(initAdopter);
+            _mpm.addNewProductHandlers(awaini, initAdopter);
         });
     }
 
     public void useRealDataBasedInitialAdopter() {
         setApplyNewProductHandler(_mpm -> {
+            InPVactDefaultAwarenessInterestHandler awaini = new InPVactDefaultAwarenessInterestHandler();
+            awaini.setName(getAwarenessInterestHandlerName());
+            awaini.setPriority(1);
+
             InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
             initAdopter.setName(getInitAdopterHandlerName());
             initAdopter.setFile(getValidRealAdoptionFile());
             initAdopter.setScale(true);
             initAdopter.setFixError(true);
+            initAdopter.setPriority(2);
 
-            _mpm.addNewProductHandlers(initAdopter);
+            _mpm.addNewProductHandlers(awaini, initAdopter);
         });
+    }
+
+    public void setRaEnabled(boolean raEnabled) {
+        this.raEnabled = raEnabled;
+    }
+
+    public boolean isRaEnabled() {
+        return raEnabled;
     }
 
     //=========================
     //util names
     //=========================
+
+    protected String awarenessInterestHandlerName = "DEFAULT_AWARENESS_INTEREST";
+    public void setAwarenessInterestHandlerName(String awarenessInterestHandlerName) {
+        this.awarenessInterestHandlerName = awarenessInterestHandlerName;
+    }
+    public String getAwarenessInterestHandlerName() {
+        return awarenessInterestHandlerName;
+    }
 
     protected String initAdopterHandlerName = "DEFAULT_WEIGHTED_CONSUMER_INIT_ADOPTER";
     public void setInitAdopterHandlerName(String initAdopterHandlerName) {
@@ -574,30 +601,6 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return phaseUpdaterModuleName;
     }
 
-    protected String novScalerName = "NOV_SCALER";
-    public void setNovScalerName(String novScalerName) {
-        this.novScalerName = novScalerName;
-    }
-    public String getNovScalerName() {
-        return novScalerName;
-    }
-
-    protected String envScalerName = "ENV_SCALER";
-    public void setEnvScalerName(String envScalerName) {
-        this.envScalerName = envScalerName;
-    }
-    public String getEnvScalerName() {
-        return envScalerName;
-    }
-
-    protected String envUpdaterName = "ENV_UPDATER";
-    public void setEnvUpdaterName(String envUpdaterName) {
-        this.envUpdaterName = envUpdaterName;
-    }
-    public String getEnvUpdaterName() {
-        return envUpdaterName;
-    }
-
     protected String uncertInitName = "UNCERT_INIT";
     public void setUncertInitName(String uncertInitName) {
         this.uncertInitName = uncertInitName;
@@ -826,7 +829,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     }
 
     protected void setupCommunicationModule(InCommunicationModule3 module) {
-        module.setRaEnabled(true);
+        module.setRaEnabled(isRaEnabled());
         module.setRaLoggingEnabled(true);
         module.setRaStoreXlsx(true);
         module.setRaKeepCsv(false);
@@ -880,11 +883,6 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
     protected void setupPhaseLogger(InPhaseLoggingModule3 module) {
         module.setEnabled(true);
-    }
-
-    protected void setupEnvScaler(InLinearePercentageAgentAttributeScaler scaler) {
-        scaler.setM(RAConstants.DEFAULT_M);
-        scaler.setN(RAConstants.DEFAULT_N);
     }
 
     //=========================
@@ -1066,27 +1064,10 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         applyMidOfYear(mpm);
         applyEndOfYear(mpm);
 
-        applySpecialEnvScaler(mpm);
+        applyCustom(mpm);
     }
 
-    protected void applySpecialEnvScaler(InBasicCAModularProcessModel mpm) {
-        InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
-        envScaler.setName(getEnvScalerName());
-        envScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
-        envScaler.setAttribute(anm.get(getEnvironmentalConcernAttributeName()));
-        setupEnvScaler(envScaler);
-
-        InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
-        envUpdater.setName(getEnvUpdaterName());
-        envUpdater.setScaler(envScaler);
-
-        mpm.addInitializationHandlers(
-                envScaler
-        );
-
-        mpm.addMidOfYearReevaluators(
-                envUpdater
-        );
+    protected void applyCustom(InBasicCAModularProcessModel mpm) {
     }
 
     protected void applyNewProductHandler(InBasicCAModularProcessModel mpm) {
@@ -1096,18 +1077,12 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     }
 
     protected void applyInitComponents(InBasicCAModularProcessModel mpm) {
-        InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
-        novScaler.setName(getNovScalerName());
-        novScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
-        novScaler.setAttribute(anm.get(getNoveltySeekingAttributeName()));
-
         InUncertaintySupplierInitializer uncertInit = new InUncertaintySupplierInitializer();
         uncertInit.setName(getUncertInitName());
         uncertInit.setPriority(InitializationHandler.LOW_PRIORITY);
         uncertInit.setUncertaintySuppliers(getValidUncertaintySupplier());
 
         mpm.addInitializationHandlers(
-                novScaler,
                 uncertInit
         );
     }
@@ -1138,7 +1113,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
     protected void applyEndOfYear(InBasicCAModularProcessModel mpm) {
         InPhaseLoggingModule3 decisionReevalPhaseLogger = mm.create("PHASE_REEVAL_LOGGER", InPhaseLoggingModule3::new);
-        decisionReevalPhaseLogger.setInput(findModule(getReallyAdoptModuleName()));
+        decisionReevalPhaseLogger.setInput(getDecisionMakingPart());
 
         InPhaseUpdateModule3 decisionReevalPhaseUpdater = mm.create("PHASE_REEVAL_UPDATER", InPhaseUpdateModule3::new);
         decisionReevalPhaseUpdater.setInput(decisionReevalPhaseLogger);
@@ -1233,7 +1208,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return mm.registerIfNotExists(getIfElseCommunicationModuleName(), this::createActionPart);
     }
 
-    protected InSumModule3 createUtilityPart(String moduleName) {
+    protected InCsvValueLoggingModule3 createUtilityPart(String moduleName) {
         //npv
         InGlobalAvgNPVModule3 avgNPV = mm.create(getAvgNPVModuleName(), InGlobalAvgNPVModule3::new);
         avgNPV.setPvFile(getValidPvFile());
@@ -1355,14 +1330,14 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         //final
         setupWeights();
 
-        return utilitySum;
+        return utilityLogger;
     }
-    protected InSumModule3 getUtilityPart() {
+    protected InCsvValueLoggingModule3 getUtilityPart() {
         return mm.registerIfNotExists(getUtilityModuleName(), this::createUtilityPart);
     }
 
     protected InDoAdoptModule3 createDecisionMakingPart(String moduleName) {
-        InSumModule3 utilitySum = getUtilityPart();
+        InCsvValueLoggingModule3 utilitySum = getUtilityPart();
 
         InDecisionMakingDeciderModule3 decisionMaking = mm.create(getDecisionMakingModuleName(), InDecisionMakingDeciderModule3::new);
         decisionMaking.setFinCheck(findModule(getFinThresholdCheckModuleName()));

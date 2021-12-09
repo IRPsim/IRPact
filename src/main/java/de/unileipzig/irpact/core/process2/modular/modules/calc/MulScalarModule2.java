@@ -61,7 +61,7 @@ public class MulScalarModule2<I>
         double s = getScalar();
         checkAndWarnNaN(input, s, "scalar");
         double v = getNonnullSubmodule().calculate(input, actions);
-        checkAndWarnNaN(input, v, "value");
+        checkAndWarnNaN(input, v, getNonnullSubmodule(), "value");
         double r = s * v;
         checkAndWarnNaN(input, r, "result");
         return r;

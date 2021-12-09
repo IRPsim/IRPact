@@ -602,35 +602,37 @@ public class JadexInputParser implements IRPactInputParser {
     private void applyDefaultAwarenessInterestHandler() {
         for(ProcessModel pm: environment.getProcessModels().getProcessModels()) {
             if(pm instanceof AbstractConsumerAgentMPMWithUpdater) {
-                AbstractConsumerAgentMPMWithUpdater mpm = (AbstractConsumerAgentMPMWithUpdater) pm;
-                handleAbstractConsumerAgentMPMWithUpdater(mpm);
+//                AbstractConsumerAgentMPMWithUpdater mpm = (AbstractConsumerAgentMPMWithUpdater) pm;
+//                handleAbstractConsumerAgentMPMWithUpdater(mpm);
+                throw new UnsupportedOperationException();
             }
             if(pm instanceof RAProcessModelBase) {
-                RAProcessModelBase rapm = (RAProcessModelBase) pm;
-                handleRAProcessModelBase(rapm);
+//                RAProcessModelBase rapm = (RAProcessModelBase) pm;
+//                handleRAProcessModelBase(rapm);
+                throw new UnsupportedOperationException();
             }
         }
     }
 
-    private void handleAbstractConsumerAgentMPMWithUpdater(AbstractConsumerAgentMPMWithUpdater mpm) {
-        boolean addDefault = true;
-        for(NewProductHandler handler: mpm.getNewProductHandlers()) {
-            if(handler instanceof DefaultAwarenessInterestHandler) {
-                LOGGER.trace("AbstractConsumerAgentMPMWithUpdater {} already has {}: {}", mpm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
-                addDefault = false;
-                break;
-            }
-        }
-        if(addDefault) {
-            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
-            handler.setName(mpm.getName() + "_awarenessInterestHandler");
-            handler.setRnd(deriveRnd());
-            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
-            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
-            mpm.addNewProductHandler(handler);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", mpm.getName());
-        }
-    }
+//    private void handleAbstractConsumerAgentMPMWithUpdater(AbstractConsumerAgentMPMWithUpdater mpm) {
+//        boolean addDefault = true;
+//        for(NewProductHandler handler: mpm.getNewProductHandlers()) {
+//            if(handler instanceof DefaultAwarenessInterestHandler) {
+//                LOGGER.trace("AbstractConsumerAgentMPMWithUpdater {} already has {}: {}", mpm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
+//                addDefault = false;
+//                break;
+//            }
+//        }
+//        if(addDefault) {
+//            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
+//            handler.setName(mpm.getName() + "_awarenessInterestHandler");
+//            handler.setRnd(deriveRnd());
+//            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
+//            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
+//            mpm.addNewProductHandler(handler);
+//            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", mpm.getName());
+//        }
+//    }
 
     private void handleRAProcessModelBase(RAProcessModelBase rapm) {
         boolean addDefault = true;

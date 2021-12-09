@@ -63,14 +63,18 @@ public class AgentAttributScaler
         }
         LOGGER.trace("... min={}, max={}", min.get(), max.get());
 
-        LOGGER.trace("update attributes...");
-        for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
-            double value = getValue(environment, ca);
-            double newValue = (value - min.get()) / (max.get() - min.get());
-            setValue(environment, ca, newValue);
-            //spam
-            LOGGER.trace("update '{}': {} -> {}", ca.getName(), value, getValue(environment, ca));
+        if(min.isEquals(max)) {
+            LOGGER.trace("min==max, skip scaling");
+        } else {
+            LOGGER.trace("update attributes...");
+            for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
+                double value = getValue(environment, ca);
+                double newValue = (value - min.get()) / (max.get() - min.get());
+                setValue(environment, ca, newValue);
+                //spam
+                LOGGER.trace("update '{}': {} -> {}", ca.getName(), value, getValue(environment, ca));
+            }
+            LOGGER.trace("... update finished");
         }
-        LOGGER.trace("... update finished");
     }
 }

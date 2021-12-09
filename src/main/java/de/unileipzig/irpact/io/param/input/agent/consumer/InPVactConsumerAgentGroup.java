@@ -9,6 +9,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.awareness.ProductBinaryAwarenessSupplyScheme;
 import de.unileipzig.irpact.core.product.interest.ProductThresholdInterestSupplyScheme;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -401,6 +402,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         return restored;
     }
 
+    @Todo("annual attributes einbauen")
     private void addGroupAttributes(IRPactInputParser parser, JadexConsumerAgentGroup jcag, boolean restored) throws ParsingException {
         addGroupAttribute(parser, jcag, getNoveltySeeking(), NOVELTY_SEEKING, restored);
         addGroupAttribute(parser, jcag, getDependentJudgmentMaking(), DEPENDENT_JUDGMENT_MAKING, restored);
@@ -415,8 +417,11 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
         addGroupAttribute(parser, jcag, getInitialProductAwareness(), INITIAL_PRODUCT_AWARENESS, restored);
         addGroupAttribute(parser, jcag, getInterestThreshold(), INTEREST_THRESHOLD, restored);
 
-        addAnnualGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
-        addAnnualGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
+        //TODO besser machen
+//        addAnnualGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
+//        addAnnualGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
+        addGroupAttribute(parser, jcag, getConstructionRate(), CONSTRUCTION_RATE, restored);
+        addGroupAttribute(parser, jcag, getRenovationRate(), RENOVATION_RATE, restored);
 
         if(a1 != null) addGroupAttribute(parser, jcag, a1, PURCHASE_POWER_EUR, restored);
         if(a5 != null) addGroupAttribute(parser, jcag, a5, SHARE_1_2_HOUSE, restored);
@@ -511,6 +516,7 @@ public class InPVactConsumerAgentGroup implements InConsumerAgentGroup {
                 }
             }
         } else {
+            LOGGER.trace("create annual attribute '{}'", name);
             annualCagAttr = new BasicConsumerAgentAnnualGroupAttribute();
             annualCagAttr.setName(name);
             annualCagAttr.setArtificial(false);

@@ -11,6 +11,7 @@ public class ToyModeltModularProcessModelTemplate extends DefaultModularProcessM
 
     public ToyModeltModularProcessModelTemplate(String mpmName) {
         super(mpmName);
+        setRaEnabled(false);
     }
 
     public void setUncertaintySupplierInstance(InUncertaintySupplier supplier) {

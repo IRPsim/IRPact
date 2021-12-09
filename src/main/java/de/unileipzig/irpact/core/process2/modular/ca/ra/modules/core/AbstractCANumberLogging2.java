@@ -230,7 +230,16 @@ public abstract class AbstractCANumberLogging2
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getNonnullSubmodule().calculate(input, actions);
-        checkAndWarnNaN(input, value);
+
+        if(Double.isNaN(value)) {
+            warn(
+                    "[{}]@[{}] ({}) NaN detected, submodule={}@{} ",
+                    getName(), printInputInfo(input), printThisClass(),
+                    getNonnullSubmodule().getName(),
+                    getNonnullSubmodule().getClass().getSimpleName()
+            );
+        }
+
         if(isEnabled()) {
             if(doLog()) {
                 runLog(input, value);

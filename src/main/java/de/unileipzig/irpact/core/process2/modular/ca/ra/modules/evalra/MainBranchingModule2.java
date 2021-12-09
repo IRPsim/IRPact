@@ -149,7 +149,7 @@ public class MainBranchingModule2
             case IMPEDED:
                 allowAttention(input);
                 impededModule.apply(input, actions);
-                return RAStage2.ADOPTED;
+                return RAStage2.IMPEDED;
 
             default:
                 throw new IllegalStateException("unsupported phase: " + stage);
@@ -158,9 +158,8 @@ public class MainBranchingModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall(input);
-
         RAStage2 stage = input.getStage();
+        trace3("[{}]@[{}] ({}) call module: current phase: {}", getName(), printInputInfo(input), printThisClass(), stage);
         if(stage == RAStage2.PRE_INITIALIZATION) {
             return initalize(input, actions);
         } else {

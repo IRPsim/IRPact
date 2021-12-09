@@ -20,9 +20,8 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.product.handler;
 
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -24,7 +23,7 @@ import java.util.function.Predicate;
 /**
  * @author Daniel Abitz
  */
-public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends NameableBase implements NewProductHandler, LoggingHelper {
+public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends AbstractNewProductHandler implements LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(WeightedConsumerGroupBasedInitialAdoptionWithRealData.class);
 

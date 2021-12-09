@@ -104,7 +104,7 @@ public class RunUntilFailureModule2
         Module2<ConsumerAgentData2, ?> submodul = getNonnullSubmodule();
         try {
             Object result = submodul.apply(input, actions);
-            trace("submodule '{}' result: {}", submodul.getName(), result);
+            trace("[{}]@[{}] submodule '{}' result: {}", getName(), input.getAgentName(), submodul.getName(), result);
             return ProcessPlanResult2.CONTINUE;
         } catch (Throwable e) {
             error("submodule '" + submodul.getName() + "' failed", e);

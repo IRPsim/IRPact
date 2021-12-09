@@ -11,7 +11,6 @@ import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup
 /**
  * @author Daniel Abitz
  */
-@SuppressWarnings("CodeBlock2Expr")
 public class ToyModel_S_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
@@ -20,9 +19,8 @@ public class ToyModel_S_1 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -57,14 +55,14 @@ public class ToyModel_S_1 extends AbstractToyModel {
 
             cag.setD2(dirac1);
             cag.setD3(dirac07);
-            cag.setD4(dirac07);
-            cag.setD6(dirac1);
+            cag.setD4(dirac05);
         });
 
         cagManager.register(
                 "A",
                 cag -> {
                     cag.setD1(dirac1);
+                    cag.setD6(dirac1);
                 }
         );
 
@@ -72,6 +70,7 @@ public class ToyModel_S_1 extends AbstractToyModel {
                 "K",
                 cag -> {
                     cag.setD1(dirac0);
+                    cag.setD6(dirac0);
                 }
         );
     }

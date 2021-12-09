@@ -20,16 +20,14 @@ public class ToyModel_S_3_4_4 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
     @Override
     protected void initTestData() {
         testData.setGlobalModifier(row -> {
-            setA1(row, 100);
             setA5(row, 1);
             setA6(row, 1);
             return row;
@@ -39,6 +37,7 @@ public class ToyModel_S_3_4_4 extends AbstractToyModel {
                 "A",
                 5,
                 row -> {
+                    setA1(row, 105);
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
@@ -49,8 +48,20 @@ public class ToyModel_S_3_4_4 extends AbstractToyModel {
                 "K",
                 5,
                 row -> {
-                    setOrientation(row, 15);
-                    setSlope(row, 20);
+                    setA1(row, 95);
+                    setOrientation(row, 45);
+                    setSlope(row, 45);
+                    return row;
+                }
+        );
+
+        testData.setSizeAndModifier(
+                "H",
+                10,
+                row -> {
+                    setA1(row, 100);
+                    setOrientation(row, 0);
+                    setSlope(row, 0);
                     return row;
                 }
         );
@@ -64,8 +75,8 @@ public class ToyModel_S_3_4_4 extends AbstractToyModel {
 
             cag.setD1(dirac1);
             cag.setD2(dirac1);
-            cag.setD3(dirac03);
-            cag.setD4(dirac047);
+            cag.setD3(dirac100);
+            cag.setD4(dirac05);
             cag.setD6(dirac1);
         });
 
@@ -78,6 +89,13 @@ public class ToyModel_S_3_4_4 extends AbstractToyModel {
 
         cagManager.register(
                 "K",
+                cag -> {
+                    cag.setD5(dirac0);
+                }
+        );
+
+        cagManager.register(
+                "H",
                 cag -> {
                     cag.setD5(dirac0);
                 }

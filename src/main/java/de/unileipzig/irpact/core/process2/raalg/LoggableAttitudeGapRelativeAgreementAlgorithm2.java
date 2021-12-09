@@ -152,20 +152,7 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
     protected boolean printHeader;
     protected boolean storeXlsx;
     protected boolean keepCsv;
-    protected boolean enabled = true;
     protected boolean loggingEnabled = false;
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public boolean isDisabled() {
-        return !enabled;
-    }
 
     public void setLoggingEnabled(boolean loggingEnabled) {
         this.loggingEnabled = loggingEnabled;
@@ -320,10 +307,6 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
             double[] influence,
             Timestamp time) {
         validate(influence);
-
-        if(isDisabled()) {
-            return handleDisabled(xi, ui, xj, uj, influence);
-        }
 
         double gap = gab(xi, xj);
 

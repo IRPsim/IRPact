@@ -3459,14 +3459,30 @@ SET set_InNewProductHandler(*)
 SET set_InPVactAttributeBasedInitialAdoption(set_InNewProductHandler)
 
 * - default: 0
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
+* - description: todo
+* - identifier: Priorität
 * - type: Integer
-PARAMETER par_InPVactAttributeBasedInitialAdoption_placeholder(set_InPVactAttributeBasedInitialAdoption)
+PARAMETER par_InPVactAttributeBasedInitialAdoption_priority(set_InPVactAttributeBasedInitialAdoption)
+
+* - identifier: InPVactDefaultAwarenessInterestHandler
+* - type: String
+SET set_InPVactDefaultAwarenessInterestHandler(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactDefaultAwarenessInterestHandler_priority(set_InPVactDefaultAwarenessInterestHandler)
 
 * - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData
 * - type: String
 SET set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_priority(set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData)
 
 * - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei
@@ -3490,6 +3506,12 @@ PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealD
 * - identifier: Automatische Fehlerkorrektur
 * - type: Boolean
 PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_fixError(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_priority(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
 
 * - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei

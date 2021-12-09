@@ -511,21 +511,21 @@
         :sections [
           {
             :label "Attributbasierte initiale Adopter" 
-            :set "set_InPVactAttributeBasedInitialAdoption" 
+            :set "set_InPVactDefaultAwarenessInterestHandler" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden." 
-            :tags [["InPVactAttributeBasedInitialAdoption" "placeholder"]]
+            :tags [["InPVactAttributeBasedInitialAdoption" "priority"] ["InPVactDefaultAwarenessInterestHandler" "priority"]]
           } 
           {
             :label "Initiale Adopter nach realen Daten" 
             :set "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
-            :tags [["link" "InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
+            :tags [["InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" "priority"] ["link" "InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
           } 
           {
             :label "Gewichtete initiale Adopter nach realen Daten" 
             :set "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
-            :tags [["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "scale"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "fixError"] ["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
+            :tags [["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "scale"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "fixError"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "priority"] ["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
           }
         ]
       }

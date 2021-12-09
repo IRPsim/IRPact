@@ -54,7 +54,7 @@ public class CsvValueLoggingModule2
 
     @Override
     public String getResourceType() {
-        return "MinimalCsvValueLoggingModule2";
+        return "CsvValueLoggingModule2";
     }
 
     @Override

@@ -21,9 +21,8 @@ public class ToyModel_S_4_1 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -38,13 +37,13 @@ public class ToyModel_S_4_1 extends AbstractToyModel {
 
         testData.setSizeAndModifier(
                 "A",
-                10,
+                100,
                 DataModifier.DO_NOTHING
         );
 
         testData.setSizeAndModifier(
                 "K",
-                10,
+                100,
                 DataModifier.DO_NOTHING
         );
     }
@@ -81,13 +80,7 @@ public class ToyModel_S_4_1 extends AbstractToyModel {
     }
 
     @Override
-    protected void initThisCustom() {
-        simulationLength = 10;
-    }
-
-    @Override
     protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
-        mpm.setAllWeights(0);
         mpm.getNpvWeightModule().setScalar(0.125);
         mpm.getPpWeightModule().setScalar(0.125);
         mpm.getLocalWeightModule().setScalar(0.125);

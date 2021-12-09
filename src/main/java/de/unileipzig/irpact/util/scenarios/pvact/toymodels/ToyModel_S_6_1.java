@@ -21,9 +21,8 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -53,12 +52,16 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
     protected void initCagManager() {
         cagManager.registerForAll(cag -> {
             cag.setA2(dirac1);
+            cag.setA4(dirac1);
+
+            cag.setB6(dirac0);
 
             cag.setC1(dirac1);
 
             cag.setD2(dirac1);
             cag.setD3(dirac01);
             cag.setD4(dirac07);
+            cag.setD6(dirac0);
         });
 
         cagManager.register(
@@ -66,7 +69,7 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
                 99,
                 darr(1, 0),
                 cag -> {
-                    cag.setA8(dirac0);
+                    cag.setD1(dirac02);
                 }
         );
 
@@ -75,7 +78,7 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
                 0,
                 darr(0, 1),
                 cag -> {
-                    cag.setA8(dirac0);
+                    cag.setD1(dirac0);
                 }
         );
     }
@@ -86,6 +89,11 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
     }
 
     @Override
+    protected void createToyModelAffinities(InRoot root, String name) {
+        root.setAffinities(cagManager.createAffinities("Affinities"));
+    }
+
+    @Override
     protected void createTopology(InRoot root, String name) {
         createFreeTopology(root, name);
     }
@@ -93,7 +101,7 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
     @Override
     protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
-        mpm.getLocalWeightModule().setScalar(0.5);
-        mpm.getSocialWeightModule().setScalar(0.5);
+        mpm.getEnvWeightModule().setScalar(1);
+        //mpm.getCommunicationModule().setRaEnabled(true);
     }
 }

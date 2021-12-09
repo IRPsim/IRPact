@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
@@ -205,7 +206,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         if(!selfReferential) {
             cagOrder.setSkipSelfReferentialGroup(sourceCag);
         }
-        cagOrder.determine(edgeCount, sourceAffinities, allowLessEdges, rnd);
+        cagOrder.determine(source, edgeCount, sourceAffinities, allowLessEdges, rnd);
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "edge targets for '{}': {}", source.getName(), LazyPrinter.of(cagOrder::printEdgeTargets));
         cagOrder.apply(li, edgeType);
 
@@ -410,6 +411,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         }
 
         protected void determine(
+                ConsumerAgent source,
                 int count,
                 ConsumerAgentGroupAffinities affinities,
                 boolean allowLessAgents,
@@ -417,10 +419,10 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
             ConsumerAgentGroupAffinities caga = affinities;
             ConsumerAgentGroup target;
             int found = existingLinkCounter.total();
+            LOGGER.trace("[{}] req={}", source.getName(), count);
             boolean tryAgain = found < count;
             while(tryAgain) {
                 target = caga.getWeightedRandom(rnd);
-
                 if(isMax(target)) {
                     caga = caga.createWithout(target);
                     if(caga.isEmpty()) {
@@ -428,7 +430,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                             LOGGER.info("[allowLessAgents] not enough agents, agents found: {}, required: {}", found, count);
                             return;
                         } else {
-                            throw new InitializationException("not enough agents, agents found: {}, required: {}", found, count);
+                            throw new InitializationException("not enough agents, agents found: {}, required: {} ({})", found, count, linkCounter.printCounterMap(Nameable::getName));
                         }
                     }
                     tryAgain = true;

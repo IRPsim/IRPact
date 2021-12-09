@@ -21,9 +21,8 @@ public class ToyModel_S_6_2 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -82,6 +81,11 @@ public class ToyModel_S_6_2 extends AbstractToyModel {
     @Override
     protected void initThisCustom() {
         simulationLength = 10;
+    }
+
+    @Override
+    protected void createToyModelAffinities(InRoot root, String name) {
+        root.setAffinities(cagManager.createAffinities("Affinities"));
     }
 
     @Override

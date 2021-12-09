@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
@@ -21,9 +23,8 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -50,7 +51,7 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
 
         testData.setSizeAndModifier(
                 "K",
-                9900,
+                50,
                 DataModifier.DO_NOTHING
         );
     }
@@ -59,35 +60,36 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
     protected void initCagManager() {
         cagManager.registerForAll(cag -> {
             cag.setA2(dirac1);
-            cag.setA3(dirac2);
+            cag.setA3(dirac1);
             cag.setA4(dirac1);
             cag.setA8(dirac0);
 
             cag.setB6(dirac1);
 
-            cag.setC1(dirac1);
+            cag.setC1(dirac0);
 
-            cag.setD1(dirac0);
-            cag.setD2(dirac0);
+            cag.setD1(dirac1);
+            cag.setD2(dirac1);
             cag.setD3(dirac0);
-            cag.setD4(dirac0501);
+            cag.setD4(dirac08);
+            cag.setD6(dirac1);
         });
 
         cagManager.register(
                 "A",
-                99,
+                5,
                 darr(0.5, 0.5, 0),
                 cag -> {
-                    cag.setA8(dirac0);
+                    cag.setD5(dirac0);
                 }
         );
 
         cagManager.register(
                 "S",
-                99,
+                5,
                 darr(0.5, 0.5, 0),
                 cag -> {
-                    cag.setA8(dirac1);
+                    cag.setD5(dirac1);
                 }
         );
 
@@ -96,7 +98,7 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
                 0,
                 darr(0, 0, 1),
                 cag -> {
-                    cag.setA8(dirac0);
+                    cag.setD5(dirac0);
                 }
         );
     }
@@ -107,9 +109,23 @@ public class ToyModel_S_5_1 extends AbstractToyModel {
     }
 
     @Override
+    protected void createToyModelAffinities(InRoot root, String name) {
+        root.setAffinities(cagManager.createAffinities("Affinities"));
+    }
+
+    @Override
+    protected void createTopology(InRoot root, String name) {
+        createFreeTopology(root, name);
+    }
+
+    @Override
+    protected InNodeDistanceFilterScheme createNodeFilter() {
+        return new InDisabledNodeFilterDistanceScheme("DisabledNodeFilter");
+    }
+
+    @Override
     protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
-        mpm.getLocalWeightModule().setScalar(0.5);
-        mpm.getSocialWeightModule().setScalar(0.5);
+        mpm.getSocialWeightModule().setScalar(1);
     }
 }

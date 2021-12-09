@@ -67,6 +67,13 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int priority = 0;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
 
     public InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData() {
@@ -108,6 +115,14 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
         return fixError;
     }
 
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
     public void setFile(InRealAdoptionDataFile file) {
         this.file = new InRealAdoptionDataFile[]{file};
     }
@@ -147,6 +162,7 @@ public class InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealDa
         handler.setShareAttributeName(RAConstants.INITIAL_ADOPTER);
         handler.setScale(scale);
         handler.setFixError(fixError);
+        handler.setPriority(getPriority());
 
         return handler;
     }

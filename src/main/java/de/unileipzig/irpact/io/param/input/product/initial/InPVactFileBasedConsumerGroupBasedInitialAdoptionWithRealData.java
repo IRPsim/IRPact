@@ -53,6 +53,19 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData imple
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int priority = 0;
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+    public int getPriority() {
+        return priority;
+    }
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InRealAdoptionDataFile[] file = new InRealAdoptionDataFile[0];
 
     public InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData() {
@@ -111,6 +124,7 @@ public class InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData imple
         handler.setZipAttributeName(RAConstants.ZIP);
         handler.setValidationAttributeName(RAConstants.SHARE_1_2_HOUSE);
         handler.setShareAttributeName(RAConstants.INITIAL_ADOPTER);
+        handler.setPriority(getPriority());
 
         return handler;
     }

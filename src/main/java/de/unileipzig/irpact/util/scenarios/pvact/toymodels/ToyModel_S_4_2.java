@@ -21,9 +21,8 @@ public class ToyModel_S_4_2 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -38,13 +37,13 @@ public class ToyModel_S_4_2 extends AbstractToyModel {
 
         testData.setSizeAndModifier(
                 "A",
-                10,
+                100,
                 DataModifier.DO_NOTHING
         );
 
         testData.setSizeAndModifier(
                 "K",
-                10,
+                100,
                 DataModifier.DO_NOTHING
         );
     }
@@ -57,12 +56,12 @@ public class ToyModel_S_4_2 extends AbstractToyModel {
             cag.setA4(dirac1);
             cag.setA8(dirac0);
 
-            cag.setD1(dirac0);
+            cag.setD1(dirac1);
             cag.setD2(dirac1);
             cag.setD3(dirac0);
             cag.setD4(dirac0);
             cag.setD5(dirac0);
-            cag.setD6(dirac1);
+            cag.setD6(dirac0);
         });
 
         cagManager.register(
@@ -78,11 +77,6 @@ public class ToyModel_S_4_2 extends AbstractToyModel {
                     cag.setA8(dirac0);
                 }
         );
-    }
-
-    @Override
-    protected void initThisCustom() {
-        simulationLength = 10;
     }
 
     @Override

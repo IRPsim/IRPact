@@ -105,6 +105,7 @@ public class BasicCAModularProcessModel2
     @Override
     public void handleNewProduct2(Product product) {
         trace("[{}] number of InitialAdoptionHandler: {}", getName(), newProductHandlers.size());
+        newProductHandlers.sort(NewProductHandler.COMPARE_PRIORITY); //remove?
         for(NewProductHandler handler: newProductHandlers) {
             trace("[{}] apply InitialAdoptionHandler '{}'", getName(), handler.getName());
             handler.handleProduct(getEnvironment(), product);
@@ -197,9 +198,15 @@ public class BasicCAModularProcessModel2
 
     @Override
     public void postAgentCreation() throws MissingDataException, InitializationException {
+        initNewProductHandler();
         initModules();
         runInitializationHandler();
         initReevaluator();
+    }
+
+    protected void initNewProductHandler() {
+        trace("initalize new product handler: {}", newProductHandlers.size());
+        newProductHandlers.sort(NewProductHandler.COMPARE_PRIORITY);
     }
 
     protected void runInitializationHandler() throws InitializationException {
@@ -423,6 +430,7 @@ public class BasicCAModularProcessModel2
             task.reevaluate();
         }
         if(task.reevaluateIndividual()) {
+            trace("[{}] run reevaluator '{}' for '{}' plans", getName(), task.getName(), plans.size());
             for(BasicConsumerAgentData2 plan: plans) {
                 task.reevaluate(plan, null);
             }

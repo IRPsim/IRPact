@@ -263,7 +263,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_12_08_T_14_37_01" : {
+        "CT_D_2021_12_08_T_17_52_27" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -326,6 +326,7 @@
       "set_InPVactConsumerAgentGroup" : {
         "TRA" : { }
       },
+      "set_InPVactDefaultAwarenessInterestHandler" : { },
       "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" : { },

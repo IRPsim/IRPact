@@ -340,6 +340,7 @@ public class InCommunicationModule3 implements InConsumerAgentActionModule2 {
         module.setInterestedPoints(getInterestedPoints());
         module.setAwarePoints(getAwarePoints());
         module.setUnknownPoints(getUnknownPoints());
+        module.setRaEnabled(isRaEnabled());
 
         for(InUncertaintySupplier supplier: getUncertaintySuppliers()) {
             module.addUncertaintySupplier(parser.parseEntityTo(supplier));
@@ -347,7 +348,6 @@ public class InCommunicationModule3 implements InConsumerAgentActionModule2 {
 
         LoggableAttitudeGapRelativeAgreementAlgorithm2 alg = new LoggableAttitudeGapRelativeAgreementAlgorithm2();
         alg.setName(getName() + "_RAALG");
-        alg.setEnabled(isRaEnabled());
         alg.setLoggingEnabled(isRaLoggingEnabled());
         alg.setStoreXlsx(isRaStoreXlsx());
         alg.setKeepCsv(isRaKeepCsv());
@@ -361,7 +361,7 @@ public class InCommunicationModule3 implements InConsumerAgentActionModule2 {
         alg.setWeight(AttitudeGap.DIVERGENCE, getChanceDivergence());
         alg.setLoggingMode(LoggableAttitudeGapRelativeAgreementAlgorithm2.LoggingMode.get(isRaOpinionLogging(), isRaUnceraintyLogging()));
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' uses seed: {}", alg.getName(), alg.getRnd().getInitialSeed());
-        LOGGER.trace("LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' enabled={}, logging={}, mode={}", alg.getName(), alg.isEnabled(), alg.isLoggingEnabled(), alg.getLoggingMode());
+        LOGGER.trace("LoggableAttitudeGapRelativeAgreementAlgorithm2 '{}' enabled={}, logging={}, mode={}", alg.getName(), isRaEnabled(), alg.isLoggingEnabled(), alg.getLoggingMode());
         module.setRelativeAgreementAlgorithm(alg);
 
         return module;

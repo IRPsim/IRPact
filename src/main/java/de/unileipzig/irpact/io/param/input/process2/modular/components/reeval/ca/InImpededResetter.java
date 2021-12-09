@@ -60,6 +60,9 @@ public class InImpededResetter implements InReevaluator2 {
     )
     public double placeholder = 0;
 
+    public InImpededResetter() {
+    }
+
     @Override
     public InImpededResetter copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);

@@ -21,9 +21,8 @@ public class ToyModel_S_3_2 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -57,7 +56,7 @@ public class ToyModel_S_3_2 extends AbstractToyModel {
 
             cag.setD1(dirac1);
             cag.setD2(dirac1);
-            cag.setD3(dirac03);
+            cag.setD3(dirac0);
             cag.setD4(dirac07);
             cag.setD6(dirac1);
         });
@@ -80,6 +79,6 @@ public class ToyModel_S_3_2 extends AbstractToyModel {
     @Override
     protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
-        mpm.getNovWeightModule().setScalar(1);
+        mpm.getEnvWeightModule().setScalar(1);
     }
 }

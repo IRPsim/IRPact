@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
@@ -22,9 +23,8 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
             String name,
             String creator,
             String description,
-            String spatialDataName,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, spatialDataName, resultConsumer);
+        super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
@@ -45,13 +45,13 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
 
         testData.setSizeAndModifier(
                 "A",
-                11,
+                10,
                 DataModifier.DO_NOTHING
         );
 
         testData.setSizeAndModifier(
                 "K",
-                11,
+                10,
                 DataModifier.DO_NOTHING
         );
     }
@@ -71,7 +71,7 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
 
         cagManager.register(
                 "S",
-                10,
+                9,
                 darr(1, 0, 0),
                 cag -> {
                     cag.setD5(dirac1);
@@ -89,7 +89,7 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
 
         cagManager.register(
                 "K",
-                10,
+                9,
                 darr(0, 0, 1),
                 cag -> {
                     cag.setD5(dirac0);
@@ -104,7 +104,7 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
 
     @Override
     protected InNodeDistanceFilterScheme createNodeFilter() {
-        return createNodeFilterScheme(1000);
+        return new InDisabledNodeFilterDistanceScheme("DisabledNodeFilter");
     }
 
     @Override
