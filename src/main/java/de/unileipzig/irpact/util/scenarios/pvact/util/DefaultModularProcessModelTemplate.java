@@ -798,6 +798,11 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return mm.findModuleAuto(name);
     }
 
+    public <R extends InModule2> void peekModule(String name, Class<R> c, Consumer<? super R> consumer) {
+        R m = findModule(name);
+        consumer.accept(m);
+    }
+
     public InMulScalarModule3 findWeightModule(String name) {
         return findModule(name);
     }

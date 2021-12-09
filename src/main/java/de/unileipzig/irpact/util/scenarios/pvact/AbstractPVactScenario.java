@@ -59,6 +59,7 @@ import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
 import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.util.RealDataModularProcessModelTemplate;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -266,6 +267,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         general.runPVAct = runPvAct;
         general.runOptActDemo = false;
         general.setLogLevel(IRPLevel.INFO);
+        runGeneralSetup(general);
     }
 
     @Override
@@ -380,477 +382,489 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
 //        return processModel;
 //    }
 
-    public InBasicCAModularProcessModel createDefaultModularProcessModel(
+//    public InBasicCAModularProcessModel createDefaultModularProcessModel(
+//            String name,
+//            InUncertaintySupplier uncertainty,
+//            InNodeDistanceFilterScheme scheme,
+//            List<InOutputImage2> images,
+//            List<InPostDataAnalysis> postDatas) {
+//        return createDefaultModularProcessModel(name, uncertainty, scheme, images, postDatas, new ModularProcessModelManager());
+//    }
+
+    public RealDataModularProcessModelTemplate createRealDataTemplate(
             String name,
             InUncertaintySupplier uncertainty,
-            InNodeDistanceFilterScheme scheme,
-            List<InOutputImage2> images,
-            List<InPostDataAnalysis> postDatas) {
-        return createDefaultModularProcessModel(name, uncertainty, scheme, images, postDatas, new ModularProcessModelManager());
+            InNodeDistanceFilterScheme scheme) {
+        RealDataModularProcessModelTemplate mpm = new RealDataModularProcessModelTemplate(name);
+        mpm.setUncertaintySupplier(() -> uncertainty);
+        mpm.setDistanceFilterSupplier(() -> scheme);
+        mpm.setPvFileSupplier(this::getPVFile);
+        mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        return mpm;
     }
 
-    public InCsvValueLoggingModule3 createDefaultLoggingModule(String name) {
-        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
-        module.setName(name);
-        module.setPrintHeader(true);
-        module.setLogDefaultCall(true);
-        module.setLogReevaluatorCall(false);
-        module.setStoreXlsx(true);
-        return module;
-    }
-
-    public InCsvValueLoggingModule3 createReevaluatorLoggingModule(String name) {
-        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
-        module.setName(name);
-        module.setPrintHeader(true);
-        module.setLogDefaultCall(false);
-        module.setLogReevaluatorCall(true);
-        module.setStoreXlsx(true);
-        return module;
-    }
-
+//    public InCsvValueLoggingModule3 createDefaultLoggingModule(String name) {
+//        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
+//        module.setName(name);
+//        module.setPrintHeader(true);
+//        module.setLogDefaultCall(true);
+//        module.setLogReevaluatorCall(false);
+//        module.setStoreXlsx(true);
+//        return module;
+//    }
+//
+//    public InCsvValueLoggingModule3 createReevaluatorLoggingModule(String name) {
+//        InCsvValueLoggingModule3 module = new InCsvValueLoggingModule3();
+//        module.setName(name);
+//        module.setPrintHeader(true);
+//        module.setLogDefaultCall(false);
+//        module.setLogReevaluatorCall(true);
+//        module.setStoreXlsx(true);
+//        return module;
+//    }
+//
     protected void setupCommunicationModuleLogging(InCommunicationModule3 module) {
         module.setRaOpinionLogging(false);
         module.setRaUnceraintyLogging(false);
     }
 
-    public InBasicCAModularProcessModel createDefaultModularProcessModel(
-            String name,
-            InUncertaintySupplier uncertainty,
-            InNodeDistanceFilterScheme scheme,
-            List<InOutputImage2> images,
-            List<InPostDataAnalysis> postDatas,
-            ModularProcessModelManager mmp) {
-
-        //ACTION
-        InAttributeInputModule3 commuAttr = mmp.create("ATTR_COMMUNICATION", InAttributeInputModule3::new);
-        commuAttr.setAttribute(getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN));
-        InMulScalarModule3 commuAttrWeight = mmp.create("FACTOR_COMMUNICATION", InMulScalarModule3::new);
-        commuAttrWeight.setScalar(1.0);
-        commuAttrWeight.setInput(commuAttr);
-        InBernoulliModule3 commuIf = mmp.create("TEST_COMMUNICATION", InBernoulliModule3::new);
-        commuIf.setInput(commuAttrWeight);
-        InCommunicationModule3 commuAction = mmp.create(COMMUNICATION, InCommunicationModule3::new);
-        commuAction.setRaEnabled(true);
-        commuAction.setRaLoggingEnabled(true);
-        commuAction.setRaStoreXlsx(true);
-        commuAction.setRaKeepCsv(false);
-        commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
-        commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
-        commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
-        commuAction.setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
-        commuAction.setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
-        commuAction.setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
-        commuAction.setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
-        commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
-        commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
-        commuAction.setUncertaintySupplier(uncertainty);
-        setupCommunicationModuleLogging(commuAction);
-
-        InAttributeInputModule3 rewireAttr = mmp.create("ATTR_REWIRE", InAttributeInputModule3::new);
-        rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
-        InMulScalarModule3 rewireAttrWeight = mmp.create("FACTOR_REWIRE", InMulScalarModule3::new);
-        rewireAttrWeight.setScalar(1.0);
-        rewireAttrWeight.setInput(rewireAttr);
-        InBernoulliModule3 rewireIf = mmp.create("TEST_REWIRE", InBernoulliModule3::new);
-        rewireIf.setInput(rewireAttrWeight);
-        InRewireModule3 rewireAction = mmp.create("REWIRE_ACTION", InRewireModule3::new);
-
-        InNOPModule3 nop = mmp.create("NOP", InNOPModule3::new);
-
-        InIfElseActionModule3 ifElseRewire = mmp.create("IF_ELSE_REWIRE", InIfElseActionModule3::new);
-        ifElseRewire.setTestModule(rewireIf);
-        ifElseRewire.setOnTrueModule(rewireAction);
-        ifElseRewire.setOnFalseModule(nop);
-
-        InIfElseActionModule3 ifElseCommu = mmp.create("IF_ELSE_COMMU", InIfElseActionModule3::new);
-        ifElseCommu.setTestModule(commuIf);
-        ifElseCommu.setOnTrueModule(commuAction);
-        ifElseCommu.setOnFalseModule(ifElseRewire);
-
-        //INIT
-        InInitializationModule3 init = mmp.create("INIT", InInitializationModule3::new);
-
-        //INTEREST
-        InInterestModule3 interest = mmp.create("INTEREST", InInterestModule3::new);
-        interest.setInput(ifElseCommu);
-
-        //FEASIBILITY
-        InFeasibilityModule3 feasibility = mmp.create("FEASIBITLITY", InFeasibilityModule3::new);
-        feasibility.setInput(ifElseCommu);
-
-        //===
-        //DECISION
-
-        //npv
-        InGlobalAvgNPVModule3 avgNPV = mmp.create("AVG_NPV", InGlobalAvgNPVModule3::new);
-        avgNPV.setPvFile(getPVFile());
-        InNPVModule3 npv = mmp.create("NPV", InNPVModule3::new);
-        npv.setPvFile(getPVFile());
-        InLogisticModule3 logisticNPV = mmp.create("LOGISTIC_NPV", InLogisticModule3::new);
-        logisticNPV.setValueL(1.0);
-        logisticNPV.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
-        logisticNPV.setXInput(npv);
-        logisticNPV.setX0Input(avgNPV);
-
-        InCsvValueLoggingModule3 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, this::createDefaultLoggingModule);
-        npvLogger.setInput(logisticNPV);
-        InCsvValueLoggingModule3 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, this::createReevaluatorLoggingModule);
-        npvReevalLogger.setInput(logisticNPV);
-
-        //pp
-        InAttributeInputModule3 pp = mmp.create("PP", InAttributeInputModule3::new);
-        pp.setAttribute(getAttribute(RAConstants.PURCHASE_POWER_EUR));
-        InAvgFinModule3 avgPP = mmp.create("AVG_PP", InAvgFinModule3::new);
-        InLogisticModule3 logisticPP = mmp.create("LOGISTIC_PP", InLogisticModule3::new);
-        logisticPP.setValueL(1.0);
-        logisticPP.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
-        logisticPP.setXInput(pp);
-        logisticPP.setX0Input(avgPP);
-
-        //fin comp
-        InMulScalarModule3 npvWeight = mmp.create(NPV_WEIGHT, InMulScalarModule3::new);
-        npvWeight.setScalar(RealData.WEIGHT_NPV);
-        npvWeight.setInput(npvLogger);
-        InMulScalarModule3 ppWeight = mmp.create(PP_WEIGHT, InMulScalarModule3::new);
-        ppWeight.setScalar(RealData.WEIGHT_EK);
-        ppWeight.setInput(logisticPP);
-        InSumModule3 finComp = mmp.create("FIN_COMPONENT", InSumModule3::new);
-        finComp.setInput(npvWeight, ppWeight);
-
-        //env comp
-        InAttributeInputModule3 envAttr = mmp.create("ENV", InAttributeInputModule3::new);
-        envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
-        InCsvValueLoggingModule3 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, this::createDefaultLoggingModule);
-        envLogger.setInput(envAttr);
-        InCsvValueLoggingModule3 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, this::createReevaluatorLoggingModule);
-        envReevalLogger.setInput(envAttr);
-        InMulScalarModule3 envWeight = mmp.create(ENV_WEIGHT, InMulScalarModule3::new);
-        envWeight.setScalar(RealData.WEIGHT_NEP);
-        envWeight.setInput(envLogger);
-
-        //nov comp
-        InAttributeInputModule3 novAttr = mmp.create("NOV", InAttributeInputModule3::new);
-        novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
-        InCsvValueLoggingModule3 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, this::createDefaultLoggingModule);
-        novLogger.setInput(novAttr);
-        InCsvValueLoggingModule3 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, this::createReevaluatorLoggingModule);
-        novReevalLogger.setInput(novAttr);
-        InMulScalarModule3 novWeight = mmp.create(NOV_WEIGHT, InMulScalarModule3::new);
-        novWeight.setScalar(RealData.WEIGHT_NS);
-        novWeight.setInput(novLogger);
-
-        //soc
-        InLocalShareOfAdopterModule3 localShare = mmp.create("LOCAL_SHARE", InLocalShareOfAdopterModule3::new);
-        localShare.setMaxToStore(0);
-        localShare.setNodeFilterScheme(scheme);
-        InCsvValueLoggingModule3 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, this::createDefaultLoggingModule);
-        localLogger.setInput(localShare);
-        InCsvValueLoggingModule3 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, this::createReevaluatorLoggingModule);
-        localReevalLogger.setInput(localShare);
-
-        InSocialShareOfAdopterModule3 socialShare = mmp.create("SOCIAL_SHARE", InSocialShareOfAdopterModule3::new);
-        InCsvValueLoggingModule3 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, this::createDefaultLoggingModule);
-        socialLogger.setInput(socialShare);
-        InCsvValueLoggingModule3 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, this::createReevaluatorLoggingModule);
-        socialReevalLogger.setInput(socialShare);
-
-        InMulScalarModule3 localWeight = mmp.create(LOCAL_WEIGHT, InMulScalarModule3::new);
-        localWeight.setScalar(RealData.WEIGHT_LOCALE);
-        localWeight.setInput(localLogger);
-        InMulScalarModule3 socialWeight = mmp.create(SOCIAL_WEIGHT, InMulScalarModule3::new);
-        socialWeight.setScalar(RealData.WEIGHT_SOCIAL);
-        socialWeight.setInput(socialLogger);
-        InSumModule3 socComp = mmp.create("SOC_COMPONENT", InSumModule3::new);
-        socComp.setInput(localWeight, socialWeight);
-
-        //decision
-        InAttributeInputModule3 finThreshold = mmp.create("FIN_THRESHOLD", InAttributeInputModule3::new);
-        finThreshold.setAttribute(getAttribute(RAConstants.FINANCIAL_THRESHOLD));
-
-        InThresholdReachedModule3 finCheck = mmp.create("FIN_CHECK", InThresholdReachedModule3::new);
-        finCheck.setDraw(pp);
-        finCheck.setThreshold(finThreshold);
-
-        InAttributeInputModule3 adoptThreshold = mmp.create("ADOPT_THRESHOLD", InAttributeInputModule3::new);
-        adoptThreshold.setAttribute(getAttribute(RAConstants.ADOPTION_THRESHOLD));
-
-        InSumModule3 utilitySum = mmp.create("UTILITY_SUM", InSumModule3::new);
-        utilitySum.setInput(
-                finComp,
-                envWeight,
-                novWeight,
-                socComp
-        );
-
-        InCsvValueLoggingModule3 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, this::createDefaultLoggingModule);
-        utilityLogger.setInput(utilitySum);
-
-        InCsvValueLoggingModule3 utilityReevalLogger = mmp.create(LazyData2FileLinker.UTILITY_REEVAL, this::createReevaluatorLoggingModule);
-        utilityReevalLogger.setInput(utilitySum);
-
-        InDecisionMakingDeciderModule3 decisionMaking = mmp.create("DECISION_MAKING", InDecisionMakingDeciderModule3::new);
-        decisionMaking.setFinCheck(finCheck);
-        decisionMaking.setThreshold(adoptThreshold);
-        decisionMaking.setUtility(utilityLogger);
-
-        InYearBasedAdoptionDeciderModule3 reallyDecider = mmp.create("REALLY_ADOPT_TEST", InYearBasedAdoptionDeciderModule3::new);
-        reallyDecider.setBase(1);
-        reallyDecider.setFactor(0);
-        reallyDecider.setInput(decisionMaking);
-
-        InDoAdoptModule3 adoptModule = mmp.create("ADOPT_IF_POSSIBLE", InDoAdoptModule3::new);
-        adoptModule.setInput(reallyDecider);
-
-        //MAIN
-        InMainBranchingModule3 mainBranch = mmp.create("CORE", InMainBranchingModule3::new);
-        mainBranch.setInit(init);
-        mainBranch.setAwareness(interest);
-        mainBranch.setFeasibility(feasibility);
-        mainBranch.setDecision(adoptModule);
-        mainBranch.setImpeded(ifElseCommu);
-        mainBranch.setAdopted(ifElseCommu);
-
-        InPhaseLoggingModule3 phaseLogger = mmp.create("PHASE_LOGGER", InPhaseLoggingModule3::new);
-        phaseLogger.setInput(mainBranch);
-
-        InPhaseUpdateModule3 phaseUpdater = mmp.create("PHASE_UPDATER", InPhaseUpdateModule3::new);
-        phaseUpdater.setInput(phaseLogger);
-
-        //PROCESS MODEL
-        InRunUntilFailureModule3 startModule = mmp.create("START", InRunUntilFailureModule3::new);
-        startModule.setInput(phaseUpdater);
-
-        InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
-        processModel.setName(name);
-        processModel.setStartModule(startModule);
-
-        //INIT
-        InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
-        novScaler.setName("NOV_SCALER");
-        novScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
-        novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
-
-        InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
-        envScaler.setName("ENV_SCALER");
-        envScaler.setM(RAConstants.DEFAULT_M);
-        envScaler.setN(RAConstants.DEFAULT_N);
-        envScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
-        envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
-
-        InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
-        envUpdater.setName("ENV_UPDATER");
-        envUpdater.setScaler(envScaler);
-
-        InUncertaintySupplierInitializer uncertInit = new InUncertaintySupplierInitializer();
-        uncertInit.setName("UNCERT_INIT");
-        uncertInit.setPriority(InitializationHandler.LOW_PRIORITY);
-        uncertInit.setUncertaintySuppliers(uncertainty);
-
-        processModel.addInitializationHandlers(
-                novScaler,
-                envScaler,
-                uncertInit
-        );
-
-        //NEW PRODUCT
-        processModel.addNewProductHandlers(
-                getDefaultPVactFileBasedWeightedInitialAdopter()
-        );
-
-        //START OF YEAR
-        InImpededResetter impededResetter = new InImpededResetter();
-        impededResetter.setName("IMPEDED_RESETTER");
-
-        InUncertaintyReevaluator uncertUpdater = new InUncertaintyReevaluator();
-        uncertUpdater.setName("UNCERT_UPDATER");
-        uncertUpdater.setPriorty(Reevaluator.LOW_PRIORITY);
-        uncertUpdater.setUncertaintySuppliers(uncertainty);
-
-        processModel.addStartOfYearReevaluators(
-                impededResetter,
-                uncertUpdater
-        );
-
-        //MID OF YEAR
-        InConstructionRenovationUpdater constructionRenovationUpdater = new InConstructionRenovationUpdater();
-        constructionRenovationUpdater.setName("CONSTRUCTION_RENOVATION_UPDATER");
-
-        processModel.addMidOfYearReevaluators(
-                constructionRenovationUpdater,
-                envUpdater
-        );
-
-        //END OF YEAR
-        InPhaseLoggingModule3 decisionReevalPhaseLogger = mmp.create("PHASE_REEVAL_LOGGER", InPhaseLoggingModule3::new);
-        decisionReevalPhaseLogger.setInput(reallyDecider);
-
-        InPhaseUpdateModule3 decisionReevalPhaseUpdater = mmp.create("PHASE_REEVAL_UPDATER", InPhaseUpdateModule3::new);
-        decisionReevalPhaseUpdater.setInput(decisionReevalPhaseLogger);
-
-        InAnnualInterestLogger annualInterestLogger = new InAnnualInterestLogger();
-        annualInterestLogger.setName("ANNUAL_INTEREST_LOGGER");
-        InDecisionMakingReevaluator decisionMakingReevaluator = new InDecisionMakingReevaluator();
-        decisionMakingReevaluator.setName("DECISION_REEVALUATOR");
-        decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
-
-        InReevaluatorModule3 reevalNode = mmp.create("REEVAL", InReevaluatorModule3::new);
-        reevalNode.setInput(
-                npvReevalLogger,
-                envReevalLogger,
-                novReevalLogger,
-                socialReevalLogger,
-                localReevalLogger,
-                utilityReevalLogger
-        );
-
-        InMultiReevaluator initLinker = new InMultiReevaluator();
-        initLinker.setName("INIT_LINKER");
-        initLinker.setModules(
-                reevalNode
-        );
-
-        processModel.addInitializationReevaluators(
-                initLinker
-        );
-
-        InMultiReevaluator endOfYearLinker = new InMultiReevaluator();
-        endOfYearLinker.setName("END_OF_YEAR_LINKER");
-        endOfYearLinker.setModules(
-                reevalNode
-        );
-
-        processModel.addEndOfYearReevaluator(
-                annualInterestLogger,
-                decisionMakingReevaluator,
-                endOfYearLinker
-        );
-
-        //logging
-        InSpecialAverageQuantilRangeImage novQuantile1 = InSpecialAverageQuantilRangeImage.NOV;
-        novQuantile1.setLoggingModule(novReevalLogger);
-        images.add(novQuantile1);
-
-        InSpecialAverageQuantilRangeImage envQuantile = InSpecialAverageQuantilRangeImage.ENV;
-        envQuantile.setLoggingModule(envReevalLogger);
-        images.add(envQuantile);
-
-        InSpecialAverageQuantilRangeImage npvQuantile = InSpecialAverageQuantilRangeImage.NPV;
-        npvQuantile.setLoggingModule(npvReevalLogger);
-        images.add(npvQuantile);
-
-        InSpecialAverageQuantilRangeImage socialQuantil = InSpecialAverageQuantilRangeImage.SOCIAL;
-        socialQuantil.setLoggingModule(socialReevalLogger);
-        images.add(socialQuantil);
-
-        InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL;
-        localQuantil.setLoggingModule(localReevalLogger);
-        images.add(localQuantil);
-
-        InSpecialAverageQuantilRangeImage utilityQuantil = InSpecialAverageQuantilRangeImage.UTILITY;
-        utilityQuantil.setLoggingModule(utilityReevalLogger);
-        images.add(utilityQuantil);
-
-        InAnnualBucketImage npvBucket = InAnnualBucketImage.NPV;
-        npvBucket.setLoggingModule(npvReevalLogger);
-        npvBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(npvBucket);
-
-        InAnnualBucketImage envBucket = InAnnualBucketImage.ENV;
-        envBucket.setLoggingModule(envReevalLogger);
-        envBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(envBucket);
-
-        InAnnualBucketImage novBucket = InAnnualBucketImage.NOV;
-        novBucket.setLoggingModule(novReevalLogger);
-        novBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(novBucket);
-
-        InAnnualBucketImage socialBucket = InAnnualBucketImage.SOCIAL;
-        socialBucket.setLoggingModule(socialReevalLogger);
-        socialBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(socialBucket);
-
-        InAnnualBucketImage localBucket = InAnnualBucketImage.LOCAL;
-        localBucket.setLoggingModule(localReevalLogger);
-        localBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(localBucket);
-
-        InAnnualBucketImage utlityBucket = InAnnualBucketImage.UTILITY;
-        utlityBucket.setLoggingModule(utilityReevalLogger);
-        utlityBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
-        images.add(utlityBucket);
-
-        //Custom-Test
-//        InQuantileRange qr0 = new InQuantileRange();
-//        qr0.setName("QR0");
-//        qr0.setLowerBound(0.0);
-//        qr0.setUpperBound(0.5);
-//        InQuantileRange qr1 = new InQuantileRange();
-//        qr1.setName("QR1");
-//        qr1.setLowerBound(0.5);
-//        qr1.setUpperBound(1.0);
+//    public InBasicCAModularProcessModel createDefaultModularProcessModel(
+//            String name,
+//            InUncertaintySupplier uncertainty,
+//            InNodeDistanceFilterScheme scheme,
+//            List<InOutputImage2> images,
+//            List<InPostDataAnalysis> postDatas,
+//            ModularProcessModelManager mmp) {
 //
-//        InCustomAverageQuantilRangeImage customNovQuantile1 = new InCustomAverageQuantilRangeImage();
-//        customNovQuantile1.setName("CUSTOM_NOV1");
-//        customNovQuantile1.setCustomImageId(1);
-//        customNovQuantile1.setQuantileRanges(qr0, qr1);
-//        customNovQuantile1.setLoggingModule(novLogger);
-//        images.add(customNovQuantile1);
+//        //ACTION
+//        InAttributeInputModule3 commuAttr = mmp.create("ATTR_COMMUNICATION", InAttributeInputModule3::new);
+//        commuAttr.setAttribute(getAttribute(RAConstants.COMMUNICATION_FREQUENCY_SN));
+//        InMulScalarModule3 commuAttrWeight = mmp.create("FACTOR_COMMUNICATION", InMulScalarModule3::new);
+//        commuAttrWeight.setScalar(1.0);
+//        commuAttrWeight.setInput(commuAttr);
+//        InBernoulliModule3 commuIf = mmp.create("TEST_COMMUNICATION", InBernoulliModule3::new);
+//        commuIf.setInput(commuAttrWeight);
+//        InCommunicationModule3 commuAction = mmp.create(COMMUNICATION, InCommunicationModule3::new);
+//        commuAction.setRaEnabled(true);
+//        commuAction.setRaLoggingEnabled(true);
+//        commuAction.setRaStoreXlsx(true);
+//        commuAction.setRaKeepCsv(false);
+//        commuAction.setAdopterPoints(RAModelData.DEFAULT_ADOPTER_POINTS);
+//        commuAction.setInterestedPoints(RAModelData.DEFAULT_INTERESTED_POINTS);
+//        commuAction.setAwarePoints(RAModelData.DEFAULT_AWARE_POINTS);
+//        commuAction.setUnknownPoints(RAModelData.DEFAULT_UNKNOWN_POINTS);
+//        commuAction.setSpeedOfConvergence(RAConstants.DEFAULT_SPEED_OF_CONVERGENCE);
+//        commuAction.setAttitudeGap(RAConstants.DEFAULT_ATTIDUTE_GAP);
+//        commuAction.setChanceNeutral(RAConstants.DEFAULT_NEUTRAL_CHANCE);
+//        commuAction.setChanceConvergence(RAConstants.DEFAULT_CONVERGENCE_CHANCE);
+//        commuAction.setChanceDivergence(RAConstants.DEFAULT_DIVERGENCE_CHANCE);
+//        commuAction.setUncertaintySupplier(uncertainty);
+//        setupCommunicationModuleLogging(commuAction);
 //
-//        InCustomAverageQuantilRangeImage customNovQuantile2 = new InCustomAverageQuantilRangeImage();
-//        customNovQuantile2.setName("CUSTOM_NOV2");
-//        customNovQuantile2.setCustomImageId(2);
-//        customNovQuantile2.setQuantileRanges(qr0, qr1);
-//        customNovQuantile2.setLoggingModule(novReevalLogger);
-//        images.add(customNovQuantile2);
-
-        //Adoption Phase Overview
-        InAdoptionPhaseOverviewImage adoptionPhaseOverview = InAdoptionPhaseOverviewImage.DEFAULT;
-        images.add(adoptionPhaseOverview);
-
-        //Compared Annual
-        InComparedAnnualImage annualImage = InComparedAnnualImage.DEFAULT;
-        annualImage.setRealData(getRealAdoptionDataFile());
-        images.add(annualImage);
-
-        //Compared Annual Zip
-        InComparedAnnualZipImage annualZipImage = InComparedAnnualZipImage.DEFAULT;
-        annualZipImage.setRealData(getRealAdoptionDataFile());
-        images.add(annualZipImage);
-
-        //Interest
-        InInterestOverviewImage interestOverview = InInterestOverviewImage.DEFAULT;
-        images.add(interestOverview);
-
-        //Process Phase Overview
-        InProcessPhaseOverviewImage processPhaseOverview = InProcessPhaseOverviewImage.DEFAULT;
-        images.add(processPhaseOverview);
-
-        //bucket
-        InBucketAnalyser novBucketData = new InBucketAnalyser();
-        novBucketData.setName("NOV_BUCKET");
-        novBucketData.setBucketRange(0.1);
-        novBucketData.setLoggingModule(novLogger);
-        postDatas.add(novBucketData);
-
-        InBucketAnalyser envBucketData = new InBucketAnalyser();
-        envBucketData.setName("ENV_BUCKET");
-        envBucketData.setBucketRange(0.01);
-        envBucketData.setLoggingModule(envLogger);
-        postDatas.add(envBucketData);
-
-        //neighborhood
-        InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();
-        neighbourhoodOverview.setName("NEIGHBOURHOOD");
-        neighbourhoodOverview.setEnabled(true);
-        neighbourhoodOverview.setStoreXlsx(true);
-        neighbourhoodOverview.setNodeFilterScheme(scheme);
-        postDatas.add(neighbourhoodOverview);
-
-        //===
-        return processModel;
-    }
+//        InAttributeInputModule3 rewireAttr = mmp.create("ATTR_REWIRE", InAttributeInputModule3::new);
+//        rewireAttr.setAttribute(getAttribute(RAConstants.REWIRING_RATE));
+//        InMulScalarModule3 rewireAttrWeight = mmp.create("FACTOR_REWIRE", InMulScalarModule3::new);
+//        rewireAttrWeight.setScalar(1.0);
+//        rewireAttrWeight.setInput(rewireAttr);
+//        InBernoulliModule3 rewireIf = mmp.create("TEST_REWIRE", InBernoulliModule3::new);
+//        rewireIf.setInput(rewireAttrWeight);
+//        InRewireModule3 rewireAction = mmp.create("REWIRE_ACTION", InRewireModule3::new);
+//
+//        InNOPModule3 nop = mmp.create("NOP", InNOPModule3::new);
+//
+//        InIfElseActionModule3 ifElseRewire = mmp.create("IF_ELSE_REWIRE", InIfElseActionModule3::new);
+//        ifElseRewire.setTestModule(rewireIf);
+//        ifElseRewire.setOnTrueModule(rewireAction);
+//        ifElseRewire.setOnFalseModule(nop);
+//
+//        InIfElseActionModule3 ifElseCommu = mmp.create("IF_ELSE_COMMU", InIfElseActionModule3::new);
+//        ifElseCommu.setTestModule(commuIf);
+//        ifElseCommu.setOnTrueModule(commuAction);
+//        ifElseCommu.setOnFalseModule(ifElseRewire);
+//
+//        //INIT
+//        InInitializationModule3 init = mmp.create("INIT", InInitializationModule3::new);
+//
+//        //INTEREST
+//        InInterestModule3 interest = mmp.create("INTEREST", InInterestModule3::new);
+//        interest.setInput(ifElseCommu);
+//
+//        //FEASIBILITY
+//        InFeasibilityModule3 feasibility = mmp.create("FEASIBITLITY", InFeasibilityModule3::new);
+//        feasibility.setInput(ifElseCommu);
+//
+//        //===
+//        //DECISION
+//
+//        //npv
+//        InGlobalAvgNPVModule3 avgNPV = mmp.create("AVG_NPV", InGlobalAvgNPVModule3::new);
+//        avgNPV.setPvFile(getPVFile());
+//        InNPVModule3 npv = mmp.create("NPV", InNPVModule3::new);
+//        npv.setPvFile(getPVFile());
+//        InLogisticModule3 logisticNPV = mmp.create("LOGISTIC_NPV", InLogisticModule3::new);
+//        logisticNPV.setValueL(1.0);
+//        logisticNPV.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+//        logisticNPV.setXInput(npv);
+//        logisticNPV.setX0Input(avgNPV);
+//
+//        InCsvValueLoggingModule3 npvLogger = mmp.create(LazyData2FileLinker.NPV_LOGGER, this::createDefaultLoggingModule);
+//        npvLogger.setInput(logisticNPV);
+//        InCsvValueLoggingModule3 npvReevalLogger = mmp.create(LazyData2FileLinker.NPV_REEVAL, this::createReevaluatorLoggingModule);
+//        npvReevalLogger.setInput(logisticNPV);
+//
+//        //pp
+//        InAttributeInputModule3 pp = mmp.create("PP", InAttributeInputModule3::new);
+//        pp.setAttribute(getAttribute(RAConstants.PURCHASE_POWER_EUR));
+//        InAvgFinModule3 avgPP = mmp.create("AVG_PP", InAvgFinModule3::new);
+//        InLogisticModule3 logisticPP = mmp.create("LOGISTIC_PP", InLogisticModule3::new);
+//        logisticPP.setValueL(1.0);
+//        logisticPP.setValueK(RAConstants.DEFAULT_LOGISTIC_FACTOR);
+//        logisticPP.setXInput(pp);
+//        logisticPP.setX0Input(avgPP);
+//
+//        //fin comp
+//        InMulScalarModule3 npvWeight = mmp.create(NPV_WEIGHT, InMulScalarModule3::new);
+//        npvWeight.setScalar(RealData.WEIGHT_NPV);
+//        npvWeight.setInput(npvLogger);
+//        InMulScalarModule3 ppWeight = mmp.create(PP_WEIGHT, InMulScalarModule3::new);
+//        ppWeight.setScalar(RealData.WEIGHT_EK);
+//        ppWeight.setInput(logisticPP);
+//        InSumModule3 finComp = mmp.create("FIN_COMPONENT", InSumModule3::new);
+//        finComp.setInput(npvWeight, ppWeight);
+//
+//        //env comp
+//        InAttributeInputModule3 envAttr = mmp.create("ENV", InAttributeInputModule3::new);
+//        envAttr.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+//        InCsvValueLoggingModule3 envLogger = mmp.create(LazyData2FileLinker.ENV_LOGGER, this::createDefaultLoggingModule);
+//        envLogger.setInput(envAttr);
+//        InCsvValueLoggingModule3 envReevalLogger = mmp.create(LazyData2FileLinker.ENV_REEVAL, this::createReevaluatorLoggingModule);
+//        envReevalLogger.setInput(envAttr);
+//        InMulScalarModule3 envWeight = mmp.create(ENV_WEIGHT, InMulScalarModule3::new);
+//        envWeight.setScalar(RealData.WEIGHT_NEP);
+//        envWeight.setInput(envLogger);
+//
+//        //nov comp
+//        InAttributeInputModule3 novAttr = mmp.create("NOV", InAttributeInputModule3::new);
+//        novAttr.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+//        InCsvValueLoggingModule3 novLogger = mmp.create(LazyData2FileLinker.NOV_LOGGER, this::createDefaultLoggingModule);
+//        novLogger.setInput(novAttr);
+//        InCsvValueLoggingModule3 novReevalLogger = mmp.create(LazyData2FileLinker.NOV_REEVAL, this::createReevaluatorLoggingModule);
+//        novReevalLogger.setInput(novAttr);
+//        InMulScalarModule3 novWeight = mmp.create(NOV_WEIGHT, InMulScalarModule3::new);
+//        novWeight.setScalar(RealData.WEIGHT_NS);
+//        novWeight.setInput(novLogger);
+//
+//        //soc
+//        InLocalShareOfAdopterModule3 localShare = mmp.create("LOCAL_SHARE", InLocalShareOfAdopterModule3::new);
+//        localShare.setMaxToStore(0);
+//        localShare.setNodeFilterScheme(scheme);
+//        InCsvValueLoggingModule3 localLogger = mmp.create(LazyData2FileLinker.LOCAL_LOGGER, this::createDefaultLoggingModule);
+//        localLogger.setInput(localShare);
+//        InCsvValueLoggingModule3 localReevalLogger = mmp.create(LazyData2FileLinker.LOCAL_REEVAL, this::createReevaluatorLoggingModule);
+//        localReevalLogger.setInput(localShare);
+//
+//        InSocialShareOfAdopterModule3 socialShare = mmp.create("SOCIAL_SHARE", InSocialShareOfAdopterModule3::new);
+//        InCsvValueLoggingModule3 socialLogger = mmp.create(LazyData2FileLinker.SOCIAL_LOGGER, this::createDefaultLoggingModule);
+//        socialLogger.setInput(socialShare);
+//        InCsvValueLoggingModule3 socialReevalLogger = mmp.create(LazyData2FileLinker.SOCIAL_REEVAL, this::createReevaluatorLoggingModule);
+//        socialReevalLogger.setInput(socialShare);
+//
+//        InMulScalarModule3 localWeight = mmp.create(LOCAL_WEIGHT, InMulScalarModule3::new);
+//        localWeight.setScalar(RealData.WEIGHT_LOCALE);
+//        localWeight.setInput(localLogger);
+//        InMulScalarModule3 socialWeight = mmp.create(SOCIAL_WEIGHT, InMulScalarModule3::new);
+//        socialWeight.setScalar(RealData.WEIGHT_SOCIAL);
+//        socialWeight.setInput(socialLogger);
+//        InSumModule3 socComp = mmp.create("SOC_COMPONENT", InSumModule3::new);
+//        socComp.setInput(localWeight, socialWeight);
+//
+//        //decision
+//        InAttributeInputModule3 finThreshold = mmp.create("FIN_THRESHOLD", InAttributeInputModule3::new);
+//        finThreshold.setAttribute(getAttribute(RAConstants.FINANCIAL_THRESHOLD));
+//
+//        InThresholdReachedModule3 finCheck = mmp.create("FIN_CHECK", InThresholdReachedModule3::new);
+//        finCheck.setDraw(pp);
+//        finCheck.setThreshold(finThreshold);
+//
+//        InAttributeInputModule3 adoptThreshold = mmp.create("ADOPT_THRESHOLD", InAttributeInputModule3::new);
+//        adoptThreshold.setAttribute(getAttribute(RAConstants.ADOPTION_THRESHOLD));
+//
+//        InSumModule3 utilitySum = mmp.create("UTILITY_SUM", InSumModule3::new);
+//        utilitySum.setInput(
+//                finComp,
+//                envWeight,
+//                novWeight,
+//                socComp
+//        );
+//
+//        InCsvValueLoggingModule3 utilityLogger = mmp.create(LazyData2FileLinker.UTILITY_LOGGER, this::createDefaultLoggingModule);
+//        utilityLogger.setInput(utilitySum);
+//
+//        InCsvValueLoggingModule3 utilityReevalLogger = mmp.create(LazyData2FileLinker.UTILITY_REEVAL, this::createReevaluatorLoggingModule);
+//        utilityReevalLogger.setInput(utilitySum);
+//
+//        InDecisionMakingDeciderModule3 decisionMaking = mmp.create("DECISION_MAKING", InDecisionMakingDeciderModule3::new);
+//        decisionMaking.setFinCheck(finCheck);
+//        decisionMaking.setThreshold(adoptThreshold);
+//        decisionMaking.setUtility(utilityLogger);
+//
+//        InYearBasedAdoptionDeciderModule3 reallyDecider = mmp.create("REALLY_ADOPT_TEST", InYearBasedAdoptionDeciderModule3::new);
+//        reallyDecider.setBase(1);
+//        reallyDecider.setFactor(1);
+//        reallyDecider.setInput(decisionMaking);
+//
+//        InDoAdoptModule3 adoptModule = mmp.create("ADOPT_IF_POSSIBLE", InDoAdoptModule3::new);
+//        adoptModule.setInput(reallyDecider);
+//
+//        //MAIN
+//        InMainBranchingModule3 mainBranch = mmp.create("CORE", InMainBranchingModule3::new);
+//        mainBranch.setInit(init);
+//        mainBranch.setAwareness(interest);
+//        mainBranch.setFeasibility(feasibility);
+//        mainBranch.setDecision(adoptModule);
+//        mainBranch.setImpeded(ifElseCommu);
+//        mainBranch.setAdopted(ifElseCommu);
+//
+//        InPhaseLoggingModule3 phaseLogger = mmp.create("PHASE_LOGGER", InPhaseLoggingModule3::new);
+//        phaseLogger.setInput(mainBranch);
+//
+//        InPhaseUpdateModule3 phaseUpdater = mmp.create("PHASE_UPDATER", InPhaseUpdateModule3::new);
+//        phaseUpdater.setInput(phaseLogger);
+//
+//        //PROCESS MODEL
+//        InRunUntilFailureModule3 startModule = mmp.create("START", InRunUntilFailureModule3::new);
+//        startModule.setInput(phaseUpdater);
+//
+//        InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
+//        processModel.setName(name);
+//        processModel.setStartModule(startModule);
+//
+//        //INIT
+//        InAgentAttributeScaler novScaler = new InAgentAttributeScaler();
+//        novScaler.setName("NOV_SCALER");
+//        novScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
+//        novScaler.setAttribute(getAttribute(RAConstants.NOVELTY_SEEKING));
+//
+//        InLinearePercentageAgentAttributeScaler envScaler = new InLinearePercentageAgentAttributeScaler();
+//        envScaler.setName("ENV_SCALER");
+//        envScaler.setM(RAConstants.DEFAULT_M);
+//        envScaler.setN(RAConstants.DEFAULT_N);
+//        envScaler.setPriority(InitializationHandler.HIGH_PRIORITY);
+//        envScaler.setAttribute(getAttribute(RAConstants.ENVIRONMENTAL_CONCERN));
+//
+//        InLinearePercentageAgentAttributeUpdater envUpdater = new InLinearePercentageAgentAttributeUpdater();
+//        envUpdater.setName("ENV_UPDATER");
+//        envUpdater.setScaler(envScaler);
+//
+//        InUncertaintySupplierInitializer uncertInit = new InUncertaintySupplierInitializer();
+//        uncertInit.setName("UNCERT_INIT");
+//        uncertInit.setPriority(InitializationHandler.LOW_PRIORITY);
+//        uncertInit.setUncertaintySuppliers(uncertainty);
+//
+//        processModel.addInitializationHandlers(
+//                novScaler,
+//                envScaler,
+//                uncertInit
+//        );
+//
+//        //NEW PRODUCT
+//        processModel.addNewProductHandlers(
+//                getDefaultPVactFileBasedWeightedInitialAdopter()
+//        );
+//
+//        //START OF YEAR
+//        InImpededResetter impededResetter = new InImpededResetter();
+//        impededResetter.setName("IMPEDED_RESETTER");
+//
+//        InUncertaintyReevaluator uncertUpdater = new InUncertaintyReevaluator();
+//        uncertUpdater.setName("UNCERT_UPDATER");
+//        uncertUpdater.setPriorty(Reevaluator.LOW_PRIORITY);
+//        uncertUpdater.setUncertaintySuppliers(uncertainty);
+//
+//        processModel.addStartOfYearReevaluators(
+//                impededResetter,
+//                uncertUpdater
+//        );
+//
+//        //MID OF YEAR
+//        InConstructionRenovationUpdater constructionRenovationUpdater = new InConstructionRenovationUpdater();
+//        constructionRenovationUpdater.setName("CONSTRUCTION_RENOVATION_UPDATER");
+//
+//        processModel.addMidOfYearReevaluators(
+//                constructionRenovationUpdater,
+//                envUpdater
+//        );
+//
+//        //END OF YEAR
+//        InPhaseLoggingModule3 decisionReevalPhaseLogger = mmp.create("PHASE_REEVAL_LOGGER", InPhaseLoggingModule3::new);
+//        decisionReevalPhaseLogger.setInput(reallyDecider);
+//
+//        InPhaseUpdateModule3 decisionReevalPhaseUpdater = mmp.create("PHASE_REEVAL_UPDATER", InPhaseUpdateModule3::new);
+//        decisionReevalPhaseUpdater.setInput(decisionReevalPhaseLogger);
+//
+//        InAnnualInterestLogger annualInterestLogger = new InAnnualInterestLogger();
+//        annualInterestLogger.setName("ANNUAL_INTEREST_LOGGER");
+//        InDecisionMakingReevaluator decisionMakingReevaluator = new InDecisionMakingReevaluator();
+//        decisionMakingReevaluator.setName("DECISION_REEVALUATOR");
+//        decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
+//
+//        InReevaluatorModule3 reevalNode = mmp.create("REEVAL", InReevaluatorModule3::new);
+//        reevalNode.setInput(
+//                npvReevalLogger,
+//                envReevalLogger,
+//                novReevalLogger,
+//                socialReevalLogger,
+//                localReevalLogger,
+//                utilityReevalLogger
+//        );
+//
+//        InMultiReevaluator initLinker = new InMultiReevaluator();
+//        initLinker.setName("INIT_LINKER");
+//        initLinker.setModules(
+//                reevalNode
+//        );
+//
+//        processModel.addInitializationReevaluators(
+//                initLinker
+//        );
+//
+//        InMultiReevaluator endOfYearLinker = new InMultiReevaluator();
+//        endOfYearLinker.setName("END_OF_YEAR_LINKER");
+//        endOfYearLinker.setModules(
+//                reevalNode
+//        );
+//
+//        processModel.addEndOfYearReevaluator(
+//                annualInterestLogger,
+//                decisionMakingReevaluator,
+//                endOfYearLinker
+//        );
+//
+//        //logging
+//        InSpecialAverageQuantilRangeImage novQuantile1 = InSpecialAverageQuantilRangeImage.NOV;
+//        novQuantile1.setLoggingModule(novReevalLogger);
+//        images.add(novQuantile1);
+//
+//        InSpecialAverageQuantilRangeImage envQuantile = InSpecialAverageQuantilRangeImage.ENV;
+//        envQuantile.setLoggingModule(envReevalLogger);
+//        images.add(envQuantile);
+//
+//        InSpecialAverageQuantilRangeImage npvQuantile = InSpecialAverageQuantilRangeImage.NPV;
+//        npvQuantile.setLoggingModule(npvReevalLogger);
+//        images.add(npvQuantile);
+//
+//        InSpecialAverageQuantilRangeImage socialQuantil = InSpecialAverageQuantilRangeImage.SOCIAL;
+//        socialQuantil.setLoggingModule(socialReevalLogger);
+//        images.add(socialQuantil);
+//
+//        InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL;
+//        localQuantil.setLoggingModule(localReevalLogger);
+//        images.add(localQuantil);
+//
+//        InSpecialAverageQuantilRangeImage utilityQuantil = InSpecialAverageQuantilRangeImage.UTILITY;
+//        utilityQuantil.setLoggingModule(utilityReevalLogger);
+//        images.add(utilityQuantil);
+//
+//        InAnnualBucketImage npvBucket = InAnnualBucketImage.NPV;
+//        npvBucket.setLoggingModule(npvReevalLogger);
+//        npvBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(npvBucket);
+//
+//        InAnnualBucketImage envBucket = InAnnualBucketImage.ENV;
+//        envBucket.setLoggingModule(envReevalLogger);
+//        envBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(envBucket);
+//
+//        InAnnualBucketImage novBucket = InAnnualBucketImage.NOV;
+//        novBucket.setLoggingModule(novReevalLogger);
+//        novBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(novBucket);
+//
+//        InAnnualBucketImage socialBucket = InAnnualBucketImage.SOCIAL;
+//        socialBucket.setLoggingModule(socialReevalLogger);
+//        socialBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(socialBucket);
+//
+//        InAnnualBucketImage localBucket = InAnnualBucketImage.LOCAL;
+//        localBucket.setLoggingModule(localReevalLogger);
+//        localBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(localBucket);
+//
+//        InAnnualBucketImage utlityBucket = InAnnualBucketImage.UTILITY;
+//        utlityBucket.setLoggingModule(utilityReevalLogger);
+//        utlityBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+//        images.add(utlityBucket);
+//
+//        //Custom-Test
+////        InQuantileRange qr0 = new InQuantileRange();
+////        qr0.setName("QR0");
+////        qr0.setLowerBound(0.0);
+////        qr0.setUpperBound(0.5);
+////        InQuantileRange qr1 = new InQuantileRange();
+////        qr1.setName("QR1");
+////        qr1.setLowerBound(0.5);
+////        qr1.setUpperBound(1.0);
+////
+////        InCustomAverageQuantilRangeImage customNovQuantile1 = new InCustomAverageQuantilRangeImage();
+////        customNovQuantile1.setName("CUSTOM_NOV1");
+////        customNovQuantile1.setCustomImageId(1);
+////        customNovQuantile1.setQuantileRanges(qr0, qr1);
+////        customNovQuantile1.setLoggingModule(novLogger);
+////        images.add(customNovQuantile1);
+////
+////        InCustomAverageQuantilRangeImage customNovQuantile2 = new InCustomAverageQuantilRangeImage();
+////        customNovQuantile2.setName("CUSTOM_NOV2");
+////        customNovQuantile2.setCustomImageId(2);
+////        customNovQuantile2.setQuantileRanges(qr0, qr1);
+////        customNovQuantile2.setLoggingModule(novReevalLogger);
+////        images.add(customNovQuantile2);
+//
+//        //Adoption Phase Overview
+//        InAdoptionPhaseOverviewImage adoptionPhaseOverview = InAdoptionPhaseOverviewImage.DEFAULT;
+//        images.add(adoptionPhaseOverview);
+//
+//        //Compared Annual
+//        InComparedAnnualImage annualImage = InComparedAnnualImage.DEFAULT;
+//        annualImage.setRealData(getRealAdoptionDataFile());
+//        images.add(annualImage);
+//
+//        //Compared Annual Zip
+//        InComparedAnnualZipImage annualZipImage = InComparedAnnualZipImage.DEFAULT;
+//        annualZipImage.setRealData(getRealAdoptionDataFile());
+//        images.add(annualZipImage);
+//
+//        //Interest
+//        InInterestOverviewImage interestOverview = InInterestOverviewImage.DEFAULT;
+//        images.add(interestOverview);
+//
+//        //Process Phase Overview
+//        InProcessPhaseOverviewImage processPhaseOverview = InProcessPhaseOverviewImage.DEFAULT;
+//        images.add(processPhaseOverview);
+//
+//        //bucket
+//        InBucketAnalyser novBucketData = new InBucketAnalyser();
+//        novBucketData.setName("NOV_BUCKET");
+//        novBucketData.setBucketRange(0.1);
+//        novBucketData.setLoggingModule(novLogger);
+//        postDatas.add(novBucketData);
+//
+//        InBucketAnalyser envBucketData = new InBucketAnalyser();
+//        envBucketData.setName("ENV_BUCKET");
+//        envBucketData.setBucketRange(0.01);
+//        envBucketData.setLoggingModule(envLogger);
+//        postDatas.add(envBucketData);
+//
+//        //neighborhood
+//        InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();
+//        neighbourhoodOverview.setName("NEIGHBOURHOOD");
+//        neighbourhoodOverview.setEnabled(true);
+//        neighbourhoodOverview.setStoreXlsx(true);
+//        neighbourhoodOverview.setNodeFilterScheme(scheme);
+//        postDatas.add(neighbourhoodOverview);
+//
+//        //===
+//        return processModel;
+//    }
 
 
     public InUnitStepDiscreteTimeModel createOneWeekTimeModel(String name) {

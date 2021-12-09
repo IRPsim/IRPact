@@ -36,7 +36,6 @@ public abstract class AbstractComparedAnnualImageHandler
             return getGlobalData().getAuto(AnnualEnumeratedAdoptionZips.class);
         } else {
             AnnualEnumeratedAdoptionZips data = new AnnualEnumeratedAdoptionZips();
-            data.setInitialYear(processor.getFirstSimulationYear());
             data.analyse(getEnvironment());
             getGlobalData().put(AnnualEnumeratedAdoptionZips.class, data);
             return data;
@@ -78,11 +77,11 @@ public abstract class AbstractComparedAnnualImageHandler
         //initial - 1
         if(showPreYear) {
             rowIndex++;
-            int yearBeforeStart = years.get(0) - 1;
+            int yearBeforeStart = processor.getPreFirstSimulationYear();
             if(realData.hasYear(yearBeforeStart)) {
                 data.setInt(rowIndex, 0, yearBeforeStart);
-                double realUnscaled = realData.getUncumulated(yearBeforeStart, validZips);
-                double realScaled = scaledData.getUncumulated(yearBeforeStart, validZips);
+                double realUnscaled = realData.getCumulated(yearBeforeStart, validZips);
+                double realScaled = scaledData.getCumulated(yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
                 data.setDouble(rowIndex, 3, realUnscaled);
@@ -94,7 +93,7 @@ public abstract class AbstractComparedAnnualImageHandler
         rowIndex++;
         for(int y: years) {
             data.setInt(rowIndex, 0, y);
-            double simu = simuData.getTotal(y, product, validZips);
+            double simu = simuData.getCount(y, product, validZips);
             double realScaled = scaledData.getUncumulated(y, validZips);
             double realUnscaled = realData.getUncumulated(y, validZips);
             data.setDouble(rowIndex, 1, simu);
@@ -138,10 +137,11 @@ public abstract class AbstractComparedAnnualImageHandler
         //initial - 1
         if(showPreYear) {
             rowIndex++;
-            int yearBeforeStart = years.get(0) - 1;
+            int yearBeforeStart = processor.getPreFirstSimulationYear();
+            warn("WTFWTFWTF: {} {} {}", yearBeforeStart, processor.getAllSimulationYears(), processor.getAllSimulationYearsPrior());
             if(scaledData.hasYear(yearBeforeStart)) {
                 data.setInt(rowIndex, 0, yearBeforeStart);
-                double realScaled = scaledData.getUncumulated(yearBeforeStart, validZips);
+                double realScaled = scaledData.getCumulated(yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
             } else {
@@ -152,7 +152,7 @@ public abstract class AbstractComparedAnnualImageHandler
         rowIndex++;
         for(int y: years) {
             data.setInt(rowIndex, 0, y);
-            double simu = simuData.getTotal(y, product, validZips);
+            double simu = simuData.getCount(y, product, validZips);
             double realScaled = scaledData.getUncumulated(y, validZips);
             data.setDouble(rowIndex, 1, simu);
             data.setDouble(rowIndex, 2, realScaled);
@@ -194,10 +194,10 @@ public abstract class AbstractComparedAnnualImageHandler
         //initial - 1
         if(showPreYear) {
             rowIndex++;
-            int yearBeforeStart = years.get(0) - 1;
+            int yearBeforeStart = processor.getPreFirstSimulationYear();
             if(realData.hasYear(yearBeforeStart)) {
                 data.setInt(rowIndex, 0, yearBeforeStart);
-                double realScaled = realData.getUncumulated(yearBeforeStart, validZips);
+                double realScaled = realData.getCumulated(yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
             } else {
@@ -208,7 +208,7 @@ public abstract class AbstractComparedAnnualImageHandler
         rowIndex++;
         for(int y: years) {
             data.setInt(rowIndex, 0, y);
-            double simu = simuData.getTotal(y, product, validZips);
+            double simu = simuData.getCount(y, product, validZips);
             double realScaled = realData.getUncumulated(y, validZips);
             data.setDouble(rowIndex, 1, simu);
             data.setDouble(rowIndex, 2, realScaled);

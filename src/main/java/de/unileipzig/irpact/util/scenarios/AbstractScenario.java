@@ -513,6 +513,10 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
 
     public void setupGeneral(InGeneral general) {
         general.setForceLogToConsole(isForceLogConsole());
+        runGeneralSetup(general);
+    }
+
+    protected void runGeneralSetup(InGeneral general) {
         if(generalSetup != null) {
             generalSetup.accept(general);
         }

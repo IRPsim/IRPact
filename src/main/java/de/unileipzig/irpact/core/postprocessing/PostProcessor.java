@@ -151,6 +151,10 @@ public abstract class PostProcessor implements LoggingHelper {
         return yearsWithPrior;
     }
 
+    public int getPreFirstSimulationYear() {
+        return getFirstSimulationYear() - 1;
+    }
+
     public int getFirstSimulationYear() {
         return metaData.getOldestRunInfo().getFirstSimulationYear();
     }

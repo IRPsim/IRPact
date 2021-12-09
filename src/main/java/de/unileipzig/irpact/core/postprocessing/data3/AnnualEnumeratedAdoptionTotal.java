@@ -24,8 +24,22 @@ public class AnnualEnumeratedAdoptionTotal extends AnnualEnumeratedAdoptionData<
     }
 
     @Override
+    public int getInitialCount(Product product, Object value) {
+        return getInitialCount(product);
+    }
+
+    public int getInitialCount(Product product) {
+        return initial.getCount(product, TOTAL);
+    }
+
+    @Override
     protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
         data.update(year, ap.getProduct(), TOTAL);
+    }
+
+    @Override
+    protected void updateInitial(ConsumerAgent ca, AdoptedProduct ap) {
+        initial.update(ap.getProduct(), TOTAL);
     }
 
     @Override

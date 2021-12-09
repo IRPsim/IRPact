@@ -19,9 +19,10 @@ public class AnnualEnumeratedAdoptionPhases extends AnnualEnumeratedAdoptionData
             Collection<? extends Integer> years,
             Collection<? extends Product> products,
             Collection<? extends AdoptionPhase> phases) {
-        for(int year: years) {
-            for(Product product: products) {
-                for(AdoptionPhase phase: phases) {
+        for(Product product: products) {
+            for(AdoptionPhase phase: phases) {
+                initial.init(product, phase, 0);
+                for(int year: years) {
                     data.init(year, product, phase, 0);
                 }
             }
@@ -31,6 +32,11 @@ public class AnnualEnumeratedAdoptionPhases extends AnnualEnumeratedAdoptionData
     @Override
     protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
         data.update(year, ap.getProduct(), ap.getPhase());
+    }
+
+    @Override
+    protected void updateInitial(ConsumerAgent ca, AdoptedProduct ap) {
+        initial.update(ap.getProduct(), ap.getPhase());
     }
 
     @Override

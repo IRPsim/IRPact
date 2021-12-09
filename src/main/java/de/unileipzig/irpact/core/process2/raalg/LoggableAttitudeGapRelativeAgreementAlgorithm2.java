@@ -56,6 +56,9 @@ public class LoggableAttitudeGapRelativeAgreementAlgorithm2
 
         int map(int index) {
             switch (this) {
+                case DISABLED:
+                    throw new IllegalArgumentException("DISABLED: " + index);
+
                 case OPINION:
                     switch (index) {
                         case TIME_INDEX: return 0;

@@ -69,7 +69,7 @@ public class InterestModule2
             if(input.isUnderConstruction() || input.isUnderRenovation()) {
                 makeInterested(input);
                 doSelfActionAndAllowAttention(input);
-                return RAStage2.AWARENESS;
+                return RAStage2.FEASIBILITY;
             }
         }
 
