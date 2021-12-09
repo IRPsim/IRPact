@@ -1,20 +1,21 @@
 package de.unileipzig.irpact.io.param.input.names;
 
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.ATTRNAMES;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(ATTRNAMES)
 public class InAttributeName implements InName {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -25,23 +26,25 @@ public class InAttributeName implements InName {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.ATTRNAMES);
-        addEntry(res, thisClass(), "placeholder");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int placeholder;
 
     public InAttributeName() {
     }
 
     public InAttributeName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -51,11 +54,11 @@ public class InAttributeName implements InName {
 
     public InAttributeName newCopy(CopyCache cache) {
         InAttributeName copy = new InAttributeName();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 }

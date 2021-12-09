@@ -11,7 +11,7 @@ import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -80,7 +80,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
     }
 
     @Override
-    protected void setupCommunicationModuleLogging(InCommunicationModule_actiongraphnode2 module) {
+    protected void setupCommunicationModuleLogging(InCommunicationModule3 module) {
         module.setRaOpinionLogging(true);
         module.setRaUnceraintyLogging(false);
     }

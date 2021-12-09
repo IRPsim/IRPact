@@ -1,9 +1,9 @@
 package de.unileipzig.irpact.io.param.inout.persist.binary;
 
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irptools.Constants;
-import de.unileipzig.irptools.defstructure.annotation.Definition;
-import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.*;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -11,12 +11,16 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Comparator;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
-
 /**
  * @author Daniel Abitz
  */
-@Definition(transferClass = true)
+@Definition(
+        transferClass = true,
+        gams = @Gams(
+                hidden = Constants.TRUE1
+        )
+)
+@Todo("add to loc?")
 public class BinaryPersistData implements Copyable {
 
     public static final Comparator<BinaryPersistData> ASCENDING = Comparator.comparingLong(BinaryPersistData::getID);
@@ -26,22 +30,25 @@ public class BinaryPersistData implements Copyable {
         return L.lookupClass();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        addEntry(res, thisClass());
-        addEntry(res, thisClass(), "id");
-        setHidden(res, thisClass());
-        setHidden(res, thisClass(), "id");
     }
 
     public static String deriveSetName() {
         return Constants.SET + ParamUtil.getClassNameWithoutClassSuffix(thisClass());
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    hidden = Constants.TRUE1
+            )
+    )
     public long id;
 
     public BinaryPersistData() {
@@ -54,13 +61,13 @@ public class BinaryPersistData implements Copyable {
 
     public BinaryPersistData newCopy(CopyCache cache) {
         BinaryPersistData copy = new BinaryPersistData();
-        copy._name = _name;
+        copy.name = name;
         copy.id = id;
         return copy;
     }
 
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setID(long id) {
@@ -72,10 +79,10 @@ public class BinaryPersistData implements Copyable {
     }
 
     public void setIRPBase32String(String irp32) {
-        _name = irp32;
+        name = irp32;
     }
 
     public String getIRPBase32String() {
-        return _name;
+        return name;
     }
 }

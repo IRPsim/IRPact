@@ -58,7 +58,7 @@ public class InterestModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall(input);
+        traceModuleCall(input, getInterestInfo(input));
 
         if(isInterested(input)) {
             doSelfActionAndAllowAttention(input);

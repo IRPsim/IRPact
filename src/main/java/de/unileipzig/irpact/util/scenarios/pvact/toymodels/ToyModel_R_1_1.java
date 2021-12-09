@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
@@ -15,14 +15,14 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-    public ToyModel_R_1_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+//    setSpatialDataName("Datensatz_ToyModel_R_1_1");
+    public ToyModel_R_1_1(
+            String name,
+            String creator,
+            String description,
+            BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
-    }
-
-    @Override
-    protected void setToyModelInputFile() {
-        setSpatialDataName("Datensatz_ToyModel_R_1_1");
     }
 
     @Override
@@ -58,13 +58,9 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
     }
 
     @Override
-    protected int getSimulationStart() {
-        return 2005;
-    }
-
-    @Override
-    protected int getSimulationLength() {
-        return 15;
+    protected void initThisCustom() {
+        simulationStartYear = 2005;
+        simulationLength = 15;
     }
 
     @Override
@@ -73,13 +69,10 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpm) {
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setAllWeights(0);
         mpm.getNpvWeightModule().setScalar(0.5);
         mpm.getPpWeightModule().setScalar(0.5);
-        mpm.getLocalWeightModule().setScalar(0);
-        mpm.getSocialWeightModule().setScalar(0);
-        mpm.getEnvWeightModule().setScalar(0);
-        mpm.getNovWeightModule().setScalar(0);
 
         mpm.getCommunicationModule().setAdopterPoints(1);
         mpm.getCommunicationModule().setInterestedPoints(1);

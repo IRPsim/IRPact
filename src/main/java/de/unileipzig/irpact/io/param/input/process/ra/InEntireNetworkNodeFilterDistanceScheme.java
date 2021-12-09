@@ -5,8 +5,9 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -14,13 +15,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_DISTANCE_ENTIRE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_DISTANCE_ENTIRE)
 public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,18 +32,20 @@ public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFi
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_ENTIRE);
-        addEntry(res, thisClass(), "placeholder");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double placeholder;
 
     public InEntireNetworkNodeFilterDistanceScheme() {
@@ -59,7 +62,7 @@ public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFi
 
     public InEntireNetworkNodeFilterDistanceScheme newCopy(CopyCache cache) {
         InEntireNetworkNodeFilterDistanceScheme copy = new InEntireNetworkNodeFilterDistanceScheme();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
@@ -69,7 +72,7 @@ public class InEntireNetworkNodeFilterDistanceScheme implements InNodeDistanceFi
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override

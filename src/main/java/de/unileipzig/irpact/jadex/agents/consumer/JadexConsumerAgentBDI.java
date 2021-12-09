@@ -165,6 +165,12 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public void firstIRPactAgentAction(List<PostAction> postActions) throws Throwable {
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] first action ({})", getName(), now());
+        nextIRPactAgentLoopAction(postActions);
+    }
+
+    @Override
     public Map<String, Object> endIRPactAgent() throws Throwable {
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
         runOnEnd();

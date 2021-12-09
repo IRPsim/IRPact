@@ -12,34 +12,31 @@ import de.unileipzig.irpact.io.param.input.distribution.InBernoulliDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.network.InFreeNetworkTopology;
 import de.unileipzig.irpact.io.param.input.network.InGraphTopologyScheme;
-import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
-import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
+import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.AbstractPVactScenario;
-import de.unileipzig.irpact.util.scenarios.pvact.RealData;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataCreator;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactCagManager;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 import java.util.function.BiConsumer;
 
 /**
  * @author Daniel Abitz
  */
 public abstract class AbstractToyModel extends AbstractPVactScenario {
-
-    protected static final String DEFAULT_PV_DATA_NAME = "Barwertrechner";
-    protected static final String LEIPZIG_ADOPTION_DATA = "PV_Diffusion_Leipzig";
 
     public static final String ORIGINAL_ID = "Original-ID";
 
@@ -59,7 +56,10 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     protected InDiracUnivariateDistribution dirac049 = new InDiracUnivariateDistribution("dirac049", 0.49);
     protected InDiracUnivariateDistribution dirac05 = new InDiracUnivariateDistribution("dirac05", 0.5);
     protected InDiracUnivariateDistribution dirac0501 = new InDiracUnivariateDistribution("dirac0501", 0.501);
+    protected InDiracUnivariateDistribution dirac06 = new InDiracUnivariateDistribution("dirac06", 0.6);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
+    protected InDiracUnivariateDistribution dirac072 = new InDiracUnivariateDistribution("dirac072", 0.72);
+    protected InDiracUnivariateDistribution dirac08 = new InDiracUnivariateDistribution("dirac08", 0.8);
     protected InDiracUnivariateDistribution dirac085 = new InDiracUnivariateDistribution("dirac085", 0.85);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
     protected InDiracUnivariateDistribution dirac2 = new InDiracUnivariateDistribution("dirac2", 2);
@@ -77,6 +77,9 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     protected final PVactCagManager cagManager = new PVactCagManager(dirac0);
     protected BiConsumer<InRoot, OutRoot> resultConsumer;
 
+    protected int simulationStartYear = 2008;
+    protected int simulationLength = 1;
+
     public AbstractToyModel(
             String name,
             String creator,
@@ -84,7 +87,6 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
             BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description);
         this.resultConsumer = Objects.requireNonNull(resultConsumer);
-        init();
     }
 
     @SafeVarargs
@@ -101,19 +103,32 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         return mean - delta + temp;
     }
 
-    protected void init() {
-        setInputFiles();
+    public void init() {
+        simulationStartYear = 2008;
+        simulationLength = 1;
+        initThisCustom();
+
         initTestData();
+        applySpatialDist();
         initCagManager();
+
+        cagManager.apply();
     }
 
-    protected void setInputFiles() {
-        setToyModelInputFile();
-        setPvDataName(DEFAULT_PV_DATA_NAME);
-        setRealAdoptionDataName(LEIPZIG_ADOPTION_DATA);
+    public AbstractToyModel callInit() {
+        init();
+        return this;
     }
 
-    protected abstract void setToyModelInputFile();
+    protected void applySpatialDist() {
+        InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
+        cagManager.registerForAll(_cag -> {
+            _cag.setSpatialDistribution(spatialDist);
+        });
+    }
+
+    protected void initThisCustom() {
+    }
 
     protected abstract void initTestData();
 
@@ -182,25 +197,18 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     }
 
     protected void createProcessModel(InRoot root, String name) {
-        InUncertaintySupplier uncertainty = createUncertainty("uncert");
-        PVactModularProcessModelManager mpm = new PVactModularProcessModelManager();
-
-        List<InOutputImage2> outputImages2 = new ArrayList<>();
-        List<InPostDataAnalysis> postData = new ArrayList<>();
-        InProcessModel processModel = createDefaultModularProcessModel(
-                name,
-                uncertainty,
-                createNodeFilter(),
-                outputImages2,
-                postData,
-                mpm
-        );
+        ToyModeltModularProcessModelTemplate mpm = new ToyModeltModularProcessModelTemplate(name);
+        mpm.setUncertaintySupplierInstance(createUncertainty("uncert"));
+        mpm.setDistanceFilterSupplierInstance(createNodeFilter());
+        mpm.setPvFileSupplier(this::getPVFile);
+        mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        mpm.createModel();
 
         setupProcessModel(mpm);
 
-        root.setProcessModel(processModel);
-        root.setImages2(outputImages2);
-        root.setPostData(postData);
+        root.setProcessModel(mpm.getModel());
+        root.setImages2(mpm.getImages());
+        root.setPostData(mpm.getPostData());
     }
 
     protected InUncertaintySupplier createUncertainty(String name) {
@@ -211,26 +219,22 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         return createNodeFilterScheme(2);
     }
 
-    protected void setupProcessModel(PVactModularProcessModelManager mpm) {
-        mpm.setNpvWeightName(NPV_WEIGHT);
-        mpm.setPpWeightName(PP_WEIGHT);
-        mpm.setEnvWeightName(ENV_WEIGHT);
-        mpm.setNovWeightName(NOV_WEIGHT);
-        mpm.setLocalWeightName(LOCAL_WEIGHT);
-        mpm.setSocialWeightName(SOCIAL_WEIGHT);
-        mpm.setCommunicationName(COMMUNICATION);
-
-        mpm.getNpvWeightModule().setScalar(0.25);
-        mpm.getPpWeightModule().setScalar(0.25);
-        mpm.getEnvWeightModule().setScalar(0.25);
-        mpm.getNovWeightModule().setScalar(0.25);
-        mpm.getLocalWeightModule().setScalar(0.25);
-        mpm.getSocialWeightModule().setScalar(0.25);
+    protected void setupProcessModel(ToyModeltModularProcessModelTemplate mpm) {
+        setDefaultWeights(mpm);
 
         customProcessModelSetup(mpm);
     }
 
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpm) {
+    protected void setDefaultWeights(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.getNpvWeightModule().setScalar(0.125);
+        mpm.getPpWeightModule().setScalar(0.125);
+        mpm.getLocalWeightModule().setScalar(0.125);
+        mpm.getSocialWeightModule().setScalar(0.125);
+        mpm.getEnvWeightModule().setScalar(0.25);
+        mpm.getNovWeightModule().setScalar(0.25);
+    }
+
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
     }
 
     protected void setSimulationDuration(InRoot root) {
@@ -239,11 +243,11 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     }
 
     protected int getSimulationStart() {
-        return 2008;
+        return simulationStartYear;
     }
 
     protected int getSimulationLength() {
-        return 1;
+        return simulationLength;
     }
 
     protected InRoot createRoot() {
@@ -255,10 +259,6 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         InUnitStepDiscreteTimeModel timeModel = createOneWeekTimeModel("Time");
         timeModel.setAmountOfTime(1);
         root.setTimeModel(timeModel);
-
-        createToyModelAffinities(root, "affinities");
-
-        createTopology(root, "Topo");
 
         initCustomParts(root);
 
@@ -279,10 +279,8 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         root.getGraphvizGeneral().setPositionBasedLayoutAlgorithm(true);
         root.getGraphvizGeneral().setKeepAspectRatio(true);
         root.getGraphvizGeneral().setPreferredImageSize(1000);
-        root.getSpecialPVactInput().setUseConstructionRates(true);
-        root.getSpecialPVactInput().setConstructionRates(RealData.CONST_RATES);
-        root.getSpecialPVactInput().setUseRenovationRates(true);
-        root.getSpecialPVactInput().setRenovationRates(RealData.RENO_RATES);
+        root.getSpecialPVactInput().setUseConstructionRates(false);
+        root.getSpecialPVactInput().setUseRenovationRates(false);
 
         setColors(root, cagManager.getCagsArray());
 

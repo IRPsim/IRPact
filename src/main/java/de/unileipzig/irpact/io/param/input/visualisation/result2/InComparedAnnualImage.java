@@ -3,23 +3,27 @@ package de.unileipzig.irpact.io.param.input.visualisation.result2;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.ParamUtil.getInstance;
+import static de.unileipzig.irpact.io.param.ParamUtil.len;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_COMPARED;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_COMPARED)
 public class InComparedAnnualImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,79 +34,130 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_COMPARED);
-        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "skipInvalidZips", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "showPreYear", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "showUnscaled", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
-        addEntry(res, thisClass(), "colorPalette");
-        addEntry(res, thisClass(), "realData");
-
-        setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
-
-        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
-        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        res.setRules(thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
     }
 
-    public static InComparedAnnualImage DEFAULT = new InComparedAnnualImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
+    public static InComparedAnnualImage createDefault() {
+        return new InComparedAnnualImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
+    }
+    public static InComparedAnnualImage DEFAULT = createDefault();
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean enabled = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean useGnuplot = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useR = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeScript = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeData = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean storeImage = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 1280,
+            g0Domain = true,
+            pixelUnit = true
+    )
     public int imageWidth = 1280;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 720,
+            g0Domain = true,
+            pixelUnit = true
+    )
     public int imageHeight = 720;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 1,
+            g0Domain = true
+    )
     public int linewidth = 1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean skipInvalidZips = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean showPreYear = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean showUnscaled = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = IRPact.INVALID_CUSTOM_IMAGE,
+            customImageDomain = true
+    )
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InColorPalette[] colorPalette = new InColorPalette[0];
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InRealAdoptionDataFile[] realData = new InRealAdoptionDataFile[0];
 
     public InComparedAnnualImage() {
@@ -146,12 +201,12 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setEnabled(boolean enabled) {

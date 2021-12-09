@@ -6,10 +6,12 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.attribute.BasicProductDoubleGroupAttribute;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -17,14 +19,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_ATTR_BASIC;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_ATTR_BASIC)
 public class InBasicProductGroupAttribute implements InDependentProductGroupAttribute {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -35,23 +36,25 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_ATTR, thisName());
-        addEntry(res, thisClass(), "attrName");
-        addEntry(res, thisClass(), "dist");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InAttributeName[] attrName;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] attrName = new InAttributeName[0];
 
     @FieldDefinition
-    public InUnivariateDoubleDistribution[] dist;
+    @LocalizedUiResource.AddEntry
+    public InUnivariateDoubleDistribution[] dist = new InUnivariateDoubleDistribution[0];
 
     public InBasicProductGroupAttribute() {
     }
@@ -60,7 +63,7 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
             String name,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = name;
+        this.name = name;
         setAttributeNameInstance(attributeName);
         setDistribution(distribution);
     }
@@ -72,7 +75,7 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
 
     public InBasicProductGroupAttribute newCopy(CopyCache cache) {
         InBasicProductGroupAttribute copy = new InBasicProductGroupAttribute();
-        copy._name = _name;
+        copy.name = name;
         copy.attrName = cache.copyArray(attrName);
         copy.dist = cache.copyArray(dist);
         return copy;
@@ -80,7 +83,7 @@ public class InBasicProductGroupAttribute implements InDependentProductGroupAttr
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setAttributeNameInstance(InAttributeName attrName) {

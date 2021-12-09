@@ -8,6 +8,10 @@ public final class MathUtil {
     private MathUtil() {
     }
 
+    public static int rndSign(Rnd rnd) {
+        return rnd.nextBoolean() ? 1 : -1;
+    }
+
     public static double logistic(double x) {
         return logistic(1.0, x);
     }

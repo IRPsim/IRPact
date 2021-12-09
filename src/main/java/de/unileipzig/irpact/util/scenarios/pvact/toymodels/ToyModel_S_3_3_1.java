@@ -3,8 +3,8 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactModularProcessModelManager;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.CircularPositionModifier;
+import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
@@ -18,18 +18,26 @@ public class ToyModel_S_3_3_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-    public ToyModel_S_3_3_1(String name, String creator, String description, BiConsumer<InRoot, OutRoot> resultConsumer) {
+    protected int dist = 1;
+
+    public ToyModel_S_3_3_1(
+            String name,
+            String creator,
+            String description,
+            BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
     }
 
     @Override
-    protected void setToyModelInputFile() {
-        setSpatialDataName("Datensatz_ToyModel_S_3_3_1");
-    }
-
-    @Override
     protected void initTestData() {
+        CircularPositionModifier pmSA = new CircularPositionModifier(42);
+        pmSA.setDist(dist * 0.5, 0);
+
+        CircularPositionModifier pmK = new CircularPositionModifier(24);
+        pmK.setDist(dist * 0.5, 0);
+        pmK.setReference(pmSA.nextPoint(4 * dist, 3 * dist));
+
         testData.setGlobalModifier(row -> {
             setA1(row, 1);
             setA5(row, 1);
@@ -40,19 +48,22 @@ public class ToyModel_S_3_3_1 extends AbstractToyModel {
         testData.setSizeAndModifier(
                 "S",
                 10,
-                DataModifier.DO_NOTHING
+                row -> {
+                    setXY(row, pmSA.getReference().getX(), pmSA.getReference().getY());
+                    return row;
+                }
         );
 
         testData.setSizeAndModifier(
                 "A",
                 11,
-                DataModifier.DO_NOTHING
+                pmSA
         );
 
         testData.setSizeAndModifier(
                 "K",
                 11,
-                DataModifier.DO_NOTHING
+                pmK
         );
     }
 
@@ -71,7 +82,7 @@ public class ToyModel_S_3_3_1 extends AbstractToyModel {
 
         cagManager.register(
                 "S",
-                10,
+                11,
                 darr(0, 1, 0),
                 cag -> {
                     cag.setD5(dirac1);
@@ -104,7 +115,7 @@ public class ToyModel_S_3_3_1 extends AbstractToyModel {
 
     @Override
     protected InNodeDistanceFilterScheme createNodeFilter() {
-        return createNodeFilterScheme(1);
+        return createNodeFilterScheme(dist);
     }
 
     @Override
@@ -113,12 +124,9 @@ public class ToyModel_S_3_3_1 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(PVactModularProcessModelManager mpm) {
-        mpm.getNpvWeightModule().setScalar(0);
-        mpm.getPpWeightModule().setScalar(0);
+    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setAllWeights(0);
         mpm.getLocalWeightModule().setScalar(0.5);
         mpm.getSocialWeightModule().setScalar(0.5);
-        mpm.getEnvWeightModule().setScalar(0);
-        mpm.getNovWeightModule().setScalar(0);
     }
 }

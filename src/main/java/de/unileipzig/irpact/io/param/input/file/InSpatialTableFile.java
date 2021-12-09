@@ -6,21 +6,25 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileLoader;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.FILES;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.FILES_SPATIAL;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(FILES_SPATIAL)
 public class InSpatialTableFile implements InFile {
 
     private static final String DEFAULT_SHEET_NAME = "Datensatz";
@@ -33,18 +37,25 @@ public class InSpatialTableFile implements InFile {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), FILES, thisName());
-        addEntryWithDefaultAndDomain(res, thisClass(), "coverage", VALUE_1, DOMAIN_GEQ0);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InSpatialTableFile.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = VALUE1,
+                    domain = DOMAIN_GEQ0
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double coverage = 1.0;
     public void setCoverage(double coverage) {
         this.coverage = coverage;
@@ -57,7 +68,7 @@ public class InSpatialTableFile implements InFile {
     }
 
     public InSpatialTableFile(String fileNameWithoutExtension) {
-        _name = fileNameWithoutExtension;
+        name = fileNameWithoutExtension;
     }
 
     @Override
@@ -67,18 +78,18 @@ public class InSpatialTableFile implements InFile {
 
     public InSpatialTableFile newCopy(CopyCache cache) {
         InSpatialTableFile copy = new InSpatialTableFile();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     @Override
     public String getFileNameWithoutExtension() {
-        return _name;
+        return name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override

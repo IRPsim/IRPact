@@ -541,6 +541,10 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
         return (R) this;
     }
 
+    public <R extends AbstractScenario> R castTo(Class<R> c) {
+        return c.cast(this);
+    }
+
     public void setHardReplace(boolean hardReplace) {
         this.hardReplace = hardReplace;
     }

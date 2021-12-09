@@ -91,7 +91,7 @@ public final class IRPLogging {
         FORCED_SECTIONS.add(section);
     }
 
-    public static void addForcesLoggingSections(IRPSection... sections) {
+    public static void addForcedLoggingSections(IRPSection... sections) {
         Collections.addAll(FORCED_SECTIONS, sections);
     }
 

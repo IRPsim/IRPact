@@ -13,8 +13,10 @@ import java.time.ZonedDateTime;
 @Definition
 public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgentCalculationModule2 {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 
@@ -23,6 +25,8 @@ public interface InConsumerAgentCalculationLoggingModule2 extends InConsumerAgen
     default String getFileName() {
         return getBaseName() + ".csv";
     }
+
+    boolean isEnabled();
 
     boolean isPrintHeader();
 

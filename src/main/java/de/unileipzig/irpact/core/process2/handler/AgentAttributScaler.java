@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.process2.handler;
 
-import de.unileipzig.irpact.commons.NameableBase;
-import de.unileipzig.irpact.commons.attribute.Attribute;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -65,14 +63,18 @@ public class AgentAttributScaler
         }
         LOGGER.trace("... min={}, max={}", min.get(), max.get());
 
-        LOGGER.trace("update attributes...");
-        for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
-            double value = getValue(environment, ca);
-            double newValue = (value - min.get()) / (max.get() - min.get());
-            setValue(environment, ca, newValue);
-            //spam
-            LOGGER.trace("update '{}': {} -> {}", ca.getName(), value, getValue(environment, ca));
+        if(min.isEquals(max)) {
+            LOGGER.trace("min==max, skip scaling");
+        } else {
+            LOGGER.trace("update attributes...");
+            for(ConsumerAgent ca: environment.getAgents().iterableConsumerAgents()) {
+                double value = getValue(environment, ca);
+                double newValue = (value - min.get()) / (max.get() - min.get());
+                setValue(environment, ca, newValue);
+                //spam
+                LOGGER.trace("update '{}': {} -> {}", ca.getName(), value, getValue(environment, ca));
+            }
+            LOGGER.trace("... update finished");
         }
-        LOGGER.trace("... update finished");
     }
 }

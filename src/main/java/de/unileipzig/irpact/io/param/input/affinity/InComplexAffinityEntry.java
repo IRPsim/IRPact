@@ -1,10 +1,12 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -13,13 +15,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_AFF_COMPLEX;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_AFF_COMPLEX)
 public class InComplexAffinityEntry implements InAffinityEntry {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,31 +32,33 @@ public class InComplexAffinityEntry implements InAffinityEntry {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_AFFINITY, thisName());
-        addEntry(res, thisClass(), "srcCag");
-        addEntry(res, thisClass(), "tarCag");
-        addEntry(res, thisClass(), "affinityValue");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] srcCag;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] tarCag;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double affinityValue;
 
     public InComplexAffinityEntry() {
     }
 
     public InComplexAffinityEntry(String name, InConsumerAgentGroup src, InConsumerAgentGroup tar, double value) {
-        this._name = name;
+        this.name = name;
         setSrcCag(src);
         setTarCag(tar);
         setAffinityValue(value);
@@ -99,7 +103,7 @@ public class InComplexAffinityEntry implements InAffinityEntry {
 
     public InComplexAffinityEntry newCopy(CopyCache cache) {
         InComplexAffinityEntry copy = new InComplexAffinityEntry();
-        copy._name = _name;
+        copy.name = name;
         copy.srcCag = cache.copyArray(srcCag);
         copy.tarCag = cache.copyArray(tarCag);
         copy.affinityValue = affinityValue;
@@ -108,11 +112,11 @@ public class InComplexAffinityEntry implements InAffinityEntry {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setSrcCag(InConsumerAgentGroup srcCag) {

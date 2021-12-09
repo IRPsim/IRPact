@@ -11,8 +11,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InProductGroupAttribute extends InIRPactEntity {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Point2D;
 
 import java.util.*;
+import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 
 /**
@@ -86,6 +87,15 @@ public class DataCreator {
         return output;
     }
 
+    public static List<List<SpatialAttribute>> extraTwoEntries(
+            List<List<SpatialAttribute>> input,
+            List<SpatialAttribute> agent1,
+            List<SpatialAttribute> agent2,
+            Metric2D metric,
+            Random rnd) {
+        return null;
+    }
+
     public static List<SpatialAttribute> extractRandomEntry(
             List<List<SpatialAttribute>> input,
             Predicate<? super List<SpatialAttribute>> filter,
@@ -116,21 +126,44 @@ public class DataCreator {
             List<SpatialAttribute> origin,
             int distance,
             Metric2D metric) {
-        Point2D originPoint = toPoint2D(origin);
-        return other -> {
-            double dist = metric.distance(originPoint, toPoint2D(other));
-            return dist > distance;
-        };
+        return distanceFilter(
+                origin,
+                _dist -> _dist > distance,
+                metric
+        );
     }
 
     public static Predicate<List<SpatialAttribute>> smallerDistance(
             List<SpatialAttribute> origin,
             int distance,
             Metric2D metric) {
+        return distanceFilter(
+                origin,
+                _dist -> _dist < distance,
+                metric
+        );
+    }
+
+    public static Predicate<List<SpatialAttribute>> betweenDistance(
+            List<SpatialAttribute> origin,
+            int minDistance,
+            int maxDistance,
+            Metric2D metric) {
+        return distanceFilter(
+                origin,
+                _dist -> minDistance < _dist && _dist < maxDistance,
+                metric
+        );
+    }
+
+    public static Predicate<List<SpatialAttribute>> distanceFilter(
+            List<SpatialAttribute> origin,
+            DoublePredicate filter,
+            Metric2D metric) {
         Point2D originPoint = toPoint2D(origin);
         return other -> {
             double dist = metric.distance(originPoint, toPoint2D(other));
-            return dist < distance;
+            return filter.test(dist);
         };
     }
 

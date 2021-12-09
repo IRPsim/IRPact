@@ -117,4 +117,12 @@ public class DataCounter<K> {
     public void forEach(BiConsumer<? super K, ? super Integer> action) {
         counter.forEach(action);
     }
+
+    public String printCounterMap(Function<? super K, ? extends String> toString) {
+        Map<String, Integer> m = new HashMap<>();
+        for(Map.Entry<K, Integer> entry: counter.entrySet()) {
+            m.put(toString.apply(entry.getKey()), entry.getValue());
+        }
+        return m.toString();
+    }
 }

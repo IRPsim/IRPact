@@ -1,19 +1,21 @@
 package de.unileipzig.irpact.io.param.input;
 
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.INFO_ABOUTIRPACT;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(INFO_ABOUTIRPACT)
 public class InIRPactVersion implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -24,24 +26,29 @@ public class InIRPactVersion implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.INFO_ABOUTIRPACT);
-        addEntry(res, thisClass(), "placeholder");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public int placeholder;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int placeholder = 0;
 
     public InIRPactVersion() {
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override
@@ -51,7 +58,7 @@ public class InIRPactVersion implements InIRPactEntity {
 
     public InIRPactVersion newCopy(CopyCache cache) {
         InIRPactVersion copy = new InIRPactVersion();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 }

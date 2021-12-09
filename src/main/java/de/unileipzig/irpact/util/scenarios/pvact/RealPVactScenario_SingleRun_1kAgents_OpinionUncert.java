@@ -2,7 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule_actiongraphnode2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
 
 /**
  * @author Daniel Abitz
@@ -17,7 +17,7 @@ public class RealPVactScenario_SingleRun_1kAgents_OpinionUncert extends RealPVac
     }
 
     @Override
-    protected void setupCommunicationModuleLogging(InCommunicationModule_actiongraphnode2 module) {
+    protected void setupCommunicationModuleLogging(InCommunicationModule3 module) {
         module.setRaOpinionLogging(true);
         module.setRaUnceraintyLogging(false);
     }

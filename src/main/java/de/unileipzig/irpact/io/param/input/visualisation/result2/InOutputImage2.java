@@ -28,8 +28,10 @@ public interface InOutputImage2 extends InIRPactEntity {
                 .withKeys(ENGINES);
     }
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

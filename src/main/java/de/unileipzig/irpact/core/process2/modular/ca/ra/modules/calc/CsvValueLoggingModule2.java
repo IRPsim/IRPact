@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc;
 
-import de.unileipzig.irpact.commons.logging.simplified.SimplifiedLogger;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -24,11 +23,22 @@ public class CsvValueLoggingModule2
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     public static final int AGENT_INDEX = 0;
     public static final int ID_INDEX = 1;
-    public static final int AGENT_GROUP_INDEX = 2;
-    public static final int PRODUCT_INDEX = 3;
-    public static final int PRODUCT_GROUP_INDEX = 4;
-    public static final int TIME_INDEX = 5;
-    public static final int VALUE_INDEX = 6;
+    public static final int PRODUCT_INDEX = 2;
+    public static final int TIME_INDEX = 3;
+    public static final int VALUE_INDEX = 4;
+    public static final int ISNAN_INDEX = 5;
+
+    public CsvValueLoggingModule2() {
+    }
+
+    @Override
+    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
+        return input;
+    }
+
+    @Override
+    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
+    }
 
     public static LocalDateTime toTime(String input) {
         return LocalDateTime.parse(input, FORMATTER);
@@ -42,18 +52,9 @@ public class CsvValueLoggingModule2
         return time.format(FORMATTER);
     }
 
-    public void setValueLogger(SimplifiedLogger valueLogger) {
-        this.valueLogger = valueLogger;
-    }
-
     @Override
     public String getResourceType() {
         return "CsvValueLoggingModule2";
-    }
-
-    @Override
-    protected DateTimeFormatter getFormatter() {
-        return FORMATTER;
     }
 
     @Override
@@ -61,22 +62,11 @@ public class CsvValueLoggingModule2
         log(
                 getLocalizedString("agentName"),
                 getLocalizedString("agentId"),
-                getLocalizedString("agentGroupName"),
                 getLocalizedString("productName"),
-                getLocalizedString("productGroupName"),
                 getLocalizedString("time"),
-                getLocalizedString("value")
+                getLocalizedString("value"),
+                getLocalizedString("nan")
         );
-    }
-
-    @Override
-    public void closeEntity() {
-        if(valueLogger != null) {
-            valueLogger.stop();
-            if(storeXlsx) {
-                storeXlsx();
-            }
-        }
     }
 
     @Override
@@ -87,6 +77,7 @@ public class CsvValueLoggingModule2
         int from = startIndexInFile();
         xlsxData.mapStringColumnToDouble(VALUE_INDEX, from, Double::parseDouble);
         xlsxData.mapStringColumnToLong(ID_INDEX, from, Long::parseLong);
+        xlsxData.mapStringColumnToBoolean(ISNAN_INDEX, from, Boolean::parseBoolean);
 
         xlsxSheetData.put(getLocalizedString("sheetName"), xlsxData);
 
@@ -98,43 +89,38 @@ public class CsvValueLoggingModule2
         return LOGGER;
     }
 
-//    @Override
+    @Override
+    protected DateTimeFormatter getFormatter() {
+        return FORMATTER;
+    }
+
+    //    @Override
 //    public void initializeReevaluator(SimulationEnvironment environment) throws Throwable {
 //        initialize(environment);
 //    }
 
     @Override
     protected void runLog(ConsumerAgentData2 input, double value) {
-        double logValue = mapToLogValue(value);
         log(
-                input.getAgentName(), getId(input), input.getAgentGroupName(),
-                input.getProductName(), input.getProductGroupName(),
+                input.getAgentName(),
+                getId(input),
+                input.getProductName(),
                 fromTime(getTime(input)),
-                logValue
+                mapToLogValue(value),
+                isNaN(value)
         );
     }
 
-    protected void log(
-            Object agentName, Object id, Object agentGroupName,
-            Object productName, Object productGroupName,
-            Object time,
-            Object value) {
+    protected void log(Object agentName, Object agentId, Object productName, Object time, Object value, Object isNaN) {
         getValueLogger().log(
-                "{};{};{};{};{};{};{}",
-                agentName, id, agentGroupName,
-                productName, productGroupName,
+                "{};{};{};{};{}",
+                agentName,
+                agentId,
+                productName,
                 time,
-                value
+                value,
+                isNaN
         );
-    }
-
-    @Override
-    protected ConsumerAgentData2 castInput(ConsumerAgentData2 input) {
-        return input;
-    }
-
-    @Override
-    protected void initializeNewInputSelf(ConsumerAgentData2 input) throws Throwable {
     }
 
 //    @Override

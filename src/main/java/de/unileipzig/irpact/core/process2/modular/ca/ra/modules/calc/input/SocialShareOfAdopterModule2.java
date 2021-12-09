@@ -1,5 +1,8 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input;
 
+import de.unileipzig.irpact.commons.Nameable;
+import de.unileipzig.irpact.commons.logging.LazyString;
+import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
@@ -9,6 +12,7 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -18,6 +22,8 @@ public class SocialShareOfAdopterModule2
         implements RAHelperAPI2 {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SocialShareOfAdopterModule2.class);
+
+    protected boolean logSocialNetworkCount = false;
 
     @Override
     public IRPLogger getDefaultLogger() {
@@ -44,8 +50,35 @@ public class SocialShareOfAdopterModule2
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
 
+        if(logSocialNetworkCount) {
+            logSocialNetwork(input);
+        }
+
         double share = getShareOfAdopterInSocialNetwork(input);
         getAgentDataState(input).rawSocialShare = share;
         return share;
+    }
+
+    protected void logSocialNetwork(ConsumerAgentData2 input) {
+        trace(
+                "[{}]@[{}] logSocialNetwork={} all={} feasible={} adopter={}",
+                getName(), input.getAgentName(),
+                new LazyString(() -> countAgentsInSocialNetwork(input.getEnvironment(), input.getAgent())),
+                new LazyString(() -> {
+                    List<ConsumerAgent> list = listAgentsInSocialNetwork(input.getEnvironment(), input.getAgent());
+                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+                    return "{size=" + names.size() + "; " + names + "}";
+                }),
+                new LazyString(() -> {
+                    List<ConsumerAgent> list = streamFeasibleAndFinancialInSocialNetwork(input.getEnvironment(), input.getAgent(), input.getProduct()).collect(Collectors.toList());
+                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+                    return "{size=" + names.size() + "; " + names + "}";
+                }),
+                new LazyString(() -> {
+                    List<ConsumerAgent> list = streamFeasibleAndFinancialInSocialNetwork(input.getEnvironment(), input.getAgent(), input.getProduct()).filter(_agent -> _agent.hasAdopted(input.getProduct())).collect(Collectors.toList());
+                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+                    return "{size=" + names.size() + "; " + names + "}";
+                })
+        );
     }
 }

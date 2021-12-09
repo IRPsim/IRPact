@@ -13,8 +13,10 @@ import java.util.Comparator;
 @Definition
 public interface InColor extends InIRPactEntity {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

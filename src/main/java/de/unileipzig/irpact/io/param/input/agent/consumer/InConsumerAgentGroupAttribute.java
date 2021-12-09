@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.agent.consumer;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -11,9 +12,11 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InConsumerAgentGroupAttribute extends InIRPactEntity {
 
-    static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    static void initRes(LocalizedUiResource res) {
     }
-    static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    static void applyRes(LocalizedUiResource res) {
     }
 
     String getAttributeName() throws ParsingException;

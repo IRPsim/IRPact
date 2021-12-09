@@ -3,11 +3,12 @@ package de.unileipzig.irpact.io.param.input.visualisation.result2;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
 import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -15,11 +16,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_ANNUALBUCKET;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_ANNUALBUCKET)
 public class InAnnualBucketImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,92 +33,168 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT2_ANNUALBUCKET);
-        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useGnuplot", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useR", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "boxWidth", VALUE_1, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useCustomYRange", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefault(res, thisClass(), "minY", VALUE_0);
-        addEntryWithDefault(res, thisClass(), "maxY", VALUE_0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "bucketSize", asValue(0.1), DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "fractionDigits", VALUE_1, DOMAIN_GEQ0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "customImageId", VALUE_0, customImageDomain());
-        addEntry(res, thisClass(), "colorPalette");
-        addEntry(res, thisClass(), "loggingModule");
-
-        setRules(res, thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
-
-        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
-        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        res.setRules(thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
     }
 
-    public static InAnnualBucketImage NPV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NPV);
-    public static InAnnualBucketImage ENV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_ENV);
-    public static InAnnualBucketImage NOV = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NOV);
-    public static InAnnualBucketImage SOCIAL = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_SOCIAL);
-    public static InAnnualBucketImage LOCAL = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_LOCAL);
-    public static InAnnualBucketImage UTILITY = new InAnnualBucketImage(IRPact.IMAGE_BUCKET_UTILITY);
+    public static InAnnualBucketImage NPV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NPV);
+    }
+    public static InAnnualBucketImage NPV = NPV();
 
-    public String _name;
+    public static InAnnualBucketImage ENV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_ENV);
+    }
+    public static InAnnualBucketImage ENV = ENV();
+
+    public static InAnnualBucketImage NOV() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NOV);
+    }
+    public static InAnnualBucketImage NOV = NOV();
+
+    public static InAnnualBucketImage SOCIAL() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_SOCIAL);
+    }
+    public static InAnnualBucketImage SOCIAL = SOCIAL();
+
+    public static InAnnualBucketImage LOCAL() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_LOCAL);
+    }
+    public static InAnnualBucketImage LOCAL = LOCAL();
+
+    public static InAnnualBucketImage UTILITY() {
+        return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_UTILITY);
+    }
+    public static InAnnualBucketImage UTILITY = UTILITY();
+
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean enabled = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean useGnuplot = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useR = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeScript = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeData = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean storeImage = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            domain = DOMAIN_G0,
+            intDefault = 1280,
+            pixelUnit = true
+    )
     public int imageWidth = 1280;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            domain = DOMAIN_G0,
+            intDefault = 1280,
+            pixelUnit = true
+    )
     public int imageHeight = 720;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            domain = DOMAIN_G0,
+            decDefault = 1
+    )
     public double boxWidth = 1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useCustomYRange = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double minY = 0.0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
     public double maxY = 0.0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            domain = DOMAIN_G0,
+            decDefault = 0.1
+    )
     public double bucketSize = 0.1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            domain = DOMAIN_GEQ0,
+            intDefault = 1
+    )
     public int fractionDigits = 1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = IRPact.INVALID_CUSTOM_IMAGE
+    )
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InColorPalette[] colorPalette = new InColorPalette[0];
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentCalculationLoggingModule2[] loggingModule = new InConsumerAgentCalculationLoggingModule2[0];
 
     public InAnnualBucketImage() {
@@ -158,12 +237,12 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setEnabled(boolean enabled) {

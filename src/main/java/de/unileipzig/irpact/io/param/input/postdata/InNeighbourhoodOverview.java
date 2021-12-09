@@ -2,10 +2,11 @@ package de.unileipzig.irpact.io.param.input.postdata;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.develop.Dev;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
-import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -13,11 +14,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_RESULT2_NEIGHBORS;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_RESULT2_NEIGHBORS)
 public class InNeighbourhoodOverview implements InPostDataAnalysis {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -28,28 +31,42 @@ public class InNeighbourhoodOverview implements InPostDataAnalysis {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_RESULT2_NEIGHBORS);
-        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeCsv", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntry(res, thisClass(), "nodeFilterScheme");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            defaultValue = TRUE1,
+            boolDomain = true
+    )
     public boolean enabled = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            defaultValue = FALSE0,
+            boolDomain = true
+    )
     public boolean storeCsv = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            defaultValue = TRUE1,
+            boolDomain = true
+    )
     public boolean storeXlsx = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InNodeDistanceFilterScheme[] nodeFilterScheme;
 
     public InNeighbourhoodOverview() {
@@ -69,12 +86,12 @@ public class InNeighbourhoodOverview implements InPostDataAnalysis {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setEnabled(boolean enabled) {

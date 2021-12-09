@@ -297,9 +297,8 @@ PARAMETER par_VisibleBinaryData_idVisible(set_VisibleBinaryData)
 * - type: String
 SET set_BinaryPersistData(*)
 
-* - description: Einzigartige ID der Daten.
 * - hidden: 1
-* - identifier: BinaryPersistDataID
+* - identifier: id
 * - type: Integer
 PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 
@@ -307,7 +306,6 @@ PARAMETER par_BinaryPersistData_id(set_BinaryPersistData)
 * - type: String
 SET set_InBernoulliDistribution(set_InUnivariateDoubleDistribution)
 
-* - domain: [0|1]
 * - description: Wahrscheinlichkeit p
 * - identifier: p
 * - type: Float
@@ -1155,7 +1153,7 @@ PARAMETER par_link_InBucketAnalyser_InConsumerAgentCalculationLoggingModule2_log
 * - type: String
 SET set_InNeighbourhoodOverview(set_InPostDataAnalysis)
 
-* - default: 1
+* - default: 0
 * - domain: [0|1]
 * - description: Mittels dieser Option kann die Analyse aktiviert bzw. deaktiviert.
 * - identifier: Verwenden?
@@ -1169,7 +1167,7 @@ PARAMETER par_InNeighbourhoodOverview_enabled(set_InNeighbourhoodOverview)
 * - type: Boolean
 PARAMETER par_InNeighbourhoodOverview_storeCsv(set_InNeighbourhoodOverview)
 
-* - default: 1
+* - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Als xlsx speichern?
@@ -1262,7 +1260,6 @@ PARAMETER par_InAdoptionPhaseOverviewImage_imageHeight(set_InAdoptionPhaseOvervi
 PARAMETER par_InAdoptionPhaseOverviewImage_boxWidth(set_InAdoptionPhaseOverviewImage)
 
 * - default: 0
-* - domain: [0,10]
 * - description: todo
 * - identifier: customImageId
 * - type: Integer
@@ -1333,7 +1330,7 @@ PARAMETER par_InAnnualBucketImage_storeImage(set_InAnnualBucketImage)
 * - type: Integer
 PARAMETER par_InAnnualBucketImage_imageWidth(set_InAnnualBucketImage)
 
-* - default: 720
+* - default: 1280
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight
@@ -1341,27 +1338,27 @@ PARAMETER par_InAnnualBucketImage_imageWidth(set_InAnnualBucketImage)
 * - type: Integer
 PARAMETER par_InAnnualBucketImage_imageHeight(set_InAnnualBucketImage)
 
-* - default: 1
+* - default: 1.0
 * - domain: (0,)
 * - description: todo
 * - identifier: boxWidth
 * - type: Float
 PARAMETER par_InAnnualBucketImage_boxWidth(set_InAnnualBucketImage)
 
-* - default: 1
+* - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Benutzerdefinierte Y-Achse nutzen?
 * - type: Boolean
 PARAMETER par_InAnnualBucketImage_useCustomYRange(set_InAnnualBucketImage)
 
-* - default: 0
+* - default: 0.0
 * - description: todo
 * - identifier: Min Y (Achse)
 * - type: Float
 PARAMETER par_InAnnualBucketImage_minY(set_InAnnualBucketImage)
 
-* - default: 0
+* - default: 0.0
 * - description: todo
 * - identifier: Max Y (Achse)
 * - type: Float
@@ -1382,7 +1379,6 @@ PARAMETER par_InAnnualBucketImage_bucketSize(set_InAnnualBucketImage)
 PARAMETER par_InAnnualBucketImage_fractionDigits(set_InAnnualBucketImage)
 
 * - default: 0
-* - domain: [0,10]
 * - description: todo
 * - identifier: Benutzerdefinierte Bild-Id
 * - type: Integer
@@ -1676,7 +1672,7 @@ PARAMETER par_InCustomAverageQuantilRangeImage_storeData(set_InCustomAverageQuan
 * - type: Boolean
 PARAMETER par_InCustomAverageQuantilRangeImage_storeImage(set_InCustomAverageQuantilRangeImage)
 
-* - default: 0
+* - default: 1
 * - domain: [0|1]
 * - description: todo
 * - identifier: printAverage
@@ -1691,7 +1687,7 @@ PARAMETER par_InCustomAverageQuantilRangeImage_printAverage(set_InCustomAverageQ
 * - type: Integer
 PARAMETER par_InCustomAverageQuantilRangeImage_imageWidth(set_InCustomAverageQuantilRangeImage)
 
-* - default: 720
+* - default: 1280
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight
@@ -1989,7 +1985,7 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_storeImage(set_InSpecialAverageQ
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_printAverage(set_InSpecialAverageQuantilRangeImage)
 
-* - default: 1280
+* - default: 1
 * - domain: (0,)
 * - description: todo
 * - identifier: imageWidth
@@ -1997,7 +1993,7 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_printAverage(set_InSpecialAverag
 * - type: Integer
 PARAMETER par_InSpecialAverageQuantilRangeImage_imageWidth(set_InSpecialAverageQuantilRangeImage)
 
-* - default: 720
+* - default: 1
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight
@@ -2127,7 +2123,9 @@ PARAMETER par_link_InColorPalette_InColor_colors(set_InColorPalette,set_InColor)
 * - type: String
 SET set_InCompleteGraphTopology(set_InGraphTopologyScheme)
 
+* - default: 0.0
 * - description: Legt das initiale Gewicht der Kanten fest.
+* - hidden: 1
 * - identifier: Initiales Kantengewicht
 * - type: Float
 PARAMETER par_InCompleteGraphTopology_initialWeight(set_InCompleteGraphTopology)
@@ -2140,6 +2138,20 @@ SET set_InDistanceEvaluator(*)
 * - identifier: InFreeNetworkTopology
 * - type: String
 SET set_InFreeNetworkTopology(set_InGraphTopologyScheme)
+
+* - default: 0.0
+* - description: Legt das initiale Gewicht der Kanten fest.
+* - hidden: 1
+* - identifier: Initiales Kantengewicht
+* - type: Float
+PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Erlaubt es auch weniger Kanten als gewünscht zu nutzen. Sollten zum Beispiel 10 Kanten gewünscht sein je Knoten, aber für einen bestimmten Knoten nur 5 möglich sein, so werden nur 5 verwendet. Falls diese Option deaktiviert ist, wird ein Fehler geworfen.
+* - identifier: Weniger Kanten erlauben?
+* - type: Boolean
+PARAMETER par_InFreeNetworkTopology_allowLessEdges(set_InFreeNetworkTopology)
 
 * - description: Legt die zu nutzende Distanzfunktion für den Einfluss des Abstandes fest.
 * - identifier: Distanzfunktion
@@ -2155,17 +2167,6 @@ PARAMETER par_link_InFreeNetworkTopology_InNumberOfTies_numberOfTies(set_InFreeN
 * - identifier: Affinitäten
 * - type: Boolean
 PARAMETER par_link_InFreeNetworkTopology_InAffinities_affinities(set_InFreeNetworkTopology,set_InAffinities)
-
-* - description: Legt das initiale Gewicht der Kanten fest.
-* - hidden: 1
-* - identifier: Initiales Kantengewicht
-* - type: Float
-PARAMETER par_InFreeNetworkTopology_initialWeight(set_InFreeNetworkTopology)
-
-* - description: Erlaubt es auch weniger Kanten als gewünscht zu nutzen. Sollten zum Beispiel 10 Kanten gewünscht sein je Knoten, aber für einen bestimmten Knoten nur 5 möglich sein, so werden nur 5 verwendet. Falls diese Option deaktiviert ist, wird ein Fehler geworfen.
-* - identifier: Weniger Kanten erlauben?
-* - type: Boolean
-PARAMETER par_InFreeNetworkTopology_allowLessEdges(set_InFreeNetworkTopology)
 
 * - identifier: InGraphTopologyScheme
 * - hidden: 1
@@ -2194,15 +2195,17 @@ PARAMETER par_InNoDistance_placeholderNoDistance(set_InNoDistance)
 * - type: String
 SET set_InNumberOfTies(*)
 
-* - description: Bestimmt die Konsumergruppen, welche diese Anzahl Kanten aufweisen sollen.
-* - identifier: Konsumergruppen
-* - type: Boolean
-PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cags(set_InNumberOfTies,set_InConsumerAgentGroup)
-
+* - default: 0
+* - domain: [0,)
 * - description: Legt die Anzahl der Kanten fest.
 * - identifier: Kantenanzahl
 * - type: Integer
 PARAMETER par_InNumberOfTies_count(set_InNumberOfTies)
+
+* - description: Bestimmt die Konsumergruppen, welche diese Anzahl Kanten aufweisen sollen.
+* - identifier: Konsumergruppen
+* - type: Boolean
+PARAMETER par_link_InNumberOfTies_InConsumerAgentGroup_cags(set_InNumberOfTies,set_InConsumerAgentGroup)
 
 * - identifier: InUnlinkedGraphTopology
 * - type: String
@@ -2237,12 +2240,14 @@ PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extr
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive(set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
@@ -2272,12 +2277,14 @@ PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extrem
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive(set_InPVactIndividualGlobalModerateExtremistUncertaintySupplier)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
@@ -2307,12 +2314,14 @@ PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncert
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist.
 * - identifier: Untere Grenze inklusive?
 * - type: Boolean
 PARAMETER par_InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive(set_InPVactUpdatableGlobalModerateExtremistUncertainty)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Obere Grenze inklusive?
 * - type: Boolean
@@ -2341,219 +2350,19 @@ SET set_InEntireNetworkNodeFilterDistanceScheme(set_InNodeDistanceFilterScheme)
 * - type: Float
 PARAMETER par_InEntireNetworkNodeFilterDistanceScheme_placeholder(set_InEntireNetworkNodeFilterDistanceScheme)
 
-* - identifier: InRAProcessModel
-* - type: String
-SET set_InRAProcessModel(set_InProcessModel)
-
-* - default: 0
-* - domain: [0|1]
-* - description: Überspringt die Awareness-Phase. Interesse wird dabei automatisch maximiert.
-* - identifier: Awareness überspringen?
-* - type: Boolean
-PARAMETER par_InRAProcessModel_skipAwareness(set_InRAProcessModel)
-
-* - default: 0
-* - domain: [0|1]
-* - description: Überspringt die Feasibility-Phase.
-* - identifier: Feasibility überspringen?
-* - type: Boolean
-PARAMETER par_InRAProcessModel_skipFeasibility(set_InRAProcessModel)
-
-* - default: 0
-* - domain: [0|1]
-* - description: Die Agenten führen die Evaluierung auch bei finanziellem Misserfolg durch. Diese Option dient primär der Datenanalyse und hat keine weiteren Auswirkungen.
-* - identifier: Evaluierung auch bei fin. Misserfolg?
-* - type: Boolean
-PARAMETER par_InRAProcessModel_forceEvaluate(set_InRAProcessModel)
-
-* - default: 0.25
-* - description: Legt den Einfluss der finanziellen Komponente fest.
-* - identifier: Einfluss finanzielle Komponente (a)
-* - type: Float
-PARAMETER par_InRAProcessModel_a(set_InRAProcessModel)
-
-* - default: 0.25
-* - description: Legt den Einfluss der novelty Komponente fest.
-* - identifier: Einfluss novelty Komponente (b)
-* - type: Float
-PARAMETER par_InRAProcessModel_b(set_InRAProcessModel)
-
-* - default: 0.25
-* - description: Legt den Umwelteinfluss fest.
-* - identifier: Umwelteinfluss (c)
-* - type: Float
-PARAMETER par_InRAProcessModel_c(set_InRAProcessModel)
-
-* - default: 0.25
-* - description: Legt den Einfluss der sozialen Komponente fest.
-* - identifier: Einfluss soziale Komponente (d)
-* - type: Float
-PARAMETER par_InRAProcessModel_d(set_InRAProcessModel)
-
-* - default: 1
-* - description: todo
-* - identifier: Zusatzwichtung für a
-* - type: Float
-PARAMETER par_InRAProcessModel_aWeight(set_InRAProcessModel)
-
-* - default: 1
-* - description: todo
-* - identifier: Zusatzwichtung für b
-* - type: Float
-PARAMETER par_InRAProcessModel_bWeight(set_InRAProcessModel)
-
-* - default: 1
-* - description: todo
-* - identifier: Zusatzwichtung für c
-* - type: Float
-PARAMETER par_InRAProcessModel_cWeight(set_InRAProcessModel)
-
-* - default: 1
-* - description: todo
-* - identifier: Zusatzwichtung für d
-* - type: Float
-PARAMETER par_InRAProcessModel_dWeight(set_InRAProcessModel)
-
-* - default: 3
-* - description: Legt den Einfluss für die Kommunikation mit Adoptern fest.
-* - identifier: Einfluss der Kommunikation mit Adoptern
-* - type: Integer
-PARAMETER par_InRAProcessModel_adopterPoints(set_InRAProcessModel)
-
-* - default: 2
-* - description: Legt den Einfluss für die Kommunikation mit Interessenten fest.
-* - identifier: Einfluss der Kommunikation mit Interessenten
-* - type: Integer
-PARAMETER par_InRAProcessModel_interestedPoints(set_InRAProcessModel)
-
-* - default: 1
-* - description: Legt den Einfluss für die Kommunikation mit Bewussten fest.
-* - identifier: Einfluss der Kommunikation mit Bewussten
-* - type: Integer
-PARAMETER par_InRAProcessModel_awarePoints(set_InRAProcessModel)
-
-* - default: 0
-* - description: Legt den Einfluss für die Kommunikation mit Unwissenden fest.
-* - identifier: Einfluss der Kommunikation mit Unwissenden
-* - type: Integer
-PARAMETER par_InRAProcessModel_unknownPoints(set_InRAProcessModel)
-
-* - default: 0.005
-* - description: Legt den Einflussfaktor 'a' der logistischen Funktion fest: logistic(a * -x).
-* - identifier: Einflussfaktor der logistischen Funktion
-* - type: Float
-PARAMETER par_InRAProcessModel_logisticFactor(set_InRAProcessModel)
-
-* - default: 0.1
-* - description: speed of convergence
-* - identifier: speed of convergence
-* - type: Float
-PARAMETER par_InRAProcessModel_speedOfConvergence(set_InRAProcessModel)
-
-* - default: 0.1
-* - description: attitude gap
-* - identifier: attitude gap
-* - type: Float
-PARAMETER par_InRAProcessModel_attitudeGap(set_InRAProcessModel)
-
-* - default: 0.5
-* - domain: [0,1]
-* - description: Wahrscheinlichkeit für einen neutralen Ausgang.
-* - identifier: Wahrscheinlichkeit Neutral
-* - type: Float
-PARAMETER par_InRAProcessModel_chanceNeutral(set_InRAProcessModel)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: Wahrscheinlichkeit, dass der normale relative agreement algorithm genutzt wird.
-* - identifier: Wahrscheinlichkeit Konvergenz
-* - type: Float
-PARAMETER par_InRAProcessModel_chanceConvergence(set_InRAProcessModel)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: Wahrscheinlichkeit, dass der reverse relative agreement algorithm genutzt wird.
-* - identifier: Wahrscheinlichkeit Divergenz
-* - type: Float
-PARAMETER par_InRAProcessModel_chanceDivergence(set_InRAProcessModel)
-
-* - default: 0.5
-* - description: Legt die Wichtung für das Einkommen fest.
-* - identifier: Wichtung Kaufkraft
-* - type: Float
-PARAMETER par_InRAProcessModel_weightFT(set_InRAProcessModel)
-
-* - default: 0.5
-* - description: Legt den Einfluss der sozialen Komponente fest.
-* - identifier: Wichtung Barwert
-* - type: Float
-PARAMETER par_InRAProcessModel_weightNPV(set_InRAProcessModel)
-
-* - default: 0.5
-* - description: Legt den Einfluss der sozialen Komponente fest.
-* - identifier: Wichtung soziales Netz
-* - type: Float
-PARAMETER par_InRAProcessModel_weightSocial(set_InRAProcessModel)
-
-* - default: 0.5
-* - description: Legt den Einfluss der sozialen Komponente fest.
-* - identifier: Wichtung lokales Netz
-* - type: Float
-PARAMETER par_InRAProcessModel_weightLocal(set_InRAProcessModel)
-
-* - default: 1
-* - description: Skaliert die Kommunikationwahrscheinlichkeit der Agenten.
-* - identifier: Kommunikationsfaktor
-* - type: Float
-PARAMETER par_InRAProcessModel_communicationFactor(set_InRAProcessModel)
-
-* - default: 1
-* - description: Skaliert die Rewire-Wahrscheinlichkeit der Agenten.
-* - identifier: Rewire-Faktor
-* - type: Float
-PARAMETER par_InRAProcessModel_rewireFactor(set_InRAProcessModel)
-
-* - default: 1
-* - description: Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
-* - identifier: Adoptionsbestätigung (Basiswert)
-* - type: Float
-PARAMETER par_InRAProcessModel_adoptionCertaintyBase(set_InRAProcessModel)
-
-* - default: 1
-* - description: Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta
-* - identifier: Adoptionsbestätigung (Jahresfaktor)
-* - type: Float
-PARAMETER par_InRAProcessModel_adoptionCertaintyFactor(set_InRAProcessModel)
-
-* - description: Legt den Filter fest, um 'sichtbare' Haushalte zu identifizieren.
-* - identifier: Netzwerkfilter für räumliche Sicht
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InNodeDistanceFilterScheme_nodeFilterScheme(set_InRAProcessModel,set_InNodeDistanceFilterScheme)
-
-* - description: Legt die zu nutzende PV-Datei fest.
-* - identifier: PV-Datei
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InPVFile_pvFile(set_InRAProcessModel,set_InPVFile)
-
-* - description: Legt die Unsicherheiten, welche von diesem Modell verwendet werden sollen.
-* - identifier: Unsicherheiten
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InUncertaintySupplier_uncertainties(set_InRAProcessModel,set_InUncertaintySupplier)
-
-* - description: todo
-* - identifier: agent initializers
-* - type: Boolean
-PARAMETER par_link_InRAProcessModel_InNewProductHandler_newProductHandlers(set_InRAProcessModel,set_InNewProductHandler)
-
 * - identifier: InMaxDistanceNodeFilterDistanceScheme
 * - type: String
 SET set_InMaxDistanceNodeFilterDistanceScheme(set_InNodeDistanceFilterScheme)
 
+* - default: 0.0
+* - domain: [0,)
 * - description: Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell.
 * - identifier: Maximale Entfernung
 * - type: Float
 PARAMETER par_InMaxDistanceNodeFilterDistanceScheme_maxDistance(set_InMaxDistanceNodeFilterDistanceScheme)
 
+* - default: 1
+* - domain: [0|1]
 * - description: Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist.
 * - identifier: Grenzwert inklusive?
 * - type: Boolean
@@ -2573,1138 +2382,6 @@ SET set_InProcessModel(*)
 * - hidden: 1
 * - type: String
 SET set_InNodeFilterScheme(*)
-
-* - identifier: InComponent
-* - hidden: 1
-* - type: String
-SET set_InComponent(*)
-
-* - identifier: InDefaultDoActionComponent
-* - type: String
-SET set_InDefaultDoActionComponent(set_InEvaluableComponent)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultDoActionComponent_adopterPoints(set_InDefaultDoActionComponent)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultDoActionComponent_interestedPoints(set_InDefaultDoActionComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultDoActionComponent_awarePoints(set_InDefaultDoActionComponent)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultDoActionComponent_unknownPoints(set_InDefaultDoActionComponent)
-
-* - identifier: InDefaultHandleDecisionMakingComponent
-* - type: String
-SET set_InDefaultHandleDecisionMakingComponent(set_InEvaluableComponent)
-
-* - default: 0.25
-* - description: todo
-* - identifier: a
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_a(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.25
-* - description: todo
-* - identifier: b
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_b(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.25
-* - description: todo
-* - identifier: c
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_c(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.25
-* - description: todo
-* - identifier: d
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_d(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.5
-* - description: todo
-* - identifier: weightFT
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_weightFT(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.5
-* - description: todo
-* - identifier: weightNPV
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_weightNPV(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.5
-* - description: todo
-* - identifier: weightSocial
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_weightSocial(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.5
-* - description: todo
-* - identifier: weightLocal
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_weightLocal(set_InDefaultHandleDecisionMakingComponent)
-
-* - default: 0.005
-* - description: todo
-* - identifier: logistic factor
-* - type: Float
-PARAMETER par_InDefaultHandleDecisionMakingComponent_logisticFactor(set_InDefaultHandleDecisionMakingComponent)
-
-* - description: todo
-* - identifier: pvFile
-* - type: Boolean
-PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InPVFile_pvFile(set_InDefaultHandleDecisionMakingComponent,set_InPVFile)
-
-* - description: todo
-* - identifier: nodeFilterScheme
-* - type: Boolean
-PARAMETER par_link_InDefaultHandleDecisionMakingComponent_InNodeDistanceFilterScheme_nodeFilterScheme(set_InDefaultHandleDecisionMakingComponent,set_InNodeDistanceFilterScheme)
-
-* - identifier: InDefaultHandleFeasibilityComponent
-* - type: String
-SET set_InDefaultHandleFeasibilityComponent(set_InEvaluableComponent)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultHandleFeasibilityComponent_adopterPoints(set_InDefaultHandleFeasibilityComponent)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultHandleFeasibilityComponent_interestedPoints(set_InDefaultHandleFeasibilityComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultHandleFeasibilityComponent_awarePoints(set_InDefaultHandleFeasibilityComponent)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultHandleFeasibilityComponent_unknownPoints(set_InDefaultHandleFeasibilityComponent)
-
-* - identifier: InDefaultHandleInterestComponent
-* - type: String
-SET set_InDefaultHandleInterestComponent(set_InEvaluableComponent)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultHandleInterestComponent_adopterPoints(set_InDefaultHandleInterestComponent)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultHandleInterestComponent_interestedPoints(set_InDefaultHandleInterestComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultHandleInterestComponent_awarePoints(set_InDefaultHandleInterestComponent)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultHandleInterestComponent_unknownPoints(set_InDefaultHandleInterestComponent)
-
-* - identifier: InDoNothingComponent
-* - type: String
-SET set_InDoNothingComponent(set_InEvaluableComponent)
-
-* - default: 0
-* - description: todo
-* - identifier: ---
-* - type: Float
-PARAMETER par_InDoNothingComponent_placeholder(set_InDoNothingComponent)
-
-* - identifier: InEvaluableComponent
-* - hidden: 1
-* - type: String
-SET set_InEvaluableComponent(set_InComponent)
-
-* - identifier: InSumAttributeComponent
-* - type: String
-SET set_InSumAttributeComponent(set_InValueComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InSumAttributeComponent_weight(set_InSumAttributeComponent)
-
-* - description: todo
-* - identifier: Attribute
-* - type: Boolean
-PARAMETER par_link_InSumAttributeComponent_InAttributeName_attributeNames(set_InSumAttributeComponent,set_InAttributeName)
-
-* - identifier: InSumIntermediateComponent
-* - type: String
-SET set_InSumIntermediateComponent(set_InValueComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InSumIntermediateComponent_weight(set_InSumIntermediateComponent)
-
-* - description: todo
-* - identifier: Komponenten
-* - type: Boolean
-PARAMETER par_link_InSumIntermediateComponent_InValueComponent_components(set_InSumIntermediateComponent,set_InValueComponent)
-
-* - identifier: InSumThresholdComponent
-* - type: String
-SET set_InSumThresholdComponent(set_InEvaluableComponent)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InSumThresholdComponent_weight(set_InSumThresholdComponent)
-
-* - default: 0
-* - description: todo
-* - identifier: Grenzwert
-* - type: Float
-PARAMETER par_InSumThresholdComponent_threshold(set_InSumThresholdComponent)
-
-* - description: todo
-* - identifier: Komponenten
-* - type: Boolean
-PARAMETER par_link_InSumThresholdComponent_InValueComponent_components(set_InSumThresholdComponent,set_InValueComponent)
-
-* - identifier: InValueComponent
-* - hidden: 1
-* - type: String
-SET set_InValueComponent(set_InComponent)
-
-* - identifier: InModularRAProcessModel
-* - type: String
-SET set_InModularRAProcessModel(set_InProcessModel)
-
-* - default: 0.1
-* - description: todo
-* - identifier: speed of convergence
-* - type: Float
-PARAMETER par_InModularRAProcessModel_speedOfConvergence(set_InModularRAProcessModel)
-
-* - description: todo
-* - identifier: attitude gap
-* - type: Float
-PARAMETER par_InModularRAProcessModel_attitudeGap(set_InModularRAProcessModel)
-
-* - default: 0.5
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance neutral
-* - type: Float
-PARAMETER par_InModularRAProcessModel_chanceNeutral(set_InModularRAProcessModel)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance convergence
-* - type: Float
-PARAMETER par_InModularRAProcessModel_chanceConvergence(set_InModularRAProcessModel)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance divergence
-* - type: Float
-PARAMETER par_InModularRAProcessModel_chanceDivergence(set_InModularRAProcessModel)
-
-* - description: todo
-* - identifier: interest component
-* - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_interestComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
-
-* - description: todo
-* - identifier: feasibility component
-* - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_feasibilityComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
-
-* - description: todo
-* - identifier: decision making component
-* - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_decisionMakingComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
-
-* - description: todo
-* - identifier: action component
-* - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InEvaluableComponent_actionComponent(set_InModularRAProcessModel,set_InEvaluableComponent)
-
-* - identifier: uncertainties
-* - type: Boolean
-PARAMETER par_link_InModularRAProcessModel_InUncertaintySupplier_uncertainties(set_InModularRAProcessModel,set_InUncertaintySupplier)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InAddModule_calcgraphnode
-* - type: String
-SET set_InAddModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InAddModule_calcgraphnode_weight(set_InAddModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Erster Summand
-* - type: Boolean
-PARAMETER par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge(set_InAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - description: todo
-* - identifier: Zweiter Summand
-* - type: Boolean
-PARAMETER par_link_InAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge(set_InAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Green
-* - shape: square
-* - identifier: InAttributeInputModule_inputgraphnode
-* - type: String
-SET set_InAttributeInputModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InAttributeInputModule_inputgraphnode_weight(set_InAttributeInputModule_inputgraphnode)
-
-* - description: Bestimmt das Attribut, welches von dem Modul gelesen werden soll.
-* - identifier: Referenziertes Attribut
-* - type: Boolean
-PARAMETER par_link_InAttributeInputModule_inputgraphnode_InAttributeName_attribute(set_InAttributeInputModule_inputgraphnode,set_InAttributeName)
-
-* - color: Green
-* - shape: square
-* - identifier: InDisaggregatedFinancialModule_inputgraphnode
-* - type: String
-SET set_InDisaggregatedFinancialModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_weight(set_InDisaggregatedFinancialModule_inputgraphnode)
-
-* - default: 0.005
-* - description: todo
-* - identifier: Logistikfaktor
-* - type: Float
-PARAMETER par_InDisaggregatedFinancialModule_inputgraphnode_logisticFactor(set_InDisaggregatedFinancialModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InDisaggregatedNPVModule_inputgraphnode
-* - type: String
-SET set_InDisaggregatedNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_weight(set_InDisaggregatedNPVModule_inputgraphnode)
-
-* - default: 0.005
-* - description: todo
-* - identifier: Logistikfaktor
-* - type: Float
-PARAMETER par_InDisaggregatedNPVModule_inputgraphnode_logisticFactor(set_InDisaggregatedNPVModule_inputgraphnode)
-
-* - description: todo
-* - identifier: PV-Datei
-* - type: Boolean
-PARAMETER par_link_InDisaggregatedNPVModule_inputgraphnode_InPVFile_pvFile(set_InDisaggregatedNPVModule_inputgraphnode,set_InPVFile)
-
-* - color: Green
-* - shape: square
-* - identifier: InEnvironmentalConcernModule_inputgraphnode
-* - type: String
-SET set_InEnvironmentalConcernModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InEnvironmentalConcernModule_inputgraphnode_weight(set_InEnvironmentalConcernModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InFinancialComponentModule_inputgraphnode
-* - type: String
-SET set_InFinancialComponentModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InFinancialComponentModule_inputgraphnode_weight(set_InFinancialComponentModule_inputgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung: Einkommen
-* - type: Float
-PARAMETER par_InFinancialComponentModule_inputgraphnode_weightFT(set_InFinancialComponentModule_inputgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung: Barwert
-* - type: Float
-PARAMETER par_InFinancialComponentModule_inputgraphnode_weightNPV(set_InFinancialComponentModule_inputgraphnode)
-
-* - default: 0.005
-* - description: todo
-* - identifier: Logistikfaktor
-* - type: Float
-PARAMETER par_InFinancialComponentModule_inputgraphnode_logisticFactor(set_InFinancialComponentModule_inputgraphnode)
-
-* - description: todo
-* - identifier: PV-Datei
-* - type: Boolean
-PARAMETER par_link_InFinancialComponentModule_inputgraphnode_InPVFile_pvFile(set_InFinancialComponentModule_inputgraphnode,set_InPVFile)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InLogisticModule_calcgraphnode
-* - type: String
-SET set_InLogisticModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InLogisticModule_calcgraphnode_weight(set_InLogisticModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InLogisticModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InLogisticModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Green
-* - shape: square
-* - identifier: InNoveltySeekingModule_inputgraphnode
-* - type: String
-SET set_InNoveltySeekingModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InNoveltySeekingModule_inputgraphnode_weight(set_InNoveltySeekingModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InNPVModule_inputgraphnode
-* - type: String
-SET set_InNPVModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InNPVModule_inputgraphnode_weight(set_InNPVModule_inputgraphnode)
-
-* - description: todo
-* - identifier: PV-Datei
-* - type: Boolean
-PARAMETER par_link_InNPVModule_inputgraphnode_InPVFile_pvFile(set_InNPVModule_inputgraphnode,set_InPVFile)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InProductModule_calcgraphnode
-* - type: String
-SET set_InProductModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InProductModule_calcgraphnode_weight(set_InProductModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Faktoren
-* - type: Boolean
-PARAMETER par_link_InProductModule_calcgraphnode_InConsumerAgentCalculationModule_inputModules_graphedge(set_InProductModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Green
-* - shape: square
-* - identifier: InPurchasePowerModule_inputgraphnode
-* - type: String
-SET set_InPurchasePowerModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InPurchasePowerModule_inputgraphnode_weight(set_InPurchasePowerModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InShareOfAdopterInLocalNetworkModule_inputgraphnode
-* - type: String
-SET set_InShareOfAdopterInLocalNetworkModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InShareOfAdopterInLocalNetworkModule_inputgraphnode_weight(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode)
-
-* - description: todo
-* - identifier: node filter scheme
-* - type: Boolean
-PARAMETER par_link_InShareOfAdopterInLocalNetworkModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InShareOfAdopterInLocalNetworkModule_inputgraphnode,set_InNodeDistanceFilterScheme)
-
-* - color: Green
-* - shape: square
-* - identifier: InShareOfAdopterInSocialNetworkModule_inputgraphnode
-* - type: String
-SET set_InShareOfAdopterInSocialNetworkModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InShareOfAdopterInSocialNetworkModule_inputgraphnode_weight(set_InShareOfAdopterInSocialNetworkModule_inputgraphnode)
-
-* - color: Green
-* - shape: square
-* - identifier: InSocialComponentModule_inputgraphnode
-* - type: String
-SET set_InSocialComponentModule_inputgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InSocialComponentModule_inputgraphnode_weight(set_InSocialComponentModule_inputgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung: sozialer Anteil
-* - type: Float
-PARAMETER par_InSocialComponentModule_inputgraphnode_socialWeight(set_InSocialComponentModule_inputgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung: lokaler Anteil
-* - type: Float
-PARAMETER par_InSocialComponentModule_inputgraphnode_localWeight(set_InSocialComponentModule_inputgraphnode)
-
-* - description: todo
-* - identifier: node filter scheme
-* - type: Boolean
-PARAMETER par_link_InSocialComponentModule_inputgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InSocialComponentModule_inputgraphnode,set_InNodeDistanceFilterScheme)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InSumModule_calcgraphnode
-* - type: String
-SET set_InSumModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InSumModule_calcgraphnode_weight(set_InSumModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Summanden
-* - type: Boolean
-PARAMETER par_link_InSumModule_calcgraphnode_InConsumerAgentCalculationModule_inputModules_graphedge(set_InSumModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InWeightedAddModule_calcgraphnode
-* - type: String
-SET set_InWeightedAddModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InWeightedAddModule_calcgraphnode_weight(set_InWeightedAddModule_calcgraphnode)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung des ersten Summanden
-* - type: Float
-PARAMETER par_InWeightedAddModule_calcgraphnode_weight1(set_InWeightedAddModule_calcgraphnode)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung des zweiten Summanden
-* - type: Float
-PARAMETER par_InWeightedAddModule_calcgraphnode_weight2(set_InWeightedAddModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Erster Summand
-* - type: Boolean
-PARAMETER par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_first_graphedge(set_InWeightedAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - description: todo
-* - identifier: Zweiter Summand
-* - type: Boolean
-PARAMETER par_link_InWeightedAddModule_calcgraphnode_InConsumerAgentCalculationModule_second_graphedge(set_InWeightedAddModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Blue
-* - shape: gear
-* - identifier: InWeightedModule_calcgraphnode
-* - type: String
-SET set_InWeightedModule_calcgraphnode(set_InConsumerAgentCalculationModule)
-
-* - default: 1
-* - description: todo
-* - identifier: Wichtung
-* - type: Float
-PARAMETER par_InWeightedModule_calcgraphnode_weight(set_InWeightedModule_calcgraphnode)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InWeightedModule_calcgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InWeightedModule_calcgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InBranchModule_evalgraphnode
-* - type: String
-SET set_InBranchModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: adoption Modul
-* - type: Boolean
-PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onAdoptModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: impeded Module
-* - type: Boolean
-PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onImpededModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: in-process Modul
-* - type: Boolean
-PARAMETER par_link_InBranchModule_evalgraphnode_InConsumerAgentEvaluationModule_onInProcessModule_graphedge(set_InBranchModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InDefaultActionModule_evalgraphnode
-* - type: String
-SET set_InDefaultActionModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultActionModule_evalgraphnode_adopterPoints(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultActionModule_evalgraphnode_interestedPoints(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultActionModule_evalgraphnode_awarePoints(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultActionModule_evalgraphnode_unknownPoints(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 0.1
-* - description: todo
-* - identifier: speed of convergence
-* - type: Float
-PARAMETER par_InDefaultActionModule_evalgraphnode_speedOfConvergence(set_InDefaultActionModule_evalgraphnode)
-
-* - description: todo
-* - identifier: attitude gap
-* - type: Float
-PARAMETER par_InDefaultActionModule_evalgraphnode_attitudeGap(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 0.5
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance neutral
-* - type: Float
-PARAMETER par_InDefaultActionModule_evalgraphnode_chanceNeutral(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance convergence
-* - type: Float
-PARAMETER par_InDefaultActionModule_evalgraphnode_chanceConvergence(set_InDefaultActionModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance divergence
-* - type: Float
-PARAMETER par_InDefaultActionModule_evalgraphnode_chanceDivergence(set_InDefaultActionModule_evalgraphnode)
-
-* - description: todo
-* - identifier: uncertainties
-* - type: Boolean
-PARAMETER par_link_InDefaultActionModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultActionModule_evalgraphnode,set_InUncertaintySupplier)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InDefaultDecisionMakingModule_evalgraphnode
-* - type: String
-SET set_InDefaultDecisionMakingModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 0.25
-* - description: Legt den Einfluss der finanziellen Komponente fest.
-* - identifier: Einfluss finanzielle Komponente (a)
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_a(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.25
-* - description: Legt den Einfluss der novelty Komponente fest.
-* - identifier: Einfluss novelty Komponente (b)
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_b(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.25
-* - description: Legt den Umwelteinfluss fest.
-* - identifier: Umwelteinfluss (c)
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_c(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.25
-* - description: Legt den Einfluss der sozialen Komponente fest.
-* - identifier: Einfluss soziale Komponente (d)
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_d(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung Kaufkraft
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightFT(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung Barwert
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightNPV(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung soziales Netz
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightSocial(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.5
-* - description: todo
-* - identifier: Wichtung lokales Netz
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_weightLocal(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - default: 0.005
-* - description: todo
-* - identifier: Wichtung lokales Netz
-* - type: Float
-PARAMETER par_InDefaultDecisionMakingModule_evalgraphnode_logisticFactor(set_InDefaultDecisionMakingModule_evalgraphnode)
-
-* - description: todo
-* - identifier: pv file
-* - type: Boolean
-PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InPVFile_pvFile(set_InDefaultDecisionMakingModule_evalgraphnode,set_InPVFile)
-
-* - description: todo
-* - identifier: node filter scheme
-* - type: Boolean
-PARAMETER par_link_InDefaultDecisionMakingModule_evalgraphnode_InNodeDistanceFilterScheme_nodeFilterScheme(set_InDefaultDecisionMakingModule_evalgraphnode,set_InNodeDistanceFilterScheme)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InDefaultFeasibilityModule_evalgraphnode
-* - type: String
-SET set_InDefaultFeasibilityModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_adopterPoints(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_interestedPoints(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_awarePoints(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_unknownPoints(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 0.1
-* - description: todo
-* - identifier: speed of convergence
-* - type: Float
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_speedOfConvergence(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - description: todo
-* - identifier: attitude gap
-* - type: Float
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_attitudeGap(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 0.5
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance neutral
-* - type: Float
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_chanceNeutral(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance convergence
-* - type: Float
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_chanceConvergence(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance divergence
-* - type: Float
-PARAMETER par_InDefaultFeasibilityModule_evalgraphnode_chanceDivergence(set_InDefaultFeasibilityModule_evalgraphnode)
-
-* - description: todo
-* - identifier: uncertainties
-* - type: Boolean
-PARAMETER par_link_InDefaultFeasibilityModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultFeasibilityModule_evalgraphnode,set_InUncertaintySupplier)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InDefaultInterestModule_evalgraphnode
-* - type: String
-SET set_InDefaultInterestModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 3
-* - description: todo
-* - identifier: adopter points
-* - type: Integer
-PARAMETER par_InDefaultInterestModule_evalgraphnode_adopterPoints(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 2
-* - description: todo
-* - identifier: interested points
-* - type: Integer
-PARAMETER par_InDefaultInterestModule_evalgraphnode_interestedPoints(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 1
-* - description: todo
-* - identifier: aware points
-* - type: Integer
-PARAMETER par_InDefaultInterestModule_evalgraphnode_awarePoints(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 0
-* - description: todo
-* - identifier: unknown points
-* - type: Integer
-PARAMETER par_InDefaultInterestModule_evalgraphnode_unknownPoints(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 0.1
-* - description: todo
-* - identifier: speed of convergence
-* - type: Float
-PARAMETER par_InDefaultInterestModule_evalgraphnode_speedOfConvergence(set_InDefaultInterestModule_evalgraphnode)
-
-* - description: todo
-* - identifier: attitude gap
-* - type: Float
-PARAMETER par_InDefaultInterestModule_evalgraphnode_attitudeGap(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 0.5
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance neutral
-* - type: Float
-PARAMETER par_InDefaultInterestModule_evalgraphnode_chanceNeutral(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance convergence
-* - type: Float
-PARAMETER par_InDefaultInterestModule_evalgraphnode_chanceConvergence(set_InDefaultInterestModule_evalgraphnode)
-
-* - default: 0.25
-* - domain: [0,1]
-* - description: todo
-* - identifier: chance divergence
-* - type: Float
-PARAMETER par_InDefaultInterestModule_evalgraphnode_chanceDivergence(set_InDefaultInterestModule_evalgraphnode)
-
-* - description: todo
-* - identifier: uncertainties
-* - type: Boolean
-PARAMETER par_link_InDefaultInterestModule_evalgraphnode_InUncertaintySupplier_uncertainties(set_InDefaultInterestModule_evalgraphnode,set_InUncertaintySupplier)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InDoNothingModule_evalgraphnode
-* - type: String
-SET set_InDoNothingModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: Eingabemodule
-* - type: Boolean
-PARAMETER par_link_InDoNothingModule_evalgraphnode_InConsumerAgentModule_inputModule_graphedge(set_InDoNothingModule_evalgraphnode,set_InConsumerAgentModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InFilterModule_evalgraphnode
-* - type: String
-SET set_InFilterModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_inputModule_graphedge(set_InFilterModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: todo
-* - identifier: Folgemodul
-* - type: Boolean
-PARAMETER par_link_InFilterModule_evalgraphnode_InConsumerAgentEvaluationModule_taskModule_graphedge(set_InFilterModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InSimpleGetPhaseModule_evalgraphnode
-* - type: String
-SET set_InSimpleGetPhaseModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Status: adoptiert
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 1, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 1, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 1)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getAdopt == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
-* - type: Boolean
-PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getAdopt(set_InSimpleGetPhaseModule_evalgraphnode)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Status: Adoption nicht möglich
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 1, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 1, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 1)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getImpeded == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 0)
-* - type: Boolean
-PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getImpeded(set_InSimpleGetPhaseModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: todo
-* - identifier: Status: Adoption nicht entschieden
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 1, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 1, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getAdopt = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getImpeded = 0)
-* - rule: IF (par_InSimpleGetPhaseModule_evalgraphnode_getInProcess == 0, par_InSimpleGetPhaseModule_evalgraphnode_getInProcess = 1)
-* - type: Boolean
-PARAMETER par_InSimpleGetPhaseModule_evalgraphnode_getInProcess(set_InSimpleGetPhaseModule_evalgraphnode)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InStageEvaluationModule_evalgraphnode
-* - type: String
-SET set_InStageEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - description: Dieses Modul wird aufgerufen, wenn der Agent in der awareness-Phase ist.
-* - identifier: awareness module
-* - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_awarenessModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: Dieses Modul wird aufgerufen, wenn der Agent in der feasibility-Phase ist.
-* - identifier: feasibility module
-* - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_feasibilityModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: Dieses Modul wird aufgerufen, wenn der Agent in der decision making-Phase ist.
-* - identifier: decision making module
-* - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_decisionMakingModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: Dieses Modul wird aufgerufen, wenn der Agent in der adopted-Phase ist.
-* - identifier: adopted module
-* - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_adoptedModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - description: Dieses Modul wird aufgerufen, wenn der Agent in der impeded-Phase ist.
-* - identifier: impeded module
-* - type: Boolean
-PARAMETER par_link_InStageEvaluationModule_evalgraphnode_InConsumerAgentEvaluationModule_impededModule_graphedge(set_InStageEvaluationModule_evalgraphnode,set_InConsumerAgentEvaluationModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InSumThresholdEvaluationModule_evalgraphnode
-* - type: String
-SET set_InSumThresholdEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 1
-* - description: Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird.
-* - identifier: Grenzwert
-* - type: Float
-PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_threshold(set_InSumThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze.
-* - identifier: Erfolg wenn unter Grenzwert?
-* - type: Boolean
-PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold(set_InSumThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis \"adoptiert\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
-* - identifier: Adoptieren bei Erfolg?
-* - type: Boolean
-PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_adoptIfAccepted(set_InSumThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis \"Adoption nicht möglich\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
-* - identifier: Adoption nicht möglich (impeded) bei Nichterfolg?
-* - type: Boolean
-PARAMETER par_InSumThresholdEvaluationModule_evalgraphnode_impededIfFailed(set_InSumThresholdEvaluationModule_evalgraphnode)
-
-* - description: Die Eingabemodule für das Modul.
-* - identifier: Eingabemodule
-* - type: Boolean
-PARAMETER par_link_InSumThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InSumThresholdEvaluationModule_evalgraphnode,set_InConsumerAgentCalculationModule)
-
-* - color: Red
-* - shape: diamond
-* - identifier: InThresholdEvaluationModule_evalgraphnode
-* - type: String
-SET set_InThresholdEvaluationModule_evalgraphnode(set_InConsumerAgentEvaluationModule)
-
-* - default: 1
-* - description: Der Grenzwert, welcher für die Entscheidungsfindung verwendet wird.
-* - identifier: Grenzwert
-* - type: Float
-PARAMETER par_InThresholdEvaluationModule_evalgraphnode_threshold(set_InThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird der Grenzwert als obere Grenze betrachtet. Anderenfalls als untere Grenze.
-* - identifier: Erfolg wenn unter Grenzwert?
-* - type: Boolean
-PARAMETER par_InThresholdEvaluationModule_evalgraphnode_acceptIfBelowThreshold(set_InThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird bei einer erfolgreichen Evaluation das Ergebnis \"adoptiert\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
-* - identifier: Adoptieren bei Erfolg?
-* - type: Boolean
-PARAMETER par_InThresholdEvaluationModule_evalgraphnode_adoptIfAccepted(set_InThresholdEvaluationModule_evalgraphnode)
-
-* - default: 1
-* - domain: [0|1]
-* - description: Falls gesetzt, wird bei einer erfolgloser Evaluation das Ergebnis \"Adoption nicht möglich\" zurück gegeben. Anderenfalls wird \"Adoption nicht entschieden\" zurück gegeben.
-* - identifier: Adoption nicht möglich (impeded) bei Nichterfolg?
-* - type: Boolean
-PARAMETER par_InThresholdEvaluationModule_evalgraphnode_impededIfFailed(set_InThresholdEvaluationModule_evalgraphnode)
-
-* - description: Das Eingabemodul für das Modul.
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InThresholdEvaluationModule_evalgraphnode_InConsumerAgentCalculationModule_input_graphedge(set_InThresholdEvaluationModule_evalgraphnode,set_InConsumerAgentCalculationModule)
-
-* - identifier: InConsumerAgentCalculationModule
-* - hidden: 1
-* - type: String
-SET set_InConsumerAgentCalculationModule(set_InConsumerAgentModule)
-
-* - identifier: InConsumerAgentEvaluationModule
-* - hidden: 1
-* - type: String
-SET set_InConsumerAgentEvaluationModule(set_InConsumerAgentModule)
-
-* - identifier: InConsumerAgentModule
-* - hidden: 1
-* - type: String
-SET set_InConsumerAgentModule(set_InModule)
-
-* - identifier: InConsumerAgentModularProcessModel
-* - hidden: 1
-* - type: String
-SET set_InConsumerAgentModularProcessModel(set_InModularProcessModel)
-
-* - identifier: InConsumerAgentMPMWithAdoptionHandler
-* - type: String
-SET set_InConsumerAgentMPMWithAdoptionHandler(set_InConsumerAgentModularProcessModel)
-
-* - description: Das Startmodul des modularen Systems.
-* - identifier: Startmodul
-* - type: Boolean
-PARAMETER par_link_InConsumerAgentMPMWithAdoptionHandler_InConsumerAgentEvaluationModule_startModule(set_InConsumerAgentMPMWithAdoptionHandler,set_InConsumerAgentEvaluationModule)
-
-* - identifier: newProductHandlers
-* - type: Boolean
-PARAMETER par_link_InConsumerAgentMPMWithAdoptionHandler_InNewProductHandler_newProductHandlers(set_InConsumerAgentMPMWithAdoptionHandler,set_InNewProductHandler)
-
-* - identifier: InModularProcessModel
-* - hidden: 1
-* - type: String
-SET set_InModularProcessModel(set_InProcessModel)
-
-* - identifier: InModule
-* - hidden: 1
-* - type: String
-SET set_InModule(*)
 
 * - identifier: InModularProcessModel2
 * - hidden: 1
@@ -3760,759 +2437,613 @@ PARAMETER par_link_InBasicCAModularProcessModel_InReevaluator2_endOfYearReevalua
 * - type: String
 SET set_InConsumerAgentModule2(set_InModule2)
 
-* - fill: DarkCyan
-* - color: DarkCyan
-* - shape: octagon
-* - identifier: InCommunicationModule_actiongraphnode2
+* - identifier: InCommunicationModule3
 * - type: String
-SET set_InCommunicationModule_actiongraphnode2(set_InConsumerAgentActionModule2)
+SET set_InCommunicationModule3(set_InConsumerAgentActionModule2)
 
 * - default: 3
 * - description: todo
 * - identifier: Adopter points
 * - type: Integer
-PARAMETER par_InCommunicationModule_actiongraphnode2_adopterPoints(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_adopterPoints(set_InCommunicationModule3)
 
 * - default: 2
 * - description: todo
 * - identifier: Interested points
 * - type: Integer
-PARAMETER par_InCommunicationModule_actiongraphnode2_interestedPoints(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_interestedPoints(set_InCommunicationModule3)
 
 * - default: 1
 * - description: todo
 * - identifier: Aware points
 * - type: Integer
-PARAMETER par_InCommunicationModule_actiongraphnode2_awarePoints(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_awarePoints(set_InCommunicationModule3)
 
 * - default: 0
 * - description: todo
 * - identifier: Unknown üpoints
 * - type: Integer
-PARAMETER par_InCommunicationModule_actiongraphnode2_unknownPoints(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_unknownPoints(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: Diese Option aktiviert bzw. deaktiviert das relative agreement.
 * - identifier: Relative agreement nutzen?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raEnabled(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raEnabled(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!
 * - identifier: Relative agreement loggen?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raLoggingEnabled(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raLoggingEnabled(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt.
 * - identifier: Meinung loggen?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raOpinionLogging(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raOpinionLogging(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt.
 * - identifier: Unsicherheit loggen?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raUnceraintyLogging(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raUnceraintyLogging(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: todo
 * - identifier: Kopfzeile schreiben?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raPrintHeader(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raPrintHeader(set_InCommunicationModule3)
 
 * - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Als csv speichern?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raKeepCsv(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raKeepCsv(set_InCommunicationModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: todo
 * - identifier: Als xlsx speichern?
 * - type: Boolean
-PARAMETER par_InCommunicationModule_actiongraphnode2_raStoreXlsx(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_raStoreXlsx(set_InCommunicationModule3)
 
 * - default: 0.1
 * - description: todo
 * - identifier: Speed of convergence
 * - type: Float
-PARAMETER par_InCommunicationModule_actiongraphnode2_speedOfConvergence(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_speedOfConvergence(set_InCommunicationModule3)
 
 * - default: 0.1
 * - description: todo
 * - identifier: Attitude gap
 * - type: Float
-PARAMETER par_InCommunicationModule_actiongraphnode2_attitudeGap(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_attitudeGap(set_InCommunicationModule3)
 
 * - default: 0.5
 * - description: todo
 * - identifier: Wahrscheinllichkeit: Neutral
 * - type: Float
-PARAMETER par_InCommunicationModule_actiongraphnode2_chanceNeutral(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_chanceNeutral(set_InCommunicationModule3)
 
 * - default: 0.25
 * - description: todo
 * - identifier: Wahrscheinllichkeit: Konvergenz
 * - type: Float
-PARAMETER par_InCommunicationModule_actiongraphnode2_chanceConvergence(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_chanceConvergence(set_InCommunicationModule3)
 
 * - default: 0.25
 * - description: todo
 * - identifier: Wahrscheinllichkeit: Divergenz
 * - type: Float
-PARAMETER par_InCommunicationModule_actiongraphnode2_chanceDivergence(set_InCommunicationModule_actiongraphnode2)
+PARAMETER par_InCommunicationModule3_chanceDivergence(set_InCommunicationModule3)
 
 * - description: todo
 * - identifier: Unsicherheiten
 * - type: Boolean
-PARAMETER par_link_InCommunicationModule_actiongraphnode2_InUncertaintySupplier_uncertaintySuppliers(set_InCommunicationModule_actiongraphnode2,set_InUncertaintySupplier)
+PARAMETER par_link_InCommunicationModule3_InUncertaintySupplier_uncertaintySuppliers(set_InCommunicationModule3,set_InUncertaintySupplier)
 
 * - identifier: InConsumerAgentActionModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentActionModule2(set_InConsumerAgentModule2)
 
-* - fill: DarkCyan
-* - color: DarkCyan
-* - shape: octagon
-* - identifier: InIfElseActionModule_actiongraphnode2
+* - identifier: InIfElseActionModule3
 * - type: String
-SET set_InIfElseActionModule_actiongraphnode2(set_InConsumerAgentActionModule2)
+SET set_InIfElseActionModule3(set_InConsumerAgentActionModule2)
 
 * - description: todo
 * - identifier: test
 * - type: Boolean
-PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentBoolModule2_test_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentBoolModule2)
+PARAMETER par_link_InIfElseActionModule3_InConsumerAgentBoolModule2_testModule(set_InIfElseActionModule3,set_InConsumerAgentBoolModule2)
 
 * - description: todo
 * - identifier: onTrue
 * - type: Boolean
-PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onTrue_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InIfElseActionModule3_InConsumerAgentActionModule2_onTrueModule(set_InIfElseActionModule3,set_InConsumerAgentActionModule2)
 
 * - description: todo
 * - identifier: onFalse
 * - type: Boolean
-PARAMETER par_link_InIfElseActionModule_actiongraphnode2_InConsumerAgentActionModule2_onFalse_graphedge2(set_InIfElseActionModule_actiongraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InIfElseActionModule3_InConsumerAgentActionModule2_onFalseModule(set_InIfElseActionModule3,set_InConsumerAgentActionModule2)
 
-* - fill: DarkCyan
-* - color: DarkCyan
-* - shape: octagon
-* - identifier: InNOP_actiongraphnode2
+* - identifier: InNOPModule3
 * - type: String
-SET set_InNOP_actiongraphnode2(set_InConsumerAgentActionModule2)
+SET set_InNOPModule3(set_InConsumerAgentActionModule2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InNOP_actiongraphnode2_placeholder(set_InNOP_actiongraphnode2)
+PARAMETER par_InNOPModule3_placeholder(set_InNOPModule3)
 
-* - fill: DarkCyan
-* - color: DarkCyan
-* - shape: octagon
-* - identifier: InRewireModule_actiongraphnode2
+* - identifier: InRewireModule3
 * - type: String
-SET set_InRewireModule_actiongraphnode2(set_InConsumerAgentActionModule2)
+SET set_InRewireModule3(set_InConsumerAgentActionModule2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InRewireModule_actiongraphnode2_placeholder(set_InRewireModule_actiongraphnode2)
-
-* - fill: DarkCyan
-* - color: DarkCyan
-* - shape: octagon
-* - identifier: InStopAfterSuccessfulTaskModule_actiongraphnode2
-* - type: String
-SET set_InStopAfterSuccessfulTaskModule_actiongraphnode2(set_InConsumerAgentActionModule2)
-
-* - description: todo
-* - identifier: Eingabemodule
-* - type: Boolean
-PARAMETER par_link_InStopAfterSuccessfulTaskModule_actiongraphnode2_InConsumerAgentBoolModule2_input_graphedge2(set_InStopAfterSuccessfulTaskModule_actiongraphnode2,set_InConsumerAgentBoolModule2)
+PARAMETER par_InRewireModule3_placeholder(set_InRewireModule3)
 
 * - identifier: InConsumerAgentBoolModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentBoolModule2(set_InConsumerAgentModule2)
 
-* - fill: LightSlateGrey
-* - color: LightSlateGrey
-* - shape: gear
-* - identifier: InThresholdReachedModule_boolgraphnode2
+* - identifier: InThresholdReachedModule3
 * - type: String
-SET set_InThresholdReachedModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
+SET set_InThresholdReachedModule3(set_InConsumerAgentBoolModule2)
 
 * - default: 5
 * - description: todo
 * - identifier: Priorität
 * - type: Integer
-PARAMETER par_InThresholdReachedModule_boolgraphnode2_priority(set_InThresholdReachedModule_boolgraphnode2)
+PARAMETER par_InThresholdReachedModule3_priority(set_InThresholdReachedModule3)
 
 * - description: todo
 * - identifier: Vergleichswertmodul
 * - type: Boolean
-PARAMETER par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_draw_graphedge2(set_InThresholdReachedModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InThresholdReachedModule3_InConsumerAgentCalculationModule2_drawModule(set_InThresholdReachedModule3,set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: Grenzwertmodul
 * - type: Boolean
-PARAMETER par_link_InThresholdReachedModule_boolgraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2(set_InThresholdReachedModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InThresholdReachedModule3_InConsumerAgentCalculationModule2_thresholdModule(set_InThresholdReachedModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: LightSlateGrey
-* - color: LightSlateGrey
-* - shape: gear
-* - identifier: InIfDoActionModule_boolgraphnode2
+* - identifier: InBernoulliModule3
 * - type: String
-SET set_InIfDoActionModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
+SET set_InBernoulliModule3(set_InConsumerAgentBoolModule2)
 
 * - default: 5
 * - description: todo
 * - identifier: Priorität
 * - type: Integer
-PARAMETER par_InIfDoActionModule_boolgraphnode2_priority(set_InIfDoActionModule_boolgraphnode2)
-
-* - description: todo
-* - identifier: IfModule
-* - type: Boolean
-PARAMETER par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentBoolModule2_ifInput_graphedge2(set_InIfDoActionModule_boolgraphnode2,set_InConsumerAgentBoolModule2)
-
-* - description: todo
-* - identifier: TaskModule
-* - type: Boolean
-PARAMETER par_link_InIfDoActionModule_boolgraphnode2_InConsumerAgentActionModule2_taskInput_graphedge2(set_InIfDoActionModule_boolgraphnode2,set_InConsumerAgentActionModule2)
-
-* - fill: LightSlateGrey
-* - color: LightSlateGrey
-* - shape: gear
-* - identifier: InBernoulliModule_boolgraphnode2
-* - type: String
-SET set_InBernoulliModule_boolgraphnode2(set_InConsumerAgentBoolModule2)
-
-* - default: 5
-* - description: todo
-* - identifier: Priorität
-* - type: Integer
-PARAMETER par_InBernoulliModule_boolgraphnode2_priority(set_InBernoulliModule_boolgraphnode2)
+PARAMETER par_InBernoulliModule3_priority(set_InBernoulliModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InBernoulliModule_boolgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InBernoulliModule_boolgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InBernoulliModule3_InConsumerAgentCalculationModule2_inputModule(set_InBernoulliModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: Green
-* - color: Green
-* - shape: square
-* - identifier: InAddScalarModule_calcgraphnode2
+* - identifier: InAddScalarModule3
 * - type: String
-SET set_InAddScalarModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
+SET set_InAddScalarModule3(set_InConsumerAgentCalculationModule2)
 
-* - default: 1
+* - default: 0.0
 * - description: todo
 * - identifier: scalar
 * - type: Float
-PARAMETER par_InAddScalarModule_calcgraphnode2_scalar(set_InAddScalarModule_calcgraphnode2)
+PARAMETER par_InAddScalarModule3_scalar(set_InAddScalarModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InAddScalarModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InAddScalarModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InAddScalarModule3_InConsumerAgentCalculationModule2_inputModule(set_InAddScalarModule3,set_InConsumerAgentCalculationModule2)
 
 * - identifier: InConsumerAgentCalculationModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentCalculationModule2(set_InConsumerAgentModule2)
 
-* - fill: Green
-* - color: Green
-* - shape: square
-* - identifier: InLogisticModule_calcgraphnode2
+* - identifier: InLogisticModule3
 * - type: String
-SET set_InLogisticModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
+SET set_InLogisticModule3(set_InConsumerAgentCalculationModule2)
 
-* - default: 1
+* - default: 1.0
 * - description: todo
 * - identifier: L
 * - type: Float
-PARAMETER par_InLogisticModule_calcgraphnode2_valueL(set_InLogisticModule_calcgraphnode2)
+PARAMETER par_InLogisticModule3_valueL(set_InLogisticModule3)
 
-* - default: 1
+* - default: 1.0
 * - description: todo
 * - identifier: k
 * - type: Float
-PARAMETER par_InLogisticModule_calcgraphnode2_valueK(set_InLogisticModule_calcgraphnode2)
+PARAMETER par_InLogisticModule3_valueK(set_InLogisticModule3)
 
 * - description: todo
 * - identifier: x Modul
 * - type: Boolean
-PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_xinput_graphedge2(set_InLogisticModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InLogisticModule3_InConsumerAgentCalculationModule2_xinputModule(set_InLogisticModule3,set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: x0 Modul
 * - type: Boolean
-PARAMETER par_link_InLogisticModule_calcgraphnode2_InConsumerAgentCalculationModule2_x0input_graphedge2(set_InLogisticModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InLogisticModule3_InConsumerAgentCalculationModule2_x0inputModule(set_InLogisticModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: Green
-* - color: Green
-* - shape: square
-* - identifier: InMulScalarModule_calcgraphnode2
+* - identifier: InMulScalarModule3
 * - type: String
-SET set_InMulScalarModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
+SET set_InMulScalarModule3(set_InConsumerAgentCalculationModule2)
 
-* - default: 1
+* - default: 1.0
 * - description: todo
 * - identifier: scalar
 * - type: Float
-PARAMETER par_InMulScalarModule_calcgraphnode2_scalar(set_InMulScalarModule_calcgraphnode2)
+PARAMETER par_InMulScalarModule3_scalar(set_InMulScalarModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InMulScalarModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InMulScalarModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InMulScalarModule3_InConsumerAgentCalculationModule2_inputModule(set_InMulScalarModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: Green
-* - color: Green
-* - shape: square
-* - identifier: InProductModule_calcgraphnode2
+* - identifier: InProductModule3
 * - type: String
-SET set_InProductModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
+SET set_InProductModule3(set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: Eingabemodule
 * - type: Boolean
-PARAMETER par_link_InProductModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InProductModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InProductModule3_InConsumerAgentCalculationModule2_inputModule(set_InProductModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: Green
-* - color: Green
-* - shape: square
-* - identifier: InSumModule_calcgraphnode2
+* - identifier: InSumModule3
 * - type: String
-SET set_InSumModule_calcgraphnode2(set_InConsumerAgentCalculationModule2)
+SET set_InSumModule3(set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: Eingabemodule
 * - type: Boolean
-PARAMETER par_link_InSumModule_calcgraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InSumModule_calcgraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InSumModule3_InConsumerAgentCalculationModule2_inputModule(set_InSumModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InAttributeInputModule_inputgraphnode2
+* - identifier: InAttributeInputModule3
 * - type: String
-SET set_InAttributeInputModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InAttributeInputModule3(set_InConsumerAgentInputModule2)
 
 * - description: todo
 * - identifier: attribute
 * - type: Boolean
-PARAMETER par_link_InAttributeInputModule_inputgraphnode2_InAttributeName_attribute(set_InAttributeInputModule_inputgraphnode2,set_InAttributeName)
+PARAMETER par_link_InAttributeInputModule3_InAttributeName_attribute(set_InAttributeInputModule3,set_InAttributeName)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InAvgFinModule_inputgraphnode2
+* - identifier: InAvgFinModule3
 * - type: String
-SET set_InAvgFinModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InAvgFinModule3(set_InConsumerAgentInputModule2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InAvgFinModule_inputgraphnode2_placeholder(set_InAvgFinModule_inputgraphnode2)
+PARAMETER par_InAvgFinModule3_placeholder(set_InAvgFinModule3)
 
 * - identifier: InConsumerAgentInputModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentInputModule2(set_InConsumerAgentCalculationModule2)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InGlobalAvgNPVModule_inputgraphnode2
+* - identifier: InGlobalAvgNPVModule3
 * - type: String
-SET set_InGlobalAvgNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InGlobalAvgNPVModule3(set_InConsumerAgentInputModule2)
 
 * - description: todo
 * - identifier: pvFile
 * - type: Boolean
-PARAMETER par_link_InGlobalAvgNPVModule_inputgraphnode2_InPVFile_pvFile(set_InGlobalAvgNPVModule_inputgraphnode2,set_InPVFile)
+PARAMETER par_link_InGlobalAvgNPVModule3_InPVFile_pvFile(set_InGlobalAvgNPVModule3,set_InPVFile)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InLocalShareOfAdopterModule_inputgraphnode2
+* - identifier: InLocalShareOfAdopterModule3
 * - type: String
-SET set_InLocalShareOfAdopterModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InLocalShareOfAdopterModule3(set_InConsumerAgentInputModule2)
 
-* - default: 1000
+* - default: 0
 * - description: todo
 * - identifier: maxToStore
 * - type: Integer
-PARAMETER par_InLocalShareOfAdopterModule_inputgraphnode2_maxToStore(set_InLocalShareOfAdopterModule_inputgraphnode2)
+PARAMETER par_InLocalShareOfAdopterModule3_maxToStore(set_InLocalShareOfAdopterModule3)
 
 * - description: todo
 * - identifier: nodeFilterScheme
 * - type: Boolean
-PARAMETER par_link_InLocalShareOfAdopterModule_inputgraphnode2_InNodeDistanceFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule_inputgraphnode2,set_InNodeDistanceFilterScheme)
+PARAMETER par_link_InLocalShareOfAdopterModule3_InNodeDistanceFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule3,set_InNodeDistanceFilterScheme)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InNaNModule_inputgraphnode2
+* - identifier: InNaNModule3
 * - type: String
-SET set_InNaNModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InNaNModule3(set_InConsumerAgentInputModule2)
 
-* - default: 0
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InNaNModule_inputgraphnode2_placeholder(set_InNaNModule_inputgraphnode2)
+PARAMETER par_InNaNModule3_placeholder(set_InNaNModule3)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InNPVModule_inputgraphnode2
+* - identifier: InNPVModule3
 * - type: String
-SET set_InNPVModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InNPVModule3(set_InConsumerAgentInputModule2)
 
 * - description: todo
 * - identifier: pvFile
 * - type: Boolean
-PARAMETER par_link_InNPVModule_inputgraphnode2_InPVFile_pvFile(set_InNPVModule_inputgraphnode2,set_InPVFile)
+PARAMETER par_link_InNPVModule3_InPVFile_pvFile(set_InNPVModule3,set_InPVFile)
 
 * - fill: #CAFE12
 * - color: #CAFE12
 * - shape: flower
-* - identifier: InSocialShareOfAdopterModule_inputgraphnode2
+* - identifier: InSocialShareOfAdopterModule3
 * - type: String
-SET set_InSocialShareOfAdopterModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InSocialShareOfAdopterModule3(set_InConsumerAgentInputModule2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InSocialShareOfAdopterModule_inputgraphnode2_placeholder(set_InSocialShareOfAdopterModule_inputgraphnode2)
+PARAMETER par_InSocialShareOfAdopterModule3_placeholder(set_InSocialShareOfAdopterModule3)
 
-* - fill: #CAFE12
-* - color: #CAFE12
-* - shape: flower
-* - identifier: InValueModule_inputgraphnode2
+* - identifier: InValueModule3
 * - type: String
-SET set_InValueModule_inputgraphnode2(set_InConsumerAgentInputModule2)
+SET set_InValueModule3(set_InConsumerAgentInputModule2)
 
-* - default: 0
+* - default: 0.0
 * - description: todo
 * - identifier: Rückgabewert
 * - type: Float
-PARAMETER par_InValueModule_inputgraphnode2_value(set_InValueModule_inputgraphnode2)
+PARAMETER par_InValueModule3_value(set_InValueModule3)
 
 * - identifier: InConsumerAgentCalculationLoggingModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentCalculationLoggingModule2(set_InConsumerAgentCalculationModule2)
 
-* - fill: #FEAF12
-* - color: #FEAF12
-* - shape: diamond
-* - identifier: InCsvValueLoggingModule_calcloggraphnode2
+* - identifier: InCsvValueLoggingModule3
 * - type: String
-SET set_InCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
+SET set_InCsvValueLoggingModule3(set_InConsumerAgentCalculationLoggingModule2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Modul verwenden?
+* - type: Boolean
+PARAMETER par_InCsvValueLoggingModule3_enabled(set_InCsvValueLoggingModule3)
 
 * - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Reevaluierungsaufrufe loggen?
 * - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall(set_InCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InCsvValueLoggingModule3_logReevaluatorCall(set_InCsvValueLoggingModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: todo
 * - identifier: Normale Aufrufe loggen?
 * - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_logDefaultCall(set_InCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InCsvValueLoggingModule3_logDefaultCall(set_InCsvValueLoggingModule3)
 
 * - default: 1
 * - domain: [0|1]
 * - description: todo
 * - identifier: Kopfzeile schreiben?
 * - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_printHeader(set_InCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InCsvValueLoggingModule3_printHeader(set_InCsvValueLoggingModule3)
 
 * - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: Als xlsx speichern?
 * - type: Boolean
-PARAMETER par_InCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InCsvValueLoggingModule_calcloggraphnode2)
+PARAMETER par_InCsvValueLoggingModule3_storeXlsx(set_InCsvValueLoggingModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
-
-* - fill: #FEAF12
-* - color: #FEAF12
-* - shape: diamond
-* - identifier: InMinimalCsvValueLoggingModule_calcloggraphnode2
-* - type: String
-SET set_InMinimalCsvValueLoggingModule_calcloggraphnode2(set_InConsumerAgentCalculationLoggingModule2)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Reevaluierungsaufrufe loggen?
-* - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_logReevaluatorCall(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
-
-* - default: 1
-* - domain: [0|1]
-* - description: todo
-* - identifier: Normale Aufrufe loggen?
-* - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_logDefaultCall(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
-
-* - default: 1
-* - domain: [0|1]
-* - description: todo
-* - identifier: Kopfzeile schreiben?
-* - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_printHeader(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
-
-* - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: Als xlsx speichern?
-* - type: Boolean
-PARAMETER par_InMinimalCsvValueLoggingModule_calcloggraphnode2_storeXlsx(set_InMinimalCsvValueLoggingModule_calcloggraphnode2)
-
-* - description: todo
-* - identifier: Eingabemodul
-* - type: Boolean
-PARAMETER par_link_InMinimalCsvValueLoggingModule_calcloggraphnode2_InConsumerAgentCalculationModule2_input_graphedge2(set_InMinimalCsvValueLoggingModule_calcloggraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InCsvValueLoggingModule3_InConsumerAgentCalculationModule2_inputModule(set_InCsvValueLoggingModule3,set_InConsumerAgentCalculationModule2)
 
 * - identifier: InConsumerAgentEvalModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentEvalModule2(set_InConsumerAgentModule2)
 
-* - fill: Blue
-* - color: Blue
-* - shape: pentagon
-* - identifier: InDoNothingAndContinueModule_evalgraphnode2
+* - identifier: InRunUntilFailureModule3
 * - type: String
-SET set_InDoNothingAndContinueModule_evalgraphnode2(set_InConsumerAgentEvalModule2)
-
-* - description: todo
-* - identifier: ---
-* - type: Float
-PARAMETER par_InDoNothingAndContinueModule_evalgraphnode2_placeholder(set_InDoNothingAndContinueModule_evalgraphnode2)
-
-* - fill: Blue
-* - color: Blue
-* - shape: pentagon
-* - identifier: InRunUntilFailureModule_evalgraphnode2
-* - type: String
-SET set_InRunUntilFailureModule_evalgraphnode2(set_InConsumerAgentEvalModule2)
+SET set_InRunUntilFailureModule3(set_InConsumerAgentEvalModule2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InRunUntilFailureModule_evalgraphnode2_InConsumerAgentModule2_input_graphedge2(set_InRunUntilFailureModule_evalgraphnode2,set_InConsumerAgentModule2)
+PARAMETER par_link_InRunUntilFailureModule3_InConsumerAgentModule2_inputModule(set_InRunUntilFailureModule3,set_InConsumerAgentModule2)
 
 * - identifier: InConsumerAgentEvalRAModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentEvalRAModule2(set_InConsumerAgentModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InDecisionMakingDeciderModule2_evalragraphnode2
+* - identifier: InDecisionMakingDeciderModule3
 * - type: String
-SET set_InDecisionMakingDeciderModule2_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InDecisionMakingDeciderModule3(set_InConsumerAgentEvalRAModule2)
 
 * - default: 0
 * - domain: [0|1]
 * - description: todo
 * - identifier: forceEvaluation
 * - type: Boolean
-PARAMETER par_InDecisionMakingDeciderModule2_evalragraphnode2_forceEvaluation(set_InDecisionMakingDeciderModule2_evalragraphnode2)
+PARAMETER par_InDecisionMakingDeciderModule3_forceEvaluation(set_InDecisionMakingDeciderModule3)
 
 * - description: todo
 * - identifier: Finanz-Testmodul
 * - type: Boolean
-PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentBoolModule2_finCheck_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentBoolModule2)
+PARAMETER par_link_InDecisionMakingDeciderModule3_InConsumerAgentBoolModule2_finCheckModule(set_InDecisionMakingDeciderModule3,set_InConsumerAgentBoolModule2)
 
 * - description: todo
 * - identifier: Grenzwertmodul
 * - type: Boolean
-PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_threshold_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InDecisionMakingDeciderModule3_InConsumerAgentCalculationModule2_thresholdModule(set_InDecisionMakingDeciderModule3,set_InConsumerAgentCalculationModule2)
 
 * - description: todo
 * - identifier: Utilitymodul
 * - type: Boolean
-PARAMETER par_link_InDecisionMakingDeciderModule2_evalragraphnode2_InConsumerAgentCalculationModule2_utility_graphedge2(set_InDecisionMakingDeciderModule2_evalragraphnode2,set_InConsumerAgentCalculationModule2)
+PARAMETER par_link_InDecisionMakingDeciderModule3_InConsumerAgentCalculationModule2_utilityModule(set_InDecisionMakingDeciderModule3,set_InConsumerAgentCalculationModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InDoAdoptModule_evalragraphnode2
+* - identifier: InDoAdoptModule3
 * - type: String
-SET set_InDoAdoptModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InDoAdoptModule3(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InDoAdoptModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InDoAdoptModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InDoAdoptModule3_InConsumerAgentEvalRAModule2_inputModule(set_InDoAdoptModule3,set_InConsumerAgentEvalRAModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InFeasibilityModule_evalragraphnode2
+* - identifier: InFeasibilityModule3
 * - type: String
-SET set_InFeasibilityModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InFeasibilityModule3(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InFeasibilityModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2(set_InFeasibilityModule_evalragraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InFeasibilityModule3_InConsumerAgentActionModule2_inputModule(set_InFeasibilityModule3,set_InConsumerAgentActionModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InInitializationModule_evalragraphnode2
+* - identifier: InInitializationModule3
 * - type: String
-SET set_InInitializationModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InInitializationModule3(set_InConsumerAgentEvalRAModule2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
-PARAMETER par_InInitializationModule_evalragraphnode2_placeholder(set_InInitializationModule_evalragraphnode2)
+PARAMETER par_InInitializationModule3_placeholder(set_InInitializationModule3)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InInterestModule_evalragraphnode2
+* - identifier: InInterestModule3
 * - type: String
-SET set_InInterestModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InInterestModule3(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InInterestModule_evalragraphnode2_InConsumerAgentActionModule2_input_graphedge2(set_InInterestModule_evalragraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InInterestModule3_InConsumerAgentActionModule2_inputModule(set_InInterestModule3,set_InConsumerAgentActionModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InMainBranchingModule_evalragraphnode2
+* - identifier: InMainBranchingModule3
 * - type: String
-SET set_InMainBranchingModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InMainBranchingModule3(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: init
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_init_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentEvalRAModule2_initModule(set_InMainBranchingModule3,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: awareness
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_awareness_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentEvalRAModule2_awarenessModule(set_InMainBranchingModule3,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: feasiblity
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_feasibility_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentEvalRAModule2_feasibilityModule(set_InMainBranchingModule3,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: decision
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_decision_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentEvalRAModule2_decisionModule(set_InMainBranchingModule3,set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: adopted
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentActionModule2_adopted_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentActionModule2_adoptedModule(set_InMainBranchingModule3,set_InConsumerAgentActionModule2)
 
 * - description: todo
 * - identifier: impeded
 * - type: Boolean
-PARAMETER par_link_InMainBranchingModule_evalragraphnode2_InConsumerAgentActionModule2_impeded_graphedge2(set_InMainBranchingModule_evalragraphnode2,set_InConsumerAgentActionModule2)
+PARAMETER par_link_InMainBranchingModule3_InConsumerAgentActionModule2_impededModule(set_InMainBranchingModule3,set_InConsumerAgentActionModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InPhaseUpdateModule_evalragraphnode2
+* - identifier: InPhaseUpdateModule3
 * - type: String
-SET set_InPhaseUpdateModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InPhaseUpdateModule3(set_InConsumerAgentEvalRAModule2)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InPhaseUpdateModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseUpdateModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InPhaseUpdateModule3_InConsumerAgentEvalRAModule2_inputModule(set_InPhaseUpdateModule3,set_InConsumerAgentEvalRAModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InYearBasedAdoptionDeciderModule_evalragraphnode2
+* - identifier: InYearBasedAdoptionDeciderModule3
 * - type: String
-SET set_InYearBasedAdoptionDeciderModule_evalragraphnode2(set_InConsumerAgentEvalRAModule2)
+SET set_InYearBasedAdoptionDeciderModule3(set_InConsumerAgentEvalRAModule2)
 
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Modul verwenden?
+* - type: Boolean
+PARAMETER par_InYearBasedAdoptionDeciderModule3_enabled(set_InYearBasedAdoptionDeciderModule3)
+
+* - default: 1.0
+* - description: todo
 * - identifier: base
 * - type: Float
-PARAMETER par_InYearBasedAdoptionDeciderModule_evalragraphnode2_base(set_InYearBasedAdoptionDeciderModule_evalragraphnode2)
+PARAMETER par_InYearBasedAdoptionDeciderModule3_base(set_InYearBasedAdoptionDeciderModule3)
 
+* - default: 1.0
+* - description: todo
 * - identifier: factor
 * - type: Float
-PARAMETER par_InYearBasedAdoptionDeciderModule_evalragraphnode2_factor(set_InYearBasedAdoptionDeciderModule_evalragraphnode2)
+PARAMETER par_InYearBasedAdoptionDeciderModule3_factor(set_InYearBasedAdoptionDeciderModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InYearBasedAdoptionDeciderModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InYearBasedAdoptionDeciderModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InYearBasedAdoptionDeciderModule3_InConsumerAgentEvalRAModule2_inputModule(set_InYearBasedAdoptionDeciderModule3,set_InConsumerAgentEvalRAModule2)
 
 * - identifier: InConsumerAgentReevaluationModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentReevaluationModule2(set_InModule2)
 
-* - fill: Magenta
-* - color: Magenta
-* - shape: triangle-down
-* - identifier: InReevaluatorModule_reevalgraphnode2
+* - identifier: InReevaluatorModule3
 * - type: String
-SET set_InReevaluatorModule_reevalgraphnode2(set_InConsumerAgentReevaluationModule2)
+SET set_InReevaluatorModule3(set_InConsumerAgentReevaluationModule2)
 
 * - description: todo
 * - identifier: Eingabemodule
 * - type: Boolean
-PARAMETER par_link_InReevaluatorModule_reevalgraphnode2_InConsumerAgentModule2_input_graphedge2(set_InReevaluatorModule_reevalgraphnode2,set_InConsumerAgentModule2)
+PARAMETER par_link_InReevaluatorModule3_InConsumerAgentModule2_inputModule(set_InReevaluatorModule3,set_InConsumerAgentModule2)
 
 * - identifier: InConsumerAgentEvalRALoggingModule2
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentEvalRALoggingModule2(set_InConsumerAgentEvalRAModule2)
 
-* - fill: #7012FE
-* - color: #7012FE
-* - shape: circle
-* - identifier: InPhaseLoggingModule_evalragraphnode2
+* - identifier: InPhaseLoggingModule3
 * - type: String
-SET set_InPhaseLoggingModule_evalragraphnode2(set_InConsumerAgentEvalRALoggingModule2)
+SET set_InPhaseLoggingModule3(set_InConsumerAgentEvalRALoggingModule2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Modul verwenden?
+* - type: Boolean
+PARAMETER par_InPhaseLoggingModule3_enabled(set_InPhaseLoggingModule3)
 
 * - description: todo
 * - identifier: Eingabemodul
 * - type: Boolean
-PARAMETER par_link_InPhaseLoggingModule_evalragraphnode2_InConsumerAgentEvalRAModule2_input_graphedge2(set_InPhaseLoggingModule_evalragraphnode2,set_InConsumerAgentEvalRAModule2)
+PARAMETER par_link_InPhaseLoggingModule3_InConsumerAgentEvalRAModule2_inputModule(set_InPhaseLoggingModule3,set_InConsumerAgentEvalRAModule2)
 
 * - identifier: InAnnualInterestLogger
 * - type: String
 SET set_InAnnualInterestLogger(set_InReevaluator2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
@@ -4522,6 +3053,7 @@ PARAMETER par_InAnnualInterestLogger_placeholder(set_InAnnualInterestLogger)
 * - type: String
 SET set_InConstructionRenovationUpdater(set_InReevaluator2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
@@ -4540,6 +3072,7 @@ PARAMETER par_link_InDecisionMakingReevaluator_InConsumerAgentModule2_modules(se
 * - type: String
 SET set_InImpededResetter(set_InReevaluator2)
 
+* - default: 0.0
 * - description: todo
 * - identifier: ---
 * - type: Float
@@ -4560,29 +3093,29 @@ PARAMETER par_InLinearePercentageAgentAttributeUpdater_priority(set_InLinearePer
 * - type: Boolean
 PARAMETER par_link_InLinearePercentageAgentAttributeUpdater_InLinearePercentageAgentAttributeScaler_scaler(set_InLinearePercentageAgentAttributeUpdater,set_InLinearePercentageAgentAttributeScaler)
 
-* - identifier: InReevaluatorModuleLinker
+* - identifier: InMultiReevaluator
 * - type: String
-SET set_InReevaluatorModuleLinker(set_InReevaluator2)
+SET set_InMultiReevaluator(set_InReevaluator2)
 
 * - description: todo
 * - identifier: Eingabemodule
 * - type: Boolean
-PARAMETER par_link_InReevaluatorModuleLinker_InConsumerAgentReevaluationModule2_modules(set_InReevaluatorModuleLinker,set_InConsumerAgentReevaluationModule2)
+PARAMETER par_link_InMultiReevaluator_InConsumerAgentReevaluationModule2_modules(set_InMultiReevaluator,set_InConsumerAgentReevaluationModule2)
 
-* - identifier: InUncertaintySupplierReevaluator
+* - identifier: InUncertaintyReevaluator
 * - type: String
-SET set_InUncertaintySupplierReevaluator(set_InReevaluator2)
+SET set_InUncertaintyReevaluator(set_InReevaluator2)
 
 * - default: 5
 * - description: todo
 * - identifier: Priorität
 * - type: Integer
-PARAMETER par_InUncertaintySupplierReevaluator_priorty(set_InUncertaintySupplierReevaluator)
+PARAMETER par_InUncertaintyReevaluator_priorty(set_InUncertaintyReevaluator)
 
 * - description: todo
 * - identifier: Unsicherheiten:
 * - type: Boolean
-PARAMETER par_link_InUncertaintySupplierReevaluator_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintySupplierReevaluator,set_InUncertaintySupplier)
+PARAMETER par_link_InUncertaintyReevaluator_InUncertaintySupplier_uncertaintySuppliers(set_InUncertaintyReevaluator,set_InUncertaintySupplier)
 
 * - identifier: InReevaluator2
 * - hidden: 1
@@ -4619,13 +3152,13 @@ SET set_InLinearePercentageAgentAttributeScaler(set_InInitializationHandler)
 * - type: Integer
 PARAMETER par_InLinearePercentageAgentAttributeScaler_priority(set_InLinearePercentageAgentAttributeScaler)
 
-* - default: 1
+* - default: 1.0
 * - description: todo
 * - identifier: m
 * - type: Float
 PARAMETER par_InLinearePercentageAgentAttributeScaler_mValue(set_InLinearePercentageAgentAttributeScaler)
 
-* - default: 0
+* - default: 0.0
 * - description: todo
 * - identifier: n
 * - type: Float
@@ -4658,79 +3191,79 @@ PARAMETER par_link_InUncertaintySupplierInitializer_InUncertaintySupplier_uncert
 * - type: Boolean
 SCALAR sca_InSpecialPVactInput_useConstRates
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2008 ein.
 * - identifier: Jahr 2008
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2008
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2009 ein.
 * - identifier: Jahr 2009
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2009
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2010 ein.
 * - identifier: Jahr 2010
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2010
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2011 ein.
 * - identifier: Jahr 2011
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2011
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2012 ein.
 * - identifier: Jahr 2012
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2012
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2013 ein.
 * - identifier: Jahr 2013
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2013
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2014 ein.
 * - identifier: Jahr 2014
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2014
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2015 ein.
 * - identifier: Jahr 2015
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2015
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2016 ein.
 * - identifier: Jahr 2016
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2016
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2017 ein.
 * - identifier: Jahr 2017
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2017
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2018 ein.
 * - identifier: Jahr 2018
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2018
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2019 ein.
 * - identifier: Jahr 2019
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2019
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Konstruktionsrate für das Jahr 2020 ein.
 * - identifier: Jahr 2020
 * - type: Float
@@ -4743,79 +3276,79 @@ SCALAR sca_InSpecialPVactInput_const2020
 * - type: Boolean
 SCALAR sca_InSpecialPVactInput_useRenoRates
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2008 ein.
 * - identifier: Jahr 2008
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2008
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2009 ein.
 * - identifier: Jahr 2009
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2009
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2010 ein.
 * - identifier: Jahr 2010
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2010
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2011 ein.
 * - identifier: Jahr 2011
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2011
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2012 ein.
 * - identifier: Jahr 2012
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2012
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2013 ein.
 * - identifier: Jahr 2013
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2013
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2014 ein.
 * - identifier: Jahr 2014
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2014
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2015 ein.
 * - identifier: Jahr 2015
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2015
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2016 ein.
 * - identifier: Jahr 2016
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2016
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2017 ein.
 * - identifier: Jahr 2017
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2017
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2018 ein.
 * - identifier: Jahr 2018
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2018
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2019 ein.
 * - identifier: Jahr 2019
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2019
 
-* - default: 0
+* - default: 0.0
 * - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
 * - identifier: Jahr 2020
 * - type: Float
@@ -4867,15 +3400,16 @@ PARAMETER par_link_InFixProduct_InFixProductAttribute_fixPAttrs(set_InFixProduct
 * - type: String
 SET set_InFixProductAttribute(*)
 
-* - description: Legt das Produktgruppenattribut fest, zu dem dieses Produkt gehören soll.
-* - identifier: Produktgruppenattribut
-* - type: Boolean
-PARAMETER par_link_InFixProductAttribute_InProductGroupAttribute_refPGA(set_InFixProductAttribute,set_InProductGroupAttribute)
-
+* - default: 0.0
 * - description: Bestimmt die Wert für dieses Attribut.
 * - identifier: Wert
 * - type: Float
 PARAMETER par_InFixProductAttribute_fixPAvalue(set_InFixProductAttribute)
+
+* - description: Legt das Produktgruppenattribut fest, zu dem dieses Produkt gehören soll.
+* - identifier: Produktgruppenattribut
+* - type: Boolean
+PARAMETER par_link_InFixProductAttribute_InProductGroupAttribute_refPGA(set_InFixProductAttribute,set_InProductGroupAttribute)
 
 * - identifier: InFixProductFindingScheme
 * - type: String
@@ -4924,14 +3458,31 @@ SET set_InNewProductHandler(*)
 * - type: String
 SET set_InPVactAttributeBasedInitialAdoption(set_InNewProductHandler)
 
-* - description: Ungenutzter Platzhalter
-* - identifier: ---
+* - default: 0
+* - description: todo
+* - identifier: Priorität
 * - type: Integer
-PARAMETER par_InPVactAttributeBasedInitialAdoption_placeholder(set_InPVactAttributeBasedInitialAdoption)
+PARAMETER par_InPVactAttributeBasedInitialAdoption_priority(set_InPVactAttributeBasedInitialAdoption)
+
+* - identifier: InPVactDefaultAwarenessInterestHandler
+* - type: String
+SET set_InPVactDefaultAwarenessInterestHandler(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactDefaultAwarenessInterestHandler_priority(set_InPVactDefaultAwarenessInterestHandler)
 
 * - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData
 * - type: String
 SET set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_priority(set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData)
 
 * - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei
@@ -4956,6 +3507,12 @@ PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealD
 * - type: Boolean
 PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_fixError(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
 
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_priority(set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData)
+
 * - description: Bestimmt die Datei mit den realen Adoptionsdaten.
 * - identifier: Eingabedatei
 * - type: Boolean
@@ -4965,7 +3522,8 @@ PARAMETER par_link_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWith
 * - type: String
 SET set_InFileBasedPVactMilieuSupplier(set_InSpatialDistributionWithCollection)
 
-* - identifier: file
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
 * - type: Boolean
 PARAMETER par_link_InFileBasedPVactMilieuSupplier_InSpatialTableFile_file(set_InFileBasedPVactMilieuSupplier,set_InSpatialTableFile)
 
@@ -4988,7 +3546,8 @@ PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeN
 * - type: Boolean
 PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InAttributeName)
 
-* - identifier: file
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
 * - type: Boolean
 PARAMETER par_link_InFileBasedSelectGroupSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSelectGroupSpatialInformationSupplier,set_InSpatialTableFile)
 
@@ -5021,7 +3580,8 @@ PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_y
 * - type: Boolean
 PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSelectSpatialInformationSupplier,set_InAttributeName)
 
-* - identifier: file
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
 * - type: Boolean
 PARAMETER par_link_InFileBasedSelectSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSelectSpatialInformationSupplier,set_InSpatialTableFile)
 
@@ -5049,7 +3609,8 @@ PARAMETER par_link_InFileBasedSpatialInformationSupplier_InAttributeName_yPositi
 * - type: Boolean
 PARAMETER par_link_InFileBasedSpatialInformationSupplier_InAttributeName_idKey(set_InFileBasedSpatialInformationSupplier,set_InAttributeName)
 
-* - identifier: file
+* - description: Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen.
+* - identifier: Tabellarische Datei
 * - type: Boolean
 PARAMETER par_link_InFileBasedSpatialInformationSupplier_InSpatialTableFile_file(set_InFileBasedSpatialInformationSupplier,set_InSpatialTableFile)
 
@@ -5068,104 +3629,44 @@ SET set_InSpatialDistributionWithCollection(set_InSpatialDistribution)
 SET set_InSpace2D(set_InSpatialModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Nutzt die Manhattenmetrik für die Berechnung der Abstände.
 * - identifier: Manhattenmetrik
-* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineKM = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useManhatten = 1)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Nutzt die euklidische Metrik für die Berechnung der Abstände.
 * - identifier: Euklidische Metrik
-* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineKM = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid = 1)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Nutzt die quadratische euklidische Metrik für die Berechnung der Abstände. Im Vergleich zur normalen euklidischen Distanz sqrt((x2 - x1)^2 * (y2 - y1)^2) wird hier die Wurzel weggelassen und der Abstand mittels (x2 - x1)^2 * (y2 - y1)^2 berechnet.
 * - identifier: Euklidische Metrik (quadratisch)
-* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineKM = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid2 = 1)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Nutzt die Maximumsmetrik für die Berechnung der Abstände.
 * - identifier: Maximumsmetrik
-* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineKM = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useMaximum = 1)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Meterbasis statt.
 * - identifier: Haversine (Meter)
-* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useHaversineKM = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineM = 1)
-* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useHaversineM(set_InSpace2D)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt.
 * - identifier: Haversine (Kilometer)
-* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useManhatten = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid2 = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useMaximum = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineM = 0)
-* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineKM = 1)
 * - type: Boolean
 PARAMETER par_InSpace2D_useHaversineKM(set_InSpace2D)
 
@@ -5191,6 +3692,7 @@ SET set_InUnitStepDiscreteTimeModel(set_InTimeModel)
 PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Millisekunden als Einheit für die Zeitdauer.
 * - identifier: Millisekunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useMs == 1, par_InUnitStepDiscreteTimeModel_useSec = 0)
@@ -5210,6 +3712,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_amountOfTime(set_InUnitStepDiscreteTim
 PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Sekunden als Einheit für die Zeitdauer.
 * - identifier: Sekunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useSec == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5229,6 +3732,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useMs(set_InUnitStepDiscreteTimeModel)
 PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Minuten als Einheit für die Zeitdauer.
 * - identifier: Minuten
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useMin == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5248,6 +3752,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useSec(set_InUnitStepDiscreteTimeModel
 PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Stunden als Einheit für die Zeitdauer.
 * - identifier: Stunden
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useH == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5267,6 +3772,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useMin(set_InUnitStepDiscreteTimeModel
 PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Tage als Einheit für die Zeitdauer.
 * - identifier: Tage
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useD == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5286,6 +3792,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useH(set_InUnitStepDiscreteTimeModel)
 PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 
 * - default: 1
+* - domain: [0|1]
 * - description: Verwendet Wochen als Einheit für die Zeitdauer.
 * - identifier: Wochen
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useW == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5305,6 +3812,7 @@ PARAMETER par_InUnitStepDiscreteTimeModel_useD(set_InUnitStepDiscreteTimeModel)
 PARAMETER par_InUnitStepDiscreteTimeModel_useW(set_InUnitStepDiscreteTimeModel)
 
 * - default: 0
+* - domain: [0|1]
 * - description: Verwendet Monate als Einheit für die Zeitdauer.
 * - identifier: Monate
 * - rule: IF (par_InUnitStepDiscreteTimeModel_useM == 1, par_InUnitStepDiscreteTimeModel_useMs = 0)
@@ -5338,7 +3846,7 @@ SCALAR sca_InGraphvizGeneral_storeEndImage
 SCALAR sca_InGraphvizGeneral_storeDotFile
 
 * - default: 1000
-* - domain: [0,)
+* - domain: (0,)
 * - description: Definiert den Bildbreite für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch.
 * - identifier: Bevorzugte Bildbreite
 * - unit: [Pixel]
@@ -5346,7 +3854,7 @@ SCALAR sca_InGraphvizGeneral_storeDotFile
 SCALAR sca_InGraphvizGeneral_preferredImageWidth
 
 * - default: 1000
-* - domain: [0,)
+* - domain: (0,)
 * - description: Definiert den Bildhöhe für die Netzwerkbilder. Falls der Wert 0 ist, bestimmt Graphviz die optimale Bildgröße automatisch.
 * - identifier: Bevorzugte Bildhöhe
 * - unit: [Pixel]
@@ -5357,9 +3865,6 @@ SCALAR sca_InGraphvizGeneral_preferredImageHeight
 * - domain: [0|1]
 * - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden.
 * - identifier: Positionsbasiertes Layout
-* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 1, sca_InGraphvizGeneral_freeLayout = 0)
-* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 1)
-* - rule: IF (sca_InGraphvizGeneral_positionBasedLayout == 0, sca_InGraphvizGeneral_freeLayout = 0)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_positionBasedLayout
 
@@ -5367,9 +3872,6 @@ SCALAR sca_InGraphvizGeneral_positionBasedLayout
 * - domain: [0|1]
 * - description: Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism.
 * - identifier: Freies Layout
-* - rule: IF (sca_InGraphvizGeneral_freeLayout == 1, sca_InGraphvizGeneral_positionBasedLayout = 0)
-* - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_positionBasedLayout = 0)
-* - rule: IF (sca_InGraphvizGeneral_freeLayout == 0, sca_InGraphvizGeneral_freeLayout = 1)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_freeLayout
 
@@ -5391,6 +3893,7 @@ SCALAR sca_InGraphvizGeneral_useDefaultPositionIfMissing
 * - type: String
 SET set_InConsumerAgentGroupColor(*)
 
+* - default: 0
 * - description: Die zu nutzende Farbe für die Gruppen. Für die Farbe muss der dezimal-kodierte rgba-Wert genutzt werden.
 * - identifier: Farbe (rgba)
 * - type: Integer
@@ -5407,7 +3910,7 @@ PARAMETER par_link_InConsumerAgentGroupColor_InConsumerAgentGroup_groups(set_InC
 * - type: Integer
 SCALAR sca_InGeneral_seed
 
-* - default: 1
+* - default: 5
 * - description: Setzt den Timeout der Simulation. Diese Einstellung dient dazu die Simulation zu beenden, falls sie unerwartet abstürzt. Wird der Timeout auf 0 gesetzt, wird die Funktion deaktiviert. Es wird empfohlen den Standardwert eingestellt zu lassen.
 * - identifier: Timeout
 * - type: Integer
@@ -5417,11 +3920,11 @@ SCALAR sca_InGeneral_timeout
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Millisekunden angegeben.
 * - identifier: Timeout in Millisekunden
-* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseSec = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseMin = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMs = 1)
-* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseSec = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMs
 
@@ -5429,11 +3932,11 @@ SCALAR sca_InGeneral_timeoutUseMs
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Sekunden angegeben.
 * - identifier: Timeout in Sekunden
-* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMs = 0)
-* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMin = 0)
-* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMs = 0)
-* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseSec = 1)
-* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseSec
 
@@ -5441,14 +3944,15 @@ SCALAR sca_InGeneral_timeoutUseSec
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Minuten angegeben.
 * - identifier: Timeout in Minuten
-* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseMs = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseSec = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMs = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseSec = 0)
-* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMin
 
+* - default: 0
 * - description: ([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert.
 * - identifier: [Spezialoption] Letzte zu simulierende Jahr
 * - type: Integer
@@ -5513,7 +4017,7 @@ SCALAR sca_InGeneral_printStacktraceImage
 * - description: Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt.
 * - identifier: Ersatzbild bei keinem Fehler erstellen
 * - type: Boolean
-SCALAR sca_InGeneral_printNoErrorImage
+SCALAR sca_InGeneral_printNonErrorImage
 
 * - default: 0
 * - domain: [0|1]
@@ -5560,19 +4064,19 @@ SCALAR sca_InGeneral_innerParallelism
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelOff = 1)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelOff
 
@@ -5580,19 +4084,19 @@ SCALAR sca_InGeneral_levelOff
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf TRACE.
 * - identifier: Level: TRACE
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelTrace = 1)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelTrace
 
@@ -5600,19 +4104,19 @@ SCALAR sca_InGeneral_levelTrace
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf DEBUG.
 * - identifier: Level: DEBUG
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelDebug = 1)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelDebug
 
@@ -5620,19 +4124,19 @@ SCALAR sca_InGeneral_levelDebug
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf INFO.
 * - identifier: Level: INFO
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelInfo = 1)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelInfo
 
@@ -5640,19 +4144,19 @@ SCALAR sca_InGeneral_levelInfo
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf WARN.
 * - identifier: Level: WARN
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelWarn = 1)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelWarn
 
@@ -5660,19 +4164,19 @@ SCALAR sca_InGeneral_levelWarn
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ERROR.
 * - identifier: Level: ERROR
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelAll = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelError = 1)
-* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelError
 
@@ -5680,19 +4184,19 @@ SCALAR sca_InGeneral_levelError
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ALL.
 * - identifier: Level: ALL
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelOff = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelTrace = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelDebug = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelInfo = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelWarn = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelError = 0)
-* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelAll
 
@@ -5767,7 +4271,6 @@ SCALAR sca_InGeneral_logInterest
 SCALAR sca_InGeneral_logEvaluation
 
 * - default: 0.1
-* - domain: [0,)
 * - description: Bestimmt die Bereichsgrößen bei den Evaluierungsdaten.
 * - identifier: Bereichsgröße (Evaluierungswerte)
 * - type: Float
@@ -5787,18 +4290,11 @@ SCALAR sca_InGeneral_logAllEvaluation
 * - type: Boolean
 SCALAR sca_InGeneral_logFinancialComponent
 
-* - identifier: logScriptAdoptionsZip
-* - type: Boolean
-SCALAR sca_InGeneral_logScriptAdoptionsZip
-
-* - identifier: logScriptAdoptionsZipPhase
-* - type: Boolean
-SCALAR sca_InGeneral_logScriptAdoptionsZipPhase
-
 * - identifier: InInformation
 * - type: String
 SET set_InInformation(*)
 
+* - default: 0.0
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Float
@@ -5808,6 +4304,7 @@ PARAMETER par_InInformation_placeholder(set_InInformation)
 * - type: String
 SET set_InIRPactVersion(*)
 
+* - default: 0
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Integer
@@ -5817,6 +4314,7 @@ PARAMETER par_InIRPactVersion_placeholder(set_InIRPactVersion)
 * - type: String
 SET set_InScenarioVersion(*)
 
+* - default: 0
 * - description: Ungenutzter Platzhalter
 * - identifier: ---
 * - type: Integer
@@ -5837,206 +4335,206 @@ PARAMETER par_InTestData_testValue1(set_InTestData)
 PARAMETER par_InTestData_testValue2(set_InTestData)
 
 * - default: 1
+* - domain: [0|1]
 * - description: xor test
 * - identifier: g0 v0
-* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 0)
-* - rule: IF (par_InTestData_value01 == 0, par_InTestData_value02 = 1)
+* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 1)
+* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value01 = 1)
+* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value01(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: xor test
 * - identifier: g0 v1
-* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 0)
-* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value01 = 1)
+* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 1)
+* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 1)
+* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value02 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value02(set_InTestData)
 
 * - default: 1
+* - domain: [0|1]
 * - description: default
 * - identifier: g1 v0 (default)
-* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value11 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value11 = 1)
-* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value11 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value11(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: default
 * - identifier: g1 v1
-* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value11 = 0)
-* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value12 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value11 = 1)
-* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value12 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value12(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: default
 * - identifier: g1 v2
-* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value11 = 0)
-* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value13 == 1, par_InTestData_value14 = 0)
-* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value11 = 1)
-* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value13 == 0, par_InTestData_value14 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value13(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: default
 * - identifier: g1 v3
-* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value11 = 0)
-* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value14 == 1, par_InTestData_value13 = 0)
-* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value11 = 1)
-* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value12 = 0)
-* - rule: IF (par_InTestData_value14 == 0, par_InTestData_value13 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value14(set_InTestData)
 
 * - default: 1
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v0
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value21(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v1
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value22(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v2
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value23(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v3
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value24(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v4
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value25(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v5
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value26(set_InTestData)
 
+* - default: 0
+* - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v6
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value21 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value22 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value23 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value24 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value25 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value26 = 0)
-* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value27(set_InTestData)
 
-* - default: 0
+* - default: 0.0
 * - description: test für sensitivität
 * - identifier: sensi 1
 * - type: Float
 PARAMETER par_InTestData_sensi1(set_InTestData)
 
-* - default: 0
+* - default: 0.0
 * - description: test für sensitivität
 * - identifier: sensi 2
 * - type: Float
 PARAMETER par_InTestData_sensi2(set_InTestData)
 
-* - default: 0
+* - default: 0.0
 * - description: test für sensitivität
 * - identifier: sensi 3
 * - type: Float

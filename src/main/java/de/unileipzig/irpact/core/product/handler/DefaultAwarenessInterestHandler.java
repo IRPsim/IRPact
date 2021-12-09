@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.product.handler;
 
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -14,7 +13,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class DefaultAwarenessInterestHandler extends NameableBase implements NewProductHandler, LoggingHelper {
+public class DefaultAwarenessInterestHandler extends AbstractNewProductHandler implements LoggingHelper {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DefaultAwarenessInterestHandler.class);
 

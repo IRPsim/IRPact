@@ -2,21 +2,25 @@ package de.unileipzig.irpact.io.param.input.postdata;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.develop.Dev;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_RESULT2_BUCKET;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_RESULT2_BUCKET)
 public class InBucketAnalyser implements InPostDataAnalysis {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -27,32 +31,54 @@ public class InBucketAnalyser implements InPostDataAnalysis {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_RESULT2_BUCKET);
-        addEntryWithDefaultAndDomain(res, thisClass(), "enabled", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeCsv", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeXlsx", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "bucketRange", asValue(0.1), DOMAIN_G0);
-        addEntry(res, thisClass(), "loggingModule");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = TRUE1,
+                    domain = DOMAIN_BOOLEAN
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public boolean enabled = true;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = FALSE0,
+                    domain = DOMAIN_BOOLEAN
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public boolean storeCsv = false;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = TRUE1,
+                    domain = DOMAIN_BOOLEAN
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public boolean storeXlsx = true;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = "0.1",
+                    domain = DOMAIN_G0
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double bucketRange = 0.1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentCalculationLoggingModule2[] loggingModule = new InConsumerAgentCalculationLoggingModule2[0];
 
     public InBucketAnalyser() {
@@ -72,12 +98,12 @@ public class InBucketAnalyser implements InPostDataAnalysis {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setEnabled(boolean enabled) {

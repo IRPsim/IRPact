@@ -82,11 +82,12 @@ public final class IRPact implements IRPActAccess {
     private static final String SIMULATION_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI.class";
     private static final String AGENTMANAGER_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexIRPactAgentManagerAgentBDI.class";
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
+
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
     //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "22";
+    private static final String MINOR_STRING = "23";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -118,14 +119,18 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenVergleich";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
 
+    //UMBENNEN (ProzessModelPhasen)
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
     public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG = IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS + ".png";
 
     public static final String IMAGE_ANNUAL_INTEREST = "Interessensentwicklung";
     public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
 
+    //UMBENNEN (AdoptionsPhasen)
     public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
     public static final String IMAGE_PHASE_OVERVIEW_PNG = IMAGE_PHASE_OVERVIEW + ".png";
+
+    //bei Unsicherheiten in Klammern hinter (Variante X) + Reihenfolge anpassen
 
     public static final String IMAGE_QUANTILE_NPV = "NPV_Quantile";
     public static final String IMAGE_QUANTILE_NPV_PNG = IMAGE_QUANTILE_NPV + ".png";
@@ -946,7 +951,7 @@ public final class IRPact implements IRPActAccess {
     private void createNoErrorImageIfDesired() {
         if(inRoot.getGeneral().shouldPrintNoErrorImage()) {
             try {
-                createNoErrorImage(getStackTraceImagePath());
+                createNonErrorImage(getStackTraceImagePath());
             } catch (Throwable t) {
                 LOGGER.error("failed to create no-error image", t);
             }
@@ -1133,14 +1138,14 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
-    public static void createNoErrorImage(Path target) {
+    public static void createNonErrorImage(Path target) {
         try {
             ImageUtil.writeText(
                     "(Datum: " + TimeUtil.printNowWithoutMs() + ")\n\nKein Fehler aufgetreten!",
                     target
             );
         } catch (Throwable t) {
-            LOGGER.error("writing no-error image failed", t);
+            LOGGER.error("writing non-error image failed", t);
         }
     }
 

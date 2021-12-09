@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.spatial.attribute.BasicSpatialDoubleAttribut
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialAttribute;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
+import de.unileipzig.irpact.core.spatial.twodim.Point2D;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.AbstractToyModel;
 
 import java.util.*;
@@ -113,6 +114,10 @@ public class DataSetup {
     }
     public static void setA1(List<SpatialAttribute> row, double value) {
         setPPEuro(row, value);
+    }
+
+    public static void setXY(List<SpatialAttribute> row, Point2D p) {
+        setXY(row, p.getX(), p.getY());
     }
 
     public static void setXY(List<SpatialAttribute> row, double x, double y) {

@@ -6,10 +6,12 @@ import de.unileipzig.irpact.core.agent.consumer.attribute.BasicConsumerAgentDoub
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -17,14 +19,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_ATTR_GENERALGRP;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_ATTR_GENERALGRP)
 public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumerAgentGroupAttribute {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -35,22 +36,24 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_ATTR, thisName());
-        addEntry(res, thisClass(), "attrName");
-        addEntry(res, thisClass(), "dist");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InGeneralConsumerAgentGroupAttribute.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InAttributeName[] attrName;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InUnivariateDoubleDistribution[] dist;
 
     public InGeneralConsumerAgentGroupAttribute() {
@@ -60,7 +63,7 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
             String name,
             InAttributeName attributeName,
             InUnivariateDoubleDistribution distribution) {
-        this._name = name;
+        this.name = name;
         setAttributeNameInstance(attributeName);
         setDistribution(distribution);
     }
@@ -72,7 +75,7 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
 
     public InGeneralConsumerAgentGroupAttribute newCopy(CopyCache cache) {
         InGeneralConsumerAgentGroupAttribute copy = new InGeneralConsumerAgentGroupAttribute();
-        copy._name = _name;
+        copy.name = name;
         copy.attrName = cache.copyArray(attrName);
         copy.dist = cache.copyArray(dist);
         return copy;
@@ -80,7 +83,7 @@ public class InGeneralConsumerAgentGroupAttribute implements InDependentConsumer
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setAttributeNameInstance(InAttributeName attrName) {

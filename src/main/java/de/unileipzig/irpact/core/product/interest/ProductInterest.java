@@ -14,4 +14,6 @@ public interface ProductInterest extends Interest<Product> {
     double getThreshold(ProductGroup group);
 
     void setThreshold(ProductGroup group, double threshold);
+
+    String printInfo(Product product);
 }

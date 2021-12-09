@@ -58,6 +58,12 @@ public class MulScalarModule2<I>
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
-        return getScalar() * getNonnullSubmodule().calculate(input, actions);
+        double s = getScalar();
+        checkAndWarnNaN(input, s, "scalar");
+        double v = getNonnullSubmodule().calculate(input, actions);
+        checkAndWarnNaN(input, v, getNonnullSubmodule(), "value");
+        double r = s * v;
+        checkAndWarnNaN(input, r, "result");
+        return r;
     }
 }

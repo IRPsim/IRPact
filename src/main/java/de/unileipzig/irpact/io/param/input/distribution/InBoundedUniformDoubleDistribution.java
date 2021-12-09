@@ -6,7 +6,9 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -14,13 +16,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.DISTRIBUTIONS_BOUNDUNIDOUBLE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(DISTRIBUTIONS_BOUNDUNIDOUBLE)
 public class InBoundedUniformDoubleDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,29 +33,31 @@ public class InBoundedUniformDoubleDistribution implements InUnivariateDoubleDis
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "lowerBound");
-        addEntry(res, thisClass(), "upperBound");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InBoundedUniformDoubleDistribution.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double lowerBound;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double upperBound;
 
     public InBoundedUniformDoubleDistribution() {
     }
 
     public InBoundedUniformDoubleDistribution(String name, int lowerBound, int upperBoundInt) {
-        this._name = name;
+        this.name = name;
         this.lowerBound = lowerBound;
         this.upperBound = upperBoundInt;
     }
@@ -65,7 +69,7 @@ public class InBoundedUniformDoubleDistribution implements InUnivariateDoubleDis
 
     public InBoundedUniformDoubleDistribution newCopy(CopyCache cache) {
         InBoundedUniformDoubleDistribution copy = new InBoundedUniformDoubleDistribution();
-        copy._name = _name;
+        copy.name = name;
         copy.lowerBound = lowerBound;
         copy.upperBound = upperBound;
         return copy;
@@ -73,7 +77,7 @@ public class InBoundedUniformDoubleDistribution implements InUnivariateDoubleDis
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public double getLowerBound() {

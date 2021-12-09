@@ -14,7 +14,7 @@ import java.nio.file.Path;
  */
 public final class ScenarioUtil {
 
-    protected ScenarioUtil() {
+    ScenarioUtil() {
     }
 
     public static void store(IRPFile file, Path target) throws IOException {

@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.product.ProductFindingScheme;
 import de.unileipzig.irpact.core.product.interest.ProductInterestSupplyScheme;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.interest.InProductInterestSupplyScheme;
@@ -14,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.product.InProductFindingScheme;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -22,14 +24,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_GROUP_GENERAL;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_GROUP_GENERAL)
 public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -40,30 +41,32 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_GROUP, thisName());
-        addEntry(res, thisClass(), "cagAttributes");
-        addEntry(res, thisClass(), "cagInterest");
-        addEntry(res, thisClass(), "productFindingSchemes");
-        addEntry(res, thisClass(), "spatialDistribution");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InDependentConsumerAgentGroupAttribute[] cagAttributes;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InProductInterestSupplyScheme[] cagInterest;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InProductFindingScheme[] productFindingSchemes;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InSpatialDistribution[] spatialDistribution;
 
     public InGeneralConsumerAgentGroup() {
@@ -76,7 +79,7 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     public InGeneralConsumerAgentGroup newCopy(CopyCache cache) {
         InGeneralConsumerAgentGroup copy = new InGeneralConsumerAgentGroup();
-        copy._name = _name;
+        copy.name = name;
         copy.cagAttributes = cache.copyArray(cagAttributes);
         copy.cagInterest = cache.copyArray(cagInterest);
         copy.productFindingSchemes = cache.copyArray(productFindingSchemes);
@@ -86,11 +89,11 @@ public class InGeneralConsumerAgentGroup implements InConsumerAgentGroup {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String _name) {
-        this._name = _name;
+        this.name = _name;
     }
 
     public InDependentConsumerAgentGroupAttribute[] getAttributes() throws ParsingException {

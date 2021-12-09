@@ -64,6 +64,8 @@ public class AttributeModule2
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        return getValue(input);
+        double value = getValue(input);
+        checkAndWarnNaN(input, value, getAttributeName());
+        return value;
     }
 }

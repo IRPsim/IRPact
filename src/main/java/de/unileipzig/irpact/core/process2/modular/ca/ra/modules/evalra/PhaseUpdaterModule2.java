@@ -51,10 +51,20 @@ public class PhaseUpdaterModule2
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         RAStage2 currentStage = input.getStage();
         RAStage2 newStage = getNonnullSubmodule().apply(input, actions);
-        if(currentStage != RAStage2.PRE_INITIALIZATION && newStage != currentStage) {
-            trace("[{}]@[{}] update phase {} -> {}", getName(), input.getAgentName(), currentStage, newStage);
-            input.setStage(newStage);
+
+        if(currentStage == RAStage2.PRE_INITIALIZATION) {
+            RAStage2 tempCurrentStage = input.getStage();
+            if(newStage != tempCurrentStage) {
+                trace("[{}]@[{}] update phase {} ({}) -> {} [{}]", getName(), input.getAgentName(), currentStage, tempCurrentStage, newStage, input.now());
+                input.setStage(newStage);
+            }
+        } else {
+            if(newStage != currentStage) {
+                trace("[{}]@[{}] update phase {} -> {} [{}]", getName(), input.getAgentName(), currentStage, newStage, input.now());
+                input.setStage(newStage);
+            }
         }
+
         return newStage;
     }
 }

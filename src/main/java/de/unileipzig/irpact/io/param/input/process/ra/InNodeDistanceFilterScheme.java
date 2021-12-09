@@ -11,8 +11,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InNodeDistanceFilterScheme extends InNodeFilterScheme {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

@@ -69,7 +69,7 @@ public class ThresholdReachedModule2<I>
         double draw = getDrawModule().calculate(input, actions);
         double threshold = getThresholdModule().calculate(input, actions);
         boolean valid = threshold <= draw;
-        trace("[{}]@[{}] threshold reached: {} ({} <= {})", getName(), printInputInfo(input), valid, threshold, draw);
+        trace("[{}]@[{}] threshold reached: {} (threshold={} <= draw={})", getName(), printInputInfo(input), valid, threshold, draw);
         return valid;
     }
 }

@@ -5,8 +5,9 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process2.uncert.IndividualGlobalModerateExtremistUncertaintySupplier;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -14,12 +15,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_UNCERT_PVACTIMEU;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_UNCERT_PVACTIMEU)
 public class InPVactIndividualGlobalModerateExtremistUncertaintySupplier implements InUncertaintySupplier {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,43 +32,54 @@ public class InPVactIndividualGlobalModerateExtremistUncertaintySupplier impleme
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_UNCERT_PVACTIMEU);
-
-        addEntry(res, thisClass(), "extremistParameter");
-        addEntry(res, thisClass(), "extremistUncertainty");
-        addEntry(res, thisClass(), "moderateUncertainty");
-        addEntry(res, thisClass(), "lowerBoundInclusive");
-        addEntry(res, thisClass(), "upperBoundInclusive");
-
-        setDomain(res, thisClass(), "extremistParameter", DOMAIN_CLOSED_0_1);
-
-        setDefault(res, thisClass(), "extremistParameter", asValue(RAConstants.DEFAULT_EXTREMIST_RATE));
-        setDefault(res, thisClass(), "extremistUncertainty", asValue(RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY));
-        setDefault(res, thisClass(), "moderateUncertainty", asValue(RAConstants.DEFAULT_MODERATE_UNCERTAINTY));
-        setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_TRUE);
-        setDefault(res, thisClass(), "upperBoundInclusive", VALUE_TRUE);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            closed01Domain = true,
+            decDefault = RAConstants.DEFAULT_EXTREMIST_RATE
+    )
     public double extremistParameter;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY
+    )
     public double extremistUncertainty;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = RAConstants.DEFAULT_MODERATE_UNCERTAINTY
+    )
     public double moderateUncertainty;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean lowerBoundInclusive;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean upperBoundInclusive;
 
     public InPVactIndividualGlobalModerateExtremistUncertaintySupplier() {
@@ -74,11 +87,11 @@ public class InPVactIndividualGlobalModerateExtremistUncertaintySupplier impleme
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setExtremistParameter(double extremistParameter) {
@@ -128,7 +141,7 @@ public class InPVactIndividualGlobalModerateExtremistUncertaintySupplier impleme
 
     public InPVactIndividualGlobalModerateExtremistUncertaintySupplier newCopy(CopyCache cache) {
         InPVactIndividualGlobalModerateExtremistUncertaintySupplier copy = new InPVactIndividualGlobalModerateExtremistUncertaintySupplier();
-        copy._name = _name;
+        copy.name = name;
         copy.extremistParameter = extremistParameter;
         copy.extremistUncertainty = extremistUncertainty;
         copy.moderateUncertainty = moderateUncertainty;

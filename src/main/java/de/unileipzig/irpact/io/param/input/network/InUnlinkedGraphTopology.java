@@ -4,7 +4,9 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.UnlinkedGraphTopology;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -12,14 +14,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.NETWORK_TOPO_UNLINKED;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(NETWORK_TOPO_UNLINKED)
 public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,23 +31,25 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
-        addEntry(res, thisClass(), "placeholderUnlinked");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double placeholderUnlinked;
 
     public InUnlinkedGraphTopology() {
     }
 
     public InUnlinkedGraphTopology(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -56,17 +59,17 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
 
     public InUnlinkedGraphTopology newCopy(CopyCache cache) {
         InUnlinkedGraphTopology copy = new InUnlinkedGraphTopology();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -79,18 +82,18 @@ public class InUnlinkedGraphTopology implements InGraphTopologyScheme {
         if (this == o) return true;
         if (!(o instanceof InUnlinkedGraphTopology)) return false;
         InUnlinkedGraphTopology topology = (InUnlinkedGraphTopology) o;
-        return Objects.equals(_name, topology._name);
+        return Objects.equals(name, topology.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
         return "InFreeNetworkTopology{" +
-                "_name='" + _name + '\'' +
+                "_name='" + name + '\'' +
                 '}';
     }
 }

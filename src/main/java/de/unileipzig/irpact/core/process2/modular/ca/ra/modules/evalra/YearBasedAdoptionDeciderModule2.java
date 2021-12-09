@@ -11,6 +11,8 @@ import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Daniel Abitz
@@ -21,9 +23,18 @@ public class YearBasedAdoptionDeciderModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(YearBasedAdoptionDeciderModule2.class);
 
-    protected boolean enabled = false;
-    protected double base = 1.0;
+    protected Map<ConsumerAgentData2, Integer> adoptionYears;
+    protected boolean enabled = true;
     protected double factor = 1.0;
+    protected double base = 1.0;
+
+    public YearBasedAdoptionDeciderModule2() {
+        this(new ConcurrentHashMap<>());
+    }
+
+    public YearBasedAdoptionDeciderModule2(Map<ConsumerAgentData2, Integer> adoptionYears) {
+        this.adoptionYears = adoptionYears;
+    }
 
     @Override
     public IRPLogger getDefaultLogger() {
@@ -75,8 +86,17 @@ public class YearBasedAdoptionDeciderModule2
         return enabled;
     }
 
-    protected double getThreshold(ConsumerAgentData2 input) {
-        return base * Math.pow(factor, getYearDelta(input));
+    protected double getThreshold(int delta) {
+        return base * Math.pow(factor, delta);
+    }
+
+    protected int getAdoptionYear(ConsumerAgentData2 input) {
+        Integer year = adoptionYears.get(input);
+        if(year == null) {
+            year = getCurrentYear(input);
+            adoptionYears.put(input, year);
+        }
+        return year;
     }
 
     @Override
@@ -85,12 +105,16 @@ public class YearBasedAdoptionDeciderModule2
 
         RAStage2 stage = getNonnullSubmodule().apply(input, actions);
         if(isEnabled() && stage == RAStage2.ADOPTED) {
-            double threshold = getThreshold(input);
+            int adoptionYear = getAdoptionYear(input);
+            int currentYear = getCurrentYear(input);
+            int delta = currentYear - adoptionYear;
+            double threshold = getThreshold(delta);
 
             if(threshold < 0.0) {
                 trace("[{}]@[{}] threshold == {}: (auto) IMPEDED", input.getAgentName(), getName(), threshold);
                 return RAStage2.IMPEDED;
             }
+
             if(threshold >= 1.0) {
                 trace("[{}]@[{}] threshold == {}: (auto) ADOPTED", input.getAgentName(), getName(), threshold);
                 return RAStage2.ADOPTED;
@@ -98,7 +122,14 @@ public class YearBasedAdoptionDeciderModule2
 
             double adoptDraw = input.rnd().nextDouble();
             boolean doAdopt = adoptDraw < threshold;
-            trace("[{}]@[{}] adoptDraw < threshold ({} < {}): {}", input.getAgentName(), getName(), adoptDraw, threshold, doAdopt);
+            trace(
+                    "[{}]@[{}] adoptDraw < threshold ({} < {} (={}*pow({},{}), currentYear={}, adoptionYear={})): {}",
+                    input.getAgentName(), getName(),
+                    adoptDraw, threshold,
+                    base, factor, delta,
+                    currentYear, adoptionYear,
+                    doAdopt
+            );
             return doAdopt
                     ? RAStage2.ADOPTED
                     : RAStage2.IMPEDED;

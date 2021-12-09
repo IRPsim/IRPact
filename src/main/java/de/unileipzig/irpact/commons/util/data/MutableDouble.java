@@ -148,6 +148,10 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return this.value == value;
     }
 
+    public boolean isEquals(MutableDouble other) {
+        return isEquals(other.get());
+    }
+
     public boolean isZero() {
         return isEquals(0);
     }

@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.product.handler;
 
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -13,7 +12,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class AttributeBasedInitialAdoption extends NameableBase implements NewProductHandler {
+public class AttributeBasedInitialAdoption extends AbstractNewProductHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AttributeBasedInitialAdoption.class);
 
@@ -48,7 +47,7 @@ public class AttributeBasedInitialAdoption extends NameableBase implements NewPr
                 boolean isAdopter = draw < chance;
                 LOGGER.trace(
                         IRPSection.INITIALIZATION_PARAMETER,
-                        "Is consumer agent '{}' initial adopter of product '{}'? {} ({} < {})",
+                        "Is consumer agent '{}' initial adopter of product '{}': {} ({} < {})",
                         ca.getName(), product.getName(), isAdopter, draw, chance
                 );
                 if(isAdopter) {

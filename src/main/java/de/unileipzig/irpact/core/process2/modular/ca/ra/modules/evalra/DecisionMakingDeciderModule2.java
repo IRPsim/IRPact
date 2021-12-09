@@ -118,14 +118,31 @@ public class DecisionMakingDeciderModule2
         } else {
             double threshold = getThresholdModule().calculate(input, actions);
             double utility = getDecisionMakingModule().calculate(input, actions);
-            trace("[{}]@[{}] threshold={}, utility={}", getName(), input.getAgentName(), threshold, utility);
-            if(utility < threshold) {
-                return RAStage2.IMPEDED;
+            if(Double.isNaN(utility) || Double.isNaN(threshold)) {
+                return handleNaN(input, threshold, utility);
             } else {
-                trace("[{}]@[{}] store utility={} for product={}", getName(), input.getAgentName(), utility, input.getProductName());
-                setUtility(input, utility);
-                return RAStage2.ADOPTED;
+                return handleNonNaN(input, threshold, utility);
             }
+        }
+    }
+
+    protected RAStage2 handleNaN(ConsumerAgentData2 input, double threshold, double utility) {
+        warn(
+                "[{}]@[{}] ({}) NaN detected, threshold={}, utility={}",
+                getName(), input.getAgentName(), printThisClass(),
+                threshold, utility
+        );
+        return RAStage2.IMPEDED;
+    }
+
+    protected RAStage2 handleNonNaN(ConsumerAgentData2 input, double threshold, double utility) {
+        trace("[{}]@[{}] threshold={}, utility={}", getName(), input.getAgentName(), threshold, utility);
+        if(utility < threshold) {
+            return RAStage2.IMPEDED;
+        } else {
+            trace("[{}]@[{}] store utility={} for product={}", getName(), input.getAgentName(), utility, input.getProductName());
+            setUtility(input, utility);
+            return RAStage2.ADOPTED;
         }
     }
 }

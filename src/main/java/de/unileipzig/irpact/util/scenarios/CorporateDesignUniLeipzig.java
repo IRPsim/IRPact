@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * @author Daniel Abitz
  */
-public class CorporateDesignUniLeipzig {
+public final class CorporateDesignUniLeipzig {
 
     public static final Color ACCENT0 = new Color(176, 47, 44);
     public static final Color ACCENT1 = new Color(214, 66, 66);
@@ -88,6 +88,6 @@ public class CorporateDesignUniLeipzig {
             IN_BLEND_3_4_5
     );
 
-    protected CorporateDesignUniLeipzig() {
+    CorporateDesignUniLeipzig() {
     }
 }

@@ -4,7 +4,9 @@ import de.unileipzig.irpact.commons.eval.Inverse;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -12,15 +14,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DIST_FUNC;
-import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.NETWORK_DISTFUNC_INVERSE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(NETWORK_DISTFUNC_INVERSE)
 public class InInverse implements InDistanceEvaluator {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,23 +31,25 @@ public class InInverse implements InDistanceEvaluator {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), NETWORK, DIST_FUNC, thisName());
-        addEntry(res, thisClass(), "placeholderInverse");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int placeholderInverse;
 
     public InInverse() {
     }
 
     public InInverse(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -57,17 +59,17 @@ public class InInverse implements InDistanceEvaluator {
 
     public InInverse newCopy(CopyCache cache) {
         InInverse copy = new InInverse();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -80,18 +82,18 @@ public class InInverse implements InDistanceEvaluator {
         if (this == o) return true;
         if (!(o instanceof InInverse)) return false;
         InInverse inInverse = (InInverse) o;
-        return placeholderInverse == inInverse.placeholderInverse && Objects.equals(_name, inInverse._name);
+        return placeholderInverse == inInverse.placeholderInverse && Objects.equals(name, inInverse.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name, placeholderInverse);
+        return Objects.hash(name, placeholderInverse);
     }
 
     @Override
     public String toString() {
         return "InInverse{" +
-                "_name='" + _name + '\'' +
+                "_name='" + name + '\'' +
                 ", placeholderInverse=" + placeholderInverse +
                 '}';
     }

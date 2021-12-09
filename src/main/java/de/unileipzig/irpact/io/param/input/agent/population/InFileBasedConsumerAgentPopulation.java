@@ -8,6 +8,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
@@ -15,6 +16,7 @@ import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -24,15 +26,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static de.unileipzig.irpact.io.param.IOConstants.AGENTS;
-import static de.unileipzig.irpact.io.param.IOConstants.POPULATION;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_POP_FILE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_POP_FILE)
 public class InFileBasedConsumerAgentPopulation implements InAgentPopulation {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -43,38 +43,40 @@ public class InFileBasedConsumerAgentPopulation implements InAgentPopulation {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
-        addEntry(res, thisClass(), "desiredSize");
-        addEntry(res, thisClass(), "useAll");
-        addEntry(res, thisClass(), "requiresDesiredTotalSize");
-        addEntry(res, thisClass(), "cags");
-        addEntry(res, thisClass(), "file");
-        addEntry(res, thisClass(), "selectKey");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InFileBasedConsumerAgentPopulation.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int desiredSize;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public boolean useAll;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public boolean requiresDesiredTotalSize;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] cags;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InSpatialTableFile[] file;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InAttributeName[] selectKey;
 
     public InFileBasedConsumerAgentPopulation() {
@@ -87,7 +89,7 @@ public class InFileBasedConsumerAgentPopulation implements InAgentPopulation {
 
     public InFileBasedConsumerAgentPopulation newCopy(CopyCache cache) {
         InFileBasedConsumerAgentPopulation copy = new InFileBasedConsumerAgentPopulation();
-        copy._name = _name;
+        copy.name = name;
         copy.desiredSize = desiredSize;
         copy.requiresDesiredTotalSize = requiresDesiredTotalSize;
         copy.cags = cache.copyArray(cags);
@@ -98,11 +100,11 @@ public class InFileBasedConsumerAgentPopulation implements InAgentPopulation {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setDesiredSize(int desiredSize) {

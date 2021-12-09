@@ -22,6 +22,16 @@ public class PhaseLoggingModule2
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(PhaseLoggingModule2.class);
 
+    protected boolean enabled = true;
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;
@@ -52,7 +62,7 @@ public class PhaseLoggingModule2
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         RAStage2 currentStage = input.getStage();
         RAStage2 newStage = getNonnullSubmodule().apply(input, actions);
-        if(currentStage != RAStage2.PRE_INITIALIZATION && newStage != currentStage) {
+        if(isEnabled() && (currentStage != RAStage2.PRE_INITIALIZATION && newStage != currentStage)) {
             DataAnalyser.Phase currentPhase = getPhase(currentStage);
             DataAnalyser.Phase newPhase = getPhase(newStage);
             if(newPhase != currentPhase) {

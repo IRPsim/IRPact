@@ -7,9 +7,9 @@ import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InRoot;
-import de.unileipzig.irpact.io.spec.SpecificationConverter;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.IRPactCallback;
 import de.unileipzig.irpact.start.irpact.IRPactExecutor;
@@ -98,18 +98,20 @@ public class Preloader {
         exec.execute(irpact);
     }
 
+    @Todo
     private void loadSpec() throws Throwable {
-        SpecificationConverter converter = new SpecificationConverter();
-        InRoot root =  converter.toParam(clOptions.getInputPath());
-        AnnualEntry<InRoot> entry = new AnnualEntry<>(root, JsonUtil.JSON.createObjectNode());
-        entry.getConfig().init();
-        entry.getConfig().setYear(root.general.getFirstSimulationYear());
-
-        LOGGER.trace("call IRPact with spec");
-        IRPact irpact = createIRPactInstance();
-        irpact.init(entry);
-        start(irpact);
-        LOGGER.trace("IRPact finished");
+        throw new UnsupportedOperationException("TODO REMOVE");
+//        SpecificationConverter converter = new SpecificationConverter();
+//        InRoot root =  converter.toParam(clOptions.getInputPath());
+//        AnnualEntry<InRoot> entry = new AnnualEntry<>(root, JsonUtil.JSON.createObjectNode());
+//        entry.getConfig().init();
+//        entry.getConfig().setYear(root.general.getFirstSimulationYear());
+//
+//        LOGGER.trace("call IRPact with spec");
+//        IRPact irpact = createIRPactInstance();
+//        irpact.init(entry);
+//        start(irpact);
+//        LOGGER.trace("IRPact finished");
     }
 
     private void loadJson() throws Throwable {

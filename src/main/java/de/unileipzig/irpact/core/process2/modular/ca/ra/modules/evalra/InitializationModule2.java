@@ -58,8 +58,8 @@ public class InitializationModule2
             logPhaseTransition(input, input.now(), DataAnalyser.Phase.AWARENESS);
             initialStage = RAStage2.AWARENESS;
         }
-        input.setStage(initialStage);
         trace("[{}] initial stage: {}", input.getAgentName(), initialStage);
+        input.setStage(initialStage);
         return initialStage;
     }
 }

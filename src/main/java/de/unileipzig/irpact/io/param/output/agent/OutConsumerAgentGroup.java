@@ -26,8 +26,10 @@ public class OutConsumerAgentGroup implements OutIRPactEntity {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), thisName());
         addEntry(res, thisClass(), "adoptionsThisPeriod");

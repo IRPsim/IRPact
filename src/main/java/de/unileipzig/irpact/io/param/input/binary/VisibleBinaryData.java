@@ -2,22 +2,23 @@ package de.unileipzig.irpact.io.param.input.binary;
 
 import de.unileipzig.irpact.commons.util.IRPactBase32;
 import de.unileipzig.irpact.commons.util.data.BinaryData;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
-import de.unileipzig.irpact.io.param.input.InRootUI;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_SPECIAL_BIN;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SETT_SPECIAL_BIN)
 public class VisibleBinaryData implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -28,17 +29,18 @@ public class VisibleBinaryData implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_SPECIAL_BIN);
-        addEntry(res, thisClass());
-        addEntry(res, thisClass(), "idVisible");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public long idVisible;
 
     public VisibleBinaryData() {
@@ -56,18 +58,18 @@ public class VisibleBinaryData implements InIRPactEntity {
 
     public VisibleBinaryData newCopy(CopyCache cache) {
         VisibleBinaryData copy = new VisibleBinaryData();
-        copy._name = _name;
+        copy.name = name;
         copy.idVisible = idVisible;
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setID(long id) {
@@ -79,13 +81,13 @@ public class VisibleBinaryData implements InIRPactEntity {
     }
 
     public void setBytes(byte[] data) {
-        _name = IRPactBase32.encodeToString(data);
+        name = IRPactBase32.encodeToString(data);
     }
 
     public byte[] getBytes() {
-        return _name == null
+        return name == null
                 ? null
-                : IRPactBase32.decode(_name);
+                : IRPactBase32.decode(name);
     }
 
     private final BinaryData ACCESS = new BinaryAccess();

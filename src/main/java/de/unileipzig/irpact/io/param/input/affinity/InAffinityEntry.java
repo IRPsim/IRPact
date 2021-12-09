@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.affinity;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
@@ -13,9 +14,11 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InAffinityEntry extends InIRPactEntity {
 
-    static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    static void initRes(LocalizedUiResource res) {
     }
-    static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    static void applyRes(LocalizedUiResource res) {
     }
 
     InConsumerAgentGroup getSrcCag(InputParser parser) throws ParsingException;

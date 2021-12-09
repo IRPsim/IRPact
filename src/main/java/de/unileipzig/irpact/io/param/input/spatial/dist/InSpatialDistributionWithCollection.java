@@ -15,8 +15,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 @Definition
 public interface InSpatialDistributionWithCollection extends InSpatialDistribution {
 
+    @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     static void applyRes(TreeAnnotationResource res) {
     }
 

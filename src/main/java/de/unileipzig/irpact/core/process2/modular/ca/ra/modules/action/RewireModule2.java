@@ -89,6 +89,7 @@ public class RewireModule2
             SocialGraph.Node rndTarget = graph.getRandomTarget(node, SocialGraph.Type.COMMUNICATION, rnd);
             if(rndTarget == null) {
                 logGraphUpdateEdgeRemoved(agent, null);
+                return;
             } else {
                 ConsumerAgentGroup tarCag = rndTarget.getAgent(ConsumerAgent.class).getGroup();
                 SocialGraph.Edge edge = graph.getEdge(node, rndTarget, SocialGraph.Type.COMMUNICATION);

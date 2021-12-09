@@ -5,10 +5,11 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilterScheme;
-import de.unileipzig.irpact.develop.PotentialProblem;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.PotentialProblem;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -16,13 +17,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_DISTANCE_MAX;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_DISTANCE_MAX)
 public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilterScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -33,22 +34,32 @@ public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilt
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.PROCESS_FILTER_MAX);
-        addEntry(res, thisClass(), "maxDistance");
-        addEntry(res, thisClass(), "inclusive");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            geq0Domain = true,
+            decDefault = 0
+    )
     public double maxDistance;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean inclusive;
 
     public InMaxDistanceNodeFilterDistanceScheme() {
@@ -67,7 +78,7 @@ public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilt
 
     public InMaxDistanceNodeFilterDistanceScheme newCopy(CopyCache cache) {
         InMaxDistanceNodeFilterDistanceScheme copy = new InMaxDistanceNodeFilterDistanceScheme();
-        copy._name = _name;
+        copy.name = name;
         copy.maxDistance = maxDistance;
         copy.inclusive = inclusive;
         return copy;
@@ -76,11 +87,11 @@ public class InMaxDistanceNodeFilterDistanceScheme implements InNodeDistanceFilt
     @PotentialProblem("teste, ob es andere return null gibt")
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public double getMaxDistance() {

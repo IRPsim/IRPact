@@ -44,6 +44,7 @@ public class CommunicationModule2
     protected double awarePoints = RAModelData.DEFAULT_AWARE_POINTS;
     protected double unknownPoints = RAModelData.DEFAULT_UNKNOWN_POINTS;
 
+    protected boolean raEnabled = true;
     protected RelativeAgreementAlgorithm2 raAlgorithm;
     protected LoggableRelativeAgreementAlgorithm2 logRaAlgorithm;
     protected List<UncertaintySupplier> uncertaintySuppliers = new ArrayList<>();
@@ -102,6 +103,18 @@ public class CommunicationModule2
 
     public void addUncertaintySupplier(UncertaintySupplier supplier) {
         uncertaintySuppliers.add(supplier);
+    }
+
+    public void setRaEnabled(boolean raEnabled) {
+        this.raEnabled = raEnabled;
+    }
+
+    public boolean isRaEnabled() {
+        return raEnabled;
+    }
+
+    public boolean isRaDisabled() {
+        return !raEnabled;
     }
 
     @Override
@@ -222,8 +235,23 @@ public class CommunicationModule2
         double myPointsToAdd = getInterestPoints(agent, product);
         double targetPointsToAdd = getInterestPoints(targetAgent, product);
 
-        agent.updateInterest(product, targetPointsToAdd);
-        targetAgent.updateInterest(product, myPointsToAdd);
+        updateInterest(agent, agent, product, targetPointsToAdd);
+        updateInterest(agent, targetAgent, product, myPointsToAdd);
+    }
+
+    protected void updateInterest(ConsumerAgent thisAgent, ConsumerAgent agent, Product product, double pointsToAdd) {
+        if(pointsToAdd > 0) {
+            if(!agent.isAware(product)) {
+                agent.makeAware(product);
+                trace(IRPSection.SIMULATION_PROCESS, "[{}]@[{}] make aware '{}'", getName(), thisAgent.getName(), agent.getName());
+            }
+            double oldInterest = agent.getInterest(product);
+            agent.updateInterest(product, pointsToAdd);
+            double newInterest = agent.getInterest(product);
+            trace(IRPSection.SIMULATION_PROCESS, "[{}]@[{}] update interest '{}': {} -> {} (delta={}, interested={})", getName(), thisAgent.getName(), agent.getName(), oldInterest, newInterest, pointsToAdd, agent.isInterested(product));
+        } else {
+            trace(IRPSection.SIMULATION_PROCESS, "[{}]@[{}] 0 points to add ('{}')", getName(), thisAgent.getName(), agent.getName());
+        }
     }
 
     protected double getInterestPoints(ConsumerAgent agent, Product product) {
@@ -240,6 +268,11 @@ public class CommunicationModule2
     }
 
     protected void applyRelativeAgreement(ConsumerAgent source, ConsumerAgent target, Timestamp now) {
+        if(isRaDisabled()) {
+            trace("[{}]@[{}] relative agreement disabled", getName(), source.getName());
+            return;
+        }
+
         applyRelativeAgreement(source, target, RAConstants.NOVELTY_SEEKING, now);
         //applyRelativeAgreement(source, target, RAConstants.DEPENDENT_JUDGMENT_MAKING, now);
         applyRelativeAgreement(source, target, RAConstants.ENVIRONMENTAL_CONCERN, now);
