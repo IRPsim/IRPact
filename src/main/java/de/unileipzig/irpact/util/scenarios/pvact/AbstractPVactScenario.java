@@ -265,6 +265,7 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         super.setupGeneral(general);
         general.runPVAct = runPvAct;
         general.runOptActDemo = false;
+        general.setLogLevel(IRPLevel.INFO);
     }
 
     @Override

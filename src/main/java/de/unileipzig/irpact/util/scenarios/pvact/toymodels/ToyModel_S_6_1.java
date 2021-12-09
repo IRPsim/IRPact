@@ -75,7 +75,7 @@ public class ToyModel_S_6_1 extends AbstractToyModel {
 
         cagManager.register(
                 "K",
-                0,
+                99,
                 darr(0, 1),
                 cag -> {
                     cag.setD1(dirac0);
