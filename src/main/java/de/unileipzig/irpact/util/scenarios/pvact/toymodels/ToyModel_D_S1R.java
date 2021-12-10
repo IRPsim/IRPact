@@ -6,56 +6,45 @@ import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistri
 import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
 
-import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup.*;
+import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup.setA5;
+import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup.setA6;
 
 /**
  * @author Daniel Abitz
  */
-public class ToyModel_D_B2 extends AbstractToyModel {
+public class ToyModel_D_S1R extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-    protected String c1Name;
-    protected double c1Value;
-    protected InUnivariateDoubleDistribution c1dist;
+    protected String b6Name;
+    protected double b6Value;
+    protected InUnivariateDoubleDistribution b6dist;
 
-    public ToyModel_D_B2(
+    public ToyModel_D_S1R(
             String name,
             String creator,
             String description,
-            String c1Name,
-            double c1Value,
+            String b6Name,
+            double b6Value,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
-        this.c1Name = c1Name;
-        this.c1Value = c1Value;
         setRevision(REVISION);
+        this.b6Name = b6Name;
+        this.b6Value = b6Value;
     }
 
-    public ToyModel_D_B2 withMultiplier(double c1Multiplier) {
-        return new ToyModel_D_B2(
-                getName(),
-                getCreator(),
-                getDescription(),
-                c1Name,
-                c1Multiplier,
-                resultConsumer
-        );
-    }
-
-    protected InUnivariateDoubleDistribution getC1Distribution() {
-        if(c1dist == null) {
+    protected InUnivariateDoubleDistribution getB6Distribution() {
+        if(b6dist == null) {
             InDiracUnivariateDistribution dist = new InDiracUnivariateDistribution();
-            dist.setName(c1Name);
-            dist.setValue(c1Value);
-            c1dist = dist;
+            dist.setName(b6Name);
+            dist.setValue(b6Value);
+            b6dist = dist;
         }
-        return c1dist;
+        return b6dist;
     }
 
     @Override
@@ -70,16 +59,14 @@ public class ToyModel_D_B2 extends AbstractToyModel {
                 "P",
                 500,
                 row -> {
-                    setA1(row, 150);
                     return row;
                 }
         );
 
         testData.setSizeAndModifier(
                 "M",
-                1500,
+                500,
                 row -> {
-                    setA1(row, 100);
                     return row;
                 }
         );
@@ -88,7 +75,6 @@ public class ToyModel_D_B2 extends AbstractToyModel {
                 "L",
                 500,
                 row -> {
-                    setA1(row, 50);
                     return row;
                 }
         );
@@ -98,46 +84,49 @@ public class ToyModel_D_B2 extends AbstractToyModel {
     protected void initCagManager() {
         cagManager.registerForAll(cag -> {
             cag.setA2(dirac1);
-            cag.setA3(dirac1);
-            cag.setA4(dirac1);
+            cag.setA3(dirac0);
+            cag.setA4(dirac0);
             cag.setA7(dirac0);
             cag.setA8(dirac0);
 
-            cag.setB6(dirac0);
+            cag.setB6(getB6Distribution());
 
-            cag.setC1(getC1Distribution());
+            cag.setC1(dirac05);
 
             cag.setD2(dirac1);
             cag.setD3(dirac05);
             cag.setD4(dirac05);
             cag.setD5(dirac0);
-            cag.setD6(dirac1);
+            cag.setD6(dirac0);
         });
 
         cagManager.register(
                 "P",
                 20,
-                darr(0.77, 0.23, 0),
+                darr(0.8, 0.17, 0.03),
                 cag -> {
-                    cag.setD1(bernoulli01);
+                    cag.setD1(bernoulli03);
+                    cag.setD5(bernoulli03);
                 }
         );
 
         cagManager.register(
                 "M",
                 20,
-                darr(0, 0.77, 0.23),
+                darr(0.2, 0.6, 0.2),
                 cag -> {
                     cag.setD1(bernoulli01);
+                    cag.setD5(bernoulli01);
                 }
         );
 
         cagManager.register(
                 "L",
                 20,
-                darr(0, 0, 1),
+                darr(0.01, 0.74, 0.25),
                 cag -> {
-                    cag.setD1(bernoulli01);
+                    cag.setD1(bernoulli0);
+                    cag.setD5(bernoulli0);
                 }
         );
     }
@@ -160,8 +149,9 @@ public class ToyModel_D_B2 extends AbstractToyModel {
     @Override
     protected void customModuleSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
-        mpm.getNpvWeightModule().setScalar(0.5);
-        mpm.getPpWeightModule().setScalar(0.5);
+        mpm.getNpvWeightModule().setScalar(0.1);
+        mpm.getPpWeightModule().setScalar(0.1);
+        mpm.getSocialWeightModule().setScalar(0.8);
 
 //        mpm.getCommunicationModule().setAdopterPoints(1);
 //        mpm.getCommunicationModule().setInterestedPoints(1);

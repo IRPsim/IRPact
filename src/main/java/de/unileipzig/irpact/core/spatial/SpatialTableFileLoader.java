@@ -200,6 +200,16 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         return table;
     }
 
+    public static void swriteXlsx(Path target, String sheetName, String info, Table<SpatialAttribute> data) throws IOException {
+        XlsxSheetWriter<SpatialAttribute> writer = new XlsxSheetWriter<>();
+        writer.setNumericConverter(ATTR2NUM);
+        writer.setTextConverter(ATTR2STR);
+        Collection<String> infoColl = info == null
+                ? Collections.emptyList()
+                : Collections.singleton(info);
+        writer.swrite(target, sheetName, infoColl, new SimpleHeader(data.getHeader()), data.listTable());
+    }
+
     public static void writeXlsx(Path target, String sheetName, String info, Table<SpatialAttribute> data) throws IOException {
         XlsxSheetWriter<SpatialAttribute> writer = new XlsxSheetWriter<>();
         writer.setNumericConverter(ATTR2NUM);

@@ -1,8 +1,9 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.process.ra.InDisabledNodeFilterDistanceScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.output.OutRoot;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.FixValues;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
 import java.util.function.BiConsumer;
@@ -12,12 +13,11 @@ import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup
 /**
  * @author Daniel Abitz
  */
-@SuppressWarnings("CodeBlock2Expr")
-public class ToyModel_S_3_4_1 extends AbstractToyModel {
+public class ToyModel_D_S1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-    public ToyModel_S_3_4_1(
+    public ToyModel_D_S1(
             String name,
             String creator,
             String description,
@@ -34,32 +34,26 @@ public class ToyModel_S_3_4_1 extends AbstractToyModel {
             return row;
         });
 
-        FixValues<Double> sValues = new FixValues<>(104.69, 104.83, 105.95, 105.95, 105.95);
         testData.setSizeAndModifier(
-                "S",
-                5,
+                "P",
+                500,
                 row -> {
-                    setA1(row, sValues.next());
                     return row;
                 }
         );
 
-        FixValues<Double> aValues = new FixValues<>(108.15, 96.39, 101.45, 99.89, 99.89);
         testData.setSizeAndModifier(
-                "A",
-                5,
+                "M",
+                500,
                 row -> {
-                    setA1(row, aValues.next());
                     return row;
                 }
         );
 
-        FixValues<Double> kValues = new FixValues<>(79.29,79.29, 83.65, 79.29, 81.43);
         testData.setSizeAndModifier(
-                "K",
-                5,
+                "L",
+                500,
                 row -> {
-                    setA1(row, kValues.next());
                     return row;
                 }
         );
@@ -69,40 +63,77 @@ public class ToyModel_S_3_4_1 extends AbstractToyModel {
     protected void initCagManager() {
         cagManager.registerForAll(cag -> {
             cag.setA2(dirac1);
-            cag.setA3(dirac1);
+            cag.setA3(dirac0);
+            cag.setA4(dirac0);
+            cag.setA7(dirac0);
+            cag.setA8(dirac0);
 
-            cag.setD1(dirac1);
+            cag.setB6(dirac0);
+
+            cag.setC1(dirac05);
+
             cag.setD2(dirac1);
-            cag.setD3(dirac03);
+            cag.setD3(dirac05);
             cag.setD4(dirac05);
-            cag.setD6(dirac1);
+            cag.setD5(dirac0);
+            cag.setD6(dirac0);
         });
 
         cagManager.register(
-                "S",
+                "P",
+                20,
+                darr(0.8, 0.17, 0.03),
                 cag -> {
-                    cag.setD5(dirac1);
+                    cag.setD1(bernoulli03);
+                    cag.setD5(bernoulli03);
                 }
         );
 
         cagManager.register(
-                "A",
+                "M",
+                20,
+                darr(0.2, 0.6, 0.2),
                 cag -> {
-                    cag.setD5(dirac0);
+                    cag.setD1(bernoulli01);
+                    cag.setD5(bernoulli01);
                 }
         );
 
         cagManager.register(
-                "K",
+                "L",
+                20,
+                darr(0.01, 0.74, 0.25),
                 cag -> {
-                    cag.setD5(dirac0);
+                    cag.setD1(bernoulli0);
+                    cag.setD5(bernoulli0);
                 }
         );
     }
 
     @Override
+    protected void initThisCustom() {
+        simulationLength = 10;
+    }
+
+    @Override
+    protected void createTopology(InRoot root, String name) {
+        createFreeTopology(root, name);
+    }
+
+    @Override
+    protected InNodeDistanceFilterScheme createNodeFilter() {
+        return new InDisabledNodeFilterDistanceScheme("DisabledNodeFilter");
+    }
+
+    @Override
     protected void customModuleSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
-        mpm.getPpWeightModule().setScalar(1);
+        mpm.getNpvWeightModule().setScalar(0.1);
+        mpm.getPpWeightModule().setScalar(0.1);
+        mpm.getSocialWeightModule().setScalar(0.8);
+
+//        mpm.getCommunicationModule().setAdopterPoints(1);
+//        mpm.getCommunicationModule().setInterestedPoints(1);
+//        mpm.getCommunicationModule().setAwarePoints(1);
     }
 }

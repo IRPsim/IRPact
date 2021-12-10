@@ -67,9 +67,17 @@ public class InDiracUnivariateDistribution implements InUnivariateDoubleDistribu
         return copy;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public double getValue() {
