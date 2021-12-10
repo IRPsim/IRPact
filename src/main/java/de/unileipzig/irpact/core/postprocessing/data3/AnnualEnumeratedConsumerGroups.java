@@ -18,6 +18,11 @@ public class AnnualEnumeratedConsumerGroups extends AnnualEnumeratedAdoptionData
     }
 
     @Override
+    protected void updateInitial(ConsumerAgent ca, AdoptedProduct ap) {
+        initial.update(ap.getProduct(), ca.getGroup());
+    }
+
+    @Override
     protected AnnualEnumeratedConsumerGroups newInstance() {
         return new AnnualEnumeratedConsumerGroups();
     }

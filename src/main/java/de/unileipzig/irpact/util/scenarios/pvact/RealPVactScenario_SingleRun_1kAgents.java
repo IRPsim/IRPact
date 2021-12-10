@@ -12,12 +12,14 @@ import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.InProcessModel;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.InCommunicationModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.InYearBasedAdoptionDeciderModule3;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
 import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InOutputImage2;
 import de.unileipzig.irpact.util.pvact.Milieu;
+import de.unileipzig.irpact.util.scenarios.pvact.util.RealDataModularProcessModelTemplate;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -164,13 +166,32 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
 
         List<InOutputImage2> outputImages2 = new ArrayList<>();
         List<InPostDataAnalysis> postData = new ArrayList<>();
-        InProcessModel processModel = createDefaultModularProcessModel(
+
+        RealDataModularProcessModelTemplate mpm = createRealDataTemplate(
                 "Process",
                 createUncertainty("uncert"),
-                createNodeFilterScheme(2),
-                outputImages2,
-                postData
+                createNodeFilterScheme(2)
         );
+
+        mpm.createModel();
+        setupCommunicationModuleLogging(mpm.getCommunicationModule());
+        mpm.peekModule(mpm.getReallyAdoptModuleName(), InYearBasedAdoptionDeciderModule3.class, _m -> {
+            //_m.setBase(1 - Math.sqrt(0.5));
+            _m.setBase(1);
+            _m.setFactor(1);
+        });
+
+        InProcessModel processModel = mpm.getModel();
+        mpm.addImages(outputImages2);
+        mpm.addPostData(postData);
+
+//        InProcessModel processModel = createDefaultModularProcessModel(
+//                "Process",
+//                createUncertainty("uncert"),
+//                createNodeFilterScheme(2),
+//                outputImages2,
+//                postData
+//        );
 
         InSpace2D space2D = createSpace2D("Space2D");
 

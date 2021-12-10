@@ -113,7 +113,7 @@ public class ToyModel_S_3_3_2 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+    protected void customModuleSetup(ToyModeltModularProcessModelTemplate mpm) {
         mpm.setAllWeights(0);
         mpm.getLocalWeightModule().setScalar(0.5);
         mpm.getSocialWeightModule().setScalar(0.5);

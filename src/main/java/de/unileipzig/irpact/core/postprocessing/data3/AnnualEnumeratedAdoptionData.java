@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.data3;
 
+import de.unileipzig.irpact.commons.util.data.count.CountMap2D;
 import de.unileipzig.irpact.commons.util.data.count.CountMap3D;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -15,13 +16,29 @@ import java.util.function.BiPredicate;
  */
 public abstract class AnnualEnumeratedAdoptionData<T> {
 
+    protected CountMap2D<Product, T> initial = new CountMap2D<>();
     protected CountMap3D<Integer, Product, T> data = new CountMap3D<>();
     protected BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter;
     protected boolean cumulated = false;
 
-    protected Integer initialYear;
-
     public AnnualEnumeratedAdoptionData() {
+    }
+
+    public String printData() {
+        StringBuilder sb = new StringBuilder();
+        for(int year: data.getFirstKeys()) {
+            for(Product p: data.getSecondKeys(year)) {
+                for(T t: data.getThirdKeys(year, p)) {
+                    int count = data.getCount(year, p, t);
+                    sb.append(year)
+                            .append(";").append(p.getName())
+                            .append(";").append(t)
+                            .append(";").append(count);
+                    sb.append("\n");
+                }
+            }
+        }
+        return sb.toString();
     }
 
     public void setFilter(BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter) {
@@ -44,28 +61,6 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
         return !cumulated;
     }
 
-    public void setInitialYear(int initialYear) {
-        this.initialYear = initialYear;
-    }
-
-    public int getInitialYear() {
-        return hasInitialYear()
-                ? initialYear
-                : Integer.MIN_VALUE;
-    }
-
-    protected int getValidInitialYear() {
-        if(hasInitialYear()) {
-            return initialYear;
-        }
-
-        throw new NoSuchElementException("initial year");
-    }
-
-    public boolean hasInitialYear() {
-        return initialYear != null;
-    }
-
     public void analyse(SimulationEnvironment environment) {
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
@@ -83,19 +78,23 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
     }
 
     public int getInitialCount(Product product, T value) {
-        return getCount(getValidInitialYear(), product, value);
+        return initial.getCount(product, value);
     }
 
-    public int getTotal(int year, Product product, Collection<? extends T> values) {
+    public int getInitialCount(Product product, Collection<? extends T> values) {
+        int total = 0;
+        for(T value: values) {
+            total += getInitialCount(product, value);
+        }
+        return total;
+    }
+
+    public int getCount(int year, Product product, Collection<? extends T> values) {
         int total = 0;
         for(T value: values) {
             total += getCount(year, product, value);
         }
         return total;
-    }
-
-    public int getTotal(int year, Product product, T[] values) {
-        return getTotal(year, product, Arrays.asList(values));
     }
 
     public int getCount(int year, Product product, T value) {
@@ -113,11 +112,14 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
     }
 
     public void update(ConsumerAgent ca, AdoptedProduct ap) {
-        int year = ap.isInitial()
-                ? getValidInitialYear()
-                : ap.getYear();
-        update(year, ca, ap);
+        if(ap.isInitial()) {
+            updateInitial(ca, ap);
+        } else {
+            update(ap.getYear(), ca, ap);
+        }
     }
+
+    protected abstract void updateInitial(ConsumerAgent ca, AdoptedProduct ap);
 
     protected abstract void update(int year, ConsumerAgent ca, AdoptedProduct ap);
 
@@ -130,13 +132,13 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
 
         AnnualEnumeratedAdoptionData<T> cumulated = newInstance();
         cumulated.setCumulated(true);
-        cumulated.setInitialYear(getValidInitialYear());
         List<Integer> years = new ArrayList<>(data.getFirstKeys());
         Collections.sort(years);
         Set<Product> products = data.getAllSecondKeys();
         Set<T> values = data.getAllThirdKeys();
         for(Product product: products) {
             for(T value: values) {
+                cumulated.initial.init(product, value, initial.getCount(product, value));
                 for(int i = 0; i < years.size(); i++) {
                     int thisYear = years.get(i);
                     int thisCount = getCount(thisYear, product, value);
@@ -145,7 +147,7 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
                         int preCount = cumulated.getCount(preYear, product, value);
                         cumulated.data.init(thisYear, product, value, thisCount + preCount);
                     } else {
-                        cumulated.data.init(thisYear, product, value, thisCount);
+                        cumulated.data.init(thisYear, product, value, thisCount + initial.getCount(product, value));
                     }
                 }
             }
@@ -158,24 +160,24 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
             return this;
         }
 
-        AnnualEnumeratedAdoptionData<T> uncumulated = newInstance();
-        uncumulated.setCumulated(false);
-        uncumulated.setInitialYear(getValidInitialYear());
-        List<Integer> years = new ArrayList<>(data.getFirstKeys());
-        Collections.sort(years);
-        Set<Product> products = data.getAllSecondKeys();
-        Set<T> values = data.getAllThirdKeys();
-        for(Product product: products) {
-            for(T value: values) {
-                for(int i = years.size() - 1; i >= 1; i--) {
-                    int thisYear = years.get(i);
-                    int preYear = years.get(i - 1);
-                    int thisCount = getCount(thisYear, product, value);
-                    int preCount = getCount(preYear, product, value);
-                    uncumulated.data.init(thisYear, product, value, thisCount - preCount);
-                }
-            }
-        }
-        return uncumulated;
+        throw new UnsupportedOperationException("initial bug");
+//        AnnualEnumeratedAdoptionData<T> uncumulated = newInstance();
+//        uncumulated.setCumulated(false);
+//        List<Integer> years = new ArrayList<>(data.getFirstKeys());
+//        Collections.sort(years);
+//        Set<Product> products = data.getAllSecondKeys();
+//        Set<T> values = data.getAllThirdKeys();
+//        for(Product product: products) {
+//            for(T value: values) {
+//                for(int i = years.size() - 1; i >= 1; i--) {
+//                    int thisYear = years.get(i);
+//                    int preYear = years.get(i - 1);
+//                    int thisCount = getCount(thisYear, product, value);
+//                    int preCount = getCount(preYear, product, value);
+//                    uncumulated.data.init(thisYear, product, value, thisCount - preCount);
+//                }
+//            }
+//        }
+//        return uncumulated;
     }
 }

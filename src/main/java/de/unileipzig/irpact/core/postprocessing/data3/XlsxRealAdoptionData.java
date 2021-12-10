@@ -27,6 +27,30 @@ public class XlsxRealAdoptionData implements RealAdoptionData {
     public XlsxRealAdoptionData() {
     }
 
+    @Override
+    public String printCumulatedData() {
+        return printData(cumulated);
+    }
+
+    @Override
+    public String printUncumulatedData() {
+        return printData(uncumulated);
+    }
+
+    protected String printData(TypedMatrix<String, String, Integer> matrix) {
+        StringBuilder sb = new StringBuilder();
+        for(int year: getAllYears()) {
+            for(String zip: getAllZips()) {
+                int count = matrix.getOrDefault(zip, Integer.toString(year), -1);
+                sb.append(year)
+                        .append(";").append(zip)
+                        .append(";").append(count);
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
     public void setCumulated(TypedMatrix<String, String, Integer> data) {
         this.cumulated = data;
     }

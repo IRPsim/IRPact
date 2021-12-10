@@ -9,5 +9,5 @@ public interface ImageHandlerSelector {
 
     boolean isSupported(InOutputImage2 image);
 
-    void handle(InOutputImage2 image) throws Throwable;
+    ImageHandler getHandler(InOutputImage2 image) throws Throwable;
 }

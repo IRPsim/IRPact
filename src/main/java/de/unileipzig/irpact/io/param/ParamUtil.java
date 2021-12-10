@@ -119,6 +119,25 @@ public final class ParamUtil {
         return (R) input;
     }
 
+    public static <T> T[] set(T[] arr, T value) {
+        if(value == null) {
+            if(arr.length == 0) {
+                return arr;
+            } else {
+                return Arrays.copyOf(arr, 0);
+            }
+        } else {
+            if(arr.length == 1) {
+                arr[0] = value;
+                return arr;
+            } else {
+                T[] newArr = Arrays.copyOf(arr, 1);
+                newArr[0] = value;
+                return newArr;
+            }
+        }
+    }
+
     public static <T> T[] add(T[] arr, T value) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
         newArr[arr.length] = value;

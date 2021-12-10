@@ -61,6 +61,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     protected InDiracUnivariateDistribution dirac072 = new InDiracUnivariateDistribution("dirac072", 0.72);
     protected InDiracUnivariateDistribution dirac08 = new InDiracUnivariateDistribution("dirac08", 0.8);
     protected InDiracUnivariateDistribution dirac085 = new InDiracUnivariateDistribution("dirac085", 0.85);
+    protected InDiracUnivariateDistribution dirac09 = new InDiracUnivariateDistribution("dirac09", 0.9);
     protected InDiracUnivariateDistribution dirac1 = new InDiracUnivariateDistribution("dirac1", 1);
     protected InDiracUnivariateDistribution dirac2 = new InDiracUnivariateDistribution("dirac2", 2);
     protected InDiracUnivariateDistribution dirac100 = new InDiracUnivariateDistribution("dirac100", 100);
@@ -70,6 +71,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     protected InBernoulliDistribution bernoulli003 = new InBernoulliDistribution("bernoulli003", 0.03);
     protected InBernoulliDistribution bernoulli005 = new InBernoulliDistribution("bernoulli005", 0.05);
     protected InBernoulliDistribution bernoulli01 = new InBernoulliDistribution("bernoulli01", 0.1);
+    protected InBernoulliDistribution bernoulli03 = new InBernoulliDistribution("bernoulli03", 0.3);
     protected InBernoulliDistribution bernoulli015 = new InBernoulliDistribution("bernoulli015", 0.15);
     protected InBernoulliDistribution bernoulli1 = new InBernoulliDistribution("bernoulli1", 1);
 
@@ -87,6 +89,10 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
             BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description);
         this.resultConsumer = Objects.requireNonNull(resultConsumer);
+    }
+
+    public DataSetup getTestData() {
+        return testData;
     }
 
     @SafeVarargs
@@ -138,12 +144,16 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
             Path input,
             Path target,
             Random rnd) throws ParsingException, IOException, InvalidFormatException {
+        if(testData.isUseOriginal()) {
+            return;
+        }
+
         Table<SpatialAttribute> inputTable = SpatialTableFileLoader.parseXlsx(input, "Datensatz");
 
         List<List<SpatialAttribute>> outputData;
         Table<SpatialAttribute> outputTable = inputTable.emptyCopyWithSameHeader();
 
-        if(testData.isOriginal()) {
+        if(testData.isUseAll()) {
             outputData = DataCreator.modify(testData, inputTable.listTable());
         } else {
             outputData = DataCreator.apply(testData, inputTable.listTable(), rnd);
@@ -151,7 +161,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         }
 
         outputTable.addRows(outputData);
-        SpatialTableFileLoader.writeXlsx(target, "Datensatz", null, outputTable);
+        SpatialTableFileLoader.swriteXlsx(target, "Datensatz", null, outputTable);
     }
 
     protected void initCustomParts(InRoot root) {
@@ -202,27 +212,37 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         mpm.setDistanceFilterSupplierInstance(createNodeFilter());
         mpm.setPvFileSupplier(this::getPVFile);
         mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        setupTemplate(mpm);
+
         mpm.createModel();
 
-        setupProcessModel(mpm);
+        setupModules(mpm);
 
         root.setProcessModel(mpm.getModel());
         root.setImages2(mpm.getImages());
         root.setPostData(mpm.getPostData());
     }
 
+    protected void setupTemplate(ToyModeltModularProcessModelTemplate mpm) {
+    }
+
     protected InUncertaintySupplier createUncertainty(String name) {
-        return createInPVactUpdatableGlobalModerateExtremistUncertainty("uncert", RAConstants.DEFAULT_EXTREMIST_RATE, RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY, RAConstants.DEFAULT_MODERATE_UNCERTAINTY);
+        return createInPVactUpdatableGlobalModerateExtremistUncertainty(
+                "uncert",
+                RAConstants.DEFAULT_EXTREMIST_RATE,
+                RAConstants.DEFAULT_EXTREMIST_UNCERTAINTY,
+                RAConstants.DEFAULT_MODERATE_UNCERTAINTY
+        );
     }
 
     protected InNodeDistanceFilterScheme createNodeFilter() {
         return createNodeFilterScheme(2);
     }
 
-    protected void setupProcessModel(ToyModeltModularProcessModelTemplate mpm) {
+    protected void setupModules(ToyModeltModularProcessModelTemplate mpm) {
         setDefaultWeights(mpm);
 
-        customProcessModelSetup(mpm);
+        customModuleSetup(mpm);
     }
 
     protected void setDefaultWeights(ToyModeltModularProcessModelTemplate mpm) {
@@ -234,7 +254,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         mpm.getNovWeightModule().setScalar(0.25);
     }
 
-    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
+    protected void customModuleSetup(ToyModeltModularProcessModelTemplate mpm) {
     }
 
     protected void setSimulationDuration(InRoot root) {

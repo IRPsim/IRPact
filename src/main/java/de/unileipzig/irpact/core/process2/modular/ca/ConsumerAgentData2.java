@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process2.ProcessPlan2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAStage2;
@@ -81,10 +80,6 @@ public interface ConsumerAgentData2 extends InputData2 {
 
     default AttributeHelper getAttributeHelper() {
         return getEnvironment().getAttributeHelper();
-    }
-
-    default DataLogger getDataLogger() {
-        return getEnvironment().getDataLogger();
     }
 
     default DataAnalyser getDataAnalyser() {

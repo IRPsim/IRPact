@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
-import de.unileipzig.irpact.commons.color.ColorPalette;
-import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionPhases;
@@ -11,7 +9,6 @@ import de.unileipzig.irpact.core.util.AdoptionPhase;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InAdoptionPhaseOverviewImage;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -31,7 +28,6 @@ public abstract class AbstractAdoptionPhaseOverviewImageHandler
             return getGlobalData().getAuto(AnnualEnumeratedAdoptionPhases.class);
         } else {
             AnnualEnumeratedAdoptionPhases data = new AnnualEnumeratedAdoptionPhases();
-            data.setInitialYear(processor.getFirstSimulationYear());
             data.initalize(
                     processor.getAllSimulationYears(),
                     processor.getAllProducts(),
@@ -46,26 +42,6 @@ public abstract class AbstractAdoptionPhaseOverviewImageHandler
     protected AnnualEnumeratedAdoptionPhases getCumulatedAdoptionData() {
         AnnualEnumeratedAdoptionPhases data = getAdoptionData();
         return (AnnualEnumeratedAdoptionPhases) data.cumulate();
-    }
-
-    protected ColorPalette getPaletteOrNull() {
-        try {
-            return imageConfiguration.hasColorPalette()
-                    ? imageConfiguration.getColorPalette().toPalette()
-                    : null;
-        } catch (ParsingException e) {
-            error("color platte not usable, use default colors", e);
-            return null;
-        }
-    }
-
-    protected List<String> getHexRGBPaletteOrNull() {
-        ColorPalette palette = getPaletteOrNull();
-        return palette == null
-                ? null
-                : palette.stream()
-                .map(ColorPalette::printRGBHex)
-                .collect(Collectors.toList());
     }
 
     protected String getNameForPhase(AdoptionPhase phase) {

@@ -16,10 +16,10 @@
         :description "Darstellung der Adoptionen im Simulationszeitraum nach unterschiedlichen Kriterien." 
         :sections [
           {
-            :label "Jährliche Adoptionen (PLZ)" 
+            :label "Jährliche Adoptionen (Milieu)" 
             :icon "fa fa-file-image-o" 
-            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen." 
-            :image "JaehrlicheAdoptionenPLZ.png"
+            :description "Zeigt die jährlichen Adoptionen für die einzelnen Milieus." 
+            :image "JaehrlicheAdoptionenMilieu.png"
           } 
           {
             :label "Jährliche Adoptionen im Vergleich (PLZ)" 
@@ -31,7 +31,7 @@
             :label "Jährliche Adoptionen (Phase)" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen." 
-            :image "JaehrlicheAdoptionenPhase.png"
+            :image "Prozessmodellphasenuebersicht.png"
           } 
           {
             :label "Interessensentwicklung" 
@@ -43,7 +43,7 @@
             :label "Phasenuebersicht" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die Entwicklung der Phasen an." 
-            :image "Phasenuebersicht.png"
+            :image "Adoptionsphasenuebersicht.png"
           } 
           {
             :label "Jährliche Adoptionen im Vergleich" 

@@ -18,21 +18,30 @@ public class DataSetup {
     protected final Map<String, Integer> cagSizes = new LinkedHashMap<>();
     protected final Map<String, DataModifier> cagModifiers = new LinkedHashMap<>();
     protected DataModifier globalModifier;
-    protected boolean original = false;
+    protected boolean useAll = false;
+    protected boolean useOriginal = false;
 
     public DataSetup() {
+    }
+
+    public void setUseOriginal(boolean useOriginal) {
+        this.useOriginal = useOriginal;
+    }
+
+    public boolean isUseOriginal() {
+        return useOriginal;
     }
 
     public boolean hasGlobalModifier() {
         return globalModifier != null;
     }
 
-    public boolean isOriginal() {
-        return original;
+    public boolean isUseAll() {
+        return useAll;
     }
 
-    public void setOriginal(boolean original) {
-        this.original = original;
+    public void setUseAll(boolean useAll) {
+        this.useAll = useAll;
     }
 
     public void setGlobalModifier(DataModifier globalModifier) {

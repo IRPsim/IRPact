@@ -1,25 +1,25 @@
-* - identifier: placeholder
+* - identifier: OutInformation_placeholder
 * - type: Float
 PARAMETER par_out_OutInformation_placeholder(set_OutInformation)
 
-* - identifier: adoptionsThisPeriod
+* - identifier: OutConsumerAgentGroup_adoptionsThisPeriod
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_adoptionsThisPeriod(set_OutConsumerAgentGroup)
 
-* - identifier: initialAdoptionsThisPeriod
+* - identifier: OutConsumerAgentGroup_initialAdoptionsThisPeriod
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_initialAdoptionsThisPeriod(set_OutConsumerAgentGroup)
 
-* - identifier: adoptionsCumulative
+* - identifier: OutConsumerAgentGroup_adoptionsCumulative
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_adoptionsCumulative(set_OutConsumerAgentGroup)
 
-* - identifier: initialAdoptionsCumulative
+* - identifier: OutConsumerAgentGroup_initialAdoptionsCumulative
 * - type: Integer
 PARAMETER par_out_OutConsumerAgentGroup_initialAdoptionsCumulative(set_OutConsumerAgentGroup)
 
 * - hidden: 1
-* - identifier: id
+* - identifier: BinaryPersistData_id
 * - type: Integer
 PARAMETER par_out_BinaryPersistData_id(set_BinaryPersistData)
 

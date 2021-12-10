@@ -7,6 +7,10 @@ import java.util.*;
  */
 public interface RealAdoptionData {
 
+    String printCumulatedData();
+
+    String printUncumulatedData();
+
     void createScaledAdoptionData(double scale, boolean fixError);
 
     boolean hasScaledAdoptionData(double scale);

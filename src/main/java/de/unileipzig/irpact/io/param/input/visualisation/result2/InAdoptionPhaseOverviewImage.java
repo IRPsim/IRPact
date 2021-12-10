@@ -22,6 +22,7 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VIS
  */
 @Definition
 @LocalizedUiResource.PutClassPath(SETT_VISURESULT2_ADOPTIONPHASE)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,13 +38,11 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
     }
     @TreeAnnotationResource.Apply
     public static void applyRes(LocalizedUiResource res) {
-        res.setRules(thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
     }
 
     public static InAdoptionPhaseOverviewImage createDefault() {
         return new InAdoptionPhaseOverviewImage(IRPact.IMAGE_PHASE_OVERVIEW);
     }
-    public static InAdoptionPhaseOverviewImage DEFAULT = createDefault();
 
     @DefinitionName
     public String name;
@@ -62,6 +61,7 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
             boolDefault = true,
             boolDomain = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useGnuplot = true;
 
     @FieldDefinition
@@ -69,6 +69,7 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useR = false;
 
     @FieldDefinition
@@ -268,13 +269,15 @@ public class InAdoptionPhaseOverviewImage implements InLoggingResultImage2 {
     }
 
     public void setColorPalette(InColorPalette colorPalette) {
-        this.colorPalette = new InColorPalette[]{ colorPalette };
+        this.colorPalette = set(this.colorPalette, colorPalette);
     }
 
+    @Override
     public boolean hasColorPalette() {
         return len(colorPalette) > 0;
     }
 
+    @Override
     public InColorPalette getColorPalette() throws ParsingException {
         return getInstance(colorPalette, "colorPalette");
     }

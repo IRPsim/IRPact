@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
+import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.InRoot;
+import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataModifier;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
@@ -16,7 +18,6 @@ public class ToyModel_D_P1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
-//    setSpatialDataName("Datensatz_ToyModel_D_P1");
     public ToyModel_D_P1(
             String name,
             String creator,
@@ -29,7 +30,6 @@ public class ToyModel_D_P1 extends AbstractToyModel {
     @Override
     protected void initTestData() {
         testData.setGlobalModifier(row -> {
-            setA1(row, 100);
             setA5(row, 1);
             setA6(row, 1);
             return row;
@@ -77,9 +77,9 @@ public class ToyModel_D_P1 extends AbstractToyModel {
 
             cag.setB6(dirac0);
 
-            cag.setD2(dirac1);
-            cag.setD3(dirac049);
-            cag.setD4(dirac049);
+            cag.setD2(dirac09);
+            cag.setD3(dirac0);
+            cag.setD4(dirac05);
             cag.setD6(dirac1);
         });
 
@@ -161,13 +161,27 @@ public class ToyModel_D_P1 extends AbstractToyModel {
     }
 
     @Override
-    protected void customProcessModelSetup(ToyModeltModularProcessModelTemplate mpm) {
-        mpm.setAllWeights(0);
-        mpm.getNpvWeightModule().setScalar(0.5);
-        mpm.getPpWeightModule().setScalar(0.5);
+    protected void setupTemplate(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setRaEnabled(true);
+    }
 
-        mpm.getCommunicationModule().setAdopterPoints(1);
-        mpm.getCommunicationModule().setInterestedPoints(1);
-        mpm.getCommunicationModule().setAwarePoints(1);
+    protected InUncertaintySupplier createUncertainty(String name) {
+        return createInPVactUpdatableGlobalModerateExtremistUncertainty(
+                "uncert",
+                0.1,
+                0.05,
+                0.2
+        );
+    }
+
+    @Override
+    protected void customModuleSetup(ToyModeltModularProcessModelTemplate mpm) {
+        mpm.setAllWeights(0);
+        mpm.getEnvWeightModule().setScalar(0.5);
+        mpm.getNovWeightModule().setScalar(0.5);
+
+//        mpm.getCommunicationModule().setAdopterPoints(1);
+//        mpm.getCommunicationModule().setInterestedPoints(1);
+//        mpm.getCommunicationModule().setAwarePoints(1);
     }
 }

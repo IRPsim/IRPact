@@ -74,6 +74,16 @@ public class FallbackAdoptionData implements ScaledRealAdoptionData {
     }
 
     @Override
+    public String printCumulatedData() {
+        return Integer.toString(value);
+    }
+
+    @Override
+    public String printUncumulatedData() {
+        return Integer.toString(value);
+    }
+
+    @Override
     public void createScaledAdoptionData(double scale, boolean fixError) {
     }
 

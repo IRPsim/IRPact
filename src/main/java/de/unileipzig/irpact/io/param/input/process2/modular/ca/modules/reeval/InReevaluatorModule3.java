@@ -12,6 +12,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsume
 import de.unileipzig.irpact.io.param.input.process2.modular.util.CAMPMGraphSettings;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
+import de.unileipzig.irptools.defstructure.annotation.Edn;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.defstructure.annotation.graph.GraphEdge;
 import de.unileipzig.irptools.defstructure.annotation.graph.GraphNode;
@@ -36,6 +37,9 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
 //                border = REEVAL_BORDER,
 //                tags = {REEVAL_GRAPHNODE}
 //        )
+        edn = @Edn(
+                additionalTags2 = CAMPMGraphSettings.REEVAL_NODE
+        ),
         graphNode3 = @GraphNode(
                 graphId = CAMPMGraphSettings.GRAPH_ID,
                 subsetsColor = @Subsets(

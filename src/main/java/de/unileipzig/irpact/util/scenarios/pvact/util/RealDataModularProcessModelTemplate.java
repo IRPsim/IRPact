@@ -6,6 +6,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.components.init.gene
 import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.InLinearePercentageAgentAttributeUpdater;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.pvact.RealData;
 import de.unileipzig.irpact.util.scenarios.util.AttributeNameManager;
 import de.unileipzig.irpact.util.scenarios.util.ModuleManager;
@@ -17,10 +18,16 @@ public class RealDataModularProcessModelTemplate extends DefaultModularProcessMo
 
     public RealDataModularProcessModelTemplate(String mpmName) {
         super(mpmName);
+        init();
     }
 
     public RealDataModularProcessModelTemplate(ModuleManager mm, AttributeNameManager anm, String mpmName) {
         super(mm, anm, mpmName);
+        init();
+    }
+
+    protected void init() {
+        setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
     }
 
     protected String novScalerName = "NOV_SCALER";

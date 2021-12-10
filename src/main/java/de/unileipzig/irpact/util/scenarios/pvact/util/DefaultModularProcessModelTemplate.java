@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
 import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
@@ -31,7 +32,6 @@ import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBased
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactDefaultAwarenessInterestHandler;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
-import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.util.AttributeNameManager;
 import de.unileipzig.irpact.util.scenarios.util.ModularProcessModelTemplate;
 import de.unileipzig.irpact.util.scenarios.util.ModuleManager;
@@ -62,6 +62,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     protected Supplier<? extends InPVFile> pvFileSupplier;
     protected Supplier<? extends InRealAdoptionDataFile> realAdoptionFileSupplier;
     protected Consumer<? super InBasicCAModularProcessModel> applyNewProductHandler;
+    protected Supplier<? extends InColorPalette> colorPaletteSupplier;
 
     protected boolean raEnabled = true;
 
@@ -790,12 +791,40 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         this.applyNewProductHandler = applyNewProductHandler;
     }
 
+    public void setColorPaletteSupplier(Supplier<? extends InColorPalette> colorPaletteSupplier) {
+        this.colorPaletteSupplier = colorPaletteSupplier;
+    }
+
+    public void setColorPalette(InColorPalette colorPalette) {
+        setColorPaletteSupplier(() -> colorPalette);
+
+    }
+
+    protected InColorPalette colorPalette;
+    protected InColorPalette getColorPaletteOrNull() {
+        if(colorPalette != null) {
+            return colorPalette;
+        }
+
+        if(colorPaletteSupplier == null) {
+            return null;
+        }
+
+        colorPalette = colorPaletteSupplier.get();
+        return colorPalette;
+    }
+
     //=========================
     //moduls
     //=========================
 
     public <R extends InModule2> R findModule(String name) {
         return mm.findModuleAuto(name);
+    }
+
+    public <R extends InModule2> void peekModule(String name, Class<R> c, Consumer<? super R> consumer) {
+        R m = findModule(name);
+        consumer.accept(m);
     }
 
     public InMulScalarModule3 findWeightModule(String name) {
@@ -950,58 +979,66 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         InCsvValueLoggingModule3 localReevalLogger = findLoggingModule(getLocalShareReevalLoggerModuleName());
         InCsvValueLoggingModule3 utilityReevalLogger = findLoggingModule(getUtilityReevalLoggerModuleName());
 
-        InSpecialAverageQuantilRangeImage novQuantile1 = InSpecialAverageQuantilRangeImage.NOV();
-        novQuantile1.setLoggingModule(novReevalLogger);
-        boolean changed = images.add(novQuantile1);
+        InColorPalette colorPalette = getColorPaletteOrNull();
+
+        InSpecialAverageQuantilRangeImage novQuantile = InSpecialAverageQuantilRangeImage.NOV();
+        novQuantile.setLoggingModule(novReevalLogger);
+        novQuantile.setColorPalette(colorPalette);
+        boolean changed = images.add(novQuantile);
 
         InSpecialAverageQuantilRangeImage envQuantile = InSpecialAverageQuantilRangeImage.ENV();
         envQuantile.setLoggingModule(envReevalLogger);
+        envQuantile.setColorPalette(colorPalette);
         changed |= images.add(envQuantile);
 
         InSpecialAverageQuantilRangeImage npvQuantile = InSpecialAverageQuantilRangeImage.NPV();
         npvQuantile.setLoggingModule(npvReevalLogger);
+        npvQuantile.setColorPalette(colorPalette);
         changed |= images.add(npvQuantile);
 
         InSpecialAverageQuantilRangeImage socialQuantil = InSpecialAverageQuantilRangeImage.SOCIAL();
         socialQuantil.setLoggingModule(socialReevalLogger);
+        socialQuantil.setColorPalette(colorPalette);
         changed |= images.add(socialQuantil);
 
         InSpecialAverageQuantilRangeImage localQuantil = InSpecialAverageQuantilRangeImage.LOCAL();
         localQuantil.setLoggingModule(localReevalLogger);
+        localQuantil.setColorPalette(colorPalette);
         changed |= images.add(localQuantil);
 
         InSpecialAverageQuantilRangeImage utilityQuantil = InSpecialAverageQuantilRangeImage.UTILITY();
         utilityQuantil.setLoggingModule(utilityReevalLogger);
+        utilityQuantil.setColorPalette(colorPalette);
         changed |= images.add(utilityQuantil);
 
         InAnnualBucketImage npvBucket = InAnnualBucketImage.NPV();
         npvBucket.setLoggingModule(npvReevalLogger);
-        npvBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        npvBucket.setColorPalette(colorPalette);
         changed |= images.add(npvBucket);
 
         InAnnualBucketImage envBucket = InAnnualBucketImage.ENV();
         envBucket.setLoggingModule(envReevalLogger);
-        envBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        envBucket.setColorPalette(colorPalette);
         changed |= images.add(envBucket);
 
         InAnnualBucketImage novBucket = InAnnualBucketImage.NOV();
         novBucket.setLoggingModule(novReevalLogger);
-        novBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        novBucket.setColorPalette(colorPalette);
         changed |= images.add(novBucket);
 
         InAnnualBucketImage socialBucket = InAnnualBucketImage.SOCIAL();
         socialBucket.setLoggingModule(socialReevalLogger);
-        socialBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        socialBucket.setColorPalette(colorPalette);
         changed |= images.add(socialBucket);
 
         InAnnualBucketImage localBucket = InAnnualBucketImage.LOCAL();
         localBucket.setLoggingModule(localReevalLogger);
-        localBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        localBucket.setColorPalette(colorPalette);
         changed |= images.add(localBucket);
 
         InAnnualBucketImage utlityBucket = InAnnualBucketImage.UTILITY();
         utlityBucket.setLoggingModule(utilityReevalLogger);
-        utlityBucket.setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        utlityBucket.setColorPalette(colorPalette);
         changed |= images.add(utlityBucket);
 
         //Custom-Test
@@ -1019,6 +1056,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 //        customNovQuantile1.setCustomImageId(1);
 //        customNovQuantile1.setQuantileRanges(qr0, qr1);
 //        customNovQuantile1.setLoggingModule(novLogger);
+//        customNovQuantile1.setColorPalette(colorPalette);
 //        changed |= images.add(customNovQuantile1);
 //
 //        InCustomAverageQuantilRangeImage customNovQuantile2 = new InCustomAverageQuantilRangeImage();
@@ -1026,29 +1064,40 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 //        customNovQuantile2.setCustomImageId(2);
 //        customNovQuantile2.setQuantileRanges(qr0, qr1);
 //        customNovQuantile2.setLoggingModule(novReevalLogger);
+//        customNovQuantile2.setColorPalette(colorPalette);
 //        changed |= images.add(customNovQuantile2);
 
         //Adoption Phase Overview
         InAdoptionPhaseOverviewImage adoptionPhaseOverview = InAdoptionPhaseOverviewImage.createDefault();
+        adoptionPhaseOverview.setColorPalette(colorPalette);
         changed |= images.add(adoptionPhaseOverview);
 
         //Compared Annual
         InComparedAnnualImage annualImage = InComparedAnnualImage.createDefault();
         annualImage.setRealData(getValidRealAdoptionFile());
+        annualImage.setColorPalette(colorPalette);
         changed |= images.add(annualImage);
 
         //Compared Annual Zip
         InComparedAnnualZipImage annualZipImage = InComparedAnnualZipImage.createDefault();
         annualZipImage.setRealData(getValidRealAdoptionFile());
+        annualZipImage.setColorPalette(colorPalette);
         changed |= images.add(annualZipImage);
 
         //Interest
         InInterestOverviewImage interestOverview = InInterestOverviewImage.createDefault();
+        interestOverview.setColorPalette(colorPalette);
         changed |= images.add(interestOverview);
 
         //Process Phase Overview
         InProcessPhaseOverviewImage processPhaseOverview = InProcessPhaseOverviewImage.createDefault();
+        processPhaseOverview.setColorPalette(colorPalette);
         changed |= images.add(processPhaseOverview);
+
+        //annual milieu
+        InAnnualMilieuImage annualMilieuImage = InAnnualMilieuImage.createDefault();
+        annualMilieuImage.setColorPalette(colorPalette);
+        changed |= images.add(annualMilieuImage);
 
         return changed;
     }

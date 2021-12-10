@@ -5,7 +5,6 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.*;
 
 /**
@@ -666,20 +663,6 @@ public class InGeneral implements Copyable {
         return evaluationBucketSize;
     }
 
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
-    public boolean logAllEvaluation = false;
-
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
-    public boolean logFinancialComponent = false;
-
     //=========================
     //script + data logging
     //=========================
@@ -736,8 +719,6 @@ public class InGeneral implements Copyable {
         //data logging
         //result logging
         copy.logResultAdoptionsAll = logResultAdoptionsAll;
-        copy.logAllEvaluation = logAllEvaluation;
-        copy.logFinancialComponent = logFinancialComponent;
         //script + data logging
         copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
         copy.logScriptAdoptionsZipPhase = logScriptAdoptionsZipPhase;
@@ -770,8 +751,6 @@ public class InGeneral implements Copyable {
         logPhaseOverview = true;
         logInterest = true;
         logEvaluation = true;
-        logAllEvaluation = true;
-        logFinancialComponent = true;
     }
 
     public void enableAllScriptLogging() {
@@ -799,7 +778,6 @@ public class InGeneral implements Copyable {
     public void setup(IRPactInputParser parser) throws ParsingException {
         parseSettings(parser.getEnvironment().getSettings());
         parseDataAnalyserSettings(parser.getEnvironment().getDataAnalyser());
-        parseDataLoggerSettings(parser.getEnvironment().getDataLogger());
         parseSeed(parser);
         parseLifeCycleControl(parser);
 
@@ -819,11 +797,6 @@ public class InGeneral implements Copyable {
         dataAnalyser.setLogPhaseTransition(logPhaseOverview);
         dataAnalyser.setLogEvaluationData(logEvaluation);
         dataAnalyser.setEvaluationBucketSize(evaluationBucketSize);
-    }
-
-    public void parseDataLoggerSettings(DataLogger dataLogger) {
-        dataLogger.enableLogEvaluation(logAllEvaluation);
-        dataLogger.enableLogFinancialComponent(logFinancialComponent);
     }
 
     private void parseSeed(IRPactInputParser parser) {

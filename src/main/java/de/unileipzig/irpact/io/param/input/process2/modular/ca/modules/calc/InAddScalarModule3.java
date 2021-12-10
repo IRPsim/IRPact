@@ -34,6 +34,9 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
 //                border = CALC_BORDER,
 //                tags = {CALC_GRAPHNODE}
 //        )
+        edn = @Edn(
+                additionalTags2 = CAMPMGraphSettings.CALC_NODE
+        ),
         graphNode3 = @GraphNode(
                 graphId = CAMPMGraphSettings.GRAPH_ID,
                 subsetsColor = @Subsets(

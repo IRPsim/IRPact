@@ -115,8 +115,8 @@ public class AnnualBucketGnuplotImageHandler
         max.modifiy(v -> v * PRETTY_FACTOR);
 
         CsvJsonTableImageDataWithCache imageData = new CsvJsonTableImageDataWithCache(gnuplotData, getCsvDelimiter());
-        imageData.putInCache("min", min.isEmpty() ? null : min.get());
-        imageData.putInCache("max", max.isEmpty() ? null : max.get());
+        imageData.putInCache("min", min.getOrBoxed(null));
+        imageData.putInCache("max", max.getOrBoxed(null));
         return imageData;
     }
 }

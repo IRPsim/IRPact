@@ -1,13 +1,12 @@
 package de.unileipzig.irpact.core.postprocessing.image3;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.logging.LazyString;
 import de.unileipzig.irpact.commons.resource.JsonResource;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
-import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.core.postprocessing.image3.gnuplot.*;
-import de.unileipzig.irpact.core.postprocessing.image3.selector.CustomAverageQuantilRangeSelector;
+import de.unileipzig.irpact.core.postprocessing.image3.selector.*;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.InRoot;
@@ -22,6 +21,7 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -45,7 +45,15 @@ public class ImageProcessor2 extends PostProcessor {
     }
 
     protected void initDefaultSelectors() {
+        SELECTORS.add(new AdoptionPhaseOverviewSelector(this));
+        SELECTORS.add(new AnnualBucketSelector(this));
+        SELECTORS.add(new AnnualMilieuSelector(this));
+        SELECTORS.add(new ComparedAnnualSelector(this));
+        SELECTORS.add(new ComparedAnnualZipSelector(this));
         SELECTORS.add(new CustomAverageQuantilRangeSelector(this));
+        SELECTORS.add(new InterestOverviewSelector(this));
+        SELECTORS.add(new ProcessPhaseOverviewSelector(this));
+        SELECTORS.add(new SpecialAverageQuantilRangeSelector(this));
     }
 
     @Override
@@ -146,32 +154,6 @@ public class ImageProcessor2 extends PostProcessor {
         return getLocalizedData(IMAGES_BASENAME, IMAGES_EXTENSION);
     }
 
-    protected void handle2(InOutputImage2 image) throws Throwable {
-        if(image == null) {
-            warn("skip null image");
-            return;
-        }
-
-        if(image.isDisabled()) {
-            info("skip disabled image '{}'", image.getName());
-            return;
-        }
-
-        if(image.hasNothingToStore()) {
-            info("skip pointless image '{}' (nothing to store)", image.getName());
-            return;
-        }
-
-        for(ImageHandlerSelector selector: SELECTORS) {
-            if(selector.isSupported(image)) {
-                selector.handle(image);
-                return;
-            }
-        }
-
-        warn("unsupported image: " + image.getName());
-    }
-
     protected void handle(InOutputImage2 image) throws Throwable {
         if(image == null) {
             warn("skip null image");
@@ -188,152 +170,37 @@ public class ImageProcessor2 extends PostProcessor {
             return;
         }
 
-        if(image instanceof InCustomAverageQuantilRangeImage) {
-            handleCustomQuantilRangeImage((InCustomAverageQuantilRangeImage) image);
-        }
-        else if(image instanceof InSpecialAverageQuantilRangeImage) {
-            handleSpecialQuantilRangeImage((InSpecialAverageQuantilRangeImage) image);
-        }
-        else if(image instanceof InComparedAnnualImage) {
-            handleComparedAnnualImage((InComparedAnnualImage) image);
-        }
-        else if(image instanceof InComparedAnnualZipImage) {
-            handleComparedAnnualZipImage((InComparedAnnualZipImage) image);
-        }
-        else if(image instanceof InAdoptionPhaseOverviewImage) {
-            handleAdoptionPhaseOverviewImage((InAdoptionPhaseOverviewImage) image);
-        }
-        else if(image instanceof InInterestOverviewImage) {
-            handleInterestOverviewImage((InInterestOverviewImage) image);
-        }
-        else if(image instanceof InProcessPhaseOverviewImage) {
-            handleProcessPhaseOverviewImage((InProcessPhaseOverviewImage) image);
-        }
-        else if(image instanceof InAnnualBucketImage) {
-            handleAnnualBucketImage((InAnnualBucketImage) image);
-        }
-        else {
-            warn("unsupported image: " + image.getName());
+        List<ImageHandlerSelector> validSelectors = findAllSupportedSelectors(image);
+
+        switch(validSelectors.size()) {
+            case 0:
+                warn("unsupported image: " + image.getName());
+                break;
+
+            case 1:
+                ImageHandlerSelector selector = validSelectors.get(0);
+                debug("use selector '{}'", selector.getClass().getSimpleName());
+                ImageHandler handler = selector.getHandler(image);
+                handler.init();
+                handler.execute();
+                break;
+
+            default:
+                warn("multiple selectors found ({}), skip", new LazyString(() -> validSelectors.stream()
+                        .map(_selector -> _selector.getClass().getSimpleName())
+                        .collect(Collectors.toList()))
+                );
+                break;
         }
     }
 
-    protected void handleCustomQuantilRangeImage(InCustomAverageQuantilRangeImage image) throws Throwable {
-        trace("handle InCustomAverageQuantilRangeImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new CustomAverageQuantilRangeGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
+    protected List<ImageHandlerSelector> findAllSupportedSelectors(InOutputImage2 image) {
+        List<ImageHandlerSelector> supportedSelectors = new ArrayList<>();
+        for(ImageHandlerSelector selector: SELECTORS) {
+            if(selector.isSupported(image)) {
+                supportedSelectors.add(selector);
+            }
         }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleSpecialQuantilRangeImage(InSpecialAverageQuantilRangeImage image) throws Throwable {
-        trace("handle InSpecialAverageQuantilRangeImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new SpecialAverageQuantilRangeGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleComparedAnnualImage(InComparedAnnualImage image) throws Throwable {
-        trace("handle InComparedAnnualImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new ComparedAnnualGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleComparedAnnualZipImage(InComparedAnnualZipImage image) throws Throwable {
-        trace("handle InComparedAnnualZipImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new ComparedAnnualZipGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleAdoptionPhaseOverviewImage(InAdoptionPhaseOverviewImage image) throws Throwable {
-        trace("handle InAdoptionPhaseOverviewImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new AdoptionPhaseOverviewGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleInterestOverviewImage(InInterestOverviewImage image) throws Throwable {
-        trace("handle InInterestOverviewImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new InterestOverviewGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleProcessPhaseOverviewImage(InProcessPhaseOverviewImage image) throws Throwable {
-        trace("handle InProcessPhaseOverviewImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new ProcessPhaseOverviewGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
-    }
-
-    protected void handleAnnualBucketImage(InAnnualBucketImage image) throws Throwable {
-        trace("handle InAnnualBucketImage '{}'", image.getName());
-
-        ImageHandler handler;
-        if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = new AnnualBucketGnuplotImageHandler(this, image);
-        } else {
-            warn("R not supported, skip");
-            return;
-        }
-
-        handler.init();
-        handler.execute();
+        return supportedSelectors;
     }
 }

@@ -15,7 +15,6 @@ import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
 import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -32,13 +31,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class DataProcessor extends PostProcessor {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataProcessor.class);
@@ -104,15 +103,15 @@ public class DataProcessor extends PostProcessor {
             logEvaluationData();
         }
 
-        trace("isLogEvaluation: {}", getDataLogger().isLogEvaluation());
-        if(getDataLogger().isLogEvaluation()) {
-            logEvaluation();
-        }
-
-        trace("isLogFinancialComponent: {}", getDataLogger().isLogFinancialComponent());
-        if(getDataLogger().isLogFinancialComponent()) {
-            logFinancialComponent();
-        }
+//        trace("isLogEvaluation: {}", getDataLogger().isLogEvaluation());
+//        if(getDataLogger().isLogEvaluation()) {
+//            logEvaluation();
+//        }
+//
+//        trace("isLogFinancialComponent: {}", getDataLogger().isLogFinancialComponent());
+//        if(getDataLogger().isLogFinancialComponent()) {
+//            logFinancialComponent();
+//        }
     }
 
     protected void cleanUp() {
@@ -747,21 +746,23 @@ public class DataProcessor extends PostProcessor {
         trace("map csv to xlsx");
         data.mapColumn(3, 0, node -> {
             String str = node.textValue();
-            if(DataLogger.NO_VALUE.equals(str)) {
-                return node;
-            } else {
-                return data.getCreator().numberNode(Integer.parseInt(str));
-            }
+            return null;
+//            if(DataLogger.NO_VALUE.equals(str)) {
+//                return node;
+//            } else {
+//                return data.getCreator().numberNode(Integer.parseInt(str));
+//            }
         });
 
         for(int c = 4; c < 28; c++) {
             data.mapColumn(c, 0, node -> {
                 String str = node.textValue();
-                if(DataLogger.NO_VALUE.equals(str)) {
-                    return node;
-                } else {
-                    return data.getCreator().numberNode(Double.parseDouble(str));
-                }
+                return null;
+//                if(DataLogger.NO_VALUE.equals(str)) {
+//                    return node;
+//                } else {
+//                    return data.getCreator().numberNode(Double.parseDouble(str));
+//                }
             });
         }
 
@@ -804,13 +805,13 @@ public class DataProcessor extends PostProcessor {
         writer.write(xlsxFile, getAllEvalString("sheet"), data);
 
         //cleanup
-        getDataLogger().finishLogEvaluation();
-        try {
-            trace("delete: {}", getDataLogger().getLogEvaluationTarget());
-            Files.deleteIfExists(getDataLogger().getLogEvaluationTarget());
-        } catch (IOException e) {
-            warn("deleting failed", e);
-        }
+//        getDataLogger().finishLogEvaluation();
+//        try {
+//            trace("delete: {}", getDataLogger().getLogEvaluationTarget());
+//            Files.deleteIfExists(getDataLogger().getLogEvaluationTarget());
+//        } catch (IOException e) {
+//            warn("deleting failed", e);
+//        }
     }
 
     protected String getAllEvalString(String key) {
@@ -845,21 +846,23 @@ public class DataProcessor extends PostProcessor {
         trace("map csv to xlsx");
         data.mapColumn(3, 0, node -> {
             String str = node.textValue();
-            if(DataLogger.NO_VALUE.equals(str)) {
-                return node;
-            } else {
-                return data.getCreator().numberNode(Integer.parseInt(str));
-            }
+            return null;
+//            if(DataLogger.NO_VALUE.equals(str)) {
+//                return node;
+//            } else {
+//                return data.getCreator().numberNode(Integer.parseInt(str));
+//            }
         });
 
         for(int c = 4; c < 16; c++) {
             data.mapColumn(c, 0, node -> {
                 String str = node.textValue();
-                if(DataLogger.NO_VALUE.equals(str)) {
-                    return node;
-                } else {
-                    return data.getCreator().numberNode(Double.parseDouble(str));
-                }
+                return null;
+//                if(DataLogger.NO_VALUE.equals(str)) {
+//                    return node;
+//                } else {
+//                    return data.getCreator().numberNode(Double.parseDouble(str));
+//                }
             });
         }
 
@@ -890,13 +893,13 @@ public class DataProcessor extends PostProcessor {
         writer.write(xlsxFile, getFinString("sheet"), data);
 
         //cleanup
-        getDataLogger().finishLogFinancialComponent();
-        try {
-            trace("delete: {}", getDataLogger().getLogFinancialComponentTarget());
-            Files.deleteIfExists(getDataLogger().getLogFinancialComponentTarget());
-        } catch (IOException e) {
-            warn("deleting failed", e);
-        }
+//        getDataLogger().finishLogFinancialComponent();
+//        try {
+//            trace("delete: {}", getDataLogger().getLogFinancialComponentTarget());
+//            Files.deleteIfExists(getDataLogger().getLogFinancialComponentTarget());
+//        } catch (IOException e) {
+//            warn("deleting failed", e);
+//        }
     }
 
     protected String getFinString(String key) {

@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.23.0" 
+        :description "IRPact v1.24.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -103,13 +103,13 @@
             :label "Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualImage" 
             :description "todo" 
-            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "showUnscaled"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "PLZ-basierte Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualZipImage" 
             :description "todo" 
-            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "showUnscaled"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "Adoptionsphasenübersicht" 
@@ -134,6 +134,12 @@
             :set "set_InAnnualBucketImage" 
             :description "todo" 
             :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InColorPalette" "colorPalette"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
+          } 
+          {
+            :label "Jährliche Adoptionen nach Milieu" 
+            :set "set_InAnnualMilieuImage" 
+            :description "todo" 
+            :tags [["InAnnualMilieuImage" "enabled"] ["InAnnualMilieuImage" "useGnuplot"] ["InAnnualMilieuImage" "useR"] ["InAnnualMilieuImage" "storeScript"] ["InAnnualMilieuImage" "storeData"] ["InAnnualMilieuImage" "storeImage"] ["InAnnualMilieuImage" "imageWidth"] ["InAnnualMilieuImage" "imageHeight"] ["InAnnualMilieuImage" "boxWidth"] ["InAnnualMilieuImage" "showInitial"] ["InAnnualMilieuImage" "useCustomYRange"] ["InAnnualMilieuImage" "minY"] ["InAnnualMilieuImage" "maxY"] ["InAnnualMilieuImage" "customImageId"] ["link" "InAnnualMilieuImage" "InColorPalette" "colorPalette"]]
           }
         ]
       } 
@@ -541,30 +547,30 @@
         :description "GRAPH-TEST-DESC" 
         :graph {
           :edges {
-            :tags [["link" "InIfElseActionModule3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InRunUntilFailureModule3" "InConsumerAgentModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InDoAdoptModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InFeasibilityModule3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "impededModule"] ["link" "InPhaseUpdateModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InReevaluatorModule3" "InConsumerAgentModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
+            :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
             :groups [
               {
-                :tags [["link" "InIfElseActionModule3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentBoolModule2" "finCheckModule"]] 
+                :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"]] 
                 :label "Entscheidungskante" 
                 :color "LightSlateGrey"
               } 
               {
-                :tags [["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InFeasibilityModule3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "impededModule"]] 
+                :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"]] 
                 :label "Aktionskante" 
                 :color "DarkCyan"
               } 
               {
-                :tags [["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "utilityModule"]] 
+                :tags [["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"]] 
                 :label "Berechnungskante" 
                 :color "Green"
               } 
               {
-                :tags [["link" "InRunUntilFailureModule3" "InConsumerAgentModule2" "inputModule"] ["link" "InReevaluatorModule3" "InConsumerAgentModule2" "inputModule"]] 
+                :tags [["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"]] 
                 :label "Systemkante" 
                 :color "Magenta"
               } 
               {
-                :tags [["link" "InDoAdoptModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InPhaseUpdateModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
+                :tags [["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
                 :label "PVact-Kante" 
                 :color "#7012FE"
               }
@@ -582,42 +588,42 @@
               :type :subsets 
               :groups [
                 {
-                  :tags [["InCommunicationModule3"] ["InIfElseActionModule3"] ["InNOPModule3"] ["InRewireModule3"]] 
+                  :tags [["InCommunicationModule3" "actionnode3"] ["InIfElseActionModule3" "actionnode3"] ["InNOPModule3" "actionnode3"] ["InRewireModule3" "actionnode3"]] 
                   :label "Aktionsmodule" 
                   :value "DarkCyan"
                 } 
                 {
-                  :tags [["InThresholdReachedModule3"] ["InBernoulliModule3"]] 
+                  :tags [["InThresholdReachedModule3" "boolnode3"] ["InBernoulliModule3" "boolnode3"]] 
                   :label "Entscheidungsmodule" 
                   :value "LightSlateGrey"
                 } 
                 {
-                  :tags [["InAddScalarModule3"] ["InLogisticModule3"] ["InMulScalarModule3"] ["InProductModule3"] ["InSumModule3"]] 
+                  :tags [["InAddScalarModule3" "calcnode3"] ["InLogisticModule3" "calcnode3"] ["InMulScalarModule3" "calcnode3"] ["InProductModule3" "calcnode3"] ["InSumModule3" "calcnode3"]] 
                   :label "Berechnungsmodule" 
                   :value "Green"
                 } 
                 {
-                  :tags [["InAttributeInputModule3"] ["InAvgFinModule3"] ["InGlobalAvgNPVModule3"] ["InLocalShareOfAdopterModule3"] ["InNaNModule3"] ["InNPVModule3"] ["InSocialShareOfAdopterModule3"] ["InValueModule3"]] 
+                  :tags [["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "#CAFE12"
                 } 
                 {
-                  :tags [["InCsvValueLoggingModule3"]] 
+                  :tags [["InCsvValueLoggingModule3" "calclognode3"]] 
                   :label "Loggingmodule" 
                   :value "#FEAF12"
                 } 
                 {
-                  :tags [["InRunUntilFailureModule3"]] 
+                  :tags [["InRunUntilFailureModule3" "evalnode3"]] 
                   :label "Systemmodule" 
                   :value "Blue"
                 } 
                 {
-                  :tags [["InDecisionMakingDeciderModule3"] ["InDoAdoptModule3"] ["InFeasibilityModule3"] ["InInitializationModule3"] ["InInterestModule3"] ["InMainBranchingModule3"] ["InPhaseUpdateModule3"] ["InYearBasedAdoptionDeciderModule3"] ["InPhaseLoggingModule3"]] 
+                  :tags [["InDecisionMakingDeciderModule3" "evalranode3"] ["InDoAdoptModule3" "evalranode3"] ["InFeasibilityModule3" "evalranode3"] ["InInitializationModule3" "evalranode3"] ["InInterestModule3" "evalranode3"] ["InMainBranchingModule3" "evalranode3"] ["InPhaseUpdateModule3" "evalranode3"] ["InYearBasedAdoptionDeciderModule3" "evalranode3"] ["InPhaseLoggingModule3" "evalranode3"]] 
                   :label "PVact-Module" 
                   :value "#7012FE"
                 } 
                 {
-                  :tags [["InReevaluatorModule3"]] 
+                  :tags [["InReevaluatorModule3" "reevalnode3"]] 
                   :label "Reevaluierungsmodule" 
                   :value "Magenta"
                 }
@@ -628,42 +634,42 @@
               :type :subsets 
               :groups [
                 {
-                  :tags [["InCommunicationModule3"] ["InIfElseActionModule3"] ["InNOPModule3"] ["InRewireModule3"]] 
+                  :tags [["InCommunicationModule3" "actionnode3"] ["InIfElseActionModule3" "actionnode3"] ["InNOPModule3" "actionnode3"] ["InRewireModule3" "actionnode3"]] 
                   :label "Aktionsmodule" 
                   :value "octagon"
                 } 
                 {
-                  :tags [["InThresholdReachedModule3"] ["InBernoulliModule3"]] 
+                  :tags [["InThresholdReachedModule3" "boolnode3"] ["InBernoulliModule3" "boolnode3"]] 
                   :label "Entscheidungsmodule" 
                   :value "gear"
                 } 
                 {
-                  :tags [["InAddScalarModule3"] ["InLogisticModule3"] ["InMulScalarModule3"] ["InProductModule3"] ["InSumModule3"]] 
+                  :tags [["InAddScalarModule3" "calcnode3"] ["InLogisticModule3" "calcnode3"] ["InMulScalarModule3" "calcnode3"] ["InProductModule3" "calcnode3"] ["InSumModule3" "calcnode3"]] 
                   :label "Berechnungsmodule" 
                   :value "square"
                 } 
                 {
-                  :tags [["InAttributeInputModule3"] ["InAvgFinModule3"] ["InGlobalAvgNPVModule3"] ["InLocalShareOfAdopterModule3"] ["InNaNModule3"] ["InNPVModule3"] ["InSocialShareOfAdopterModule3"] ["InValueModule3"]] 
+                  :tags [["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "flower"
                 } 
                 {
-                  :tags [["InCsvValueLoggingModule3"]] 
+                  :tags [["InCsvValueLoggingModule3" "calclognode3"]] 
                   :label "Loggingmodule" 
                   :value "diamond"
                 } 
                 {
-                  :tags [["InRunUntilFailureModule3"]] 
+                  :tags [["InRunUntilFailureModule3" "evalnode3"]] 
                   :label "Systemmodule" 
                   :value "pentagon"
                 } 
                 {
-                  :tags [["InDecisionMakingDeciderModule3"] ["InDoAdoptModule3"] ["InFeasibilityModule3"] ["InInitializationModule3"] ["InInterestModule3"] ["InMainBranchingModule3"] ["InPhaseUpdateModule3"] ["InYearBasedAdoptionDeciderModule3"] ["InPhaseLoggingModule3"]] 
+                  :tags [["InDecisionMakingDeciderModule3" "evalranode3"] ["InDoAdoptModule3" "evalranode3"] ["InFeasibilityModule3" "evalranode3"] ["InInitializationModule3" "evalranode3"] ["InInterestModule3" "evalranode3"] ["InMainBranchingModule3" "evalranode3"] ["InPhaseUpdateModule3" "evalranode3"] ["InYearBasedAdoptionDeciderModule3" "evalranode3"] ["InPhaseLoggingModule3" "evalranode3"]] 
                   :label "PVact-Module" 
                   :value "circle"
                 } 
                 {
-                  :tags [["InReevaluatorModule3"]] 
+                  :tags [["InReevaluatorModule3" "reevalnode3"]] 
                   :label "Reevaluierungsmodule" 
                   :value "triangle-down"
                 }
@@ -809,15 +815,15 @@
             :sections [
               {
                 :label "IfElseActionModule" 
-                :set "set_InIfElseActionModule3" 
+                :set "set_InIfElseActionModule3_actionnode3" 
                 :description "todo" 
-                :tags [["link" "InIfElseActionModule3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "InConsumerAgentActionModule2" "onFalseModule"]]
+                :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"]]
               } 
               {
                 :label "NOP" 
-                :set "set_InNOPModule3" 
+                :set "set_InNOPModule3_actionnode3" 
                 :description "todo" 
-                :tags [["InNOPModule3" "placeholder"]]
+                :tags [["InNOPModule3" "actionnode3" "placeholder"]]
               }
             ]
           } 
@@ -827,15 +833,15 @@
             :sections [
               {
                 :label "BernoulliModule" 
-                :set "set_InBernoulliModule3" 
+                :set "set_InBernoulliModule3_boolnode3" 
                 :description "todo" 
-                :tags [["InBernoulliModule3" "priority"] ["link" "InBernoulliModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["InBernoulliModule3" "boolnode3" "priority"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               } 
               {
                 :label "ThresholdReachedModule" 
-                :set "set_InThresholdReachedModule3" 
+                :set "set_InThresholdReachedModule3_boolnode3" 
                 :description "todo" 
-                :tags [["InThresholdReachedModule3" "priority"] ["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "InConsumerAgentCalculationModule2" "thresholdModule"]]
+                :tags [["InThresholdReachedModule3" "boolnode3" "priority"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"]]
               }
             ]
           } 
@@ -845,45 +851,45 @@
             :sections [
               {
                 :label "ValueModule" 
-                :set "set_InValueModule3" 
+                :set "set_InValueModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InValueModule3" "value"]]
+                :tags [["InValueModule3" "inputnode3" "value"]]
               } 
               {
                 :label "NaNModule" 
-                :set "set_InNaNModule3" 
+                :set "set_InNaNModule3_inputnode3" 
                 :description "Gibt NaN (not a number) zurück." 
-                :tags [["InNaNModule3" "placeholder"]]
+                :tags [["InNaNModule3" "inputnode3" "placeholder"]]
               } 
               {
                 :label "MulScalarModule" 
-                :set "set_InMulScalarModule3" 
+                :set "set_InMulScalarModule3_calcnode3" 
                 :description "todo" 
-                :tags [["InMulScalarModule3" "scalar"] ["link" "InMulScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["InMulScalarModule3" "calcnode3" "scalar"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               } 
               {
                 :label "AddScalarModule" 
-                :set "set_InAddScalarModule3" 
+                :set "set_InAddScalarModule3_calcnode3" 
                 :description "todo" 
-                :tags [["InAddScalarModule3" "scalar"] ["link" "InAddScalarModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["InAddScalarModule3" "calcnode3" "scalar"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               } 
               {
                 :label "LogisticModule" 
-                :set "set_InLogisticModule3" 
+                :set "set_InLogisticModule3_calcnode3" 
                 :description "L/(1+e^(-k*(x-x0)))" 
-                :tags [["InLogisticModule3" "valueL"] ["InLogisticModule3" "valueK"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "InConsumerAgentCalculationModule2" "x0inputModule"]]
+                :tags [["InLogisticModule3" "calcnode3" "valueL"] ["InLogisticModule3" "calcnode3" "valueK"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"]]
               } 
               {
                 :label "SumModule" 
-                :set "set_InSumModule3" 
+                :set "set_InSumModule3_calcnode3" 
                 :description "todo" 
-                :tags [["link" "InSumModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               } 
               {
                 :label "ProductModule" 
-                :set "set_InProductModule3" 
+                :set "set_InProductModule3_calcnode3" 
                 :description "todo" 
-                :tags [["link" "InProductModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               }
             ]
           } 
@@ -893,9 +899,9 @@
             :sections [
               {
                 :label "RunUntilFailureModule" 
-                :set "set_InRunUntilFailureModule3" 
+                :set "set_InRunUntilFailureModule3_evalnode3" 
                 :description "todo" 
-                :tags [["link" "InRunUntilFailureModule3" "InConsumerAgentModule2" "inputModule"]]
+                :tags [["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"]]
               }
             ]
           } 
@@ -905,9 +911,9 @@
             :sections [
               {
                 :label "InReevaluatorModule" 
-                :set "set_InReevaluatorModule3" 
+                :set "set_InReevaluatorModule3_reevalnode3" 
                 :description "todo" 
-                :tags [["link" "InReevaluatorModule3" "InConsumerAgentModule2" "inputModule"]]
+                :tags [["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"]]
               }
             ]
           }
@@ -923,15 +929,15 @@
             :sections [
               {
                 :label "Kommunikationsmodul" 
-                :set "set_InCommunicationModule3" 
+                :set "set_InCommunicationModule3_actionnode3" 
                 :description "todo" 
-                :tags [["InCommunicationModule3" "adopterPoints"] ["InCommunicationModule3" "interestedPoints"] ["InCommunicationModule3" "awarePoints"] ["InCommunicationModule3" "unknownPoints"] ["InCommunicationModule3" "raEnabled"] ["InCommunicationModule3" "raLoggingEnabled"] ["InCommunicationModule3" "raOpinionLogging"] ["InCommunicationModule3" "raUnceraintyLogging"] ["InCommunicationModule3" "raPrintHeader"] ["InCommunicationModule3" "raKeepCsv"] ["InCommunicationModule3" "raStoreXlsx"] ["InCommunicationModule3" "speedOfConvergence"] ["InCommunicationModule3" "attitudeGap"] ["InCommunicationModule3" "chanceNeutral"] ["InCommunicationModule3" "chanceConvergence"] ["InCommunicationModule3" "chanceDivergence"] ["link" "InCommunicationModule3" "InUncertaintySupplier" "uncertaintySuppliers"]]
+                :tags [["InCommunicationModule3" "actionnode3" "adopterPoints"] ["InCommunicationModule3" "actionnode3" "interestedPoints"] ["InCommunicationModule3" "actionnode3" "awarePoints"] ["InCommunicationModule3" "actionnode3" "unknownPoints"] ["InCommunicationModule3" "actionnode3" "raEnabled"] ["InCommunicationModule3" "actionnode3" "raLoggingEnabled"] ["InCommunicationModule3" "actionnode3" "raOpinionLogging"] ["InCommunicationModule3" "actionnode3" "raUnceraintyLogging"] ["InCommunicationModule3" "actionnode3" "raPrintHeader"] ["InCommunicationModule3" "actionnode3" "raKeepCsv"] ["InCommunicationModule3" "actionnode3" "raStoreXlsx"] ["InCommunicationModule3" "actionnode3" "speedOfConvergence"] ["InCommunicationModule3" "actionnode3" "attitudeGap"] ["InCommunicationModule3" "actionnode3" "chanceNeutral"] ["InCommunicationModule3" "actionnode3" "chanceConvergence"] ["InCommunicationModule3" "actionnode3" "chanceDivergence"] ["link" "InCommunicationModule3" "actionnode3" "InUncertaintySupplier" "uncertaintySuppliers"]]
               } 
               {
                 :label "Rewiremodul" 
-                :set "set_InRewireModule3" 
+                :set "set_InRewireModule3_actionnode3" 
                 :description "todo" 
-                :tags [["InRewireModule3" "placeholder"]]
+                :tags [["InRewireModule3" "actionnode3" "placeholder"]]
               }
             ]
           } 
@@ -941,39 +947,39 @@
             :sections [
               {
                 :label "Attributmodul" 
-                :set "set_InAttributeInputModule3" 
+                :set "set_InAttributeInputModule3_inputnode3" 
                 :description "todo" 
-                :tags [["link" "InAttributeInputModule3" "InAttributeName" "attribute"]]
+                :tags [["link" "InAttributeInputModule3" "inputnode3" "InAttributeName" "attribute"]]
               } 
               {
                 :label "GlobalAvgNPVModule" 
-                :set "set_InGlobalAvgNPVModule3" 
+                :set "set_InGlobalAvgNPVModule3_inputnode3" 
                 :description "todo" 
-                :tags [["link" "InGlobalAvgNPVModule3" "InPVFile" "pvFile"]]
+                :tags [["link" "InGlobalAvgNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "NPVModule" 
-                :set "set_InNPVModule3" 
+                :set "set_InNPVModule3_inputnode3" 
                 :description "todo" 
-                :tags [["link" "InNPVModule3" "InPVFile" "pvFile"]]
+                :tags [["link" "InNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "LocalShareOfAdopterModule" 
-                :set "set_InLocalShareOfAdopterModule3" 
+                :set "set_InLocalShareOfAdopterModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InLocalShareOfAdopterModule3" "maxToStore"] ["link" "InLocalShareOfAdopterModule3" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
+                :tags [["InLocalShareOfAdopterModule3" "inputnode3" "maxToStore"] ["link" "InLocalShareOfAdopterModule3" "inputnode3" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
               } 
               {
                 :label "SocialShareOfAdopterModule" 
-                :set "set_InSocialShareOfAdopterModule3" 
+                :set "set_InSocialShareOfAdopterModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InSocialShareOfAdopterModule3" "placeholder"]]
+                :tags [["InSocialShareOfAdopterModule3" "inputnode3" "placeholder"]]
               } 
               {
                 :label "AvgFinModule" 
-                :set "set_InAvgFinModule3" 
+                :set "set_InAvgFinModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InAvgFinModule3" "placeholder"]]
+                :tags [["InAvgFinModule3" "inputnode3" "placeholder"]]
               }
             ]
           } 
@@ -983,9 +989,9 @@
             :sections [
               {
                 :label "MinimalCsvValueLoggingModule" 
-                :set "set_InCsvValueLoggingModule3" 
+                :set "set_InCsvValueLoggingModule3_calclognode3" 
                 :description "todo" 
-                :tags [["InCsvValueLoggingModule3" "enabled"] ["InCsvValueLoggingModule3" "logReevaluatorCall"] ["InCsvValueLoggingModule3" "logDefaultCall"] ["InCsvValueLoggingModule3" "printHeader"] ["InCsvValueLoggingModule3" "storeXlsx"] ["link" "InCsvValueLoggingModule3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["InCsvValueLoggingModule3" "calclognode3" "enabled"] ["InCsvValueLoggingModule3" "calclognode3" "logReevaluatorCall"] ["InCsvValueLoggingModule3" "calclognode3" "logDefaultCall"] ["InCsvValueLoggingModule3" "calclognode3" "printHeader"] ["InCsvValueLoggingModule3" "calclognode3" "storeXlsx"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               }
             ]
           } 
@@ -995,51 +1001,51 @@
             :sections [
               {
                 :label "DecisionMakingDeciderModule" 
-                :set "set_InDecisionMakingDeciderModule3" 
+                :set "set_InDecisionMakingDeciderModule3_evalranode3" 
                 :description "todo" 
-                :tags [["InDecisionMakingDeciderModule3" "forceEvaluation"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "InConsumerAgentCalculationModule2" "utilityModule"]]
+                :tags [["InDecisionMakingDeciderModule3" "evalranode3" "forceEvaluation"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"]]
               } 
               {
                 :label "DoAdoptModule" 
-                :set "set_InDoAdoptModule3" 
+                :set "set_InDoAdoptModule3_evalranode3" 
                 :description "todo" 
-                :tags [["link" "InDoAdoptModule3" "InConsumerAgentEvalRAModule2" "inputModule"]]
+                :tags [["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]]
               } 
               {
                 :label "FeasibilityModule" 
-                :set "set_InFeasibilityModule3" 
+                :set "set_InFeasibilityModule3_evalranode3" 
                 :description "todo" 
-                :tags [["link" "InFeasibilityModule3" "InConsumerAgentActionModule2" "inputModule"]]
+                :tags [["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"]]
               } 
               {
                 :label "InitializationModule" 
-                :set "set_InInitializationModule3" 
+                :set "set_InInitializationModule3_evalranode3" 
                 :description "todo" 
-                :tags [["InInitializationModule3" "placeholder"]]
+                :tags [["InInitializationModule3" "evalranode3" "placeholder"]]
               } 
               {
                 :label "InterestModule" 
-                :set "set_InInterestModule3" 
+                :set "set_InInterestModule3_evalranode3" 
                 :description "todo" 
-                :tags [["link" "InInterestModule3" "InConsumerAgentActionModule2" "inputModule"]]
+                :tags [["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"]]
               } 
               {
                 :label "MainBranchingModule" 
-                :set "set_InMainBranchingModule3" 
+                :set "set_InMainBranchingModule3_evalranode3" 
                 :description "todo" 
-                :tags [["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "InConsumerAgentActionModule2" "impededModule"]]
+                :tags [["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"]]
               } 
               {
                 :label "PhaseUpdateModule" 
-                :set "set_InPhaseUpdateModule3" 
+                :set "set_InPhaseUpdateModule3_evalranode3" 
                 :description "todo" 
-                :tags [["link" "InPhaseUpdateModule3" "InConsumerAgentEvalRAModule2" "inputModule"]]
+                :tags [["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]]
               } 
               {
                 :label "YearBasedAdoptionDeciderModule" 
-                :set "set_InYearBasedAdoptionDeciderModule3" 
+                :set "set_InYearBasedAdoptionDeciderModule3_evalranode3" 
                 :description "rnd.draw < base * pow(factor, currentYear - adoptionYear)" 
-                :tags [["InYearBasedAdoptionDeciderModule3" "enabled"] ["InYearBasedAdoptionDeciderModule3" "base"] ["InYearBasedAdoptionDeciderModule3" "factor"] ["link" "InYearBasedAdoptionDeciderModule3" "InConsumerAgentEvalRAModule2" "inputModule"]]
+                :tags [["InYearBasedAdoptionDeciderModule3" "evalranode3" "enabled"] ["InYearBasedAdoptionDeciderModule3" "evalranode3" "base"] ["InYearBasedAdoptionDeciderModule3" "evalranode3" "factor"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]]
               }
             ]
           } 
@@ -1049,9 +1055,9 @@
             :sections [
               {
                 :label "PhaseLoggingModule" 
-                :set "set_InPhaseLoggingModule3" 
+                :set "set_InPhaseLoggingModule3_evalranode3" 
                 :description "todo" 
-                :tags [["InPhaseLoggingModule3" "enabled"] ["link" "InPhaseLoggingModule3" "InConsumerAgentEvalRAModule2" "inputModule"]]
+                :tags [["InPhaseLoggingModule3" "evalranode3" "enabled"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]]
               }
             ]
           }
@@ -1290,7 +1296,7 @@
           {
             :label "Datenausgabe" 
             :description "Hier kann die Datenausgabe konfiguriert werden." 
-            :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"] ["InGeneral" "logAllEvaluation"] ["InGeneral" "logFinancialComponent"]]
+            :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"]]
           }
         ]
       }

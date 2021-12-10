@@ -417,6 +417,55 @@ InAnnualBucketImage_loggingModule:
   gams_identifier: "Loggingmodule"
   gams_description: "todo"
 
+InAnnualMilieuImage:
+  edn_label: "Jährliche Adoptionen nach Milieu"
+  edn_description: "todo"
+InAnnualMilieuImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualMilieuImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualMilieuImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualMilieuImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualMilieuImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualMilieuImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualMilieuImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualMilieuImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualMilieuImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InAnnualMilieuImage_showInitial:
+  gams_identifier: "Initiale Adoptionen anzeigen?"
+  gams_description: "todo"
+InAnnualMilieuImage_useCustomYRange:
+  gams_identifier: "Benutzerdefinierte Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualMilieuImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualMilieuImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualMilieuImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualMilieuImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
 InComparedAnnualImage:
   edn_label: "Adoptionen mit Realdaten"
   edn_description: "todo"
@@ -755,9 +804,6 @@ InGeneral_logAllEvaluation:
 InGeneral_evaluationBucketSize:
   gams_identifier: "Bereichsgröße (Evaluierungswerte)"
   gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
-InGeneral_logFinancialComponent:
-  gams_identifier: "Finanzielle Komponente"
-  gams_description: "Finanzielle_Komponente.xlsx"
 
 
 color_settings:
@@ -799,7 +845,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.23.0"
+  edn_description: "IRPact v1.24.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

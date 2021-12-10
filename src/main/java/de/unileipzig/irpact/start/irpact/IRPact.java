@@ -14,7 +14,6 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.InitializationStage;
@@ -87,7 +86,7 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "23";
+    private static final String MINOR_STRING = "24";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -110,9 +109,6 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_STACKTRACE = "Stacktrace";
     public static final String IMAGE_STACKTRACE_PNG = IMAGE_STACKTRACE + ".png";
 
-    public static final String IMAGE_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZ";
-    public static final String IMAGE_ANNUAL_ADOPTIONS_PNG = IMAGE_ANNUAL_ADOPTIONS + ".png";
-
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP = "JaehrlicheAdoptionenPLZVergleich";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP + ".png";
 
@@ -120,17 +116,14 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
 
     //UMBENNEN (ProzessModelPhasen)
-    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
-    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG = IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS + ".png";
+    public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW = "Prozessmodellphasenuebersicht";
+    public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW_PNG = IMAGE_PROCESS_MODEL_PHASE_OVERVIEW + ".png";
 
     public static final String IMAGE_ANNUAL_INTEREST = "Interessensentwicklung";
     public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
 
-    //UMBENNEN (AdoptionsPhasen)
-    public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
+    public static final String IMAGE_PHASE_OVERVIEW = "Adoptionsphasenuebersicht";
     public static final String IMAGE_PHASE_OVERVIEW_PNG = IMAGE_PHASE_OVERVIEW + ".png";
-
-    //bei Unsicherheiten in Klammern hinter (Variante X) + Reihenfolge anpassen
 
     public static final String IMAGE_QUANTILE_NPV = "NPV_Quantile";
     public static final String IMAGE_QUANTILE_NPV_PNG = IMAGE_QUANTILE_NPV + ".png";
@@ -167,6 +160,9 @@ public final class IRPact implements IRPActAccess {
 
     public static final String IMAGE_BUCKET_UTILITY = "UTILITY_Buckets";
     public static final String IMAGE_BUCKET_UTILITY_PNG = IMAGE_BUCKET_UTILITY + ".png";
+
+    public static final String IMAGE_ANNUAL_ADOPTION_MILIEU = "JaehrlicheAdoptionenMilieu";
+    public static final String IMAGE_ANNUAL_ADOPTION_MILIEU_PNG = IMAGE_ANNUAL_ADOPTION_MILIEU + ".png";
 
     public static final int INVALID_CUSTOM_IMAGE = 0;
     public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;
@@ -411,8 +407,6 @@ public final class IRPact implements IRPActAccess {
             initializeNewSimulationEnvironment();
         }
 
-        initializeDataLogger();
-
         META_DATA.apply(environment.getSettings());
 
         createGraphvizConfiguration();
@@ -462,17 +456,6 @@ public final class IRPact implements IRPActAccess {
                 updater,
                 inRoot
         );
-    }
-
-    private void initializeDataLogger() throws IOException {
-        Path dir = CL_OPTIONS.getCreatedDownloadDir();
-        DataLogger dataLogger = environment.getDataLogger();
-
-        dataLogger.setLogEvaluationTarget(dir.resolve(ALL_EVAL_CSV));
-        dataLogger.startLogEvaluation();
-
-        dataLogger.setLogFinancialComponentTarget(dir.resolve(FIN_CSV));
-        dataLogger.startLogFinancialComponent();
     }
 
     private void createGraphvizConfiguration() throws Exception {

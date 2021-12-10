@@ -1,6 +1,11 @@
 package de.unileipzig.irpact.commons.util.xlsx;
 
 import de.unileipzig.irpact.commons.util.table.Header;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -34,6 +39,44 @@ public class XlsxSheetWriter<T> {
 
     public void setTextConverter(CellValueConverter<T, String> textConverter) {
         this.textConverter = textConverter;
+    }
+
+    //=========================
+    //stream
+    //=========================
+
+    public SXSSFWorkbook swrite(
+            Path target,
+            String sheetName,
+            Iterable<? extends String> infos,
+            Header header,
+            Iterable<? extends List<T>> rows) throws IOException {
+        return swrite(target, sheetName, infos.iterator(), header, rows.iterator());
+    }
+
+    public SXSSFWorkbook swrite(
+            Path target,
+            String sheetName,
+            Iterator<? extends String> infos,
+            Header header,
+            Iterator<? extends List<T>> rows) throws IOException {
+        SXSSFWorkbook book = new SXSSFWorkbook();
+        swrite(book, sheetName, infos, header, rows);
+        try(OutputStream out = Files.newOutputStream(target)) {
+            book.write(out);
+        }
+        return book;
+    }
+
+    public SXSSFSheet swrite(
+            SXSSFWorkbook book,
+            String sheetName,
+            Iterator<? extends String> infos,
+            Header header,
+            Iterator<? extends List<T>> rows) {
+        SXSSFSheet sheet = sheetName == null ? book.createSheet() : book.createSheet(sheetName);
+        write(sheet, infos, header, rows);
+        return sheet;
     }
 
     //=========================
@@ -84,7 +127,7 @@ public class XlsxSheetWriter<T> {
     }
 
     public void write(
-            XSSFSheet sheet,
+            Sheet sheet,
             Iterable<? extends String> infos,
             Header header,
             Iterable<? extends List<T>> rows) {
@@ -92,7 +135,7 @@ public class XlsxSheetWriter<T> {
     }
 
     public void write(
-            XSSFSheet sheet,
+            Sheet sheet,
             Iterator<? extends String> infos,
             Header header,
             Iterator<? extends List<T>> rows) {
@@ -100,24 +143,24 @@ public class XlsxSheetWriter<T> {
         int rowIndex = 0;
         while(infos.hasNext()) {
             String info = infos.next();
-            XSSFRow commentRow = sheet.createRow(rowIndex++);
+            Row commentRow = sheet.createRow(rowIndex++);
             if(info != null) {
-                XSSFCell cell = commentRow.createCell(0);
+                Cell cell = commentRow.createCell(0);
                 cell.setCellValue(info);
             }
         }
 
-        XSSFRow headerRow = sheet.createRow(rowIndex++);
+        Row headerRow = sheet.createRow(rowIndex++);
         for(int i = 0; i < header.length(); i++) {
-            XSSFCell cell = headerRow.createCell(i);
+            Cell cell = headerRow.createCell(i);
             cell.setCellValue(header.getLabel(i));
         }
 
         while(rows.hasNext()) {
             List<T> rowData = rows.next();
-            XSSFRow row = sheet.createRow(rowIndex++);
+            Row row = sheet.createRow(rowIndex++);
             for(int i = 0; i < rowData.size(); i++) {
-                XSSFCell cell = row.createCell(i);
+                Cell cell = row.createCell(i);
                 T value = rowData.get(i);
                 if(numericConverter.isSupported(header, i, value)) {
                     Number n = numericConverter.convert(header, i, value);

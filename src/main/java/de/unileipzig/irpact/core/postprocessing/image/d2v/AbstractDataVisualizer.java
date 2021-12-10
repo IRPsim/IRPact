@@ -22,6 +22,7 @@ import java.util.function.BiPredicate;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingHelper {
 
     protected ImageProcessor imageProcessor;
@@ -87,7 +88,6 @@ public abstract class AbstractDataVisualizer implements DataVisualizer, LoggingH
 
     protected AnnualEnumeratedAdoptionTotal createAnnualEnumeratedAdoptionTotal(BiPredicate<? super ConsumerAgent, ? super AdoptedProduct> filter) {
         AnnualEnumeratedAdoptionTotal analyser = new AnnualEnumeratedAdoptionTotal();
-        analyser.setInitialYear(imageProcessor.getFirstSimulationYear());
         analyser.setFilter(filter);
         analyser.analyse(imageProcessor.getEnvironment());
         return analyser;

@@ -92,13 +92,11 @@ public class LocalShareOfAdopterModule2
             logLocalNetwork(input, nodeFilter);
         }
 
-        double local = getShareOfAdopterInLocalNetwork(
+        return getShareOfAdopterInLocalNetwork(
                 input,
                 nodeFilter,
                 maxToStore
         );
-        getAgentDataState(input).rawLocalShare = local;
-        return local;
     }
 
     protected void logLocalNetwork(ConsumerAgentData2 input, NodeFilter nodeFilter) {

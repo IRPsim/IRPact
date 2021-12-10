@@ -12,7 +12,6 @@ import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
@@ -485,7 +484,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
-        DataLogger dataLogger = environment.getDataLogger();
+//        DataLogger dataLogger = null;//environment.getDataLogger();
         DataAnalyser dataAnalyser = environment.getDataAnalyser();
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
@@ -497,10 +496,10 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double financialThreshold = getFinancialThreshold(agent, product);
         boolean noFinancial = ft < financialThreshold;
         if(noFinancial && model.isNotForceEvaluate()) {
-            dataLogger.logEvaluationFailed(
-                    agent, product, now,
-                    financialThreshold, ft
-            );
+//            dataLogger.logEvaluationFailed(
+//                    agent, product, now,
+//                    financialThreshold, ft
+//            );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
             setStage(RAStage.IMPEDED);
@@ -564,16 +563,16 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 B
         );
 
-        dataLogger.logEvaluationSuccess(
-                agent, product, now,
-                aWeight, bWeight, cWeight, dWeight,
-                a, b, c, d,
-                fin, env, nov, soc,
-                afin, benv, cnov, dsoc,
-                wafin, wbenv, wcnov, wdsoc,
-                financialThreshold, ft,
-                adoptionThreshold, B
-        );
+//        dataLogger.logEvaluationSuccess(
+//                agent, product, now,
+//                aWeight, bWeight, cWeight, dWeight,
+//                a, b, c, d,
+//                fin, env, nov, soc,
+//                afin, benv, cnov, dsoc,
+//                wafin, wbenv, wcnov, wdsoc,
+//                financialThreshold, ft,
+//                adoptionThreshold, B
+//        );
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
 
@@ -643,13 +642,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double fin = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
 
         logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, fin);
-        environment.getDataLogger().logFinancialComponent(
-                agent, product, now(),
-                getLogisticFactor(),
-                modelData().getWeightFT(), ftAvg, ftThis, ft, logisticFt,
-                modelData().getWeightNPV(), npvAvg, npvThis, npv, logisticNpv,
-                fin
-        );
+//        environment.getDataLogger().logFinancialComponent(
+//                agent, product, now(),
+//                getLogisticFactor(),
+//                modelData().getWeightFT(), ftAvg, ftThis, ft, logisticFt,
+//                modelData().getWeightNPV(), npvAvg, npvThis, npv, logisticNpv,
+//                fin
+//        );
 
         return fin;
     }

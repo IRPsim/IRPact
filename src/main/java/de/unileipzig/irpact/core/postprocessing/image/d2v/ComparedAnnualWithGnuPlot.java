@@ -18,6 +18,7 @@ import java.util.*;
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class ComparedAnnualWithGnuPlot extends AbstractGnuPlotDataVisualizer {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualWithGnuPlot.class);
