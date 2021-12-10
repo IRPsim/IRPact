@@ -2,7 +2,6 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
@@ -25,8 +24,8 @@ public class ToyModel_R_4 extends ToyModel_R_3 {
     }
 
     @Override
-    protected void setupCagForR(InPVactConsumerAgentGroup cag) {
-        super.setupCagForR(cag);
+    protected void customCagSetup(InPVactConsumerAgentGroup cag) {
+        super.customCagSetup(cag);
         cag.setA7(dirac0);
         cag.setA8(dirac0);
         cag.setB6(dirac0);

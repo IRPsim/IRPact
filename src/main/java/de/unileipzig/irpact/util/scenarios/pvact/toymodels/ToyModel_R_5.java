@@ -24,8 +24,8 @@ public class ToyModel_R_5 extends ToyModel_R_4 {
     }
 
     @Override
-    protected void setupCagForR(InPVactConsumerAgentGroup cag) {
-        super.setupCagForR(cag);
+    protected void customCagSetup(InPVactConsumerAgentGroup cag) {
+        super.customCagSetup(cag);
         cag.setC1(dirac01);
         cag.setB6(dirac01);
     }

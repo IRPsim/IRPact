@@ -23,8 +23,18 @@ public class PVactCagManager {
 
     protected InUnivariateDoubleDistribution defaultDist;
 
+    protected boolean selfLinkAffinities = false;
+
     public PVactCagManager(InUnivariateDoubleDistribution defaultDist) {
         this.defaultDist = defaultDist;
+    }
+
+    public void setSelfLinkAffinities(boolean selfLinkAffinities) {
+        this.selfLinkAffinities = selfLinkAffinities;
+    }
+
+    public boolean isSelfLinkAffinities() {
+        return selfLinkAffinities;
     }
 
     public void add(String name) {
@@ -118,6 +128,10 @@ public class PVactCagManager {
         cagAffinities.put(cagGroup, affinites);
     }
 
+    public Set<String> getCagNames() {
+        return cags.keySet();
+    }
+
     public Collection<InPVactConsumerAgentGroup> getCags() {
         return cags.values();
     }
@@ -134,10 +148,33 @@ public class PVactCagManager {
 
     public InAffinities createAffinities(String name) {
         try {
-            return createAffinities0(name);
+            if(selfLinkAffinities) {
+                return createSelfLinkedAffinities(name);
+            } else {
+                return createAffinities0(name);
+            }
         } catch (ParsingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private InAffinities createSelfLinkedAffinities(String name) {
+        List<InAffinityEntry> entries = new ArrayList<>();
+        for(InPVactConsumerAgentGroup srcCag: cags.values()) {
+            for(InPVactConsumerAgentGroup tarCag: cags.values()) {
+                double affinityValue = srcCag == tarCag ? 1 : 0;
+                InComplexAffinityEntry entry = new InComplexAffinityEntry();
+                entry.setSrcCag(srcCag);
+                entry.setTarCag(tarCag);
+                entry.setAffinityValue(affinityValue);
+                entry.setName("Affinity_" + srcCag.getName() + "_" + tarCag.getName());
+                entries.add(entry);
+            }
+        }
+        InAffinities affinities = new InAffinities();
+        affinities.setName(name);
+        affinities.setEntries(entries);
+        return affinities;
     }
 
     private InAffinities createAffinities0(String name) throws ParsingException {

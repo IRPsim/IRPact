@@ -91,6 +91,10 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         this.resultConsumer = Objects.requireNonNull(resultConsumer);
     }
 
+    public DataSetup getTestData() {
+        return testData;
+    }
+
     @SafeVarargs
     protected static <T> T[] arr(T... values) {
         return values;

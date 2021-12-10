@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels;
 
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
+import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.output.OutRoot;
 import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ToyModeltModularProcessModelTemplate;
 
@@ -16,6 +17,9 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
 
     public static final int REVISION = 0;
 
+    protected int toyYear;
+    protected int toyLength;
+
     public ToyModel_R_1_1(
             String name,
             String creator,
@@ -24,7 +28,8 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
             BiConsumer<InRoot, OutRoot> resultConsumer) {
         super(name, creator, description, resultConsumer);
         setRevision(REVISION);
-        this.simulationStartYear = simulationYear;
+        this.toyYear = simulationYear;
+        this.toyLength = 1;
     }
 
     public ToyModel_R_1_1 withYear(int year) {
@@ -53,6 +58,11 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
 
     @Override
     protected void initCagManager() {
+        cagManager.useDefaultMilieus();
+        cagManager.setSelfLinkAffinities(true);
+
+        cagManager.getCagNames().forEach(name -> cagManager.setEdgeCount(name, 10));
+
         cagManager.registerForAll(cag -> {
             cag.setA2(dirac0);
             cag.setA3(dirac0);
@@ -70,18 +80,25 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
             cag.setD4(dirac05);
             cag.setD5(dirac0);
 
-            setupCagForR(cag);
+            customCagSetup(cag);
         });
-
-        cagManager.useDefaultMilieus();
     }
 
-    protected void setupCagForR(InPVactConsumerAgentGroup cag) {
+    @Override
+    protected void createPopulation(InRoot root, String name) {
+        InFileBasedPVactConsumerAgentPopulation population = createFullPopulation(name, cagManager.getCagsArray());
+        population.setUseAll(false);
+        population.setDesiredSize(1341);
+        root.setAgentPopulationSize(population);
+    }
+
+    protected void customCagSetup(InPVactConsumerAgentGroup cag) {
     }
 
     @Override
     protected void initThisCustom() {
-        simulationLength = 1;
+        simulationStartYear = toyYear;
+        simulationLength = toyLength;
     }
 
     @Override
@@ -94,9 +111,5 @@ public class ToyModel_R_1_1 extends AbstractToyModel {
         mpm.setAllWeights(0);
         mpm.getNpvWeightModule().setScalar(0.5);
         mpm.getPpWeightModule().setScalar(0.5);
-
-//        mpm.getCommunicationModule().setAdopterPoints(1);
-//        mpm.getCommunicationModule().setInterestedPoints(1);
-//        mpm.getCommunicationModule().setAwarePoints(1);
     }
 }

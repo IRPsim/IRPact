@@ -17,13 +17,9 @@ public class ToyModel_R_2 extends ToyModel_R_1_3 {
             String creator,
             String description,
             BiConsumer<InRoot, OutRoot> resultConsumer) {
-        super(name, creator, description, 2000, resultConsumer);
+        super(name, creator, description, 2008, resultConsumer);
         setRevision(REVISION);
-    }
-
-    @Override
-    protected void initThisCustom() {
-        simulationLength = 20;
+        toyLength = 12;
     }
 
     @Override
