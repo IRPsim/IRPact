@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -51,7 +52,7 @@ public final class GnuPlotFactory2 {
         }
     }
 
-    private static List<Integer> createIndexList1(Collection<?> c) {
+    private static List<Integer> createIndexListWithStartAt1(Collection<?> c) {
         return createIndexList(c, 1);
     }
 
@@ -121,6 +122,22 @@ public final class GnuPlotFactory2 {
         return "((" + input + "%" + max + ")" + modifier + ")";
     }
 
+    private static Object or(Object input, Object ifNotNull, Object ifNull) {
+        return input == null ? ifNull : ifNotNull;
+    }
+
+    private static Object ifNull(Object input, Object returnValue) {
+        return input == null ? returnValue : null;
+    }
+
+    private static Object ifNotNull(Object input, Object returnValue) {
+        return input == null ? null : returnValue;
+    }
+
+    private static <R> Object ifNotNull(R input, Function<? super R, ?> func) {
+        return input == null ? null : func.apply(input);
+    }
+
     public static GnuPlotBuilder simpleMultiLinePlot(
             String title,
             String xlab, String ylab,
@@ -136,9 +153,9 @@ public final class GnuPlotFactory2 {
                 .setColumn1(2)
                 .setColumn2(PlotCommandBuilder.xtic(1))
                 .setTi("col")
-                .setLs(hexColors == null ? null : 1)
-                .setLc(hexColors == null ? 1 : null)
-                .setLw(hexColors == null ? lineWidth : null)
+                .setLs(ifNotNull(hexColors, 1))
+                .setLc(ifNull(hexColors, 1))
+                .setLw(ifNull(hexColors, lineWidth))
         );
         plot.commaAndLinebreak();
         plot.add(new PlotData()
@@ -146,9 +163,9 @@ public final class GnuPlotFactory2 {
                 .setSameInput()
                 .setColumn1("i")
                 .setTi("col")
-                .setLs(hexColors == null ? null : defaultCycleIndex("i", hexColors.size()))
-                .setLc(hexColors == null ? "(i-1)" : null)
-                .setLw(hexColors == null ? lineWidth : null)
+                .setLs(ifNotNull(hexColors, _hexColors -> defaultCycleIndex("i", _hexColors.size())))
+                .setLc(ifNull(hexColors, "(i-1)"))
+                .setLw(ifNull(hexColors, lineWidth))
         );
 
         GnuPlotBuilder builder = newBuilder();
@@ -160,7 +177,7 @@ public final class GnuPlotFactory2 {
         builder.setStyleDataLinesPoints();
         builder.setLegendOutsideRightTop();
         if(hexColors != null) {
-            builder.setStyleLineWithWidthAndRGB(createIndexList1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
         }
         builder.addComment("===labels===");
         builder.formatAndSetTitle(title);
@@ -176,7 +193,6 @@ public final class GnuPlotFactory2 {
     }
 
     //year;value0-A;value0-B;...
-    //1: year, even: A (2,4,6,...), odd: B (3,5,7,...)
     public static GnuPlotBuilder multiLinePlotWithTwoDashtypes(
             //label
             String title,
@@ -258,7 +274,7 @@ public final class GnuPlotFactory2 {
                     .setSameInput()
                     .setColumn1(1)
                     .setColumn2(bIndex)
-                    .setTi("col")
+                    .setNotitle()
                     .setLs(hexColors == null ? null : calcIndex(hexColors, i))
                     .setLc(hexColors == null ? i+1 : null)
                     .setLw(hexColors == null ? lineWidth : null)
@@ -275,7 +291,143 @@ public final class GnuPlotFactory2 {
         builder.setStyleDataLinesPoints();
         builder.setLegendOutsideRightTop();
         if(hexColors != null) {
-            builder.setStyleLineWithWidthAndRGB(createIndexList1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
+        }
+        builder.addComment("===labels===");
+        builder.formatAndSetTitle(title);
+        builder.formatAndSetXLabel(xlab);
+        builder.formatAndSetYLabel(ylab);
+        builder.addComment("===plot===");
+        builder.setDataFileSeparator(sep);
+        builder.printPngCairo(width, height);
+        builder.setArgOutput(2);
+        builder.setYRange(minY, maxY);
+        builder.add(plot);
+        return builder;
+    }
+
+    //year;value0-A;value0-B;value0-C;...
+    public static GnuPlotBuilder multiLinePlotWithThreeDashtypes(
+            //label
+            String title,
+            String xlab, String ylab,
+            String keyTitle0, String keyTitle1,
+            String dashType1Label, String dashType2Label, String dashType3Label,
+            //style
+            List<String> hexColors,
+            int lineWidth,
+            int dashtype1, int dashtype2, int dashtype3,
+            //util
+            String sep,
+            int width, int height,
+            Number minY, Number maxY,
+            int numberOfIndividualColumns) {
+
+        PlotCommandBuilder plot = new PlotCommandBuilder();
+        //key
+        //title
+        plot.linebreak();
+        plot.add(new SimplifiedKeyEntry()
+                .setTi(PlotCommandBuilder.quote(keyTitle0))
+        );
+        //a-Part
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedNaN()
+                .setLines()
+                .setDt(dashtype1)
+                .setLc(PlotCommandBuilder.quote("black"))
+                .setTi(PlotCommandBuilder.quote(dashType1Label))
+        );
+        //b-Part
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedNaN()
+                .setLines()
+                .setDt(dashtype2)
+                .setLc(PlotCommandBuilder.quote("black"))
+                .setTi(PlotCommandBuilder.quote(dashType2Label))
+        );
+        //c-Part
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedNaN()
+                .setLines()
+                .setDt(dashtype3)
+                .setLc(PlotCommandBuilder.quote("black"))
+                .setTi(PlotCommandBuilder.quote(dashType3Label))
+        );
+        //data
+        //title
+        plot.commaAndLinebreak();
+        plot.add(new SimplifiedKeyEntry()
+                .setTi(PlotCommandBuilder.quote(keyTitle1))
+        );
+        for(int i = 0; i < numberOfIndividualColumns; i++) {
+            //a-Part
+            int aIndex = (i+1)*3;
+            plot.commaAndLinebreak();
+            if(i == 0) {
+                plot.add(new PlotData()
+                        .setArgInput(1)
+                        .setColumn1(1)
+                        .setColumn2(aIndex)
+                        .setColumn3(PlotCommandBuilder.xtic(1))
+                        .setTi("col")
+                        .setLs(hexColors == null ? null : calcIndex(hexColors, i))
+                        .setLc(hexColors == null ? i+1 : null)
+                        .setLw(hexColors == null ? lineWidth : null)
+                        .setDt(dashtype1)
+                );
+            } else {
+                plot.add(new PlotData()
+                        .setSameInput()
+                        .setColumn1(1)
+                        .setColumn2(aIndex)
+                        .setTi("col")
+                        .setLs(hexColors == null ? null : calcIndex(hexColors, i))
+                        .setLc(hexColors == null ? i+1 : null)
+                        .setLw(hexColors == null ? lineWidth : null)
+                        .setDt(dashtype1)
+                );
+            }
+
+            //b-Part
+            int bIndex = aIndex + 1;
+            plot.commaAndLinebreak();
+            plot.add(new PlotData()
+                    .setSameInput()
+                    .setColumn1(1)
+                    .setColumn2(bIndex)
+                    .setNotitle()
+                    .setLs(hexColors == null ? null : calcIndex(hexColors, i))
+                    .setLc(hexColors == null ? i+1 : null)
+                    .setLw(hexColors == null ? lineWidth : null)
+                    .setDt(dashtype2)
+            );
+
+            //c-Part
+            int cIndex = bIndex + 1;
+            plot.commaAndLinebreak();
+            plot.add(new PlotData()
+                    .setSameInput()
+                    .setColumn1(1)
+                    .setColumn2(cIndex)
+                    .setNotitle()
+                    .setLs(hexColors == null ? null : calcIndex(hexColors, i))
+                    .setLc(hexColors == null ? i+1 : null)
+                    .setLw(hexColors == null ? lineWidth : null)
+                    .setDt(dashtype2)
+            );
+        }
+
+        GnuPlotBuilder builder = newBuilder();
+        builder.add(getDate());
+        builder.add(getAutoGenerated());
+        builder.addComment("type: special line chart v0");
+        builder.add(getUsageComment());
+        builder.addComment("===style===");
+        builder.setStyleDataLinesPoints();
+        builder.setLegendOutsideRightTop();
+        if(hexColors != null) {
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
         }
         builder.addComment("===labels===");
         builder.formatAndSetTitle(title);
@@ -331,7 +483,7 @@ public final class GnuPlotFactory2 {
         builder.setFillSolid();
         builder.setBoxWidthAbsolute(boxWidthAbsolute);
         if(hexColors != null) {
-            builder.setStyleLineWithWidthAndRGB(createIndexList1(hexColors), createList(hexColors, 1), updateHexColor(hexColors));
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, 1), updateHexColor(hexColors));
         }
         builder.addComment("===labels===");
         builder.formatAndSetTitle(title);
@@ -365,7 +517,7 @@ public final class GnuPlotFactory2 {
                 .setArgInput(1)
                 .setColumn1(2)
                 .setColumn2(PlotCommandBuilder.xtic(1))
-                .setNotitle("col")
+                .setNotitle()
                 .setLs(hexColors == null ? null : 1)
                 .setLc(hexColors == null ? 1 : null)
                 .setLw(hexColors == null ? 1 : null)
@@ -413,13 +565,73 @@ public final class GnuPlotFactory2 {
         builder.setFillSolid();
         builder.setBoxWidthAbsolute(boxWidthAbsolute);
         if(hexColors != null) {
-            builder.setStyleLineWithWidthAndRGB(createIndexList1(hexColors), createList(hexColors, 1), updateHexColor(hexColors));
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, 1), updateHexColor(hexColors));
         }
         builder.addComment("===labels===");
         builder.formatAndSetTitle(title);
         builder.formatAndSetXLabel(xlab);
         builder.formatAndSetYLabel(ylab);
         builder.formatAndSetLegendOutsideRightTop(filllab);
+        builder.addComment("===output===");
+        builder.printPngCairo(width, height);
+        builder.setYRange(yMin, yMax);
+        builder.setArgOutput(2);
+        builder.addComment("===plot===");
+        builder.setDataFileSeparator(sep);
+        builder.add(plot);
+        return builder;
+    }
+
+    public static GnuPlotBuilder simpleStackedBarChart(
+            String title,
+            String xlab, String ylab, String keylab,
+            String sep,
+            List<String> hexColors,
+            double boxWidthAbsolute,
+            Number yMin, Number yMax,
+            int width, int height) {
+
+        PlotCommandBuilder plot = new PlotCommandBuilder();
+        plot.linebreak();
+        plot.add(new PlotData()
+                .setArgInput(1)
+                .setColumn1(2)
+                .setColumn2(PlotCommandBuilder.xtic(1))
+                .setTi("col")
+                .setLs(ifNotNull(hexColors, 1))
+                .setLc(ifNull(hexColors, 1))
+                .setLw(ifNull(hexColors, 1))
+        );
+        plot.commaAndLinebreak();
+        plot.add(new PlotData()
+                .setForLoop("i", 3, "*")
+                .setSameInput()
+                .setColumn1("i")
+                .setTi("col")
+                .setLs(ifNotNull(hexColors, _hexColors -> defaultCycleIndex("i", _hexColors.size())))
+                .setLc(ifNull(hexColors, "(i-1)"))
+                .setLw(ifNull(hexColors, 1))
+        );
+
+
+        GnuPlotBuilder builder = newBuilder();
+        builder.add(getDate());
+        builder.add(getAutoGenerated());
+        builder.addComment("type: stacked bar chart v1");
+        builder.add(getUsageComment());
+        builder.addComment("===style===");
+        builder.setStyleDataHistograms();
+        builder.setStyleHistrogramRowStacked();
+        builder.setFillSolid();
+        builder.setBoxWidthAbsolute(boxWidthAbsolute);
+        if(hexColors != null) {
+            builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, 1), updateHexColor(hexColors));
+        }
+        builder.addComment("===labels===");
+        builder.formatAndSetTitle(title);
+        builder.formatAndSetXLabel(xlab);
+        builder.formatAndSetYLabel(ylab);
+        builder.formatAndSetLegendOutsideRightTop(keylab);
         builder.addComment("===output===");
         builder.printPngCairo(width, height);
         builder.setYRange(yMin, yMax);

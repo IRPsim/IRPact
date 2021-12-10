@@ -2,6 +2,7 @@ package de.unileipzig.irpact.util.scenarios.pvact.toymodels.util;
 
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
+import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
 import de.unileipzig.irpact.util.scenarios.pvact.util.DefaultModularProcessModelTemplate;
 
 /**
@@ -12,6 +13,7 @@ public class ToyModeltModularProcessModelTemplate extends DefaultModularProcessM
     public ToyModeltModularProcessModelTemplate(String mpmName) {
         super(mpmName);
         setRaEnabled(false);
+        setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
     }
 
     public void setUncertaintySupplierInstance(InUncertaintySupplier supplier) {

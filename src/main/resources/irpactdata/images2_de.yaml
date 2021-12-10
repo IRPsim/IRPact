@@ -36,10 +36,8 @@ GNUPLOT:
     dashtype0lab: "nein"
     dashtype1lab: "ja"
     sep: ";"
-    simuSuffix: "-Simulation"
+    simuSuffix: ""
     realSuffix: "-Real"
-    realScaledSuffix: "-Real-Skaliert"
-    realUnscaledSuffix: "-Real-Unskaliert"
 
   COMPARED_ANNUAL:
     title: "Jährliche Adoptionen im Vergleich zu realen Daten"
@@ -50,8 +48,6 @@ GNUPLOT:
     sep: ";"
     simu: "Simulation"
     real: "Real"
-    realScaled: "Real-Skaliert"
-    realUnscaled: "Real-Unskaliert"
 
   ADOPTION_PHASE_OVERVIEW:
     title: |-
@@ -94,4 +90,12 @@ GNUPLOT:
     headerYear: "year"
     decimalSeparator: ","
     rangeSeparator: ":"
+
+  ANNUAL_MILIEUS:
+    title: "Jährliche Adoptionen in Bezug auf die Milieus"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keylab: "Milieus"
+    sep: ";"
+    headerYear: "year"
 

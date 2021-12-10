@@ -17,9 +17,7 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.*;
 import de.unileipzig.irpact.core.logging.data.BasicDataAnalyser;
-import de.unileipzig.irpact.core.logging.data.BasicDataLogger;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -69,7 +67,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
-    protected DataLogger dataLogger;
     protected DataAnalyser dataAnalyser;
 
     //components
@@ -127,16 +124,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
-        BasicDataLogger dataLogger = new BasicDataLogger();
         BasicDataAnalyser dataAnalyser = new BasicDataAnalyser();
 
         setSettings(initData);
 
         setDataAnalyser(dataAnalyser);
         dataAnalyser.setEnvironment(this);
-
-        setDataLogger(dataLogger);
-        dataLogger.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -333,15 +326,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public ProgressCalculator getProgressCalculator() {
         return PROGRESS_CALC;
-    }
-
-    @Override
-    public DataLogger getDataLogger() {
-        return dataLogger;
-    }
-
-    public void setDataLogger(DataLogger dataLogger) {
-        this.dataLogger = dataLogger;
     }
 
     @Override

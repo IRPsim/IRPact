@@ -24,7 +24,7 @@ public class CustomAverageQuantilRangeSelector extends AbstractImageHandlerSelec
     }
 
     @Override
-    protected ImageHandler createHandler(InCustomAverageQuantilRangeImage image) {
+    protected ImageHandler createGnuplotHandler(InCustomAverageQuantilRangeImage image) {
         return new CustomAverageQuantilRangeGnuplotImageHandler(processor, image);
     }
 }

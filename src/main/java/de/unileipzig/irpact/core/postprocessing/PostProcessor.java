@@ -15,7 +15,6 @@ import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
-import de.unileipzig.irpact.core.logging.data.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.FallbackAdoptionData;
@@ -119,10 +118,6 @@ public abstract class PostProcessor implements LoggingHelper {
 
     public DataAnalyser getDataAnalyser() {
         return environment.getDataAnalyser();
-    }
-
-    public DataLogger getDataLogger() {
-        return environment.getDataLogger();
     }
 
     public Path getTargetDir() throws IOException {

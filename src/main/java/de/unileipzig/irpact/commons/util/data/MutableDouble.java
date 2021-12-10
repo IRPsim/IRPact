@@ -66,6 +66,18 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return !hasValue();
     }
 
+    public double getOr(double ifEmpty) {
+        return isEmpty()
+                ? ifEmpty
+                : get();
+    }
+
+    public Double getOrBoxed(Double ifEmpty) {
+        return isEmpty()
+                ? ifEmpty
+                : get();
+    }
+
     public void clear() {
         hasValue = false;
         value = 0;

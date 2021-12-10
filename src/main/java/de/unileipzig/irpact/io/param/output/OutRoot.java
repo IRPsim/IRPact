@@ -241,10 +241,10 @@ public class OutRoot implements RootClass {
 
         Section image1 = new Section();
         image1.setPriority(1);
-        image1.setLabel("Jährliche Adoptionen (PLZ)");
+        image1.setLabel("Jährliche Adoptionen (Milieu)");
         image1.setIcon(IRPact.ICON_IMAGE);
-        image1.setImage(IRPact.IMAGE_ANNUAL_ADOPTIONS_PNG);
-        image1.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen.");
+        image1.setImage(IRPact.IMAGE_ANNUAL_ADOPTION_MILIEU_PNG);
+        image1.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Milieus.");
 
         Section image2 = new Section();
         image2.setPriority(2);
@@ -257,7 +257,7 @@ public class OutRoot implements RootClass {
         image3.setPriority(3);
         image3.setLabel("Jährliche Adoptionen (Phase)");
         image3.setIcon(IRPact.ICON_IMAGE);
-        image3.setImage(IRPact.IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG);
+        image3.setImage(IRPact.IMAGE_PROCESS_MODEL_PHASE_OVERVIEW_PNG);
         image3.setDescription("Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen.");
 
         Section image4 = new Section();

@@ -12,7 +12,7 @@ import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractComparedAnnu
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InComparedAnnualImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
-import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -66,23 +66,32 @@ public class ComparedAnnualGnuplotImageHandler
 
     @Override
     public GnuPlotBuilder getBuilder(InComparedAnnualImage image, ImageData data) throws Throwable {
-        int n;
-        if(hasValidScale()) {
-            if(image.isShowUnscaled()) {
-                n = 3;
-            } else {
-                n = 2;
-            }
-        } else {
-            n = 2;
-        }
-        return GnuPlotFactory.interactionLineChartForNValues0(
-                n,
+//        int n;
+//        if(hasValidScale()) {
+//            if(image.isShowUnscaled()) {
+//                n = 3;
+//            } else {
+//                n = 2;
+//            }
+//        } else {
+//            n = 2;
+//        }
+//        return GnuPlotFactory.interactionLineChartForNValues0(
+//                n,
+//                getLocalizedString("title"),
+//                getLocalizedString("xlab"), getLocalizedString("ylab"),
+//                getLocalizedString("sep"),
+//                image.getLinewidth(),
+//                image.getImageWidth(), image.getImageHeight()
+//        );
+        return GnuPlotFactory2.simpleMultiLinePlot(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
                 getLocalizedString("sep"),
+                getHexRGBPaletteOrNull(),
                 image.getLinewidth(),
-                image.getImageWidth(), image.getImageHeight()
+                image.getImageWidth(), image.getImageHeight(),
+                null, null
         );
     }
 
@@ -94,25 +103,25 @@ public class ComparedAnnualGnuplotImageHandler
         boolean showPreYear = image.isShowPreYear();
         if(hasValidScale()) {
             ScaledRealAdoptionData scaledData = (ScaledRealAdoptionData) processor.getScaledRealAdoptionData(image.getRealData());
-            if(image.isShowUnscaled()) {
-                data = createScaledAndUnscaledData(
-                        realData,
-                        scaledData,
-                        getLocalizedString("simu"),
-                        getLocalizedString("realScaled"),
-                        getLocalizedString("realUnscaled"),
-                        showPreYear,
-                        validZipsOnly
-                );
-            } else {
-                data = createScaledData(
-                        scaledData,
-                        getLocalizedString("simu"),
-                        getLocalizedString("real"),
-                        showPreYear,
-                        validZipsOnly
-                );
-            }
+//            if(image.isShowUnscaled()) {
+//                data = createScaledAndUnscaledData(
+//                        realData,
+//                        scaledData,
+//                        getLocalizedString("simu"),
+//                        getLocalizedString("realScaled"), //deprecated
+//                        getLocalizedString("realUnscaled"), //deprecated
+//                        showPreYear,
+//                        validZipsOnly
+//                );
+//            } else {
+//            }
+            data = createScaledData(
+                    scaledData,
+                    getLocalizedString("simu"),
+                    getLocalizedString("real"),
+                    showPreYear,
+                    validZipsOnly
+            );
         } else {
             data = createUnscaledData(
                     realData,

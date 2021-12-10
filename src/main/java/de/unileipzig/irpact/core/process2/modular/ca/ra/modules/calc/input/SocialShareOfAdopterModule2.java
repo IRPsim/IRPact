@@ -54,9 +54,7 @@ public class SocialShareOfAdopterModule2
             logSocialNetwork(input);
         }
 
-        double share = getShareOfAdopterInSocialNetwork(input);
-        getAgentDataState(input).rawSocialShare = share;
-        return share;
+        return getShareOfAdopterInSocialNetwork(input);
     }
 
     protected void logSocialNetwork(ConsumerAgentData2 input) {

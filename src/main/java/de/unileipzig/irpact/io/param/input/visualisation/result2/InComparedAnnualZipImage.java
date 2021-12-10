@@ -15,8 +15,7 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.getInstance;
-import static de.unileipzig.irpact.io.param.ParamUtil.len;
+import static de.unileipzig.irpact.io.param.ParamUtil.*;
 import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_COMPAREDZIP;
 
 /**
@@ -24,6 +23,7 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VIS
  */
 @Definition
 @LocalizedUiResource.PutClassPath(SETT_VISURESULT2_COMPAREDZIP)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InComparedAnnualZipImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -39,7 +39,6 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     }
     @TreeAnnotationResource.Apply
     public static void applyRes(LocalizedUiResource res) {
-        res.setRules(thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
     }
 
     public static InComparedAnnualZipImage createDefault() {
@@ -64,6 +63,7 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
             boolDomain = true,
             boolDefault = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useGnuplot = true;
 
     @FieldDefinition
@@ -71,6 +71,7 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useR = false;
 
     @FieldDefinition
@@ -137,11 +138,11 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     )
     public boolean showPreYear = true;
 
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
+//    @FieldDefinition
+//    @LocalizedUiResource.AddEntry
+//    @LocalizedUiResource.SimpleSet(
+//            boolDomain = true
+//    )
     public boolean showUnscaled = false;
 
     @FieldDefinition
@@ -323,13 +324,15 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     }
 
     public void setColorPalette(InColorPalette colorPalette) {
-        this.colorPalette = new InColorPalette[]{ colorPalette };
+        this.colorPalette = set(this.colorPalette, colorPalette);
     }
 
+    @Override
     public boolean hasColorPalette() {
         return len(colorPalette) > 0;
     }
 
+    @Override
     public InColorPalette getColorPalette() throws ParsingException {
         return getInstance(colorPalette, "colorPalette");
     }

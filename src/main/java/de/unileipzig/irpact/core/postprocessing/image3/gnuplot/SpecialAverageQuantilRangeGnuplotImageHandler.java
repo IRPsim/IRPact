@@ -13,7 +13,7 @@ import de.unileipzig.irpact.io.param.input.visualisation.result2.InQuantileRange
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InSpecialAverageQuantilRangeImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
-import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
@@ -66,12 +66,21 @@ public class SpecialAverageQuantilRangeGnuplotImageHandler
 
     @Override
     public GnuPlotBuilder getBuilder(InSpecialAverageQuantilRangeImage image, ImageData data) throws Throwable {
-        return GnuPlotFactory.simpleMultiLinePlot0(
+//        return GnuPlotFactory.simpleMultiLinePlot0(
+//                getLocalizedString("title"),
+//                getLocalizedString("xlab"), getLocalizedString("ylab"),
+//                getLocalizedString("sep"),
+//                image.getLinewidth(),
+//                image.getImageWidth(), image.getImageHeight()
+//        );
+        return GnuPlotFactory2.simpleMultiLinePlot(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
                 getLocalizedString("sep"),
+                getHexRGBPaletteOrNull(),
                 image.getLinewidth(),
-                image.getImageWidth(), image.getImageHeight()
+                image.getImageWidth(), image.getImageHeight(),
+                null, null
         );
     }
 

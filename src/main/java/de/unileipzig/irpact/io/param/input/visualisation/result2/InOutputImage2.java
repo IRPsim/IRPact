@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -18,15 +19,15 @@ import java.util.List;
 @Definition
 public interface InOutputImage2 extends InIRPactEntity {
 
-    String[] ENGINES = {"useGnuplot", "useR"};
-
-    static XorWithoutUnselectRuleBuilder createEngineBuilder(Class<?> c) {
-        return new XorWithoutUnselectRuleBuilder()
-                .withKeyModifier(ParamUtil.buildDefaultParameterNameOperator(c))
-                .withTrueValue(Constants.TRUE1)
-                .withFalseValue(Constants.FALSE0)
-                .withKeys(ENGINES);
-    }
+//    String[] ENGINES = {"useGnuplot", "useR"};
+//
+//    static XorWithoutUnselectRuleBuilder createEngineBuilder(Class<?> c) {
+//        return new XorWithoutUnselectRuleBuilder()
+//                .withKeyModifier(ParamUtil.buildDefaultParameterNameOperator(c))
+//                .withTrueValue(Constants.TRUE1)
+//                .withFalseValue(Constants.FALSE0)
+//                .withKeys(ENGINES);
+//    }
 
     @TreeAnnotationResource.Init
     static void initRes(TreeAnnotationResource res) {
@@ -85,4 +86,8 @@ public interface InOutputImage2 extends InIRPactEntity {
     default boolean hasNothingToStore() {
         return !hasSomethingToStore();
     }
+
+    boolean hasColorPalette();
+
+    InColorPalette getColorPalette() throws ParsingException;
 }

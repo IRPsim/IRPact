@@ -878,6 +878,7 @@ public class InRoot implements RootClass {
 
             InAdoptionPhaseOverviewImage.class,
             InAnnualBucketImage.class,
+            InAnnualMilieuImage.class,
             InComparedAnnualImage.class,
             InComparedAnnualZipImage.class,
             InCustomAverageQuantilRangeImage.class,

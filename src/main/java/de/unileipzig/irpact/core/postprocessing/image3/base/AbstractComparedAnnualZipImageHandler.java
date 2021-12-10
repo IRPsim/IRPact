@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
+import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionZips;
@@ -42,84 +43,87 @@ public abstract class AbstractComparedAnnualZipImageHandler
         }
     }
 
-    protected JsonTableData3 createScaledAndUnscaledData(
-            RealAdoptionData realData,
-            ScaledRealAdoptionData scaledData,
-            String simuSuffix,
-            String realScaledSuffix,
-            String realUnscaledSuffix,
-            boolean showPreYear,
-            boolean validZipsOnly) {
-        List<Integer> years = processor.getAllSimulationYears();
-        List<String> allZips = processor.getAllZips(RAConstants.ZIP);
-        Product product = processor.getSingletonProduct();
-        AnnualEnumeratedAdoptionZips simuData = getAdoptionData();
-
-        List<String> validZips;
-        if(validZipsOnly) {
-            validZips = realData.listValidZips(allZips);
-            List<String> invalidZips = realData.listInvalidZips(allZips);
-            List<String> unusedZips = realData.listUnusedZips(allZips);
-            if(invalidZips.size() > 0) {
-                warn("skip zips: invalid={}, unused={}", invalidZips, unusedZips);
-            }
-        } else {
-            validZips = allZips;
-        }
-
-        JsonTableData3 data = new JsonTableData3();
-        //header
-        int rowIndex = 0;
-        int columnIndex = 0;
-        data.setString(rowIndex, columnIndex++, "years");
-        for(String zip: validZips) {
-            data.setString(rowIndex, columnIndex++, zip + simuSuffix);
-            data.setString(rowIndex, columnIndex++, zip + realScaledSuffix);
-            data.setString(rowIndex, columnIndex++, zip + realUnscaledSuffix);
-        }
-        //initial - 1
-        if(showPreYear) {
-            rowIndex++;
-            int yearBeforeStart = years.get(0) - 1;
-            if(realData.hasYear(yearBeforeStart)) {
-                columnIndex = 0;
-                data.setInt(rowIndex, columnIndex++, yearBeforeStart);
-                for(String zip: validZips) {
-                    double realScaled = scaledData.hasZip(zip) ? scaledData.getUncumulated(yearBeforeStart, zip) : 0;
-                    double realUnscaled = realData.hasZip(zip) ? realData.getUncumulated(yearBeforeStart, zip) : 0;
-                    data.setDouble(rowIndex, columnIndex++, realScaled); //simu == real5
-                    data.setDouble(rowIndex, columnIndex++, realScaled);
-                    data.setDouble(rowIndex, columnIndex++, realUnscaled);
-                }
-            } else {
-                info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, realData.getAllYears());
-            }
-        }
-        //data
-        rowIndex++;
-        for(int y: years) {
-            columnIndex = 0;
-            data.setInt(rowIndex, columnIndex++, y);
-            for(String zip: validZips) {
-                double simu = simuData.getCount(y, product, zip);
-                double realScaled = scaledData.hasZip(zip) ? scaledData.getUncumulated(y, zip) : 0;
-                double realUnscaled = realData.hasZip(zip) ? realData.getUncumulated(y, zip) : 0;
-                data.setDouble(rowIndex, columnIndex++, simu);
-                data.setDouble(rowIndex, columnIndex++, realScaled);
-                data.setDouble(rowIndex, columnIndex++, realUnscaled);
-            }
-            rowIndex++;
-        }
-
-        return data;
-    }
+//    protected JsonTableData3 createScaledAndUnscaledData(
+//            RealAdoptionData realData,
+//            ScaledRealAdoptionData scaledData,
+//            String simuSuffix,
+//            String realScaledSuffix,
+//            String realUnscaledSuffix,
+//            boolean showPreYear,
+//            boolean validZipsOnly,
+//            MutableInt zipCounter) {
+//        List<Integer> years = processor.getAllSimulationYears();
+//        List<String> allZips = processor.getAllZips(RAConstants.ZIP);
+//        Product product = processor.getSingletonProduct();
+//        AnnualEnumeratedAdoptionZips simuData = getAdoptionData();
+//
+//        List<String> validZips;
+//        if(validZipsOnly) {
+//            validZips = realData.listValidZips(allZips);
+//            List<String> invalidZips = realData.listInvalidZips(allZips);
+//            List<String> unusedZips = realData.listUnusedZips(allZips);
+//            if(invalidZips.size() > 0) {
+//                warn("skip zips: invalid={}, unused={}", invalidZips, unusedZips);
+//            }
+//        } else {
+//            validZips = allZips;
+//        }
+//
+//        JsonTableData3 data = new JsonTableData3();
+//        //header
+//        int rowIndex = 0;
+//        int columnIndex = 0;
+//        data.setString(rowIndex, columnIndex++, "years");
+//        for(String zip: validZips) {
+//            data.setString(rowIndex, columnIndex++, zip + simuSuffix);
+//            data.setString(rowIndex, columnIndex++, zip + realScaledSuffix);
+//            data.setString(rowIndex, columnIndex++, zip + realUnscaledSuffix);
+//        }
+//        //initial - 1
+//        if(showPreYear) {
+//            rowIndex++;
+//            int yearBeforeStart = years.get(0) - 1;
+//            if(realData.hasYear(yearBeforeStart)) {
+//                columnIndex = 0;
+//                data.setInt(rowIndex, columnIndex++, yearBeforeStart);
+//                for(String zip: validZips) {
+//                    double realScaled = scaledData.hasZip(zip) ? scaledData.getUncumulated(yearBeforeStart, zip) : 0;
+//                    double realUnscaled = realData.hasZip(zip) ? realData.getUncumulated(yearBeforeStart, zip) : 0;
+//                    data.setDouble(rowIndex, columnIndex++, realScaled); //simu == real5
+//                    data.setDouble(rowIndex, columnIndex++, realScaled);
+//                    data.setDouble(rowIndex, columnIndex++, realUnscaled);
+//                }
+//            } else {
+//                info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, realData.getAllYears());
+//            }
+//        }
+//        //data
+//        rowIndex++;
+//        for(int y: years) {
+//            columnIndex = 0;
+//            data.setInt(rowIndex, columnIndex++, y);
+//            for(String zip: validZips) {
+//                double simu = simuData.getCount(y, product, zip);
+//                double realScaled = scaledData.hasZip(zip) ? scaledData.getUncumulated(y, zip) : 0;
+//                double realUnscaled = realData.hasZip(zip) ? realData.getUncumulated(y, zip) : 0;
+//                data.setDouble(rowIndex, columnIndex++, simu);
+//                data.setDouble(rowIndex, columnIndex++, realScaled);
+//                data.setDouble(rowIndex, columnIndex++, realUnscaled);
+//            }
+//            rowIndex++;
+//        }
+//
+//        zipCounter.set(validZips.size());
+//        return data;
+//    }
 
     protected JsonTableData3 createScaledData(
             ScaledRealAdoptionData scaledData,
             String simuSuffix,
             String realSuffix,
             boolean showPreYear,
-            boolean validZipsOnly) {
+            boolean validZipsOnly,
+            MutableInt zipCounter) {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> allZips = processor.getAllZips(RAConstants.ZIP);
         Product product = processor.getSingletonProduct();
@@ -176,6 +180,7 @@ public abstract class AbstractComparedAnnualZipImageHandler
             rowIndex++;
         }
 
+        zipCounter.set(validZips.size());
         return data;
     }
 
@@ -184,7 +189,8 @@ public abstract class AbstractComparedAnnualZipImageHandler
             String simuSuffix,
             String realSuffix,
             boolean showPreYear,
-            boolean validZipsOnly) {
+            boolean validZipsOnly,
+            MutableInt zipCounter) {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> allZips = processor.getAllZips(RAConstants.ZIP);
         Product product = processor.getSingletonProduct();
@@ -241,6 +247,7 @@ public abstract class AbstractComparedAnnualZipImageHandler
             rowIndex++;
         }
 
+        zipCounter.set(validZips.size());
         return data;
     }
 }

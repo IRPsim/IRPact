@@ -20,7 +20,7 @@ public class PlotData extends AbstractSubCommand {
     protected Object column5;
 
     protected Object ti;
-    protected Object notitle;
+    protected boolean notitle = false;
     protected Object ls;
     protected Object lw;
     protected Object lc;
@@ -81,8 +81,12 @@ public class PlotData extends AbstractSubCommand {
         return this;
     }
 
-    public PlotData setNotitle(Object notitle) {
-        this.notitle = notitle;
+    public PlotData setNotitle() {
+        return setNotitle(true);
+    }
+
+    public PlotData setNotitle(boolean value) {
+        this.notitle = value;
         return this;
     }
 
@@ -119,7 +123,7 @@ public class PlotData extends AbstractSubCommand {
         tryAppendColumn(target, column5);
 
         tryAppend(target, " ti ", ti);
-        tryAppend(target, " notitle ", notitle);
+        trySet(target, " notitle", notitle);
         tryAppend(target, " ls ", ls);
         tryAppend(target, " dt ", dt);
         tryAppend(target, " lc ", lc);

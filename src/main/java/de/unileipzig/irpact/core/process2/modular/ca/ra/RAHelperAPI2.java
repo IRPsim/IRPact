@@ -151,31 +151,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
                 .trace(getDefaultLogger());
     }
 
-    default AgentDataState getAgentDataState(ConsumerAgentData2 input) {
-        return input.getEnvironment().getDataAnalyser().getAgentDataState(input.getAgent(), input.getProduct(), input.getCurrentYear());
-    }
-
-    default void updateAgentDataState(ConsumerAgentData2 input, AgentDataStateLoggingHelper helper, double value) {
-        AgentDataState state = getAgentDataState(input);
-        helper.set(state, value);
-    }
-
-    default void logEvaluationFailed(ConsumerAgentData2 input, Timestamp now, AgentDataState state) {
-        input.getDataLogger().logEvaluationFailed(input.getAgent(), input.getProduct(), now, state);
-    }
-
-    default void logEvaluationSuccess(ConsumerAgentData2 input, Timestamp now, AgentDataState state) {
-        input.getDataLogger().logEvaluationSuccess(input.getAgent(), input.getProduct(), now, state);
-    }
-
-    default void logAgentDataState(ConsumerAgentData2 input) {
-        logAgentDataState(input, input.now(), getAgentDataState(input));
-    }
-
-    default void logAgentDataState(ConsumerAgentData2 input, Timestamp now, AgentDataState state) {
-        input.getDataAnalyser().logAgentDataState(input.getAgent(), input.getProduct(), now.getYear(), state);
-    }
-
     default void logPhaseTransition(ConsumerAgentData2 input, Timestamp now, DataAnalyser.Phase phase) {
         input.getDataAnalyser().logPhaseTransition(input.getAgent(), phase, input.getProduct(), now);
     }

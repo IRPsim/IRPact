@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractProcessPhase
 import de.unileipzig.irpact.io.param.input.visualisation.result2.InProcessPhaseOverviewImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
-import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory;
+import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -64,11 +64,20 @@ public class ProcessPhaseOverviewGnuplotImageHandler
 
     @Override
     public GnuPlotBuilder getBuilder(InProcessPhaseOverviewImage image, ImageData data) throws Throwable {
-        return GnuPlotFactory.stackedBarChart0(
+//        return GnuPlotFactory.stackedBarChart0(
+//                getLocalizedString("title"),
+//                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
+//                getLocalizedString("sep"),
+//                image.getBoxWidth(),
+//                image.getImageWidth(), image.getImageHeight()
+//        );
+        return GnuPlotFactory2.simpleStackedBarChart(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
                 getLocalizedString("sep"),
+                getHexRGBPaletteOrNull(),
                 image.getBoxWidth(),
+                null, null,
                 image.getImageWidth(), image.getImageHeight()
         );
     }

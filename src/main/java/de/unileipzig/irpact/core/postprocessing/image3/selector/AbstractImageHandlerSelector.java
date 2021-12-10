@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image3.selector;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageHandler;
@@ -27,25 +28,28 @@ public abstract class AbstractImageHandlerSelector<T>
 
     @Override
     public boolean isSupported(InOutputImage2 image) {
-        return c.isInstance(image);
+        return c.isInstance(image) && hasSupportedEngine(image);
+    }
+
+    protected boolean hasSupportedEngine(InOutputImage2 image) {
+        try {
+            return image.getEngine() == SupportedEngine.GNUPLOT;
+        } catch (ParsingException e) {
+            warn("engine not readable", e);
+            return false;
+        }
     }
 
     @Override
-    public void handle(InOutputImage2 image) throws Throwable {
-        trace("handle {} '{}'", c.getSimpleName(), image.getName());
+    public ImageHandler getHandler(InOutputImage2 image) throws Throwable {
+        trace("handle image '{}' with type {}", c.getSimpleName(), image.getName());
 
-
-        ImageHandler handler;
         if(image.getEngine() == SupportedEngine.GNUPLOT) {
-            handler = createHandler(c.cast(image));
+            return createGnuplotHandler(c.cast(image));
         } else {
-            warn("R not supported, skip");
-            return;
+            throw new UnsupportedOperationException("R not supported");
         }
-
-        handler.init();
-        handler.execute();
     }
 
-    protected abstract ImageHandler createHandler(T image);
+    protected abstract ImageHandler createGnuplotHandler(T image);
 }

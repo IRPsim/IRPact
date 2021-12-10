@@ -99,17 +99,6 @@ public abstract class AbstractAnnualBucketImageHandler
                 + ")";
     }
 
-    protected ColorPalette getPaletteOrNull() {
-        try {
-            return imageConfiguration.hasColorPalette()
-                    ? imageConfiguration.getColorPalette().toPalette()
-                    : null;
-        } catch (ParsingException e) {
-            error("color platte not usable, use default colors", e);
-            return null;
-        }
-    }
-
     protected Double getMinYOrDefault(Double ifMissing) {
         return imageConfiguration.isUseCustomYRange()
                 ? imageConfiguration.getMinY()
@@ -120,15 +109,6 @@ public abstract class AbstractAnnualBucketImageHandler
         return imageConfiguration.isUseCustomYRange()
                 ? imageConfiguration.getMaxY()
                 : ifMissing;
-    }
-
-    protected List<String> getHexRGBPaletteOrNull() {
-        ColorPalette palette = getPaletteOrNull();
-        return palette == null
-                ? null
-                : palette.stream()
-                .map(ColorPalette::printRGBHex)
-                .collect(Collectors.toList());
     }
 
     public static Map<Integer, BucketMap<Number, Integer>> createAnnualBucketData(

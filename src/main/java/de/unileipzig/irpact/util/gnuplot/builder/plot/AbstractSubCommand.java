@@ -21,6 +21,12 @@ public abstract class AbstractSubCommand implements SubCommand {
         tryAppend(target, prePart, value, null);
     }
 
+    protected static void trySet(Appendable target, Object value, boolean test) throws IOException {
+        if(test) {
+            tryAppend(target, value);
+        }
+    }
+
     protected static void tryAppend(Appendable target, Object prePart, Object value, Object postPart) throws IOException {
         if(value != null) {
             if(prePart != null) target.append(prePart.toString());

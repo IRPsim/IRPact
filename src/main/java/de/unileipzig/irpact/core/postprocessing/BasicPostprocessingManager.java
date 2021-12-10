@@ -1,9 +1,7 @@
 package de.unileipzig.irpact.core.postprocessing;
 
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.postprocessing.data3.DataProcessor;
 import de.unileipzig.irpact.core.postprocessing.data4.DataProcessor4;
-import de.unileipzig.irpact.core.postprocessing.image.ImageProcessor;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.MetaData;

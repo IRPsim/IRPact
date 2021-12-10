@@ -23,6 +23,7 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VIS
  */
 @Definition
 @LocalizedUiResource.PutClassPath(SETT_VISURESULT2_ANNUALBUCKET)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InAnnualBucketImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -38,38 +39,31 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
     }
     @TreeAnnotationResource.Apply
     public static void applyRes(LocalizedUiResource res) {
-        res.setRules(thisClass(), ENGINES, InOutputImage2.createEngineBuilder(thisClass()));
     }
 
     public static InAnnualBucketImage NPV() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NPV);
     }
-    public static InAnnualBucketImage NPV = NPV();
 
     public static InAnnualBucketImage ENV() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_ENV);
     }
-    public static InAnnualBucketImage ENV = ENV();
 
     public static InAnnualBucketImage NOV() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_NOV);
     }
-    public static InAnnualBucketImage NOV = NOV();
 
     public static InAnnualBucketImage SOCIAL() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_SOCIAL);
     }
-    public static InAnnualBucketImage SOCIAL = SOCIAL();
 
     public static InAnnualBucketImage LOCAL() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_LOCAL);
     }
-    public static InAnnualBucketImage LOCAL = LOCAL();
 
     public static InAnnualBucketImage UTILITY() {
         return new InAnnualBucketImage(IRPact.IMAGE_BUCKET_UTILITY);
     }
-    public static InAnnualBucketImage UTILITY = UTILITY();
 
     @DefinitionName
     public String name;
@@ -88,6 +82,7 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
             boolDomain = true,
             boolDefault = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useGnuplot = true;
 
     @FieldDefinition
@@ -95,6 +90,7 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useR = false;
 
     @FieldDefinition
@@ -370,13 +366,15 @@ public class InAnnualBucketImage implements InLoggingResultImage2 {
     }
 
     public void setColorPalette(InColorPalette colorPalette) {
-        this.colorPalette = new InColorPalette[]{ colorPalette };
+        this.colorPalette = set(this.colorPalette, colorPalette);
     }
 
+    @Override
     public boolean hasColorPalette() {
         return len(colorPalette) > 0;
     }
 
+    @Override
     public InColorPalette getColorPalette() throws ParsingException {
         return getInstance(colorPalette, "colorPalette");
     }

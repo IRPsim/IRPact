@@ -35,11 +35,9 @@
       "sca_InGeneral_levelTrace" : 0,
       "sca_InGeneral_levelWarn" : 0,
       "sca_InGeneral_logAll" : 1,
-      "sca_InGeneral_logAllEvaluation" : 0,
       "sca_InGeneral_logAllIRPact" : 0,
       "sca_InGeneral_logAllTools" : 0,
       "sca_InGeneral_logEvaluation" : 0,
-      "sca_InGeneral_logFinancialComponent" : 0,
       "sca_InGeneral_logInitialization" : 0,
       "sca_InGeneral_logInterest" : 0,
       "sca_InGeneral_logPerformance" : 0,
@@ -124,6 +122,7 @@
       },
       "set_InAnnualBucketImage" : { },
       "set_InAnnualInterestLogger" : { },
+      "set_InAnnualMilieuImage" : { },
       "set_InAttributeInputModule3" : { },
       "set_InAttributeName" : { },
       "set_InAvgFinModule3" : { },
@@ -263,7 +262,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_12_08_T_17_52_27" : {
+        "CT_D_2021_12_10_T_06_45_56" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -347,7 +346,7 @@
         "DO_NOTHING" : { }
       },
       "set_InScenarioVersion" : {
-        "v1_23_0" : {
+        "v1_24_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -446,6 +445,7 @@
       "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
       "par_link_InAnnualBucketImage_InColorPalette_colorPalette" : { },
       "par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
+      "par_link_InAnnualMilieuImage_InColorPalette_colorPalette" : { },
       "par_link_InAttributeInputModule3_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : {
         "ProcessModel" : {

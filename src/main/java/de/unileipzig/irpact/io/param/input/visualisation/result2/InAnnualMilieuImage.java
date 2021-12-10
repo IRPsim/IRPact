@@ -15,15 +15,15 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_PROCESSPHASE;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_ANNUALMILIEU;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_PROCESSPHASE)
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_ANNUALMILIEU)
 @LocalizedUiResource.XorWithoutUnselectRule
-public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
+public class InAnnualMilieuImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -40,10 +40,9 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     public static void applyRes(LocalizedUiResource res) {
     }
 
-    public static InProcessPhaseOverviewImage createDefault() {
-        return new InProcessPhaseOverviewImage(IRPact.IMAGE_PROCESS_MODEL_PHASE_OVERVIEW);
+    public static InAnnualMilieuImage createDefault() {
+        return new InAnnualMilieuImage(IRPact.IMAGE_ANNUAL_ADOPTION_MILIEU);
     }
-    public static InProcessPhaseOverviewImage DEFAULT = createDefault();
 
     @DefinitionName
     public String name;
@@ -98,7 +97,7 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            g0Domain = true,
+            domain = DOMAIN_G0,
             intDefault = 1280,
             pixelUnit = true
     )
@@ -107,8 +106,8 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            g0Domain = true,
-            intDefault = 720,
+            domain = DOMAIN_G0,
+            intDefault = 1280,
             pixelUnit = true
     )
     public int imageHeight = 720;
@@ -116,16 +115,44 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            g0Domain = true,
-            decDefault = 0.8
+            domain = DOMAIN_G0,
+            decDefault = 1
     )
-    public double boxWidth = 0.8;
+    public double boxWidth = 1;
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            customImageDomain = true,
-            customImageDefault = true
+            boolDomain = true,
+            boolDefault = true
+    )
+    public boolean showInitial = true;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean useCustomYRange = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
+    public double minY = 0.0;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
+    public double maxY = 0.0;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = IRPact.INVALID_CUSTOM_IMAGE
     )
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
@@ -133,15 +160,16 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     @LocalizedUiResource.AddEntry
     public InColorPalette[] colorPalette = new InColorPalette[0];
 
-    public InProcessPhaseOverviewImage() {
-    }
-
-    public InProcessPhaseOverviewImage(String name) {
-        setName(name);
+    public InAnnualMilieuImage() {
         setEngine(SupportedEngine.GNUPLOT);
         setStoreImage(true);
         setStoreScript(true);
         setStoreData(true);
+    }
+
+    public InAnnualMilieuImage(String name) {
+        this();
+        setName(name);
     }
 
     public void setEngine(SupportedEngine engine) {
@@ -163,11 +191,11 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     }
 
     @Override
-    public InProcessPhaseOverviewImage copy(CopyCache cache) {
+    public InAnnualMilieuImage copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InProcessPhaseOverviewImage newCopy(CopyCache cache) {
+    public InAnnualMilieuImage newCopy(CopyCache cache) {
         return Dev.throwException();
     }
 
@@ -260,17 +288,44 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
         return boxWidth;
     }
 
+    public void setUseCustomYRange(boolean useCustomYRange) {
+        this.useCustomYRange = useCustomYRange;
+    }
+
+    public boolean isUseCustomYRange() {
+        return useCustomYRange;
+    }
+
+    public void setMinY(double minY) {
+        this.minY = minY;
+    }
+
+    public double getMinY() {
+        return minY;
+    }
+
+    public void setMaxY(double maxY) {
+        this.maxY = maxY;
+    }
+
+    public double getMaxY() {
+        return maxY;
+    }
+
     public void setCustomImageId(int customImageId) {
         this.customImageId = customImageId;
     }
 
-    @Override
-    public int getCustomImageId() {
-        return customImageId;
+    public void setShowInitial(boolean showInitial) {
+        this.showInitial = showInitial;
+    }
+
+    public boolean isShowInitial() {
+        return showInitial;
     }
 
     public void setColorPalette(InColorPalette colorPalette) {
-        this.colorPalette = set(this.colorPalette, colorPalette);
+        this.colorPalette = new InColorPalette[]{ colorPalette };
     }
 
     @Override
@@ -281,5 +336,10 @@ public class InProcessPhaseOverviewImage implements InLoggingResultImage2 {
     @Override
     public InColorPalette getColorPalette() throws ParsingException {
         return getInstance(colorPalette, "colorPalette");
+    }
+
+    @Override
+    public int getCustomImageId() {
+        return customImageId;
     }
 }

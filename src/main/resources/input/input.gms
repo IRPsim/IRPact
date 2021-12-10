@@ -1199,9 +1199,6 @@ PARAMETER par_InAdoptionPhaseOverviewImage_enabled(set_InAdoptionPhaseOverviewIm
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 1, par_InAdoptionPhaseOverviewImage_useR = 0)
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 0, par_InAdoptionPhaseOverviewImage_useGnuplot = 1)
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 0, par_InAdoptionPhaseOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAdoptionPhaseOverviewImage_useGnuplot(set_InAdoptionPhaseOverviewImage)
 
@@ -1209,9 +1206,6 @@ PARAMETER par_InAdoptionPhaseOverviewImage_useGnuplot(set_InAdoptionPhaseOvervie
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 1, par_InAdoptionPhaseOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 0, par_InAdoptionPhaseOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 0, par_InAdoptionPhaseOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAdoptionPhaseOverviewImage_useR(set_InAdoptionPhaseOverviewImage)
 
@@ -1285,9 +1279,6 @@ PARAMETER par_InAnnualBucketImage_enabled(set_InAnnualBucketImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InAnnualBucketImage_useGnuplot == 1, par_InAnnualBucketImage_useR = 0)
-* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useGnuplot = 1)
-* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAnnualBucketImage_useGnuplot(set_InAnnualBucketImage)
 
@@ -1295,9 +1286,6 @@ PARAMETER par_InAnnualBucketImage_useGnuplot(set_InAnnualBucketImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InAnnualBucketImage_useR == 1, par_InAnnualBucketImage_useGnuplot = 0)
-* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useGnuplot = 0)
-* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAnnualBucketImage_useR(set_InAnnualBucketImage)
 
@@ -1394,6 +1382,112 @@ PARAMETER par_link_InAnnualBucketImage_InColorPalette_colorPalette(set_InAnnualB
 * - type: Boolean
 PARAMETER par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule(set_InAnnualBucketImage,set_InConsumerAgentCalculationLoggingModule2)
 
+* - identifier: InAnnualMilieuImage
+* - type: String
+SET set_InAnnualMilieuImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_enabled(set_InAnnualMilieuImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_useGnuplot(set_InAnnualMilieuImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_useR(set_InAnnualMilieuImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_storeScript(set_InAnnualMilieuImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_storeData(set_InAnnualMilieuImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_storeImage(set_InAnnualMilieuImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualMilieuImage_imageWidth(set_InAnnualMilieuImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualMilieuImage_imageHeight(set_InAnnualMilieuImage)
+
+* - default: 1.0
+* - domain: (0,)
+* - description: todo
+* - identifier: boxWidth
+* - type: Float
+PARAMETER par_InAnnualMilieuImage_boxWidth(set_InAnnualMilieuImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: Initiale Adoptionen anzeigen?
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_showInitial(set_InAnnualMilieuImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierte Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InAnnualMilieuImage_useCustomYRange(set_InAnnualMilieuImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Min Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualMilieuImage_minY(set_InAnnualMilieuImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Max Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualMilieuImage_maxY(set_InAnnualMilieuImage)
+
+* - default: 0
+* - description: todo
+* - identifier: Benutzerdefinierte Bild-Id
+* - type: Integer
+PARAMETER par_InAnnualMilieuImage_customImageId(set_InAnnualMilieuImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InAnnualMilieuImage_InColorPalette_colorPalette(set_InAnnualMilieuImage,set_InColorPalette)
+
 * - identifier: InComparedAnnualImage
 * - type: String
 SET set_InComparedAnnualImage(set_InLoggingResultImage2)
@@ -1409,9 +1503,6 @@ PARAMETER par_InComparedAnnualImage_enabled(set_InComparedAnnualImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InComparedAnnualImage_useGnuplot == 1, par_InComparedAnnualImage_useR = 0)
-* - rule: IF (par_InComparedAnnualImage_useGnuplot == 0, par_InComparedAnnualImage_useGnuplot = 1)
-* - rule: IF (par_InComparedAnnualImage_useGnuplot == 0, par_InComparedAnnualImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InComparedAnnualImage_useGnuplot(set_InComparedAnnualImage)
 
@@ -1419,9 +1510,6 @@ PARAMETER par_InComparedAnnualImage_useGnuplot(set_InComparedAnnualImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InComparedAnnualImage_useR == 1, par_InComparedAnnualImage_useGnuplot = 0)
-* - rule: IF (par_InComparedAnnualImage_useR == 0, par_InComparedAnnualImage_useGnuplot = 0)
-* - rule: IF (par_InComparedAnnualImage_useR == 0, par_InComparedAnnualImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InComparedAnnualImage_useR(set_InComparedAnnualImage)
 
@@ -1484,13 +1572,6 @@ PARAMETER par_InComparedAnnualImage_skipInvalidZips(set_InComparedAnnualImage)
 PARAMETER par_InComparedAnnualImage_showPreYear(set_InComparedAnnualImage)
 
 * - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: showUnscaled
-* - type: Boolean
-PARAMETER par_InComparedAnnualImage_showUnscaled(set_InComparedAnnualImage)
-
-* - default: 0
 * - domain: [0,10]
 * - description: todo
 * - identifier: customImageId
@@ -1522,9 +1603,6 @@ PARAMETER par_InComparedAnnualZipImage_enabled(set_InComparedAnnualZipImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 1, par_InComparedAnnualZipImage_useR = 0)
-* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 0, par_InComparedAnnualZipImage_useGnuplot = 1)
-* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 0, par_InComparedAnnualZipImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InComparedAnnualZipImage_useGnuplot(set_InComparedAnnualZipImage)
 
@@ -1532,9 +1610,6 @@ PARAMETER par_InComparedAnnualZipImage_useGnuplot(set_InComparedAnnualZipImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InComparedAnnualZipImage_useR == 1, par_InComparedAnnualZipImage_useGnuplot = 0)
-* - rule: IF (par_InComparedAnnualZipImage_useR == 0, par_InComparedAnnualZipImage_useGnuplot = 0)
-* - rule: IF (par_InComparedAnnualZipImage_useR == 0, par_InComparedAnnualZipImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InComparedAnnualZipImage_useR(set_InComparedAnnualZipImage)
 
@@ -1597,13 +1672,6 @@ PARAMETER par_InComparedAnnualZipImage_skipInvalidZips(set_InComparedAnnualZipIm
 PARAMETER par_InComparedAnnualZipImage_showPreYear(set_InComparedAnnualZipImage)
 
 * - default: 0
-* - domain: [0|1]
-* - description: todo
-* - identifier: showUnscaled
-* - type: Boolean
-PARAMETER par_InComparedAnnualZipImage_showUnscaled(set_InComparedAnnualZipImage)
-
-* - default: 0
 * - domain: [0,10]
 * - description: todo
 * - identifier: customImageId
@@ -1635,9 +1703,6 @@ PARAMETER par_InCustomAverageQuantilRangeImage_enabled(set_InCustomAverageQuanti
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 1, par_InCustomAverageQuantilRangeImage_useR = 0)
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 1)
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InCustomAverageQuantilRangeImage_useGnuplot(set_InCustomAverageQuantilRangeImage)
 
@@ -1645,9 +1710,6 @@ PARAMETER par_InCustomAverageQuantilRangeImage_useGnuplot(set_InCustomAverageQua
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 1, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
-* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InCustomAverageQuantilRangeImage_useR(set_InCustomAverageQuantilRangeImage)
 
@@ -1739,9 +1801,6 @@ PARAMETER par_InInterestOverviewImage_enabled(set_InInterestOverviewImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InInterestOverviewImage_useGnuplot == 1, par_InInterestOverviewImage_useR = 0)
-* - rule: IF (par_InInterestOverviewImage_useGnuplot == 0, par_InInterestOverviewImage_useGnuplot = 1)
-* - rule: IF (par_InInterestOverviewImage_useGnuplot == 0, par_InInterestOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InInterestOverviewImage_useGnuplot(set_InInterestOverviewImage)
 
@@ -1749,9 +1808,6 @@ PARAMETER par_InInterestOverviewImage_useGnuplot(set_InInterestOverviewImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InInterestOverviewImage_useR == 1, par_InInterestOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InInterestOverviewImage_useR == 0, par_InInterestOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InInterestOverviewImage_useR == 0, par_InInterestOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InInterestOverviewImage_useR(set_InInterestOverviewImage)
 
@@ -1849,9 +1905,6 @@ PARAMETER par_InProcessPhaseOverviewImage_enabled(set_InProcessPhaseOverviewImag
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 1, par_InProcessPhaseOverviewImage_useR = 0)
-* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 0, par_InProcessPhaseOverviewImage_useGnuplot = 1)
-* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 0, par_InProcessPhaseOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InProcessPhaseOverviewImage_useGnuplot(set_InProcessPhaseOverviewImage)
 
@@ -1859,9 +1912,6 @@ PARAMETER par_InProcessPhaseOverviewImage_useGnuplot(set_InProcessPhaseOverviewI
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InProcessPhaseOverviewImage_useR == 1, par_InProcessPhaseOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InProcessPhaseOverviewImage_useR == 0, par_InProcessPhaseOverviewImage_useGnuplot = 0)
-* - rule: IF (par_InProcessPhaseOverviewImage_useR == 0, par_InProcessPhaseOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InProcessPhaseOverviewImage_useR(set_InProcessPhaseOverviewImage)
 
@@ -1941,9 +1991,6 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_enabled(set_InSpecialAverageQuan
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 1, par_InSpecialAverageQuantilRangeImage_useR = 0)
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 1)
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_useGnuplot(set_InSpecialAverageQuantilRangeImage)
 
@@ -1951,9 +1998,6 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_useGnuplot(set_InSpecialAverageQ
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 1, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
-* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_useR(set_InSpecialAverageQuantilRangeImage)
 
@@ -4275,20 +4319,6 @@ SCALAR sca_InGeneral_logEvaluation
 * - identifier: Bereichsgröße (Evaluierungswerte)
 * - type: Float
 SCALAR sca_InGeneral_evaluationBucketSize
-
-* - default: 0
-* - domain: [0|1]
-* - description: Komplette_Evaluierungen.xlsx
-* - identifier: Komplette Evaluierungsdaten
-* - type: Boolean
-SCALAR sca_InGeneral_logAllEvaluation
-
-* - default: 0
-* - domain: [0|1]
-* - description: Finanzielle_Komponente.xlsx
-* - identifier: Finanzielle Komponente
-* - type: Boolean
-SCALAR sca_InGeneral_logFinancialComponent
 
 * - identifier: InInformation
 * - type: String
