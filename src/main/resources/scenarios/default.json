@@ -23,7 +23,9 @@
       "sca_delta_ii" : 0.0,
       "sca_InGeneral_copyLogIfPossible" : 0,
       "sca_InGeneral_debugTask" : 0,
+      "sca_InGeneral_enableFirstSimulationYear" : 0,
       "sca_InGeneral_evaluationBucketSize" : 0.1,
+      "sca_InGeneral_firstSimulationYear" : 2015,
       "sca_InGeneral_forceLogToConsole" : 1,
       "sca_InGeneral_innerParallelism" : 0,
       "sca_InGeneral_lastSimulationYear" : 2015,
@@ -262,7 +264,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_12_10_T_12_58_49" : {
+        "CT_D_2021_12_10_T_13_58_31" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -346,7 +348,7 @@
         "DO_NOTHING" : { }
       },
       "set_InScenarioVersion" : {
-        "v1_24_0" : {
+        "v1_24_1" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },

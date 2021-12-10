@@ -410,11 +410,16 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
     }
 
     protected void validate(List<InRoot> inRoots) {
+        int index = 0;
         for(InRoot inRoot: inRoots) {
-            //exiting first simulation year
-            if(inRoot != null && !inRoot.general.hasFirstSimulationYear()) {
-                throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
+            if(inRoot == null) {
+                throw new NullPointerException("inRoot is null at index " + index);
             }
+            //exiting first simulation year
+//            if(inRoot != null && !inRoot.general.isEnableFirstSimulationYear()) {
+//                throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
+//            }
+            index++;
         }
     }
 

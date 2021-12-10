@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.24.0" 
+        :description "IRPact v1.24.1" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -36,7 +36,7 @@
       {
         :label "Allgemeine Einstellungen" 
         :description "Allgemeine Einstellungen von IRPact" 
-        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "lastSimulationYear"]] 
+        :tags [["InGeneral" "seed"] ["InGeneral" "timeout"] ["InGeneral" "timeoutUseMs"] ["InGeneral" "timeoutUseSec"] ["InGeneral" "timeoutUseMin"] ["InGeneral" "enableFirstSimulationYear"] ["InGeneral" "firstSimulationYear"] ["InGeneral" "lastSimulationYear"]] 
         :sections [
           {
             :label "Logging" 
@@ -542,9 +542,9 @@
     :description "todo" 
     :sections [
       {
-        :label "GRAPH-TEST-LABEL" 
+        :label "Modulgraph" 
         :icon "glyphicon glyphicon-globe" 
-        :description "GRAPH-TEST-DESC" 
+        :description "Darstellung des aktuellen Modulgraphs" 
         :graph {
           :edges {
             :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
@@ -575,14 +575,14 @@
                 :color "#7012FE"
               }
             ] 
-            :heading "GRAPH-TEST-EH"
+            :heading "Kanten"
           } 
           :nodes {
             :set "set_InModule2" 
             :color {
               :type :fix 
               :value "White" 
-              :heading "GRAPH-TEST-CH"
+              :heading "Farbbedeutung"
             } 
             :border {
               :type :subsets 
@@ -628,7 +628,7 @@
                   :value "Magenta"
                 }
               ] 
-              :heading "GRAPH-TEST-BH"
+              :heading "Kantenbedeutung"
             } 
             :shape {
               :type :subsets 
@@ -674,7 +674,7 @@
                   :value "triangle-down"
                 }
               ] 
-              :heading "GRAPH-TEST-SH"
+              :heading "Formbedeutungen"
             }
           }
         }
