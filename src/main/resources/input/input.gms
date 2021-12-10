@@ -3997,6 +3997,19 @@ SCALAR sca_InGeneral_timeoutUseSec
 SCALAR sca_InGeneral_timeoutUseMin
 
 * - default: 0
+* - domain: [0|1]
+* - description: Ermöglicht die Nutzung des alternativen Startjahrs.
+* - identifier: [Spezialoption] Startjahr aktivieren?
+* - type: Boolean
+SCALAR sca_InGeneral_enableFirstSimulationYear
+
+* - default: 0
+* - description: Diese Einstellung überschreibt das tatsächliche Startjahr der IRPsim-Einstellungen. Diese Option wurde eingebaut, um eine Seinsitivitätenanalyse über die Jahre zu nutzen.
+* - identifier: [Spezialoption] Startjahr
+* - type: Integer
+SCALAR sca_InGeneral_firstSimulationYear
+
+* - default: 0
 * - description: ([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert.
 * - identifier: [Spezialoption] Letzte zu simulierende Jahr
 * - type: Integer

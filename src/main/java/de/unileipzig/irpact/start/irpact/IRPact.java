@@ -87,7 +87,7 @@ public final class IRPact implements IRPActAccess {
     //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
     private static final String MINOR_STRING = "24";
-    private static final String BUILD_STRING = "0";
+    private static final String BUILD_STRING = "1";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -430,8 +430,16 @@ public final class IRPact implements IRPActAccess {
         settings.apply(CL_OPTIONS);
     }
 
+    private int getStartYear() {
+        if(inRoot.getGeneral().isEnableFirstSimulationYear()) {
+            return inRoot.getGeneral().getFirstSimulationYear();
+        } else {
+            return inEntry.getConfig().getYear();
+        }
+    }
+
     private void createSimulationEnvironment() throws ParsingException {
-        int year = inEntry.getConfig().getYear();
+        int year = getStartYear();
         JadexInputParser parser = new JadexInputParser();
         parser.setSimulationYear(year);
         parser.setMetaData(META_DATA);
@@ -443,7 +451,7 @@ public final class IRPact implements IRPActAccess {
 
     private void restorePreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
-        int year = inEntry.getConfig().getYear();
+        int year = getStartYear();
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
         updater.setResourceLoader(META_DATA.getLoader());

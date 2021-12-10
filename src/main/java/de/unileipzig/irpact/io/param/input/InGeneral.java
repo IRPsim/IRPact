@@ -249,16 +249,30 @@ public class InGeneral implements Copyable {
         }
     }
 
-    //internal only
-    private final MutableInt firstSimulationYear0 = MutableInt.empty();
-    public boolean hasFirstSimulationYear() {
-        return firstSimulationYear0.hasValue();
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean enableFirstSimulationYear = false;
+    public void setEnableFirstSimulationYear(boolean enableFirstSimulationYear) {
+        this.enableFirstSimulationYear = enableFirstSimulationYear;
     }
+    public boolean isEnableFirstSimulationYear() {
+        return enableFirstSimulationYear;
+    }
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int firstSimulationYear = 0;
     public int getFirstSimulationYear() {
-        return firstSimulationYear0.get();
+        return firstSimulationYear;
     }
     public void setFirstSimulationYear(int year) {
-        firstSimulationYear0.set(year);
+        this.firstSimulationYear = year;
     }
 
     @FieldDefinition

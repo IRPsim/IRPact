@@ -25,6 +25,12 @@ InGeneral_timeoutUseSec:
 InGeneral_timeoutUseMin:
   gams_identifier: "Timeout in Minuten"
   gams_description: "Die Länge des Timeouts wird in Minuten angegeben."
+InGeneral_enableFirstSimulationYear:
+  gams_identifier: "[Spezialoption] Startjahr aktivieren?"
+  gams_description: "Ermöglicht die Nutzung des alternativen Startjahrs."
+InGeneral_firstSimulationYear:
+  gams_identifier: "[Spezialoption] Startjahr"
+  gams_description: "Diese Einstellung überschreibt das tatsächliche Startjahr der IRPsim-Einstellungen. Diese Option wurde eingebaut, um eine Seinsitivitätenanalyse über die Jahre zu nutzen."
 InGeneral_lastSimulationYear:
   gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
   gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
@@ -845,7 +851,7 @@ informations:
 #dran denken: Version auch in IRPact.json aendern
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.24.0"
+  edn_description: "IRPact v1.24.1"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2596,13 +2602,13 @@ process_model4_pvactmodules_pvlogging:
 ##########################
 
 InModularProcessModel2:
-  edn_label: "GRAPH-TEST-LABEL"
-  edn_description: "GRAPH-TEST-DESC"
-  graph_edgeheading: "GRAPH-TEST-EH"
-  graph_colorheading: "GRAPH-TEST-CH"
-  graph_borderheading: "GRAPH-TEST-BH"
-  graph_shapeheading: "GRAPH-TEST-SH"
-  graph_iconheading: "GRAPH-TEST-IH"
+  edn_label: "Modulgraph"
+  edn_description: "Darstellung des aktuellen Modulgraphs"
+  graph_edgeheading: "Kanten"
+  graph_colorheading: "Farbbedeutung"
+  graph_borderheading: "Kantenbedeutung"
+  graph_shapeheading: "Formbedeutungen"
+  graph_iconheading: "Iconbedeutung"
 
 process_model2:
   edn_label: "Prozessmodell"
