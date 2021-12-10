@@ -306,6 +306,8 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
 
         setupGeneral(root.getGeneral());
 
+        root.getGeneral().setEnableFirstSimulationYear(false);
+
         return root;
     }
 

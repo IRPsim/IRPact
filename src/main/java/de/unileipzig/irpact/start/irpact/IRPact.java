@@ -431,11 +431,15 @@ public final class IRPact implements IRPActAccess {
     }
 
     private int getStartYear() {
+        int year;
         if(inRoot.getGeneral().isEnableFirstSimulationYear()) {
-            return inRoot.getGeneral().getFirstSimulationYear();
+            year = inRoot.getGeneral().getFirstSimulationYear();
+            LOGGER.info("use 'custom' start year: {}", year);
         } else {
-            return inEntry.getConfig().getYear();
+            year = inEntry.getConfig().getYear();
+            LOGGER.info("use start year: {}", year);
         }
+        return year;
     }
 
     private void createSimulationEnvironment() throws ParsingException {
