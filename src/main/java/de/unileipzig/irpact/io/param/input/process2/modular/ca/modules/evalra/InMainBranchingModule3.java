@@ -36,6 +36,9 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
 ////                colorMode = NodeMode.PARAMETER,
 ////                borderMode = NodeMode.PARAMETER
 //        )
+        edn = @Edn(
+                additionalTags2 = CAMPMGraphSettings.EVALRA_NODE
+        ),
         graphNode3 = @de.unileipzig.irptools.defstructure.annotation.graph.GraphNode(
                 graphId = CAMPMGraphSettings.GRAPH_ID,
                 subsetsColor = @Subsets(

@@ -423,6 +423,7 @@ public class OutRoot implements RootClass {
     }
 
     protected void handleOptAct(Sections sections) {
+        //sections.getList().forEach(s -> System.out.println(">>> " + s.getLabel()));
         Section section = sections.findByLabel("set_side_cust");
         section.setPriority(100);
     }
