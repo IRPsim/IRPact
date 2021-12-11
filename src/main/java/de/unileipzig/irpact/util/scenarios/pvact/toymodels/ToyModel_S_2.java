@@ -7,7 +7,7 @@ import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.PVactCagModifier
 
 import java.util.function.BiConsumer;
 
-import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup.setA1;
+import static de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.DataSetup.*;
 
 /**
  * @author Daniel Abitz
@@ -29,6 +29,8 @@ public class ToyModel_S_2 extends AbstractToyModel {
     protected void initTestData() {
         testData.setGlobalModifier(row -> {
             setA1(row, 1);
+            setSlope(row, 0);
+            setOrientation(row, 0);
             return row;
         });
 
@@ -85,6 +87,7 @@ public class ToyModel_S_2 extends AbstractToyModel {
             cag.setD3(dirac07);
             cag.setD4(dirac07);
             cag.setD6(dirac1);
+
         });
 
         cagManager.register(

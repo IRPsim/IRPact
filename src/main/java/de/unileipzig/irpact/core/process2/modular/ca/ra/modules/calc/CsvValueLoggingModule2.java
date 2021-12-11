@@ -113,7 +113,7 @@ public class CsvValueLoggingModule2
 
     protected void log(Object agentName, Object agentId, Object productName, Object time, Object value, Object isNaN) {
         getValueLogger().log(
-                "{};{};{};{};{}",
+                "{};{};{};{};{};{}",
                 agentName,
                 agentId,
                 productName,
