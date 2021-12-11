@@ -64,8 +64,8 @@ GNUPLOT:
 
   PROCESS_PHASE_OVERVIEW:
     title: "Prozessphasen"
-    xlab: "Adoptionen"
-    ylab: "Jahre"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
     keylab: "Phase"
     sep: ";"
     initialAdopted: "Initial adopted"

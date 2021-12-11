@@ -1,6 +1,5 @@
-package de.unileipzig.irpact.core.persistence.binaryjson.io;
+package de.unileipzig.irpact.commons.util.irpact32;
 
-import de.unileipzig.irpact.commons.util.IRPactBase32;
 import org.apache.commons.codec.binary.BaseNCodecInputStream;
 
 import java.io.InputStream;

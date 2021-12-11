@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.persistence.binaryjson.io;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.commons.util.irpact32.IRPactBase32;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 

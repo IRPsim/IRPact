@@ -1,6 +1,6 @@
 package de.unileipzig.irpact.io.param.input.binary;
 
-import de.unileipzig.irpact.commons.util.IRPactBase32;
+import de.unileipzig.irpact.commons.util.irpact32.IRPactBase32;
 import de.unileipzig.irpact.commons.util.data.BinaryData;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;

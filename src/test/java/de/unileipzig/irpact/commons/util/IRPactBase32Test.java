@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.commons.util;
 
+import de.unileipzig.irpact.commons.util.irpact32.IRPactBase32;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -17,10 +18,10 @@ class IRPactBase32Test {
     void testEncodeDecodeWithPrefix() {
         String text = "äöü€@µ";
         text = "abcdef";
-        String irpb32 = IRPactBase32.encodeToString(IRPactBase32.IRP32_PREFIX, text, StandardCharsets.UTF_8);
+        String irpb32 = IRPactBase32.encodeToString(IRPactBase32.PREFIX, text, StandardCharsets.UTF_8);
         //assertEquals("xOEIC7DM3NJH85B20OAQGZZZZ", irpb32);
         assertEquals("xC5H66P35COZZZZZZ", irpb32);
-        String dec = IRPactBase32.decodeToString(IRPactBase32.IRP32_PREFIX, irpb32, StandardCharsets.UTF_8);
+        String dec = IRPactBase32.decodeToString(IRPactBase32.PREFIX, irpb32, StandardCharsets.UTF_8);
         assertEquals(text, dec);
     }
 
