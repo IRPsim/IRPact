@@ -32,12 +32,12 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
 
     @Override
     protected void initTestData() {
-        CircularPositionModifier pmSA = new CircularPositionModifier(42);
-        pmSA.setDist(dist * 0.5, 0);
+        CircularPositionModifier pmSAK = new CircularPositionModifier(42);
+        pmSAK.setDist(dist * 0.5, 0);
 
-        CircularPositionModifier pmKH = new CircularPositionModifier(24);
-        pmKH.setDist(dist * 0.5, 0);
-        pmKH.setReference(pmSA.nextPoint(4 * dist, 3 * dist));
+        CircularPositionModifier pmH = new CircularPositionModifier(24);
+        pmH.setDist(dist * 0.5, 0);
+        pmH.setReference(pmSAK.nextPoint(4 * dist, 3 * dist));
 
         testData.setGlobalModifier(row -> {
             setA5(row, 1);
@@ -51,7 +51,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
                 10,
                 row -> {
                     setA1(row, sValues.next());
-                    setXY(row, pmSA.getReference());
+                    setXY(row, pmSAK.getReference());
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
@@ -64,7 +64,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
                 10,
                 row -> {
                     setA1(row, aValues.next());
-                    setXY(row, pmSA.nextPoint());
+                    setXY(row, pmSAK.nextPoint());
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
@@ -77,7 +77,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
                 10,
                 row -> {
                     setA1(row, kValues.next());
-                    setXY(row, pmKH.nextPoint());
+                    setXY(row, pmSAK.nextPoint());
                     setOrientation(row, 15);
                     setSlope(row, 20);
                     return row;
@@ -90,7 +90,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
                 10,
                 row -> {
                     setA1(row, hValues.next());
-                    setXY(row, pmKH.nextPoint());
+                    setXY(row, pmH.nextPoint());
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
@@ -107,7 +107,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
             cag.setD1(dirac1);
             cag.setD2(dirac1);
             cag.setD3(dirac0);
-            cag.setD4(dirac04);
+            cag.setD4(dirac053);
             cag.setD6(dirac1);
         });
 

@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.24.1" 
+        :description "IRPact v1.24.2" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -860,7 +860,13 @@
                 :set "set_InNaNModule3_inputnode3" 
                 :description "Gibt NaN (not a number) zurück." 
                 :tags [["InNaNModule3" "inputnode3" "placeholder"]]
-              } 
+              }
+            ]
+          } 
+          {
+            :label "Zahlenbasierte Auswertungsmodule" 
+            :description "todo" 
+            :sections [
               {
                 :label "MulScalarModule" 
                 :set "set_InMulScalarModule3_calcnode3" 
