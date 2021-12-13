@@ -85,9 +85,8 @@ public class ToyModel_S_2 extends AbstractToyModel {
             cag.setD1(dirac1);
             cag.setD2(dirac0);
             cag.setD3(dirac07);
-            cag.setD4(dirac07);
+            cag.setD4(dirac05);
             cag.setD6(dirac1);
-
         });
 
         cagManager.register(
