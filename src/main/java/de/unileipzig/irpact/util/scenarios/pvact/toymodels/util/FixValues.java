@@ -1,6 +1,8 @@
 package de.unileipzig.irpact.util.scenarios.pvact.toymodels.util;
 
 import java.util.*;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
@@ -27,6 +29,12 @@ public class FixValues<T> implements Iterator<T> {
         Collections.addAll(this.values, values);
     }
 
+    public void update(UnaryOperator<T> op) {
+        for(int i = 0; i < values.size(); i++) {
+            values.set(i, op.apply(values.get(i)));
+        }
+    }
+
     public void reset() {
         index = 0;
     }
@@ -47,5 +55,9 @@ public class FixValues<T> implements Iterator<T> {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    public Stream<T> stream() {
+        return values.stream();
     }
 }

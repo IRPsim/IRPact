@@ -412,6 +412,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         spatialModel.postAgentCreationValidation();
         timeModel.postAgentCreationValidation();
         lifeCycleControl.postAgentCreationValidation();
+
     }
 
     @Override

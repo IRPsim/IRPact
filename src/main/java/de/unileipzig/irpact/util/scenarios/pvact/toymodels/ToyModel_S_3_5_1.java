@@ -32,12 +32,12 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
 
     @Override
     protected void initTestData() {
-        CircularPositionModifier pmSAK = new CircularPositionModifier(42);
-        pmSAK.setDist(dist * 0.5, 0);
+        CircularPositionModifier pmSAH = new CircularPositionModifier(42);
+        pmSAH.setDist(dist * 0.5, 0);
 
-        CircularPositionModifier pmH = new CircularPositionModifier(24);
-        pmH.setDist(dist * 0.5, 0);
-        pmH.setReference(pmSAK.nextPoint(4 * dist, 3 * dist));
+        CircularPositionModifier pmK = new CircularPositionModifier(24);
+        pmK.setDist(dist * 0.5, 0);
+        pmK.setReference(pmSAH.nextPoint(4 * dist, 3 * dist));
 
         testData.setGlobalModifier(row -> {
             setA5(row, 1);
@@ -51,7 +51,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
                 10,
                 row -> {
                     setA1(row, sValues.next());
-                    setXY(row, pmSAK.getReference());
+                    setXY(row, pmSAH.getReference());
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
@@ -59,40 +59,42 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
         );
 
         FixValues<Double> aValues = new FixValues<>(108.15, 96.39, 101.45, 99.89, 99.89, 108.15, 96.39, 101.45, 99.89, 99.89);
+        aValues.update(d -> d + 1000);
         testData.setSizeAndModifier(
                 "A",
                 10,
                 row -> {
                     setA1(row, aValues.next());
-                    setXY(row, pmSAK.nextPoint());
+                    setXY(row, pmSAH.nextPoint());
                     setOrientation(row, 45);
                     setSlope(row, 45);
                     return row;
                 }
         );
 
-        FixValues<Double> kValues = new FixValues<>(79.29, 79.29, 83.65, 79.29, 81.43, 79.29, 79.29, 83.65, 79.29, 81.43);
+        FixValues<Double> kValues = new FixValues<>(108.15, 96.39, 101.45, 99.89, 99.89, 108.15, 96.39, 101.45, 99.89, 99.89);
+        kValues.update(d -> d + 1000);
         testData.setSizeAndModifier(
                 "K",
                 10,
                 row -> {
                     setA1(row, kValues.next());
-                    setXY(row, pmSAK.nextPoint());
-                    setOrientation(row, 15);
-                    setSlope(row, 20);
+                    setXY(row, pmK.nextPoint());
+                    setOrientation(row, 45);
+                    setSlope(row, 45);
                     return row;
                 }
         );
 
-        FixValues<Double> hValues = new FixValues<>(108.15, 96.39, 101.45, 99.89, 99.89, 108.15, 96.39, 101.45, 99.89, 99.89);
+        FixValues<Double> hValues = new FixValues<>(79.29, 79.29, 83.65, 79.29, 81.43, 79.29, 79.29, 83.65, 79.29, 81.43);
         testData.setSizeAndModifier(
                 "H",
                 10,
                 row -> {
                     setA1(row, hValues.next());
-                    setXY(row, pmH.nextPoint());
-                    setOrientation(row, 45);
-                    setSlope(row, 45);
+                    setXY(row, pmSAH.nextPoint());
+                    setOrientation(row, 15);
+                    setSlope(row, 20);
                     return row;
                 }
         );
@@ -107,7 +109,7 @@ public class ToyModel_S_3_5_1 extends AbstractToyModel {
             cag.setD1(dirac1);
             cag.setD2(dirac1);
             cag.setD3(dirac0);
-            cag.setD4(dirac053);
+            cag.setD4(dirac064);
             cag.setD6(dirac1);
         });
 
