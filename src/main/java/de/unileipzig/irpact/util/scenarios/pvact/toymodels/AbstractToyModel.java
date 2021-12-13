@@ -56,6 +56,8 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
     protected InDiracUnivariateDistribution dirac049 = new InDiracUnivariateDistribution("dirac049", 0.49);
     protected InDiracUnivariateDistribution dirac05 = new InDiracUnivariateDistribution("dirac05", 0.5);
     protected InDiracUnivariateDistribution dirac0501 = new InDiracUnivariateDistribution("dirac0501", 0.501);
+    protected InDiracUnivariateDistribution dirac053 = new InDiracUnivariateDistribution("dirac053", 0.53);
+    protected InDiracUnivariateDistribution dirac055 = new InDiracUnivariateDistribution("dirac055", 0.55);
     protected InDiracUnivariateDistribution dirac06 = new InDiracUnivariateDistribution("dirac06", 0.6);
     protected InDiracUnivariateDistribution dirac07 = new InDiracUnivariateDistribution("dirac07", 0.7);
     protected InDiracUnivariateDistribution dirac072 = new InDiracUnivariateDistribution("dirac072", 0.72);
