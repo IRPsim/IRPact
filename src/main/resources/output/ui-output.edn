@@ -50,6 +50,18 @@
             :icon "fa fa-file-image-o" 
             :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
             :image "JaehrlicheAdoptionenVergleich.png"
+          } 
+          {
+            :label "Jährliche Übersicht der interessierten Agenten" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährliche Anzahl der interessierten Agenten." 
+            :image "JaehrlichesInteresse.png"
+          } 
+          {
+            :label "Kumulierte jährliche Übersicht der interessierten Agenten" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährliche kumulierte Anzahl der interessierten Agenten." 
+            :image "JaehrlichesKumuliertesInteresse.png"
           }
         ]
       } 

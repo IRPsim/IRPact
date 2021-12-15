@@ -56,18 +56,15 @@ public class DataProcessor4 extends PostProcessor {
     @Override
     public void execute() {
         try {
-            executeGeneral();
-            executeSpecific();
+            handlePopulationOverview();
+            handleAdoptionOverview();
+            handlePerformanceEvaluator();
+            executeDataHandler();
         } catch (Throwable t) {
             error("error while executing DataProcessor", t);
         } finally {
             cleanUp();
         }
-    }
-
-    protected void executeGeneral() {
-        handlePopulationOverview();
-        handleAdoptionOverview();
     }
 
     protected void handlePopulationOverview() {
@@ -92,7 +89,18 @@ public class DataProcessor4 extends PostProcessor {
         }
     }
 
-    protected void executeSpecific() throws Throwable {
+    protected void handlePerformanceEvaluator() {
+        try {
+            trace("handle AdoptionOverview '{}'", ADOPTION_OVERVIEW_BASENAME);
+            PerformanceEvaluator performance = new PerformanceEvaluator(this);
+            performance.init();
+            performance.execute();
+        } catch (Throwable t) {
+            error("unexpected error while handling 'PerformanceEvaluator'", t);
+        }
+    }
+
+    protected void executeDataHandler() throws Throwable {
         if(inRoot.hasPostData()) {
             loadLocalizedData();
             for(InPostDataAnalysis postData: inRoot.getPostData()) {
@@ -129,11 +137,11 @@ public class DataProcessor4 extends PostProcessor {
         if(postData instanceof InBucketAnalyser) {
             handleBucketAnalyser((InBucketAnalyser) postData);
         }
-        if(postData instanceof InNeighbourhoodOverview) {
+        else if(postData instanceof InNeighbourhoodOverview) {
             handleNeighborhoodOverview((InNeighbourhoodOverview) postData);
         }
         else {
-            warn("unsupported analysis: " + postData.getName());
+            warn("unsupported analysis: {} ({})", postData.getName(), postData.getClass());
         }
     }
 

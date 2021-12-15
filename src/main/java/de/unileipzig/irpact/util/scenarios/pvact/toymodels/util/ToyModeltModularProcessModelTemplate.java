@@ -13,7 +13,7 @@ public class ToyModeltModularProcessModelTemplate extends DefaultModularProcessM
     public ToyModeltModularProcessModelTemplate(String mpmName) {
         super(mpmName);
         setRaEnabled(false);
-        setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        setColorPalette(CorporateDesignUniLeipzig.getDefault());
     }
 
     public void setUncertaintySupplierInstance(InUncertaintySupplier supplier) {

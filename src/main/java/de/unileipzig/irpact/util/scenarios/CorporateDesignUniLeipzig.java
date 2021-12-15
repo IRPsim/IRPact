@@ -88,6 +88,29 @@ public final class CorporateDesignUniLeipzig {
             IN_BLEND_3_4_5
     );
 
+    public static final InColorPalette IN_CD_UL_2 = new InColorPalette("CD_UL_PALETTE_2",
+            IN_ACCENT0,
+            IN_ACCENT2,
+            IN_ACCENT1,
+            IN_ACCENT5,
+            IN_ACCENT3,
+            IN_ACCENT4,
+            IN_BLEND_0_2,
+            IN_BLEND_0_3,
+            IN_BLEND_0_5,
+            IN_BLEND_2_3,
+            IN_BLEND_2_4,
+            IN_BLEND_2_5,
+            IN_BLEND_0_2_3,
+            IN_BLEND_1_3_5,
+            IN_BLEND_2_3_4,
+            IN_BLEND_3_4_5
+    );
+
+    public static InColorPalette getDefault() {
+        return IN_CD_UL_2;
+    }
+
     CorporateDesignUniLeipzig() {
     }
 }

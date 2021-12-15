@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PersistValue {
+public @interface PersistCustoms {
 
-    int id() default 0;
+    PersistCustom[] value();
 }

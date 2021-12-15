@@ -146,6 +146,18 @@ public final class GnuPlotFactory2 {
             int lineWidth,
             int width, int height,
             Number minY, Number maxY) {
+        return simpleMultiLinePlot(title, xlab, ylab, sep, hexColors, lineWidth, width, height, minY, maxY, true);
+    }
+
+    public static GnuPlotBuilder simpleMultiLinePlot(
+            String title,
+            String xlab, String ylab,
+            String sep,
+            List<String> hexColors,
+            int lineWidth,
+            int width, int height,
+            Number minY, Number maxY,
+            boolean showKey) {
         PlotCommandBuilder plot = new PlotCommandBuilder();
         plot.linebreak();
         plot.add(new PlotData()
@@ -175,7 +187,11 @@ public final class GnuPlotFactory2 {
         builder.add(getUsageComment());
         builder.addComment("===style===");
         builder.setStyleDataLinesPoints();
-        builder.setLegendOutsideRightTop();
+        if(showKey) {
+            builder.setLegendOutsideRightTop();
+        } else {
+            builder.hideLegend();
+        }
         if(hexColors != null) {
             builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));
         }

@@ -62,9 +62,9 @@ public interface DataAnalyser {
 
     void logAnnualInterest(ConsumerAgent agent, Product product, double interest, Timestamp stamp);
 
-    int getCumulatedAnnualInterestCount(Product product, int year, double interest);
-
     double getAnnualInterest(ConsumerAgent agent, Product product, int year);
+
+    int getCumulatedAnnualInterestCount(Product product, int year, double interest);
 
     //=========================
     //annual evaluation data

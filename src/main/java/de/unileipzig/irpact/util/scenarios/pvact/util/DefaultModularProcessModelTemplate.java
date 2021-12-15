@@ -1099,6 +1099,16 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         annualMilieuImage.setColorPalette(colorPalette);
         changed |= images.add(annualMilieuImage);
 
+        //annual interest line
+        InAnnualInterestImage annualInterestImage = InAnnualInterestImage.createDefault();
+        annualInterestImage.setColorPalette(colorPalette);
+        changed |= images.add(annualInterestImage);
+
+        //annual interest line
+        InCumulatedAnnualInterestImage cumulatedAnnualInterestImage = InCumulatedAnnualInterestImage.createDefault();
+        cumulatedAnnualInterestImage.setColorPalette(colorPalette);
+        changed |= images.add(cumulatedAnnualInterestImage);
+
         return changed;
     }
 

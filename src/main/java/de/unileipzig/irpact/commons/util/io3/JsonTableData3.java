@@ -62,6 +62,14 @@ public class JsonTableData3 extends BasicTableData3<JsonNode> {
         }
     }
 
+    public int sum(int columnIndex, int startRowInclusive, int endRowExclusive) {
+        int total = 0;
+        for(int rowIndex = startRowInclusive; rowIndex < endRowExclusive; rowIndex++) {
+            total += getInt(rowIndex, columnIndex);
+        }
+        return total;
+    }
+
     public int getInt(int rowIndex, int columnIndex) {
         return get(rowIndex, columnIndex).intValue();
     }

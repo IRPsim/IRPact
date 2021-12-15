@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.func;
+package de.unileipzig.irpact.core.persistence.binaryjson2.functions;
 
 /**
  * @author Daniel Abitz

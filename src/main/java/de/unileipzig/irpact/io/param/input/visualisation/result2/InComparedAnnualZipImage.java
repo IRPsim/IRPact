@@ -44,7 +44,6 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     public static InComparedAnnualZipImage createDefault() {
         return new InComparedAnnualZipImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP);
     }
-    public static InComparedAnnualZipImage DEFAULT = createDefault();
 
     @DefinitionName
     public String name;

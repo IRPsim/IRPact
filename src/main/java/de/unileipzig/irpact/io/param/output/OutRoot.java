@@ -264,7 +264,7 @@ public class OutRoot implements RootClass {
         image4.setPriority(4);
         image4.setLabel("Interessensentwicklung");
         image4.setIcon(IRPact.ICON_IMAGE);
-        image4.setImage(IRPact.IMAGE_ANNUAL_INTEREST_PNG);
+        image4.setImage(IRPact.IMAGE_ANNUAL_INTEREST_GROWTH_PNG);
         image4.setDescription("Zeigt die Interessensentwicklung an.");
 
         Section image5 = new Section();
@@ -281,7 +281,21 @@ public class OutRoot implements RootClass {
         image6.setImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG);
         image6.setDescription("Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
 
-        adoptionSections.addAll(image1, image2, image3, image4, image5, image6);
+        Section image7 = new Section();
+        image7.setPriority(7);
+        image7.setLabel("Jährliche Übersicht der interessierten Agenten");
+        image7.setIcon(IRPact.ICON_IMAGE);
+        image7.setImage(IRPact.IMAGE_ANNUAL_INTEREST_OVERVIEW_PNG);
+        image7.setDescription("Zeigt die jährliche Anzahl der interessierten Agenten.");
+
+        Section image8 = new Section();
+        image8.setPriority(8);
+        image8.setLabel("Kumulierte jährliche Übersicht der interessierten Agenten");
+        image8.setIcon(IRPact.ICON_IMAGE);
+        image8.setImage(IRPact.IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW_PNG);
+        image8.setDescription("Zeigt die jährliche kumulierte Anzahl der interessierten Agenten.");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5, image6, image7, image8);
 
         return adoptionSection;
     }

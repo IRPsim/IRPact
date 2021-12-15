@@ -53,3 +53,14 @@ XLSX:
     distanceValue: "Abstand{0}"
     sheetName: "Daten"
 
+  PERFORMANCE:
+    sheetGlobal: "Global"
+    sheetZIP: "PLZ"
+    columnMetric: "Metrik"
+    columnValue: "Wert"
+    MAE: "MAE"
+    FSAPE: "FSAPE"
+    RMSD: "RMSD"
+    invalid: "Ungültige PLZs:"
+    unused: "Ungenutzte PLZs:"
+

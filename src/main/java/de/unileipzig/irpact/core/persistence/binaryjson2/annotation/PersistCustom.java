@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.core.persistence.binaryjson2.annotation;
 
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.CustomPersistFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.StandardSettings;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.CustomPersistFunction;
 
 import java.lang.annotation.*;
 
@@ -11,9 +12,12 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(PersistCustoms.class)
 public @interface PersistCustom {
 
-    int id() default 0;
+    String persister() default StandardSettings.DEFAULT_NAME;
+
+    int order() default StandardSettings.DEFAULT_ORDER;
 
     Class<? extends CustomPersistFunction<?>> function();
 }

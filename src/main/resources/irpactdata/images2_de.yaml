@@ -99,3 +99,18 @@ GNUPLOT:
     sep: ";"
     headerYear: "year"
 
+  ANNUAL_INTEREST:
+    title: "Übersicht der interessierten Agenten"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    sep: ";"
+    yearLabel: "Jahre"
+    dataLabel: "Anzahl"
+
+  CUMULATED_ANNUAL_INTEREST:
+    title: "Kumulierte Übersicht der interessierten Agenten"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    sep: ";"
+    yearLabel: "Jahre"
+    dataLabel: "Anzahl"

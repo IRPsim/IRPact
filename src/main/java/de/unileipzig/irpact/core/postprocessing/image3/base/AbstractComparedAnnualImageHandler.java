@@ -52,7 +52,7 @@ public abstract class AbstractComparedAnnualImageHandler
             boolean validZipsOnly) {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> allZips = processor.getAllZips(RAConstants.ZIP);
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         AnnualEnumeratedAdoptionZips simuData = getAdoptionData();
 
         List<String> validZips;
@@ -113,7 +113,7 @@ public abstract class AbstractComparedAnnualImageHandler
             boolean validZipsOnly) {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> allZips = processor.getAllZips(RAConstants.ZIP);
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         AnnualEnumeratedAdoptionZips simuData = getAdoptionData();
 
         List<String> validZips;
@@ -170,7 +170,7 @@ public abstract class AbstractComparedAnnualImageHandler
             boolean validZipsOnly) {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> allZips = processor.getAllZips(RAConstants.ZIP);
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         AnnualEnumeratedAdoptionZips simuData = getAdoptionData();
 
         List<String> validZips;

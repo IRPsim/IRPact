@@ -14,13 +14,17 @@ import java.util.List;
  * @author Daniel Abitz
  */
 public abstract class AbstractAdoptionPhaseOverviewImageHandler
-        extends AbstractQuantilRangeImageHandler<InAdoptionPhaseOverviewImage>
+        extends AbstractImageHandler<InAdoptionPhaseOverviewImage>
         implements LoggingHelper {
 
     public AbstractAdoptionPhaseOverviewImageHandler(
             ImageProcessor2 processor,
             InAdoptionPhaseOverviewImage imageConfiguration) {
         super(processor, imageConfiguration);
+    }
+
+    @Override
+    public void init() throws Throwable {
     }
 
     protected AnnualEnumeratedAdoptionPhases getAdoptionData() {
@@ -61,19 +65,19 @@ public abstract class AbstractAdoptionPhaseOverviewImageHandler
     }
 
     protected int getInitialAdopterCount() {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         AnnualEnumeratedAdoptionPhases cumulatedData = getCumulatedAdoptionData();
         return cumulatedData.getInitialCount(product, AdoptionPhase.INITIAL);
     }
 
     protected int getTotalAdopterCount() {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         AnnualEnumeratedAdoptionPhases data = getAdoptionData();
         return data.sumAll(product);
     }
 
     protected JsonTableData3 getTableData() {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         List<Integer> years = processor.getAllSimulationYears();
         AnnualEnumeratedAdoptionPhases cumulatedData = getCumulatedAdoptionData();
 

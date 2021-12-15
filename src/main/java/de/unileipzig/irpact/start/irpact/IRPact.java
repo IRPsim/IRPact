@@ -86,8 +86,8 @@ public final class IRPact implements IRPActAccess {
 
     //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "24";
-    private static final String BUILD_STRING = "2";
+    private static final String MINOR_STRING = "25";
+    private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
 
@@ -119,8 +119,8 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW = "Prozessmodellphasenuebersicht";
     public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW_PNG = IMAGE_PROCESS_MODEL_PHASE_OVERVIEW + ".png";
 
-    public static final String IMAGE_ANNUAL_INTEREST = "Interessensentwicklung";
-    public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
+    public static final String IMAGE_ANNUAL_INTEREST_GROWTH = "Interessensentwicklung";
+    public static final String IMAGE_ANNUAL_INTEREST_GROWTH_PNG = IMAGE_ANNUAL_INTEREST_GROWTH + ".png";
 
     public static final String IMAGE_PHASE_OVERVIEW = "Adoptionsphasenuebersicht";
     public static final String IMAGE_PHASE_OVERVIEW_PNG = IMAGE_PHASE_OVERVIEW + ".png";
@@ -163,6 +163,12 @@ public final class IRPact implements IRPActAccess {
 
     public static final String IMAGE_ANNUAL_ADOPTION_MILIEU = "JaehrlicheAdoptionenMilieu";
     public static final String IMAGE_ANNUAL_ADOPTION_MILIEU_PNG = IMAGE_ANNUAL_ADOPTION_MILIEU + ".png";
+
+    public static final String IMAGE_ANNUAL_INTEREST_OVERVIEW = "JaehrlichesInteresse";
+    public static final String IMAGE_ANNUAL_INTEREST_OVERVIEW_PNG = IMAGE_ANNUAL_INTEREST_OVERVIEW + ".png";
+
+    public static final String IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW = "JaehrlichesKumuliertesInteresse";
+    public static final String IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW_PNG = IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW + ".png";
 
     public static final int INVALID_CUSTOM_IMAGE = 0;
     public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;

@@ -1,8 +1,8 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.persist;
+package de.unileipzig.irpact.core.persistence.binaryjson2.singlefileroot;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import de.unileipzig.irpact.commons.persistence.SimpleUIDManager;
-import de.unileipzig.irpact.core.persistence.binaryjson2.ClassManager;
+import de.unileipzig.irpact.core.persistence.binaryjson2.*;
 import de.unileipzig.irpact.core.persistence.binaryjson2.annotation.AnnotatedClass;
 
 import java.util.*;
@@ -12,6 +12,7 @@ import java.util.*;
  */
 public abstract class AbstractPersistHelper implements PersistManager, PersistHelper {
 
+    protected String name;
     protected SimpleUIDManager uidManager = new SimpleUIDManager();
     protected Map<Object, Long> uids = new HashMap<>();
     protected Map<Class<?>, BinaryPersister<?>> persisters = new HashMap<>();
@@ -22,11 +23,20 @@ public abstract class AbstractPersistHelper implements PersistManager, PersistHe
     protected boolean autoCallPersist = true;
 
     public AbstractPersistHelper() {
+        this(StandardSettings.DEFAULT_NAME);
+    }
+
+    public AbstractPersistHelper(String name) {
+        this.name = name;
     }
 
     //=========================
     //util
     //=========================
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     protected <R> BinaryPersister<R> findPersister(Object obj) {
         return getPersister(obj.getClass());

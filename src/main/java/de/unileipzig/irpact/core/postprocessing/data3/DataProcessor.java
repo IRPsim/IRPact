@@ -45,6 +45,7 @@ public class DataProcessor extends PostProcessor {
     protected static final String RESULT_RES_BASENAME = "result";
     protected static final String RESULT_RES_EXTENSION = "yaml";
 
+
     protected static final String ALL_ADOPTIONS_XLSX = "Alle_Adoptionen.xlsx";
     protected static final String PERFORMANCE_XLSX = "Performance.xlsx";
     protected static final String PHASE_OVERVIEW_XLSX = "Phasenuebersicht.xlsx";
@@ -173,7 +174,6 @@ public class DataProcessor extends PostProcessor {
         double globalMAE = calcGlobal(MAE.INSTANCE, product);
         globalSheetData.setString(2, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "MAE"));
         globalSheetData.setDouble(2, 1, globalMAE);
-
 
         double globalFSAPE = calcGlobal(FSAPE.INSTANCE, product);
         globalSheetData.setString(3, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "FSAPE"));

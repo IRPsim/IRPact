@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.persist;
+package de.unileipzig.irpact.core.persistence.binaryjson2.singlefileroot;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;

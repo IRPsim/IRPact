@@ -29,6 +29,12 @@ public class ProductThresholdInterest extends ThresholdInterest<Product, Product
     }
 
     @Override
+    public boolean isInterested(Product item, double interest) {
+        Double t = thresholds.get(item.getGroup());
+        return t != null && interest >= t;
+    }
+
+    @Override
     public String printInfo(Product product) {
         if(hasThreshold(product.getGroup())) {
             double v = getValue(product);

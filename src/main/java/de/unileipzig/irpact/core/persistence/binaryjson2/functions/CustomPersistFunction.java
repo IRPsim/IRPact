@@ -1,8 +1,8 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.func;
+package de.unileipzig.irpact.core.persistence.binaryjson2.functions;
 
 import de.unileipzig.irpact.core.persistence.binaryjson2.IterableArrayNode;
-import de.unileipzig.irpact.core.persistence.binaryjson2.persist.PersistHelper;
-import de.unileipzig.irpact.core.persistence.binaryjson2.restore.RestoreHelper;
+import de.unileipzig.irpact.core.persistence.binaryjson2.PersistHelper;
+import de.unileipzig.irpact.core.persistence.binaryjson2.RestoreHelper;
 
 /**
  * @author Daniel Abitz

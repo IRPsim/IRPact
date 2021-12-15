@@ -6,8 +6,8 @@ import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageData;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
-import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractProcessPhaseOverviewImageHandler;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InProcessPhaseOverviewImage;
+import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractCumulatedAnnualInterestImageHandler;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InCumulatedAnnualInterestImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
@@ -16,15 +16,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class ProcessPhaseOverviewGnuplotImageHandler
-        extends AbstractProcessPhaseOverviewImageHandler
-        implements GnuplotHelperAPI<InProcessPhaseOverviewImage> {
+public class CumulatedAnnualInterestGnuplotImageHandler
+        extends AbstractCumulatedAnnualInterestImageHandler
+        implements GnuplotHelperAPI<InCumulatedAnnualInterestImage> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ProcessPhaseOverviewGnuplotImageHandler.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(CumulatedAnnualInterestGnuplotImageHandler.class);
 
-    public ProcessPhaseOverviewGnuplotImageHandler(
+    public CumulatedAnnualInterestGnuplotImageHandler(
             ImageProcessor2 processor,
-            InProcessPhaseOverviewImage imageConfiguration) {
+            InCumulatedAnnualInterestImage imageConfiguration) {
         super(processor, imageConfiguration);
     }
 
@@ -45,7 +45,7 @@ public class ProcessPhaseOverviewGnuplotImageHandler
 
     @Override
     protected String getResourceKey() {
-        return "PROCESS_PHASE_OVERVIEW";
+        return "CUMULATED_ANNUAL_INTEREST";
     }
 
     @Override
@@ -59,28 +59,37 @@ public class ProcessPhaseOverviewGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InProcessPhaseOverviewImage image, ImageData data) throws Throwable {
-//        return GnuPlotFactory.stackedBarChart0(
-//                getLocalizedString("title"),
-//                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
-//                getLocalizedString("sep"),
-//                image.getBoxWidth(),
-//                image.getImageWidth(), image.getImageHeight()
-//        );
-        return GnuPlotFactory2.simpleStackedBarChart(
+    public GnuPlotBuilder getBuilder(InCumulatedAnnualInterestImage image, ImageData data) throws Throwable {
+        return GnuPlotFactory2.simpleMultiLinePlot(
                 getLocalizedString("title"),
-                getLocalizedString("xlab"), getLocalizedString("ylab"), getLocalizedString("keylab"),
+                getLocalizedString("xlab"), getLocalizedString("ylab"),
                 getLocalizedString("sep"),
                 getHexRGBPaletteOrNull(),
-                image.getBoxWidth(),
-                null, null,
-                image.getImageWidth(), image.getImageHeight()
+                image.getLinewidth(),
+                image.getImageWidth(), image.getImageHeight(),
+                getMinYOrNull(), getMaxYOrNull(),
+                false
         );
     }
 
+    protected Double getMinYOrNull() {
+        return imageConfiguration.isUseCustomYRangeMin()
+                ? imageConfiguration.getMinY()
+                : null;
+    }
+
+    protected Double getMaxYOrNull() {
+        return imageConfiguration.isUseCustomYRangeMax()
+                ? imageConfiguration.getMaxY()
+                : null;
+    }
+
     @Override
-    public ImageData createData(InProcessPhaseOverviewImage image) throws Throwable {
-        JsonTableData3 data = createTableData();
+    public ImageData createData(InCumulatedAnnualInterestImage image) throws Throwable {
+        JsonTableData3 data = createTableData(
+                getLocalizedString("yearLabel"),
+                getLocalizedString("dataLabel")
+        );
         return new CsvJsonTableImageData(data, getCsvDelimiter());
     }
 }

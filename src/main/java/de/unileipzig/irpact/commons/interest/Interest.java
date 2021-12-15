@@ -9,6 +9,8 @@ public interface Interest<T> extends ChecksumComparable {
 
     boolean isInterested(T item);
 
+    boolean isInterested(T item, double interest);
+
     void update(T item, double influence);
 
     void makeInterested(T item);

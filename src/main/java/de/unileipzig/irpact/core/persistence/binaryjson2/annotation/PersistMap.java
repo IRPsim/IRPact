@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.core.persistence.binaryjson2.annotation;
 
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapJsonNodeFunction;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapStringFunction;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapSupplier;
+import de.unileipzig.irpact.core.persistence.binaryjson2.StandardSettings;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapJsonNodeFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapStringFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapSupplier;
+import de.unileipzig.irpact.develop.Todos;
 
 import java.lang.annotation.*;
 
@@ -13,9 +15,12 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@Repeatable(PersistMaps.class)
 public @interface PersistMap {
 
-    int id() default 0;
+    String persister() default StandardSettings.DEFAULT_NAME;
+
+    int order() default StandardSettings.DEFAULT_ORDER;
 
     Class<? extends MapSupplier> mapSupplier();
 

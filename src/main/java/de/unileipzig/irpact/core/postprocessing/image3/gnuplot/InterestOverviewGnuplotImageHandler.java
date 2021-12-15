@@ -30,10 +30,6 @@ public class InterestOverviewGnuplotImageHandler
     }
 
     @Override
-    protected void validate() throws Throwable {
-    }
-
-    @Override
     protected SupportedEngine getSupportedEngine() {
         return SupportedEngine.GNUPLOT;
     }

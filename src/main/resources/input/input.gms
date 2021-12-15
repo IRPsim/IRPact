@@ -1382,6 +1382,113 @@ PARAMETER par_link_InAnnualBucketImage_InColorPalette_colorPalette(set_InAnnualB
 * - type: Boolean
 PARAMETER par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule(set_InAnnualBucketImage,set_InConsumerAgentCalculationLoggingModule2)
 
+* - identifier: InAnnualInterestImage
+* - type: String
+SET set_InAnnualInterestImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_enabled(set_InAnnualInterestImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_useGnuplot(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_useR(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_storeScript(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_storeData(set_InAnnualInterestImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_storeImage(set_InAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualInterestImage_imageWidth(set_InAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InAnnualInterestImage_imageHeight(set_InAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: linewidth
+* - type: Integer
+PARAMETER par_InAnnualInterestImage_linewidth(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_useCustomYRangeMin(set_InAnnualInterestImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Min Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualInterestImage_minY(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InAnnualInterestImage_useCustomYRangeMax(set_InAnnualInterestImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Max Y (Achse)
+* - type: Float
+PARAMETER par_InAnnualInterestImage_maxY(set_InAnnualInterestImage)
+
+* - default: 0
+* - domain: [0,10]
+* - description: todo
+* - identifier: Benutzerdefinierte Bild-Id
+* - type: Integer
+PARAMETER par_InAnnualInterestImage_customImageId(set_InAnnualInterestImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InAnnualInterestImage_InColorPalette_colorPalette(set_InAnnualInterestImage,set_InColorPalette)
+
 * - identifier: InAnnualMilieuImage
 * - type: String
 SET set_InAnnualMilieuImage(set_InLoggingResultImage2)
@@ -1687,6 +1794,113 @@ PARAMETER par_link_InComparedAnnualZipImage_InColorPalette_colorPalette(set_InCo
 * - identifier: realData
 * - type: Boolean
 PARAMETER par_link_InComparedAnnualZipImage_InRealAdoptionDataFile_realData(set_InComparedAnnualZipImage,set_InRealAdoptionDataFile)
+
+* - identifier: InCumulatedAnnualInterestImage
+* - type: String
+SET set_InCumulatedAnnualInterestImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_enabled(set_InCumulatedAnnualInterestImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_useGnuplot(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_useR(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_storeScript(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_storeData(set_InCumulatedAnnualInterestImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_storeImage(set_InCumulatedAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InCumulatedAnnualInterestImage_imageWidth(set_InCumulatedAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InCumulatedAnnualInterestImage_imageHeight(set_InCumulatedAnnualInterestImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: linewidth
+* - type: Integer
+PARAMETER par_InCumulatedAnnualInterestImage_linewidth(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_useCustomYRangeMin(set_InCumulatedAnnualInterestImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Min Y (Achse)
+* - type: Float
+PARAMETER par_InCumulatedAnnualInterestImage_minY(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?
+* - type: Boolean
+PARAMETER par_InCumulatedAnnualInterestImage_useCustomYRangeMax(set_InCumulatedAnnualInterestImage)
+
+* - default: 0.0
+* - description: todo
+* - identifier: Max Y (Achse)
+* - type: Float
+PARAMETER par_InCumulatedAnnualInterestImage_maxY(set_InCumulatedAnnualInterestImage)
+
+* - default: 0
+* - domain: [0,10]
+* - description: todo
+* - identifier: Benutzerdefinierte Bild-Id
+* - type: Integer
+PARAMETER par_InCumulatedAnnualInterestImage_customImageId(set_InCumulatedAnnualInterestImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InCumulatedAnnualInterestImage_InColorPalette_colorPalette(set_InCumulatedAnnualInterestImage,set_InColorPalette)
 
 * - identifier: InCustomAverageQuantilRangeImage
 * - type: String

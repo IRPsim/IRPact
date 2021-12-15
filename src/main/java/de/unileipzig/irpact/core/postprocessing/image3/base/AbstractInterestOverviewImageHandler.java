@@ -13,7 +13,7 @@ import java.util.List;
  * @author Daniel Abitz
  */
 public abstract class AbstractInterestOverviewImageHandler
-        extends AbstractQuantilRangeImageHandler<InInterestOverviewImage>
+        extends AbstractImageHandler<InInterestOverviewImage>
         implements LoggingHelper {
 
     public AbstractInterestOverviewImageHandler(
@@ -22,8 +22,12 @@ public abstract class AbstractInterestOverviewImageHandler
         super(processor, imageConfiguration);
     }
 
+    @Override
+    public void init() throws Throwable {
+    }
+
     protected JsonTableData3 createTableData() {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         List<Integer> years = processor.getAllSimulationYears();
         List<Double> interestValues = processor.getInterestValues(product);
         DataAnalyser analyser = getEnvironment().getDataAnalyser();
