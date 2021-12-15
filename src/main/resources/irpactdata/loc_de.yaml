@@ -423,6 +423,104 @@ InAnnualBucketImage_loggingModule:
   gams_identifier: "Loggingmodule"
   gams_description: "todo"
 
+InAnnualInterestImage:
+  edn_label: "Jährliche Bereichsanalyse"
+  edn_description: "todo"
+InAnnualInterestImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualInterestImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualInterestImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualInterestImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualInterestImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualInterestImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualInterestImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualInterestImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualInterestImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InAnnualInterestImage_useCustomYRangeMin:
+  gams_identifier: "Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualInterestImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualInterestImage_useCustomYRangeMax:
+  gams_identifier: "Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualInterestImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualInterestImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualInterestImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InCumulatedAnnualInterestImage:
+  edn_label: "Jährliche Bereichsanalyse"
+  edn_description: "todo"
+InCumulatedAnnualInterestImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useCustomYRangeMin:
+  gams_identifier: "Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useCustomYRangeMax:
+  gams_identifier: "Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
 InAnnualMilieuImage:
   edn_label: "Jährliche Adoptionen nach Milieu"
   edn_description: "todo"
@@ -848,10 +946,10 @@ informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
 
-#dran denken: Version auch in IRPact.json aendern
+#update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.24.2"
+  edn_description: "IRPact v1.25.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

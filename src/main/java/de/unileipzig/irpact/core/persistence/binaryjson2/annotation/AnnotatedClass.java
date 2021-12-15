@@ -1,13 +1,13 @@
 package de.unileipzig.irpact.core.persistence.binaryjson2.annotation;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.CustomPersistFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.StandardSettings;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.CustomPersistFunction;
 import de.unileipzig.irpact.core.persistence.binaryjson2.IterableArrayNode;
-import de.unileipzig.irpact.core.persistence.binaryjson2.annotation.*;
-import de.unileipzig.irpact.core.persistence.binaryjson2.persist.BinaryPersister;
-import de.unileipzig.irpact.core.persistence.binaryjson2.persist.PersistHelper;
-import de.unileipzig.irpact.core.persistence.binaryjson2.restore.BinaryRestorer;
-import de.unileipzig.irpact.core.persistence.binaryjson2.restore.RestoreHelper;
+import de.unileipzig.irpact.core.persistence.binaryjson2.BinaryPersister;
+import de.unileipzig.irpact.core.persistence.binaryjson2.PersistHelper;
+import de.unileipzig.irpact.core.persistence.binaryjson2.BinaryRestorer;
+import de.unileipzig.irpact.core.persistence.binaryjson2.RestoreHelper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -19,15 +19,26 @@ import java.util.*;
 @SuppressWarnings("FieldMayBeFinal")
 public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRestorer<Object> {
 
-    private static final Comparator<PersistHandler> SORT_PERSISTERS = Comparator.comparingInt(PersistHandler::id);
+    private static final Comparator<PersistHandler> SORT_PERSISTERS = Comparator.comparingInt(PersistHandler::order);
 
     private final List<PersistHandler> HANDLERS = new ArrayList<>();
+    private final String PERSISTER_NAME;
     private Class<?> t = null;
 
     public AnnotatedClass() {
+        this(StandardSettings.DEFAULT_NAME);
+    }
+
+    public AnnotatedClass(String name) {
+        this.PERSISTER_NAME = name;
     }
 
     public AnnotatedClass(Class<?> t) {
+        this(StandardSettings.DEFAULT_NAME, t);
+    }
+
+    public AnnotatedClass(String name, Class<?> t) {
+        this(name);
         scan(t);
     }
 
@@ -58,21 +69,31 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         Field[] fields = t.getDeclaredFields();
         for(Field field: fields) {
             if(field.isAnnotationPresent(PersistPrimitive.class)) {
-                HANDLERS.add(new PrimitivePersistHandler(field.getAnnotation(PersistPrimitive.class), field));
+                tryAdd(new PrimitivePersistHandler(field.getAnnotation(PersistPrimitive.class), field));
             }
-            if(field.isAnnotationPresent(PersistValue.class)) {
-                HANDLERS.add(new ValuePersistHandler(field.getAnnotation(PersistValue.class), field));
+            if(field.isAnnotationPresent(PersistObject.class)) {
+                tryAdd(new ObjectPersistHandler(field.getAnnotation(PersistObject.class), field));
             }
             if(field.isAnnotationPresent(PersistCollection.class)) {
-                HANDLERS.add(new CollectionPersistHandler(field.getAnnotation(PersistCollection.class), field));
+                tryAdd(new CollectionPersistHandler(field.getAnnotation(PersistCollection.class), field));
             }
             if(field.isAnnotationPresent(PersistMap.class)) {
-                HANDLERS.add(new MapPersistHandler(field.getAnnotation(PersistMap.class), field));
+                tryAdd(new MapPersistHandler(field.getAnnotation(PersistMap.class), field));
             }
             if(field.isAnnotationPresent(PersistCustom.class)) {
-                HANDLERS.add(new CustomPersistHandler(field.getAnnotation(PersistCustom.class), field));
+                tryAdd(new CustomPersistHandler(field.getAnnotation(PersistCustom.class), field));
             }
         }
+    }
+
+    private void tryAdd(PersistHandler handler) {
+        if(isValid(handler)) {
+            HANDLERS.add(handler);
+        }
+    }
+
+    private boolean isValid(PersistHandler handler) {
+        return Objects.equals(PERSISTER_NAME, handler.persister());
     }
 
     public void sort() {
@@ -209,7 +230,9 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
      */
     private static abstract class PersistHandler {
 
-        abstract int id();
+        abstract String persister();
+
+        abstract int order();
 
         abstract void peek(Object obj, PersistHelper helper);
 
@@ -232,20 +255,18 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         }
 
         @Override
-        int id() {
-            return anno.id();
+        String persister() {
+            return anno.persister();
+        }
+
+        @Override
+        int order() {
+            return anno.order();
         }
 
         @Override
         void peek(Object obj, PersistHelper helper) {
-            try {
-                if(!isPrimitive(field.getType())) {
-                    Object v = get(field, obj);
-                    helper.peek(v);
-                }
-            } catch (Throwable t) {
-                //ignore
-            }
+            //ignore
         }
 
         @Override
@@ -314,28 +335,31 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
     /**
      * @author Daniel Abitz
      */
-    private static class ValuePersistHandler extends PersistHandler {
+    private static class ObjectPersistHandler extends PersistHandler {
 
-        private PersistValue anno;
+        private PersistObject anno;
         private Field field;
 
-        private ValuePersistHandler(PersistValue anno, Field field) {
+        private ObjectPersistHandler(PersistObject anno, Field field) {
             this.anno = anno;
             this.field = field;
         }
 
         @Override
-        int id() {
-            return anno.id();
+        String persister() {
+            return anno.persister();
+        }
+
+        @Override
+        int order() {
+            return anno.order();
         }
 
         @Override
         void peek(Object obj, PersistHelper helper) {
             try {
-                if(!isPrimitive(field.getType())) {
-                    Object v = get(field, obj);
-                    helper.peek(v);
-                }
+                Object v = get(field, obj);
+                helper.peek(v);
             } catch (Throwable t) {
                 //ignore
             }
@@ -370,8 +394,13 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         }
 
         @Override
-        int id() {
-            return anno.id();
+        String persister() {
+            return anno.persister();
+        }
+
+        @Override
+        int order() {
+            return anno.order();
         }
 
         @Override
@@ -418,8 +447,13 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         }
 
         @Override
-        int id() {
-            return anno.id();
+        String persister() {
+            return anno.persister();
+        }
+
+        @Override
+        int order() {
+            return anno.order();
         }
 
         @Override
@@ -463,6 +497,7 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
      */
     private static class CustomPersistHandler extends PersistHandler {
 
+        private final Map<Class<?>, CustomPersistFunction<?>> FUNCTIONS = new HashMap<>();
         private PersistCustom anno;
         private Field field;
 
@@ -472,13 +507,28 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         }
 
         @Override
-        int id() {
-            return anno.id();
+        String persister() {
+            return anno.persister();
+        }
+
+        @Override
+        int order() {
+            return anno.order();
         }
 
         @Override
         void peek(Object obj, PersistHelper helper) {
-            //not supported
+            //not used
+        }
+
+        @SuppressWarnings("rawtypes")
+        private CustomPersistFunction getFunction(Class<?> c) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+            CustomPersistFunction func = FUNCTIONS.get(c);
+            if(func == null) {
+                func = (CustomPersistFunction) newInstance(c);
+                FUNCTIONS.put(c, func);
+            }
+            return func;
         }
 
         @SuppressWarnings({"rawtypes", "unchecked"})
@@ -486,7 +536,7 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         void persist(Object obj, PersistHelper helper, IterableArrayNode arr) throws Throwable {
             Object value = get(field, obj);
             Class<?> persisterClass = anno.function();
-            CustomPersistFunction func = (CustomPersistFunction) newInstance(persisterClass);
+            CustomPersistFunction func = getFunction(persisterClass);
             func.persist(value, helper, arr);
         }
 
@@ -494,7 +544,7 @@ public final class AnnotatedClass implements BinaryPersister<Object>, BinaryRest
         @Override
         void restore(Object obj, RestoreHelper helper, IterableArrayNode arr) throws Throwable {
             Class<?> persisterClass = anno.function();
-            CustomPersistFunction func = (CustomPersistFunction) newInstance(persisterClass);
+            CustomPersistFunction func = getFunction(persisterClass);
             Object value = func.restore(helper, arr);
             set(field, obj, value);
         }

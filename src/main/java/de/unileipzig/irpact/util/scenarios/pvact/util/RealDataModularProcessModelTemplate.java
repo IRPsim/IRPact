@@ -27,7 +27,7 @@ public class RealDataModularProcessModelTemplate extends DefaultModularProcessMo
     }
 
     protected void init() {
-        setColorPalette(CorporateDesignUniLeipzig.IN_CD_UL);
+        setColorPalette(CorporateDesignUniLeipzig.getDefault());
     }
 
     protected String novScalerName = "NOV_SCALER";

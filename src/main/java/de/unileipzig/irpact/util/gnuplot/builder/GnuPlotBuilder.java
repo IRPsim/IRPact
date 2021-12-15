@@ -336,6 +336,10 @@ public class GnuPlotBuilder {
         buildSet("key outside right top vertical Left");
     }
 
+    public void hideLegend() {
+        buildSet("key off");
+    }
+
     public void setLegendOutsideRightTop(String label) {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
         if(label == null || label.isEmpty()) {
@@ -456,9 +460,11 @@ public class GnuPlotBuilder {
     }
 
     public void setYRange(Object min, Object max) {
-        String range = (min == null || max == null || Objects.equals(min, max))
+        Object minObj = min == null ? "*" : min;
+        Object maxObj = max == null ? "*" : max;
+        String range = Objects.equals(min, max)
                 ? "[*:*]"
-                : "[" + min + ":" + max + "]";
+                : "[" + minObj + ":" + maxObj + "]";
         buildSet("yrange", range);
     }
 

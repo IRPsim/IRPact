@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.restore;
+package de.unileipzig.irpact.core.persistence.binaryjson2;
 
 /**
  * @author Daniel Abitz

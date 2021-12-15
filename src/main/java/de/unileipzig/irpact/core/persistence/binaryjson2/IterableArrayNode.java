@@ -5,19 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.CollectionSupplier;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapJsonNodeFunction;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapStringFunction;
-import de.unileipzig.irpact.core.persistence.binaryjson2.func.MapSupplier;
-import de.unileipzig.irpact.core.persistence.binaryjson2.persist.PersistHelper;
-import de.unileipzig.irpact.core.persistence.binaryjson2.restore.RestoreHelper;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.CollectionSupplier;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapJsonNodeFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapStringFunction;
+import de.unileipzig.irpact.core.persistence.binaryjson2.functions.MapSupplier;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * @author Daniel Abitz

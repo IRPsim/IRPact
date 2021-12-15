@@ -14,13 +14,17 @@ import java.util.Map;
  * @author Daniel Abitz
  */
 public abstract class AbstractProcessPhaseOverviewImageHandler
-        extends AbstractQuantilRangeImageHandler<InProcessPhaseOverviewImage>
+        extends AbstractImageHandler<InProcessPhaseOverviewImage>
         implements LoggingHelper {
 
     public AbstractProcessPhaseOverviewImageHandler(
             ImageProcessor2 processor,
             InProcessPhaseOverviewImage imageConfiguration) {
         super(processor, imageConfiguration);
+    }
+
+    @Override
+    public void init() throws Throwable {
     }
 
     protected String getNameForPhase(DataAnalyser.Phase phase) {
@@ -46,7 +50,7 @@ public abstract class AbstractProcessPhaseOverviewImageHandler
     }
 
     protected JsonTableData3 createTableData() {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         List<Integer> years = processor.getAllSimulationYears();
 
         DataAnalyser analyser = getEnvironment().getDataAnalyser();

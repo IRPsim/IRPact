@@ -11,8 +11,8 @@ import java.lang.annotation.*;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(PersistPrimitives.class)
-public @interface PersistPrimitive {
+@Repeatable(PersistObjects.class)
+public @interface PersistObject {
 
     String persister() default StandardSettings.DEFAULT_NAME;
 

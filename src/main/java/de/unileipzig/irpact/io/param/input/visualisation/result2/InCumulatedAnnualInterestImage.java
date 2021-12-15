@@ -5,7 +5,6 @@ import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.color.InColorPalette;
-import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
@@ -16,15 +15,15 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_COMPARED;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_SPECIALAVGQUANTIL;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_COMPARED)
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_SPECIALAVGQUANTIL)
 @LocalizedUiResource.XorWithoutUnselectRule
-public class InComparedAnnualImage implements InLoggingResultImage2 {
+public class InCumulatedAnnualInterestImage implements InLoggingResultImage2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -41,8 +40,8 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     public static void applyRes(LocalizedUiResource res) {
     }
 
-    public static InComparedAnnualImage createDefault() {
-        return new InComparedAnnualImage(IRPact.IMAGE_COMPARED_ANNUAL_ADOPTIONS);
+    public static InCumulatedAnnualInterestImage createDefault() {
+        return new InCumulatedAnnualInterestImage(IRPact.IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW, 0);
     }
 
     @DefinitionName
@@ -98,8 +97,8 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            intDefault = 1280,
             g0Domain = true,
+            intDefault = 1,
             pixelUnit = true
     )
     public int imageWidth = 1280;
@@ -107,8 +106,8 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            intDefault = 720,
             g0Domain = true,
+            intDefault = 1,
             pixelUnit = true
     )
     public int imageHeight = 720;
@@ -116,39 +115,44 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            intDefault = 1,
-            g0Domain = true
+            g0Domain = true,
+            intDefault = 1
     )
     public int linewidth = 1;
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            boolDomain = true,
-            boolDefault = true
+            boolDomain = true
     )
-    public boolean skipInvalidZips = true;
+    public boolean useCustomYRangeMin = false;
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            boolDomain = true,
-            boolDefault = true
+            decDefault = 0
     )
-    public boolean showPreYear = true;
-
-//    @FieldDefinition
-//    @LocalizedUiResource.AddEntry
-//    @LocalizedUiResource.SimpleSet(
-//            boolDomain = true
-//    )
-    public boolean showUnscaled = false;
+    public double minY = 0.0;
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
-            intDefault = IRPact.INVALID_CUSTOM_IMAGE,
-            customImageDomain = true
+            boolDomain = true
+    )
+    public boolean useCustomYRangeMax = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
+    public double maxY = 0.0;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            customImageDomain = true,
+            customImageDefault = true
     )
     public int customImageId = IRPact.INVALID_CUSTOM_IMAGE;
 
@@ -156,21 +160,24 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @LocalizedUiResource.AddEntry
     public InColorPalette[] colorPalette = new InColorPalette[0];
 
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry
-    public InRealAdoptionDataFile[] realData = new InRealAdoptionDataFile[0];
-
-    public InComparedAnnualImage() {
+    public InCumulatedAnnualInterestImage() {
         setEngine(SupportedEngine.GNUPLOT);
         setStoreImage(true);
         setStoreScript(true);
         setStoreData(true);
-        setShowUnscaled(false);
+        disableCustomImageId();
     }
 
-    public InComparedAnnualImage(String name) {
+    public InCumulatedAnnualInterestImage(String name) {
         this();
         setName(name);
+    }
+
+    public InCumulatedAnnualInterestImage(String name, int minY) {
+        this();
+        setName(name);
+        setUseCustomYRangeMin(true);
+        setMinY(minY);
     }
 
     public void setEngine(SupportedEngine engine) {
@@ -192,11 +199,11 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     }
 
     @Override
-    public InComparedAnnualImage copy(CopyCache cache) {
+    public InCumulatedAnnualInterestImage copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InComparedAnnualImage newCopy(CopyCache cache) {
+    public InCumulatedAnnualInterestImage newCopy(CopyCache cache) {
         return Dev.throwException();
     }
 
@@ -289,28 +296,40 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
         return linewidth;
     }
 
-    public void setShowUnscaled(boolean showUnscaled) {
-        this.showUnscaled = showUnscaled;
+    public void setUseCustomYRangeMin(boolean useCustomYRangeMin) {
+        this.useCustomYRangeMin = useCustomYRangeMin;
     }
 
-    public boolean isShowUnscaled() {
-        return showUnscaled;
+    public boolean isUseCustomYRangeMin() {
+        return useCustomYRangeMin;
     }
 
-    public void setSkipInvalidZips(boolean skipInvalidZips) {
-        this.skipInvalidZips = skipInvalidZips;
+    public void setMinY(double minY) {
+        this.minY = minY;
     }
 
-    public boolean isSkipInvalidZips() {
-        return skipInvalidZips;
+    public double getMinY() {
+        return minY;
     }
 
-    public void setShowPreYear(boolean showPreYear) {
-        this.showPreYear = showPreYear;
+    public void setUseCustomYRangeMax(boolean useCustomYRangeMax) {
+        this.useCustomYRangeMax = useCustomYRangeMax;
     }
 
-    public boolean isShowPreYear() {
-        return showPreYear;
+    public boolean isUseCustomYRangeMax() {
+        return useCustomYRangeMax;
+    }
+
+    public void setMaxY(double maxY) {
+        this.maxY = maxY;
+    }
+
+    public double getMaxY() {
+        return maxY;
+    }
+
+    public void disableCustomImageId() {
+        setCustomImageId(IRPact.INVALID_CUSTOM_IMAGE);
     }
 
     public void setCustomImageId(int customImageId) {
@@ -334,13 +353,5 @@ public class InComparedAnnualImage implements InLoggingResultImage2 {
     @Override
     public InColorPalette getColorPalette() throws ParsingException {
         return getInstance(colorPalette, "colorPalette");
-    }
-
-    public InRealAdoptionDataFile getRealData() throws ParsingException {
-        return getInstance(realData, "realData");
-    }
-
-    public void setRealData(InRealAdoptionDataFile realData) {
-        this.realData = new InRealAdoptionDataFile[]{realData};
     }
 }

@@ -41,7 +41,7 @@ public class InInterestOverviewImage implements InLoggingResultImage2 {
     }
 
     public static InInterestOverviewImage createDefault() {
-        return new InInterestOverviewImage(IRPact.IMAGE_ANNUAL_INTEREST);
+        return new InInterestOverviewImage(IRPact.IMAGE_ANNUAL_INTEREST_GROWTH);
     }
     public static InInterestOverviewImage DEFAULT = createDefault();
 

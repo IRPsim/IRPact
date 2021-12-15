@@ -1,6 +1,5 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
-import de.unileipzig.irpact.commons.color.ColorPalette;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.data.*;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
@@ -16,9 +15,13 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.function.ToDoubleBiFunction;
+import java.util.function.ToIntBiFunction;
 
 /**
  * @author Daniel Abitz

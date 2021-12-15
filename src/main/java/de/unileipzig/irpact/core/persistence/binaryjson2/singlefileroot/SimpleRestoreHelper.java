@@ -1,8 +1,7 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.restore;
+package de.unileipzig.irpact.core.persistence.binaryjson2.singlefileroot;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import de.unileipzig.irpact.core.persistence.binaryjson2.ClassManager;
-import de.unileipzig.irpact.core.persistence.binaryjson2.IterableArrayNode;
+import de.unileipzig.irpact.core.persistence.binaryjson2.*;
 import de.unileipzig.irpact.core.persistence.binaryjson2.annotation.AnnotatedClass;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,6 +15,7 @@ import java.util.Set;
  */
 public class SimpleRestoreHelper implements RestoreManager, RestoreHelper {
 
+    protected String name;
     protected ClassManager classManager = new ClassManager();
     protected Map<Long, ArrayNode> nodes = new HashMap<>();
     protected Map<Long, Object> restored = new HashMap<>();
@@ -23,6 +23,15 @@ public class SimpleRestoreHelper implements RestoreManager, RestoreHelper {
     protected Set<Long> finished = new HashSet<>();
 
     public SimpleRestoreHelper() {
+        this(StandardSettings.DEFAULT_NAME);
+    }
+
+    public SimpleRestoreHelper(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setClassManager(ClassManager classManager) {

@@ -1,4 +1,4 @@
-package de.unileipzig.irpact.core.persistence.binaryjson2.persist;
+package de.unileipzig.irpact.core.persistence.binaryjson2;
 
 import java.util.Set;
 

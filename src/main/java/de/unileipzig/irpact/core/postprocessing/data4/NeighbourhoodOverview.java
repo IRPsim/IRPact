@@ -48,7 +48,7 @@ public class NeighbourhoodOverview extends AbstractDataHandler<InNeighbourhoodOv
 
     @Override
     public void execute() throws Throwable {
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         NodeFilterScheme filterScheme = dataConfiguration.getNodeFilterScheme()
                 .createScheme();
         MutableDouble maxTargets = MutableDouble.negativeMaxValue();

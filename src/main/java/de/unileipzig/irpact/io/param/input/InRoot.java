@@ -350,6 +350,15 @@ public class InRoot implements RootClass {
         this.postData = postData.toArray(new InPostDataAnalysis[0]);
     }
 
+    @FieldDefinition
+    public InColorPalette[] palettes = new InColorPalette[0];
+    public void setColorPalettes(InColorPalette... palettes) {
+        this.palettes = palettes;
+    }
+    public InColorPalette[] getColorPalettes() {
+        return palettes;
+    }
+
     //=========================
     //binary
     //=========================
@@ -878,9 +887,11 @@ public class InRoot implements RootClass {
 
             InAdoptionPhaseOverviewImage.class,
             InAnnualBucketImage.class,
+            InAnnualInterestImage.class,
             InAnnualMilieuImage.class,
             InComparedAnnualImage.class,
             InComparedAnnualZipImage.class,
+            InCumulatedAnnualInterestImage.class,
             InCustomAverageQuantilRangeImage.class,
             InInterestOverviewImage.class,
             InLoggingResultImage2.class,

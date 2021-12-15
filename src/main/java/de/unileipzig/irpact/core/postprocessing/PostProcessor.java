@@ -101,6 +101,10 @@ public abstract class PostProcessor implements LoggingHelper {
         delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
     }
 
+    public Path getPathToDownloadDir(String fileName) throws IOException {
+        return clOptions.getCreatedDownloadDir().resolve(fileName);
+    }
+
     protected void delete(Path path) {
         try {
             if(Files.exists(path)) {
@@ -154,7 +158,7 @@ public abstract class PostProcessor implements LoggingHelper {
         return metaData.getOldestRunInfo().getFirstSimulationYear();
     }
 
-    protected double getLargestInterestThreshold(Product product) {
+    public double getLargestInterestThreshold(Product product) {
         double threshold = Double.NaN;
         for(ConsumerAgentGroup cag: environment.getAgents().getConsumerAgentGroups()) {
             for(ConsumerAgent ca: cag.getAgents()) {
@@ -227,7 +231,7 @@ public abstract class PostProcessor implements LoggingHelper {
         return products;
     }
 
-    public Product getSingletonProduct() {
+    public Product getUniqueProduct() {
         List<Product> products = getAllProducts();
         if(products.size() == 1) {
             return products.get(0);
@@ -279,6 +283,13 @@ public abstract class PostProcessor implements LoggingHelper {
 
     protected DataStore getGlobalData() {
         return environment.getGlobalData();
+    }
+
+    public RealAdoptionData getUniqueRealAdoptionData() throws IllegalStateException {
+        List<InRealAdoptionDataFile> realAdoptionDataFiles = inRoot.findFiles(InRealAdoptionDataFile.class);
+        if(realAdoptionDataFiles.isEmpty()) throw new IllegalStateException("missing real adoption data");
+        if(realAdoptionDataFiles.size() > 1) throw new IllegalStateException("too many adoption files");
+        return getRealAdoptionData(realAdoptionDataFiles.get(0));
     }
 
     public RealAdoptionData getRealAdoptionData(InRealAdoptionDataFile file) {

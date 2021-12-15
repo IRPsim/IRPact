@@ -1,7 +1,5 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
-import de.unileipzig.irpact.commons.color.ColorPalette;
-import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -13,7 +11,6 @@ import de.unileipzig.irpact.io.param.input.visualisation.result2.InAnnualMilieuI
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -57,7 +54,7 @@ public abstract class AbstractAnnualMilieuImageHandler
             String yearLabel,
             boolean showPreYear) {
         List<Integer> years = processor.getAllSimulationYears();
-        Product product = processor.getSingletonProduct();
+        Product product = processor.getUniqueProduct();
         List<ConsumerAgentGroup> groups = new ArrayList<>(getEnvironment().getAgents().getConsumerAgentGroups());
         AnnualEnumeratedConsumerGroups simuData = getAdoptionData();
 
