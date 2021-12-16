@@ -151,10 +151,15 @@
         "CD_UL_15" : { },
         "CD_UL_16" : { },
         "CD_UL_2" : { },
+        "CD_UL_2_v2" : { },
         "CD_UL_3" : { },
+        "CD_UL_3_v2" : { },
         "CD_UL_4" : { },
+        "CD_UL_4_v2" : { },
         "CD_UL_5" : { },
+        "CD_UL_5_v2" : { },
         "CD_UL_6" : { },
+        "CD_UL_6_v2" : { },
         "CD_UL_7" : { },
         "CD_UL_8" : { },
         "CD_UL_9" : { }
@@ -223,6 +228,13 @@
           "par_InColorARGB_green" : 66,
           "par_InColorARGB_blue" : 66
         },
+        "CD_UL_2_v2" : {
+          "par_InColorARGB_priority" : 2,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 214,
+          "par_InColorARGB_green" : 66,
+          "par_InColorARGB_blue" : 66
+        },
         "CD_UL_3" : {
           "par_InColorARGB_priority" : 3,
           "par_InColorARGB_alpha" : 255,
@@ -230,7 +242,21 @@
           "par_InColorARGB_green" : 194,
           "par_InColorARGB_blue" : 209
         },
+        "CD_UL_3_v2" : {
+          "par_InColorARGB_priority" : 1,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 138,
+          "par_InColorARGB_green" : 194,
+          "par_InColorARGB_blue" : 209
+        },
         "CD_UL_4" : {
+          "par_InColorARGB_priority" : 4,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 38,
+          "par_InColorARGB_green" : 42,
+          "par_InColorARGB_blue" : 49
+        },
+        "CD_UL_4_v2" : {
           "par_InColorARGB_priority" : 4,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 38,
@@ -244,8 +270,22 @@
           "par_InColorARGB_green" : 158,
           "par_InColorARGB_blue" : 158
         },
+        "CD_UL_5_v2" : {
+          "par_InColorARGB_priority" : 5,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 234,
+          "par_InColorARGB_green" : 158,
+          "par_InColorARGB_blue" : 158
+        },
         "CD_UL_6" : {
           "par_InColorARGB_priority" : 6,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 201,
+          "par_InColorARGB_green" : 201,
+          "par_InColorARGB_blue" : 201
+        },
+        "CD_UL_6_v2" : {
+          "par_InColorARGB_priority" : 3,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 201,
           "par_InColorARGB_green" : 201,
@@ -275,7 +315,7 @@
       },
       "set_InColorPalette" : {
         "CD_UL_PALETTE" : { },
-        "CD_UL_PALETTE_2" : { }
+        "CD_UL_PALETTE_v2" : { }
       },
       "set_InCommunicationModule3_actionnode3" : { },
       "set_InComparedAnnualImage" : { },
@@ -399,7 +439,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_12_16_T_06_23_15" : {
+        "CT_D_2021_12_16_T_07_03_31" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -483,7 +523,7 @@
         "DO_NOTHING" : { }
       },
       "set_InScenarioVersion" : {
-        "v1_25_1" : {
+        "v1_25_2" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -624,15 +664,20 @@
           "CD_UL_15" : 1.0,
           "CD_UL_16" : 1.0,
           "CD_UL_2" : 1.0,
+          "CD_UL_2_v2" : 0.0,
           "CD_UL_3" : 1.0,
+          "CD_UL_3_v2" : 0.0,
           "CD_UL_4" : 1.0,
+          "CD_UL_4_v2" : 0.0,
           "CD_UL_5" : 1.0,
+          "CD_UL_5_v2" : 0.0,
           "CD_UL_6" : 1.0,
+          "CD_UL_6_v2" : 0.0,
           "CD_UL_7" : 1.0,
           "CD_UL_8" : 1.0,
           "CD_UL_9" : 1.0
         },
-        "CD_UL_PALETTE_2" : {
+        "CD_UL_PALETTE_v2" : {
           "CD_UL_1" : 1.0,
           "CD_UL_10" : 1.0,
           "CD_UL_11" : 1.0,
@@ -641,11 +686,16 @@
           "CD_UL_14" : 1.0,
           "CD_UL_15" : 1.0,
           "CD_UL_16" : 1.0,
-          "CD_UL_2" : 1.0,
-          "CD_UL_3" : 1.0,
-          "CD_UL_4" : 1.0,
-          "CD_UL_5" : 1.0,
-          "CD_UL_6" : 1.0,
+          "CD_UL_2" : 0.0,
+          "CD_UL_2_v2" : 1.0,
+          "CD_UL_3" : 0.0,
+          "CD_UL_3_v2" : 1.0,
+          "CD_UL_4" : 0.0,
+          "CD_UL_4_v2" : 1.0,
+          "CD_UL_5" : 0.0,
+          "CD_UL_5_v2" : 1.0,
+          "CD_UL_6" : 0.0,
+          "CD_UL_6_v2" : 1.0,
           "CD_UL_7" : 1.0,
           "CD_UL_8" : 1.0,
           "CD_UL_9" : 1.0

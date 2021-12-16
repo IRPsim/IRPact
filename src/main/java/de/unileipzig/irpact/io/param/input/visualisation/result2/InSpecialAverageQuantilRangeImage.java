@@ -133,7 +133,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
             g0Domain = true,
-            intDefault = 1,
+            intDefault = 1280,
             pixelUnit = true
     )
     public int imageWidth = 1280;
@@ -142,7 +142,7 @@ public class InSpecialAverageQuantilRangeImage implements InLoggingResultImage2 
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
             g0Domain = true,
-            intDefault = 1,
+            intDefault = 720,
             pixelUnit = true
     )
     public int imageHeight = 720;

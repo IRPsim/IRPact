@@ -94,6 +94,10 @@ public class InColorARGB implements InColor {
         setBlue(b);
     }
 
+    public InColorARGB copy(String newName, int newPriority) {
+        return new InColorARGB(newName, alpha,red, green, blue, newPriority);
+    }
+
     @Override
     public InColorARGB copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
