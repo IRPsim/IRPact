@@ -424,7 +424,7 @@ InAnnualBucketImage_loggingModule:
   gams_description: "todo"
 
 InAnnualInterestImage:
-  edn_label: "Jährliche Bereichsanalyse"
+  edn_label: "Jährliche Analyse interessierter Agenten"
   edn_description: "todo"
 InAnnualInterestImage_enabled:
   gams_identifier: "enabled"
@@ -473,7 +473,7 @@ InAnnualInterestImage_colorPalette:
   gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 
 InCumulatedAnnualInterestImage:
-  edn_label: "Jährliche Bereichsanalyse"
+  edn_label: "Kumulierte jährliche Analyse interessierter Agenten"
   edn_description: "todo"
 InCumulatedAnnualInterestImage_enabled:
   gams_identifier: "enabled"
@@ -949,7 +949,7 @@ informations:
 #update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.25.0"
+  edn_description: "IRPact v1.25.1"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"

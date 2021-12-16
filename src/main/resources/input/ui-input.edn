@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.25.0" 
+        :description "IRPact v1.25.1" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -97,7 +97,7 @@
             :label "Spezielle Quantilbereiche" 
             :set "set_InSpecialAverageQuantilRangeImage" 
             :description "todo" 
-            :tags [["InAnnualInterestImage" "enabled"] ["InAnnualInterestImage" "useGnuplot"] ["InAnnualInterestImage" "useR"] ["InAnnualInterestImage" "storeScript"] ["InAnnualInterestImage" "storeData"] ["InAnnualInterestImage" "storeImage"] ["InAnnualInterestImage" "imageWidth"] ["InAnnualInterestImage" "imageHeight"] ["InAnnualInterestImage" "linewidth"] ["InAnnualInterestImage" "useCustomYRangeMin"] ["InAnnualInterestImage" "minY"] ["InAnnualInterestImage" "useCustomYRangeMax"] ["InAnnualInterestImage" "maxY"] ["InAnnualInterestImage" "customImageId"] ["link" "InAnnualInterestImage" "InColorPalette" "colorPalette"] ["InCumulatedAnnualInterestImage" "enabled"] ["InCumulatedAnnualInterestImage" "useGnuplot"] ["InCumulatedAnnualInterestImage" "useR"] ["InCumulatedAnnualInterestImage" "storeScript"] ["InCumulatedAnnualInterestImage" "storeData"] ["InCumulatedAnnualInterestImage" "storeImage"] ["InCumulatedAnnualInterestImage" "imageWidth"] ["InCumulatedAnnualInterestImage" "imageHeight"] ["InCumulatedAnnualInterestImage" "linewidth"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMin"] ["InCumulatedAnnualInterestImage" "minY"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMax"] ["InCumulatedAnnualInterestImage" "maxY"] ["InCumulatedAnnualInterestImage" "customImageId"] ["link" "InCumulatedAnnualInterestImage" "InColorPalette" "colorPalette"] ["InSpecialAverageQuantilRangeImage" "enabled"] ["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["InSpecialAverageQuantilRangeImage" "customImageId"] ["link" "InSpecialAverageQuantilRangeImage" "InColorPalette" "colorPalette"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
+            :tags [["InSpecialAverageQuantilRangeImage" "enabled"] ["InSpecialAverageQuantilRangeImage" "useGnuplot"] ["InSpecialAverageQuantilRangeImage" "useR"] ["InSpecialAverageQuantilRangeImage" "storeScript"] ["InSpecialAverageQuantilRangeImage" "storeData"] ["InSpecialAverageQuantilRangeImage" "storeImage"] ["InSpecialAverageQuantilRangeImage" "printAverage"] ["InSpecialAverageQuantilRangeImage" "imageWidth"] ["InSpecialAverageQuantilRangeImage" "imageHeight"] ["InSpecialAverageQuantilRangeImage" "linewidth"] ["InSpecialAverageQuantilRangeImage" "customImageId"] ["link" "InSpecialAverageQuantilRangeImage" "InColorPalette" "colorPalette"] ["link" "InSpecialAverageQuantilRangeImage" "InConsumerAgentCalculationLoggingModule2" "loggingModules"]]
           } 
           {
             :label "Adoptionen mit Realdaten" 
@@ -140,6 +140,18 @@
             :set "set_InAnnualMilieuImage" 
             :description "todo" 
             :tags [["InAnnualMilieuImage" "enabled"] ["InAnnualMilieuImage" "useGnuplot"] ["InAnnualMilieuImage" "useR"] ["InAnnualMilieuImage" "storeScript"] ["InAnnualMilieuImage" "storeData"] ["InAnnualMilieuImage" "storeImage"] ["InAnnualMilieuImage" "imageWidth"] ["InAnnualMilieuImage" "imageHeight"] ["InAnnualMilieuImage" "boxWidth"] ["InAnnualMilieuImage" "showInitial"] ["InAnnualMilieuImage" "useCustomYRange"] ["InAnnualMilieuImage" "minY"] ["InAnnualMilieuImage" "maxY"] ["InAnnualMilieuImage" "customImageId"] ["link" "InAnnualMilieuImage" "InColorPalette" "colorPalette"]]
+          } 
+          {
+            :label "Jährliche Analyse interessierter Agenten" 
+            :set "set_InAnnualInterestImage" 
+            :description "todo" 
+            :tags [["InAnnualInterestImage" "enabled"] ["InAnnualInterestImage" "useGnuplot"] ["InAnnualInterestImage" "useR"] ["InAnnualInterestImage" "storeScript"] ["InAnnualInterestImage" "storeData"] ["InAnnualInterestImage" "storeImage"] ["InAnnualInterestImage" "imageWidth"] ["InAnnualInterestImage" "imageHeight"] ["InAnnualInterestImage" "linewidth"] ["InAnnualInterestImage" "useCustomYRangeMin"] ["InAnnualInterestImage" "minY"] ["InAnnualInterestImage" "useCustomYRangeMax"] ["InAnnualInterestImage" "maxY"] ["InAnnualInterestImage" "customImageId"] ["link" "InAnnualInterestImage" "InColorPalette" "colorPalette"]]
+          } 
+          {
+            :label "Kumulierte jährliche Analyse interessierter Agenten" 
+            :set "set_InCumulatedAnnualInterestImage" 
+            :description "todo" 
+            :tags [["InCumulatedAnnualInterestImage" "enabled"] ["InCumulatedAnnualInterestImage" "useGnuplot"] ["InCumulatedAnnualInterestImage" "useR"] ["InCumulatedAnnualInterestImage" "storeScript"] ["InCumulatedAnnualInterestImage" "storeData"] ["InCumulatedAnnualInterestImage" "storeImage"] ["InCumulatedAnnualInterestImage" "imageWidth"] ["InCumulatedAnnualInterestImage" "imageHeight"] ["InCumulatedAnnualInterestImage" "linewidth"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMin"] ["InCumulatedAnnualInterestImage" "minY"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMax"] ["InCumulatedAnnualInterestImage" "maxY"] ["InCumulatedAnnualInterestImage" "customImageId"] ["link" "InCumulatedAnnualInterestImage" "InColorPalette" "colorPalette"]]
           }
         ]
       } 

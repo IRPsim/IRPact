@@ -15,13 +15,13 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_SPECIALAVGQUANTIL;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISURESULT2_CUMUANNUALINTEREST;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_SPECIALAVGQUANTIL)
+@LocalizedUiResource.PutClassPath(SETT_VISURESULT2_CUMUANNUALINTEREST)
 @LocalizedUiResource.XorWithoutUnselectRule
 public class InCumulatedAnnualInterestImage implements InLoggingResultImage2 {
 
