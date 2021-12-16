@@ -131,15 +131,27 @@
           } 
           {
             :label "Jährliche Bereichsanalyse" 
-            :set "set_InCumulatedAnnualInterestImage" 
+            :set "set_InAnnualBucketImage" 
             :description "todo" 
-            :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InColorPalette" "colorPalette"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"] ["InAnnualInterestImage" "enabled"] ["InAnnualInterestImage" "useGnuplot"] ["InAnnualInterestImage" "useR"] ["InAnnualInterestImage" "storeScript"] ["InAnnualInterestImage" "storeData"] ["InAnnualInterestImage" "storeImage"] ["InAnnualInterestImage" "imageWidth"] ["InAnnualInterestImage" "imageHeight"] ["InAnnualInterestImage" "linewidth"] ["InAnnualInterestImage" "useCustomYRangeMin"] ["InAnnualInterestImage" "minY"] ["InAnnualInterestImage" "useCustomYRangeMax"] ["InAnnualInterestImage" "maxY"] ["InAnnualInterestImage" "customImageId"] ["link" "InAnnualInterestImage" "InColorPalette" "colorPalette"] ["InCumulatedAnnualInterestImage" "enabled"] ["InCumulatedAnnualInterestImage" "useGnuplot"] ["InCumulatedAnnualInterestImage" "useR"] ["InCumulatedAnnualInterestImage" "storeScript"] ["InCumulatedAnnualInterestImage" "storeData"] ["InCumulatedAnnualInterestImage" "storeImage"] ["InCumulatedAnnualInterestImage" "imageWidth"] ["InCumulatedAnnualInterestImage" "imageHeight"] ["InCumulatedAnnualInterestImage" "linewidth"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMin"] ["InCumulatedAnnualInterestImage" "minY"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMax"] ["InCumulatedAnnualInterestImage" "maxY"] ["InCumulatedAnnualInterestImage" "customImageId"] ["link" "InCumulatedAnnualInterestImage" "InColorPalette" "colorPalette"]]
+            :tags [["InAnnualBucketImage" "enabled"] ["InAnnualBucketImage" "useGnuplot"] ["InAnnualBucketImage" "useR"] ["InAnnualBucketImage" "storeScript"] ["InAnnualBucketImage" "storeData"] ["InAnnualBucketImage" "storeImage"] ["InAnnualBucketImage" "imageWidth"] ["InAnnualBucketImage" "imageHeight"] ["InAnnualBucketImage" "boxWidth"] ["InAnnualBucketImage" "useCustomYRange"] ["InAnnualBucketImage" "minY"] ["InAnnualBucketImage" "maxY"] ["InAnnualBucketImage" "bucketSize"] ["InAnnualBucketImage" "fractionDigits"] ["InAnnualBucketImage" "customImageId"] ["link" "InAnnualBucketImage" "InColorPalette" "colorPalette"] ["link" "InAnnualBucketImage" "InConsumerAgentCalculationLoggingModule2" "loggingModule"]]
           } 
           {
             :label "Jährliche Adoptionen nach Milieu" 
             :set "set_InAnnualMilieuImage" 
             :description "todo" 
             :tags [["InAnnualMilieuImage" "enabled"] ["InAnnualMilieuImage" "useGnuplot"] ["InAnnualMilieuImage" "useR"] ["InAnnualMilieuImage" "storeScript"] ["InAnnualMilieuImage" "storeData"] ["InAnnualMilieuImage" "storeImage"] ["InAnnualMilieuImage" "imageWidth"] ["InAnnualMilieuImage" "imageHeight"] ["InAnnualMilieuImage" "boxWidth"] ["InAnnualMilieuImage" "showInitial"] ["InAnnualMilieuImage" "useCustomYRange"] ["InAnnualMilieuImage" "minY"] ["InAnnualMilieuImage" "maxY"] ["InAnnualMilieuImage" "customImageId"] ["link" "InAnnualMilieuImage" "InColorPalette" "colorPalette"]]
+          } 
+          {
+            :label "Jährliche Analyse interessierter Agenten" 
+            :set "set_InAnnualInterestImage" 
+            :description "todo" 
+            :tags [["InAnnualInterestImage" "enabled"] ["InAnnualInterestImage" "useGnuplot"] ["InAnnualInterestImage" "useR"] ["InAnnualInterestImage" "storeScript"] ["InAnnualInterestImage" "storeData"] ["InAnnualInterestImage" "storeImage"] ["InAnnualInterestImage" "imageWidth"] ["InAnnualInterestImage" "imageHeight"] ["InAnnualInterestImage" "linewidth"] ["InAnnualInterestImage" "useCustomYRangeMin"] ["InAnnualInterestImage" "minY"] ["InAnnualInterestImage" "useCustomYRangeMax"] ["InAnnualInterestImage" "maxY"] ["InAnnualInterestImage" "customImageId"] ["link" "InAnnualInterestImage" "InColorPalette" "colorPalette"]]
+          } 
+          {
+            :label "Kumulierte jährliche Analyse interessierter Agenten" 
+            :set "set_InCumulatedAnnualInterestImage" 
+            :description "todo" 
+            :tags [["InCumulatedAnnualInterestImage" "enabled"] ["InCumulatedAnnualInterestImage" "useGnuplot"] ["InCumulatedAnnualInterestImage" "useR"] ["InCumulatedAnnualInterestImage" "storeScript"] ["InCumulatedAnnualInterestImage" "storeData"] ["InCumulatedAnnualInterestImage" "storeImage"] ["InCumulatedAnnualInterestImage" "imageWidth"] ["InCumulatedAnnualInterestImage" "imageHeight"] ["InCumulatedAnnualInterestImage" "linewidth"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMin"] ["InCumulatedAnnualInterestImage" "minY"] ["InCumulatedAnnualInterestImage" "useCustomYRangeMax"] ["InCumulatedAnnualInterestImage" "maxY"] ["InCumulatedAnnualInterestImage" "customImageId"] ["link" "InCumulatedAnnualInterestImage" "InColorPalette" "colorPalette"]]
           }
         ]
       } 
