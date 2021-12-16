@@ -88,13 +88,13 @@ public final class CorporateDesignUniLeipzig {
             IN_BLEND_3_4_5
     );
 
-    public static final InColorPalette IN_CD_UL_2 = new InColorPalette("CD_UL_PALETTE_2",
+    public static final InColorPalette IN_CD_UL_2 = new InColorPalette("CD_UL_PALETTE_v2",
             IN_ACCENT0,
-            IN_ACCENT2,
-            IN_ACCENT1,
-            IN_ACCENT5,
-            IN_ACCENT3,
-            IN_ACCENT4,
+            IN_ACCENT2.copy(IN_ACCENT2.getName() + "_v2", 1),
+            IN_ACCENT1.copy(IN_ACCENT1.getName() + "_v2", 2),
+            IN_ACCENT5.copy(IN_ACCENT5.getName() + "_v2", 3),
+            IN_ACCENT3.copy(IN_ACCENT3.getName() + "_v2", 4),
+            IN_ACCENT4.copy(IN_ACCENT4.getName() + "_v2", 5),
             IN_BLEND_0_2,
             IN_BLEND_0_3,
             IN_BLEND_0_5,

@@ -1428,7 +1428,7 @@ PARAMETER par_InAnnualInterestImage_storeData(set_InAnnualInterestImage)
 * - type: Boolean
 PARAMETER par_InAnnualInterestImage_storeImage(set_InAnnualInterestImage)
 
-* - default: 1
+* - default: 1280
 * - domain: (0,)
 * - description: todo
 * - identifier: imageWidth
@@ -1436,7 +1436,7 @@ PARAMETER par_InAnnualInterestImage_storeImage(set_InAnnualInterestImage)
 * - type: Integer
 PARAMETER par_InAnnualInterestImage_imageWidth(set_InAnnualInterestImage)
 
-* - default: 1
+* - default: 720
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight
@@ -1841,7 +1841,7 @@ PARAMETER par_InCumulatedAnnualInterestImage_storeData(set_InCumulatedAnnualInte
 * - type: Boolean
 PARAMETER par_InCumulatedAnnualInterestImage_storeImage(set_InCumulatedAnnualInterestImage)
 
-* - default: 1
+* - default: 1280
 * - domain: (0,)
 * - description: todo
 * - identifier: imageWidth
@@ -1849,7 +1849,7 @@ PARAMETER par_InCumulatedAnnualInterestImage_storeImage(set_InCumulatedAnnualInt
 * - type: Integer
 PARAMETER par_InCumulatedAnnualInterestImage_imageWidth(set_InCumulatedAnnualInterestImage)
 
-* - default: 1
+* - default: 720
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight
@@ -2243,7 +2243,7 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_storeImage(set_InSpecialAverageQ
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_printAverage(set_InSpecialAverageQuantilRangeImage)
 
-* - default: 1
+* - default: 1280
 * - domain: (0,)
 * - description: todo
 * - identifier: imageWidth
@@ -2251,7 +2251,7 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_printAverage(set_InSpecialAverag
 * - type: Integer
 PARAMETER par_InSpecialAverageQuantilRangeImage_imageWidth(set_InSpecialAverageQuantilRangeImage)
 
-* - default: 1
+* - default: 720
 * - domain: (0,)
 * - description: todo
 * - identifier: imageHeight

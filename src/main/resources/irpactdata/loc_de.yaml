@@ -949,7 +949,7 @@ informations:
 #update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.25.1"
+  edn_description: "IRPact v1.25.2"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
