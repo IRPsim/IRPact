@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
+import de.unileipzig.irpact.commons.distribution.RoundingMode;
 import de.unileipzig.irpact.commons.distribution.TruncatedNormalDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -25,6 +26,7 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.DISTRIBU
  */
 @Definition
 @LocalizedUiResource.PutClassPath(DISTRIBUTIONS_TRUNCNORM)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InTruncatedNormalDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -78,6 +80,39 @@ public class InTruncatedNormalDistribution implements InUnivariateDoubleDistribu
     )
     @LocalizedUiResource.AddEntry
     public double upperBound;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeNoRounding = true;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeFloor = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeCeil = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeRound = false;
 
     public InTruncatedNormalDistribution() {
     }
@@ -151,6 +186,40 @@ public class InTruncatedNormalDistribution implements InUnivariateDoubleDistribu
         this.upperBound = upperBound;
     }
 
+    public RoundingMode getRoundingMode() {
+        return RoundingMode.get(
+                modeNoRounding,
+                modeFloor,
+                modeCeil,
+                modeRound
+        );
+    }
+
+    public void setRoundingMode(RoundingMode mode) {
+        modeNoRounding = false;
+        modeFloor = false;
+        modeCeil = false;
+        modeRound = false;
+
+        switch (mode) {
+            case NONE:
+                modeNoRounding = true;
+                break;
+
+            case FLOOR:
+                modeFloor = true;
+                break;
+
+            case CEIL:
+                modeCeil = true;
+                break;
+
+            case ROUND:
+                modeRound = true;
+                break;
+        }
+    }
+
     @Override
     public TruncatedNormalDistribution parse(IRPactInputParser parser) throws ParsingException {
         TruncatedNormalDistribution dist = new TruncatedNormalDistribution();
@@ -161,6 +230,7 @@ public class InTruncatedNormalDistribution implements InUnivariateDoubleDistribu
         dist.setMu(getMean());
         dist.setSupportUpperBound(getUpperBound());
         dist.setSupportLowerBound(getLowerBound());
+        dist.setRoundingMode(getRoundingMode());
         dist.initalize();
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "TruncatedNormalDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;

@@ -81,6 +81,14 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         );
     }
 
+    protected RealDataModularProcessModelTemplate createTemplate() {
+        return createRealDataTemplate(
+                "Process",
+                createUncertainty("uncert"),
+                createNodeFilterScheme(2)
+        );
+    }
+
     @Override
     protected void setupCommunicationModuleLogging(InCommunicationModule3 module) {
         module.setRaOpinionLogging(true);
@@ -167,11 +175,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         List<InOutputImage2> outputImages2 = new ArrayList<>();
         List<InPostDataAnalysis> postData = new ArrayList<>();
 
-        RealDataModularProcessModelTemplate mpm = createRealDataTemplate(
-                "Process",
-                createUncertainty("uncert"),
-                createNodeFilterScheme(2)
-        );
+        RealDataModularProcessModelTemplate mpm = createTemplate();
 
         mpm.createModel();
         setupCommunicationModuleLogging(mpm.getCommunicationModule());

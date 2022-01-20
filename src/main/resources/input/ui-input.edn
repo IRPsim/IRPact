@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.25.2" 
+        :description "IRPact v1.26.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -284,7 +284,7 @@
         :label "Normalverteilung" 
         :set "set_InNormalDistribution" 
         :description "Verteilungsfunktion auf Basis der Normalverteilung." 
-        :tags [["InNormalDistribution" "standardDeviation"] ["InNormalDistribution" "mean"]]
+        :tags [["InNormalDistribution" "standardDeviation"] ["InNormalDistribution" "mean"] ["InNormalDistribution" "modeNoRounding"] ["InNormalDistribution" "modeFloor"] ["InNormalDistribution" "modeCeil"] ["InNormalDistribution" "modeRound"]]
       } 
       {
         :label "Beschränkte Normalverteilung" 
@@ -293,16 +293,16 @@
         :tags [["InBoundedNormalDistribution" "standardDeviation"] ["InBoundedNormalDistribution" "mean"] ["InBoundedNormalDistribution" "lowerBound"] ["InBoundedNormalDistribution" "upperBound"]]
       } 
       {
-        :label "Abgeschnittene Normalverteilung" 
-        :set "set_InTruncatedNormalDistribution" 
-        :description "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution)." 
-        :tags [["InTruncatedNormalDistribution" "standardDeviation"] ["InTruncatedNormalDistribution" "mean"] ["InTruncatedNormalDistribution" "lowerBound"] ["InTruncatedNormalDistribution" "upperBound"]]
+        :label "(TEST) Langsame abgeschnittene Normalverteilung" 
+        :set "set_InSlowTruncatedNormalDistribution" 
+        :description "(TESTIMPLEMENTIERUNG) Diese Variante zieht so lange Werte, bis sie im gültigen Bereich liegen." 
+        :tags [["InSlowTruncatedNormalDistribution" "standardDeviation"] ["InSlowTruncatedNormalDistribution" "mean"] ["InSlowTruncatedNormalDistribution" "lowerBound"] ["InSlowTruncatedNormalDistribution" "lowerBoundInclusive"] ["InSlowTruncatedNormalDistribution" "upperBound"] ["InSlowTruncatedNormalDistribution" "upperBoundInclusive"] ["InSlowTruncatedNormalDistribution" "modeNoRounding"] ["InSlowTruncatedNormalDistribution" "modeFloor"] ["InSlowTruncatedNormalDistribution" "modeCeil"] ["InSlowTruncatedNormalDistribution" "modeRound"]]
       } 
       {
-        :label "Gleichverteilte ganze Zahlen" 
-        :set "set_InBoundedUniformIntegerDistribution" 
-        :description "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht." 
-        :tags [["InBoundedUniformDoubleDistribution" "lowerBound"] ["InBoundedUniformDoubleDistribution" "upperBound"] ["InBoundedUniformIntegerDistribution" "lowerBound"] ["InBoundedUniformIntegerDistribution" "upperBound"]]
+        :label "Abgeschnittene Normalverteilung" 
+        :set "set_InTruncatedNormalDistribution" 
+        :description "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution). Zusätzlich werden verschiedene Rundungsstrategien unterstützt." 
+        :tags [["InTruncatedNormalDistribution" "standardDeviation"] ["InTruncatedNormalDistribution" "mean"] ["InTruncatedNormalDistribution" "lowerBound"] ["InTruncatedNormalDistribution" "upperBound"] ["InTruncatedNormalDistribution" "modeNoRounding"] ["InTruncatedNormalDistribution" "modeFloor"] ["InTruncatedNormalDistribution" "modeCeil"] ["InTruncatedNormalDistribution" "modeRound"]]
       }
     ]
   } 
@@ -529,9 +529,9 @@
         :sections [
           {
             :label "Attributbasierte initiale Adopter" 
-            :set "set_InPVactDefaultAwarenessInterestHandler" 
+            :set "set_InPVactAttributeBasedInitialAdoption" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden." 
-            :tags [["InPVactAttributeBasedInitialAdoption" "priority"] ["InPVactDefaultAwarenessInterestHandler" "priority"]]
+            :tags [["InPVactAttributeBasedInitialAdoption" "priority"]]
           } 
           {
             :label "Initiale Adopter nach realen Daten" 
@@ -544,6 +544,30 @@
             :set "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" 
             :description "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber." 
             :tags [["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "scale"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "fixError"] ["InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "priority"] ["link" "InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" "InRealAdoptionDataFile" "file"]]
+          } 
+          {
+            :label "Standardinitialisierung von Awareness" 
+            :set "set_InPVactDefaultAwarenessHandler" 
+            :description "todo" 
+            :tags [["InPVactDefaultAwarenessHandler" "priority"]]
+          } 
+          {
+            :label "Standardinitialisierung von Interesse" 
+            :set "set_InPVactDefaultInterestHandler" 
+            :description "todo" 
+            :tags [["InPVactDefaultInterestHandler" "priority"]]
+          } 
+          {
+            :label "Standardinitialisierung von Interesse und Awareness" 
+            :set "set_InPVactDefaultAwarenessInterestHandler" 
+            :description "todo" 
+            :tags [["InPVactDefaultAwarenessInterestHandler" "priority"]]
+          } 
+          {
+            :label "Initialisierung des initialien Interesses in Bezug auf novelty seeking" 
+            :set "set_InPVactDependentInterestScaler" 
+            :description "Initialisiert das initiale Interesse in Bezug auf das sortierte novelty seeking Attribut. Dazu werden auf Basis der Verteilungsfunktion Werte für das initiale Interesse gezogen. Die sortierten Werte werden den, in auf das novelty seeking, sortierten Agenten zugeordnet." 
+            :tags [["InPVactDependentInterestScaler" "priority"] ["link" "InPVactDependentInterestScaler" "InUnivariateDoubleDistribution" "distribution"]]
           }
         ]
       }

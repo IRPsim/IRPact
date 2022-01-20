@@ -949,7 +949,7 @@ informations:
 #update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.25.2"
+  edn_description: "IRPact v1.26.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -995,6 +995,21 @@ InRealAdoptionDataFile_placeholder:
   gams_description: "Ungenutzter Platzhalter"
 
 
+##########################
+# Distribution anchors
+##########################
+
+_DISTRIBUTION_ANCHORS:
+  MODE_NO_ROUNDING_ID: &MODE_NO_ROUNDING_ID "Kein Runden"
+  MODE_NO_ROUNDING_DESC: &MODE_NO_ROUNDING_DESC "Es wird nicht gerundet. Die Zahl bleibt unverändert."
+  MODE_FLOOR_ID: &MODE_FLOOR_ID "Abrunden"
+  MODE_FLOOR_DESC: &MODE_FLOOR_DESC "Die Zahl wird immer abgerundet."
+  MODE_CEIL_ID: &MODE_CEIL_ID "Aufrunden"
+  MODE_CEIL_DESC: &MODE_CEIL_DESC "Die Zahl wird immer aufgerundet."
+  MODE_ROUND_ID: &MODE_ROUND_ID "Kaufmännisches Runden"
+  MODE_ROUND_DESC: &MODE_ROUND_DESC "Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet."
+
+##########################
 
 distributions:
   edn_label: "Verteilungsfunktionen"
@@ -1039,26 +1054,6 @@ InBoundedNormalDistribution_upperBound:
   gams_identifier: "Obergrenze (inklusiv)"
   gams_description: "Legt die Obergrenze fest."
 
-InBoundedUniformDoubleDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InBoundedUniformDoubleDistribution_lowerBound:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InBoundedUniformDoubleDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
-
-InBoundedUniformIntegerDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InBoundedUniformIntegerDistribution_lowerBound:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InBoundedUniformIntegerDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
-
 InDiracUnivariateDistribution:
   edn_label: "Dirac-Verteilung"
   edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
@@ -1092,10 +1087,22 @@ InNormalDistribution_standardDeviation:
 InNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
+InNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 InSlowTruncatedNormalDistribution:
-  edn_label: "Bernoulliverteilung"
-  edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
+  edn_label: "(TEST) Langsame abgeschnittene Normalverteilung"
+  edn_description: "(TESTIMPLEMENTIERUNG) Diese Variante zieht so lange Werte, bis sie im gültigen Bereich liegen."
 InSlowTruncatedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Legt die Standardabweichung fest."
@@ -1114,10 +1121,22 @@ InSlowTruncatedNormalDistribution_upperBound:
 InSlowTruncatedNormalDistribution_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Gibt an, ob die obere Grenze inklusive sein soll."
+InSlowTruncatedNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InSlowTruncatedNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InSlowTruncatedNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InSlowTruncatedNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 InTruncatedNormalDistribution:
   edn_label: "Abgeschnittene Normalverteilung"
-  edn_description: "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution)."
+  edn_description: "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution). Zusätzlich werden verschiedene Rundungsstrategien unterstützt."
 InTruncatedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die Standardabweichung der Normalverteilung."
@@ -1130,6 +1149,18 @@ InTruncatedNormalDistribution_lowerBound:
 InTruncatedNormalDistribution_upperBound:
   gams_identifier: "Obere Grenze"
   gams_description: "Obere Grenze des Bereiches für die gültigen Werte."
+InTruncatedNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InTruncatedNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InTruncatedNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InTruncatedNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 agents:
   edn_label: "Agenten"
@@ -1311,12 +1342,36 @@ InPVactAttributeBasedInitialAdoption_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
 
+InPVactDefaultAwarenessHandler:
+  edn_label: "Standardinitialisierung von Awareness"
+  edn_description: "todo"
+InPVactDefaultAwarenessHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
 InPVactDefaultAwarenessInterestHandler:
   edn_label: "Standardinitialisierung von Interesse und Awareness"
   edn_description: "todo"
 InPVactDefaultAwarenessInterestHandler_priority:
   gams_identifier: "Priorität"
   gams_description: "todo"
+
+InPVactDefaultInterestHandler:
+  edn_label: "Standardinitialisierung von Interesse"
+  edn_description: "todo"
+InPVactDefaultInterestHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDependentInterestScaler:
+  edn_label: "Initialisierung des initialien Interesses in Bezug auf novelty seeking"
+  edn_description: "Initialisiert das initiale Interesse in Bezug auf das sortierte novelty seeking Attribut. Dazu werden auf Basis der Verteilungsfunktion Werte für das initiale Interesse gezogen. Die sortierten Werte werden den, in auf das novelty seeking, sortierten Agenten zugeordnet."
+InPVactDependentInterestScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InPVactDependentInterestScaler_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Diese Funktion"
 
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Initiale Adopter nach realen Daten"

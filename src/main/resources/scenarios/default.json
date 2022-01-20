@@ -138,179 +138,177 @@
       "set_InBernoulliModule3_boolnode3" : { },
       "set_InBooleanDistribution" : { },
       "set_InBoundedNormalDistribution" : { },
-      "set_InBoundedUniformDoubleDistribution" : { },
-      "set_InBoundedUniformIntegerDistribution" : { },
       "set_InBucketAnalyser" : { },
       "set_InColor" : {
-        "CD_UL_1" : { },
+        "CD_UL_00" : { },
+        "CD_UL_01" : { },
+        "CD_UL_01_P2" : { },
+        "CD_UL_02" : { },
+        "CD_UL_02_P1" : { },
+        "CD_UL_03" : { },
+        "CD_UL_03_P5" : { },
+        "CD_UL_04" : { },
+        "CD_UL_04_P3" : { },
+        "CD_UL_05" : { },
+        "CD_UL_05_P4" : { },
+        "CD_UL_06" : { },
+        "CD_UL_07" : { },
+        "CD_UL_08" : { },
+        "CD_UL_09" : { },
         "CD_UL_10" : { },
         "CD_UL_11" : { },
         "CD_UL_12" : { },
         "CD_UL_13" : { },
         "CD_UL_14" : { },
-        "CD_UL_15" : { },
-        "CD_UL_16" : { },
-        "CD_UL_2" : { },
-        "CD_UL_2_v2" : { },
-        "CD_UL_3" : { },
-        "CD_UL_3_v2" : { },
-        "CD_UL_4" : { },
-        "CD_UL_4_v2" : { },
-        "CD_UL_5" : { },
-        "CD_UL_5_v2" : { },
-        "CD_UL_6" : { },
-        "CD_UL_6_v2" : { },
-        "CD_UL_7" : { },
-        "CD_UL_8" : { },
-        "CD_UL_9" : { }
+        "CD_UL_15" : { }
       },
       "set_InColorARGB" : {
-        "CD_UL_1" : {
+        "CD_UL_00" : {
           "par_InColorARGB_priority" : 1,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 176,
           "par_InColorARGB_green" : 47,
           "par_InColorARGB_blue" : 44
         },
-        "CD_UL_10" : {
-          "par_InColorARGB_priority" : 10,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 88,
-          "par_InColorARGB_green" : 118,
-          "par_InColorARGB_blue" : 129
-        },
-        "CD_UL_11" : {
-          "par_InColorARGB_priority" : 11,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 186,
-          "par_InColorARGB_green" : 176,
-          "par_InColorARGB_blue" : 183
-        },
-        "CD_UL_12" : {
-          "par_InColorARGB_priority" : 12,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 169,
-          "par_InColorARGB_green" : 197,
-          "par_InColorARGB_blue" : 205
-        },
-        "CD_UL_13" : {
-          "par_InColorARGB_priority" : 13,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 117,
-          "par_InColorARGB_green" : 94,
-          "par_InColorARGB_blue" : 100
-        },
-        "CD_UL_14" : {
-          "par_InColorARGB_priority" : 14,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 151,
-          "par_InColorARGB_green" : 103,
-          "par_InColorARGB_blue" : 105
-        },
-        "CD_UL_15" : {
-          "par_InColorARGB_priority" : 15,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 136,
-          "par_InColorARGB_green" : 131,
-          "par_InColorARGB_blue" : 138
-        },
-        "CD_UL_16" : {
-          "par_InColorARGB_priority" : 16,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 157,
-          "par_InColorARGB_green" : 133,
-          "par_InColorARGB_blue" : 136
-        },
-        "CD_UL_2" : {
+        "CD_UL_01" : {
           "par_InColorARGB_priority" : 2,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 214,
           "par_InColorARGB_green" : 66,
           "par_InColorARGB_blue" : 66
         },
-        "CD_UL_2_v2" : {
-          "par_InColorARGB_priority" : 2,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 214,
-          "par_InColorARGB_green" : 66,
-          "par_InColorARGB_blue" : 66
-        },
-        "CD_UL_3" : {
-          "par_InColorARGB_priority" : 3,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 138,
-          "par_InColorARGB_green" : 194,
-          "par_InColorARGB_blue" : 209
-        },
-        "CD_UL_3_v2" : {
+        "CD_UL_01_P2" : {
           "par_InColorARGB_priority" : 1,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 138,
           "par_InColorARGB_green" : 194,
           "par_InColorARGB_blue" : 209
         },
-        "CD_UL_4" : {
+        "CD_UL_02" : {
+          "par_InColorARGB_priority" : 3,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 138,
+          "par_InColorARGB_green" : 194,
+          "par_InColorARGB_blue" : 209
+        },
+        "CD_UL_02_P1" : {
+          "par_InColorARGB_priority" : 2,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 214,
+          "par_InColorARGB_green" : 66,
+          "par_InColorARGB_blue" : 66
+        },
+        "CD_UL_03" : {
           "par_InColorARGB_priority" : 4,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 38,
           "par_InColorARGB_green" : 42,
           "par_InColorARGB_blue" : 49
         },
-        "CD_UL_4_v2" : {
-          "par_InColorARGB_priority" : 4,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 38,
-          "par_InColorARGB_green" : 42,
-          "par_InColorARGB_blue" : 49
-        },
-        "CD_UL_5" : {
-          "par_InColorARGB_priority" : 5,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 234,
-          "par_InColorARGB_green" : 158,
-          "par_InColorARGB_blue" : 158
-        },
-        "CD_UL_5_v2" : {
-          "par_InColorARGB_priority" : 5,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 234,
-          "par_InColorARGB_green" : 158,
-          "par_InColorARGB_blue" : 158
-        },
-        "CD_UL_6" : {
-          "par_InColorARGB_priority" : 6,
-          "par_InColorARGB_alpha" : 255,
-          "par_InColorARGB_red" : 201,
-          "par_InColorARGB_green" : 201,
-          "par_InColorARGB_blue" : 201
-        },
-        "CD_UL_6_v2" : {
+        "CD_UL_03_P5" : {
           "par_InColorARGB_priority" : 3,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 201,
           "par_InColorARGB_green" : 201,
           "par_InColorARGB_blue" : 201
         },
-        "CD_UL_7" : {
+        "CD_UL_04" : {
+          "par_InColorARGB_priority" : 5,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 234,
+          "par_InColorARGB_green" : 158,
+          "par_InColorARGB_blue" : 158
+        },
+        "CD_UL_04_P3" : {
+          "par_InColorARGB_priority" : 4,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 38,
+          "par_InColorARGB_green" : 42,
+          "par_InColorARGB_blue" : 49
+        },
+        "CD_UL_05" : {
+          "par_InColorARGB_priority" : 6,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 201,
+          "par_InColorARGB_green" : 201,
+          "par_InColorARGB_blue" : 201
+        },
+        "CD_UL_05_P4" : {
+          "par_InColorARGB_priority" : 5,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 234,
+          "par_InColorARGB_green" : 158,
+          "par_InColorARGB_blue" : 158
+        },
+        "CD_UL_06" : {
           "par_InColorARGB_priority" : 7,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 157,
           "par_InColorARGB_green" : 120,
           "par_InColorARGB_blue" : 126
         },
-        "CD_UL_8" : {
+        "CD_UL_07" : {
           "par_InColorARGB_priority" : 8,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 107,
           "par_InColorARGB_green" : 44,
           "par_InColorARGB_blue" : 46
         },
-        "CD_UL_9" : {
+        "CD_UL_08" : {
           "par_InColorARGB_priority" : 9,
           "par_InColorARGB_alpha" : 255,
           "par_InColorARGB_red" : 188,
           "par_InColorARGB_green" : 124,
           "par_InColorARGB_blue" : 122
+        },
+        "CD_UL_09" : {
+          "par_InColorARGB_priority" : 10,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 88,
+          "par_InColorARGB_green" : 118,
+          "par_InColorARGB_blue" : 129
+        },
+        "CD_UL_10" : {
+          "par_InColorARGB_priority" : 11,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 186,
+          "par_InColorARGB_green" : 176,
+          "par_InColorARGB_blue" : 183
+        },
+        "CD_UL_11" : {
+          "par_InColorARGB_priority" : 12,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 169,
+          "par_InColorARGB_green" : 197,
+          "par_InColorARGB_blue" : 205
+        },
+        "CD_UL_12" : {
+          "par_InColorARGB_priority" : 13,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 117,
+          "par_InColorARGB_green" : 94,
+          "par_InColorARGB_blue" : 100
+        },
+        "CD_UL_13" : {
+          "par_InColorARGB_priority" : 14,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 151,
+          "par_InColorARGB_green" : 103,
+          "par_InColorARGB_blue" : 105
+        },
+        "CD_UL_14" : {
+          "par_InColorARGB_priority" : 15,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 136,
+          "par_InColorARGB_green" : 131,
+          "par_InColorARGB_blue" : 138
+        },
+        "CD_UL_15" : {
+          "par_InColorARGB_priority" : 16,
+          "par_InColorARGB_alpha" : 255,
+          "par_InColorARGB_red" : 157,
+          "par_InColorARGB_green" : 133,
+          "par_InColorARGB_blue" : 136
         }
       },
       "set_InColorPalette" : {
@@ -439,7 +437,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2021_12_16_T_07_03_31" : {
+        "CT_D_2022_01_20_T_09_10_58" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -502,7 +500,10 @@
       "set_InPVactConsumerAgentGroup" : {
         "TRA" : { }
       },
+      "set_InPVactDefaultAwarenessHandler" : { },
       "set_InPVactDefaultAwarenessInterestHandler" : { },
+      "set_InPVactDefaultInterestHandler" : { },
+      "set_InPVactDependentInterestScaler" : { },
       "set_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData" : { },
       "set_InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion" : { },
@@ -523,10 +524,11 @@
         "DO_NOTHING" : { }
       },
       "set_InScenarioVersion" : {
-        "v1_25_2" : {
+        "v1_26_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
+      "set_InSlowTruncatedNormalDistribution" : { },
       "set_InSocialShareOfAdopterModule3_inputnode3" : { },
       "set_InSpace2D" : {
         "Space2D" : {
@@ -655,50 +657,50 @@
       "par_link_InBucketAnalyser_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
       "par_link_InColorPalette_InColor_colors" : {
         "CD_UL_PALETTE" : {
-          "CD_UL_1" : 1.0,
+          "CD_UL_00" : 1.0,
+          "CD_UL_01" : 1.0,
+          "CD_UL_01_P2" : 0.0,
+          "CD_UL_02" : 1.0,
+          "CD_UL_02_P1" : 0.0,
+          "CD_UL_03" : 1.0,
+          "CD_UL_03_P5" : 0.0,
+          "CD_UL_04" : 1.0,
+          "CD_UL_04_P3" : 0.0,
+          "CD_UL_05" : 1.0,
+          "CD_UL_05_P4" : 0.0,
+          "CD_UL_06" : 1.0,
+          "CD_UL_07" : 1.0,
+          "CD_UL_08" : 1.0,
+          "CD_UL_09" : 1.0,
           "CD_UL_10" : 1.0,
           "CD_UL_11" : 1.0,
           "CD_UL_12" : 1.0,
           "CD_UL_13" : 1.0,
           "CD_UL_14" : 1.0,
-          "CD_UL_15" : 1.0,
-          "CD_UL_16" : 1.0,
-          "CD_UL_2" : 1.0,
-          "CD_UL_2_v2" : 0.0,
-          "CD_UL_3" : 1.0,
-          "CD_UL_3_v2" : 0.0,
-          "CD_UL_4" : 1.0,
-          "CD_UL_4_v2" : 0.0,
-          "CD_UL_5" : 1.0,
-          "CD_UL_5_v2" : 0.0,
-          "CD_UL_6" : 1.0,
-          "CD_UL_6_v2" : 0.0,
-          "CD_UL_7" : 1.0,
-          "CD_UL_8" : 1.0,
-          "CD_UL_9" : 1.0
+          "CD_UL_15" : 1.0
         },
         "CD_UL_PALETTE_v2" : {
-          "CD_UL_1" : 1.0,
+          "CD_UL_00" : 1.0,
+          "CD_UL_01" : 0.0,
+          "CD_UL_01_P2" : 1.0,
+          "CD_UL_02" : 0.0,
+          "CD_UL_02_P1" : 1.0,
+          "CD_UL_03" : 0.0,
+          "CD_UL_03_P5" : 1.0,
+          "CD_UL_04" : 0.0,
+          "CD_UL_04_P3" : 1.0,
+          "CD_UL_05" : 0.0,
+          "CD_UL_05_P4" : 1.0,
+          "CD_UL_06" : 1.0,
+          "CD_UL_07" : 1.0,
+          "CD_UL_08" : 1.0,
+          "CD_UL_09" : 1.0,
           "CD_UL_10" : 1.0,
           "CD_UL_11" : 1.0,
           "CD_UL_12" : 1.0,
           "CD_UL_13" : 1.0,
           "CD_UL_14" : 1.0,
-          "CD_UL_15" : 1.0,
-          "CD_UL_16" : 1.0,
-          "CD_UL_2" : 0.0,
-          "CD_UL_2_v2" : 1.0,
-          "CD_UL_3" : 0.0,
-          "CD_UL_3_v2" : 1.0,
-          "CD_UL_4" : 0.0,
-          "CD_UL_4_v2" : 1.0,
-          "CD_UL_5" : 0.0,
-          "CD_UL_5_v2" : 1.0,
-          "CD_UL_6" : 0.0,
-          "CD_UL_6_v2" : 1.0,
-          "CD_UL_7" : 1.0,
-          "CD_UL_8" : 1.0,
-          "CD_UL_9" : 1.0
+          "CD_UL_15" : 1.0
         }
       },
       "par_link_InCommunicationModule3_actionnode3_InUncertaintySupplier_uncertaintySuppliers" : { },
@@ -922,6 +924,7 @@
           "dirac0" : 1.0
         }
       },
+      "par_link_InPVactDependentInterestScaler_InUnivariateDoubleDistribution_distribution" : { },
       "par_link_InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file" : { },
       "par_link_InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_InRealAdoptionDataFile_file" : { },
       "par_link_InReevaluatorModule3_reevalnode3_InConsumerAgentModule2_inputModule" : { },

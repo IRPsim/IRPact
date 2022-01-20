@@ -365,34 +365,6 @@ PARAMETER par_InBoundedNormalDistribution_lowerBound(set_InBoundedNormalDistribu
 * - type: Float
 PARAMETER par_InBoundedNormalDistribution_upperBound(set_InBoundedNormalDistribution)
 
-* - identifier: InBoundedUniformDoubleDistribution
-* - type: String
-SET set_InBoundedUniformDoubleDistribution(set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Untergrenze fest.
-* - identifier: Untergrenze (inklusiv)
-* - type: Float
-PARAMETER par_InBoundedUniformDoubleDistribution_lowerBound(set_InBoundedUniformDoubleDistribution)
-
-* - description: Legt die Obergrenze fest.
-* - identifier: Obergrenze (exklusiv)
-* - type: Float
-PARAMETER par_InBoundedUniformDoubleDistribution_upperBound(set_InBoundedUniformDoubleDistribution)
-
-* - identifier: InBoundedUniformIntegerDistribution
-* - type: String
-SET set_InBoundedUniformIntegerDistribution(set_InUnivariateDoubleDistribution)
-
-* - description: Legt die Untergrenze fest.
-* - identifier: Untergrenze (inklusiv)
-* - type: Integer
-PARAMETER par_InBoundedUniformIntegerDistribution_lowerBound(set_InBoundedUniformIntegerDistribution)
-
-* - description: Legt die Obergrenze fest.
-* - identifier: Obergrenze (exklusiv)
-* - type: Integer
-PARAMETER par_InBoundedUniformIntegerDistribution_upperBound(set_InBoundedUniformIntegerDistribution)
-
 * - identifier: InDiracUnivariateDistribution
 * - type: String
 SET set_InDiracUnivariateDistribution(set_InUnivariateDoubleDistribution)
@@ -441,6 +413,102 @@ PARAMETER par_InNormalDistribution_standardDeviation(set_InNormalDistribution)
 * - type: Float
 PARAMETER par_InNormalDistribution_mean(set_InNormalDistribution)
 
+* - default: 1
+* - domain: [0|1]
+* - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
+* - identifier: Kein Runden
+* - type: Boolean
+PARAMETER par_InNormalDistribution_modeNoRounding(set_InNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer abgerundet.
+* - identifier: Abrunden
+* - type: Boolean
+PARAMETER par_InNormalDistribution_modeFloor(set_InNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer aufgerundet.
+* - identifier: Aufrunden
+* - type: Boolean
+PARAMETER par_InNormalDistribution_modeCeil(set_InNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
+* - identifier: Kaufmännisches Runden
+* - type: Boolean
+PARAMETER par_InNormalDistribution_modeRound(set_InNormalDistribution)
+
+* - identifier: InSlowTruncatedNormalDistribution
+* - type: String
+SET set_InSlowTruncatedNormalDistribution(set_InUnivariateDoubleDistribution)
+
+* - default: 1
+* - description: Legt die Standardabweichung fest.
+* - identifier: Standardabweichung
+* - type: Float
+PARAMETER par_InSlowTruncatedNormalDistribution_standardDeviation(set_InSlowTruncatedNormalDistribution)
+
+* - default: 0
+* - description: Legt den Mittelwert fest.
+* - identifier: Mittelwert
+* - type: Float
+PARAMETER par_InSlowTruncatedNormalDistribution_mean(set_InSlowTruncatedNormalDistribution)
+
+* - default: -1
+* - description: Legt die untere Grenze fest.
+* - identifier: Untere Grenze
+* - type: Float
+PARAMETER par_InSlowTruncatedNormalDistribution_lowerBound(set_InSlowTruncatedNormalDistribution)
+
+* - default: 1
+* - description: Gibt an, ob die untere Grenze inklusive sein soll.
+* - identifier: Untere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_lowerBoundInclusive(set_InSlowTruncatedNormalDistribution)
+
+* - default: 1
+* - description: Legt die obere Grenze fest.
+* - identifier: Obere Grenze
+* - type: Float
+PARAMETER par_InSlowTruncatedNormalDistribution_upperBound(set_InSlowTruncatedNormalDistribution)
+
+* - default: 1
+* - description: Gibt an, ob die obere Grenze inklusive sein soll.
+* - identifier: Obere Grenze inklusive?
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_upperBoundInclusive(set_InSlowTruncatedNormalDistribution)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
+* - identifier: Kein Runden
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_modeNoRounding(set_InSlowTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer abgerundet.
+* - identifier: Abrunden
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_modeFloor(set_InSlowTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer aufgerundet.
+* - identifier: Aufrunden
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_modeCeil(set_InSlowTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
+* - identifier: Kaufmännisches Runden
+* - type: Boolean
+PARAMETER par_InSlowTruncatedNormalDistribution_modeRound(set_InSlowTruncatedNormalDistribution)
+
 * - identifier: InTruncatedNormalDistribution
 * - type: String
 SET set_InTruncatedNormalDistribution(set_InUnivariateDoubleDistribution)
@@ -468,6 +536,34 @@ PARAMETER par_InTruncatedNormalDistribution_lowerBound(set_InTruncatedNormalDist
 * - identifier: Obere Grenze
 * - type: Float
 PARAMETER par_InTruncatedNormalDistribution_upperBound(set_InTruncatedNormalDistribution)
+
+* - default: 1
+* - domain: [0|1]
+* - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
+* - identifier: Kein Runden
+* - type: Boolean
+PARAMETER par_InTruncatedNormalDistribution_modeNoRounding(set_InTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer abgerundet.
+* - identifier: Abrunden
+* - type: Boolean
+PARAMETER par_InTruncatedNormalDistribution_modeFloor(set_InTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Die Zahl wird immer aufgerundet.
+* - identifier: Aufrunden
+* - type: Boolean
+PARAMETER par_InTruncatedNormalDistribution_modeCeil(set_InTruncatedNormalDistribution)
+
+* - default: 0
+* - domain: [0|1]
+* - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
+* - identifier: Kaufmännisches Runden
+* - type: Boolean
+PARAMETER par_InTruncatedNormalDistribution_modeRound(set_InTruncatedNormalDistribution)
 
 * - identifier: InUnivariateDoubleDistribution
 * - hidden: 1
@@ -3722,6 +3818,16 @@ SET set_InPVactAttributeBasedInitialAdoption(set_InNewProductHandler)
 * - type: Integer
 PARAMETER par_InPVactAttributeBasedInitialAdoption_priority(set_InPVactAttributeBasedInitialAdoption)
 
+* - identifier: InPVactDefaultAwarenessHandler
+* - type: String
+SET set_InPVactDefaultAwarenessHandler(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactDefaultAwarenessHandler_priority(set_InPVactDefaultAwarenessHandler)
+
 * - identifier: InPVactDefaultAwarenessInterestHandler
 * - type: String
 SET set_InPVactDefaultAwarenessInterestHandler(set_InNewProductHandler)
@@ -3731,6 +3837,31 @@ SET set_InPVactDefaultAwarenessInterestHandler(set_InNewProductHandler)
 * - identifier: Priorität
 * - type: Integer
 PARAMETER par_InPVactDefaultAwarenessInterestHandler_priority(set_InPVactDefaultAwarenessInterestHandler)
+
+* - identifier: InPVactDefaultInterestHandler
+* - type: String
+SET set_InPVactDefaultInterestHandler(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactDefaultInterestHandler_priority(set_InPVactDefaultInterestHandler)
+
+* - identifier: InPVactDependentInterestScaler
+* - type: String
+SET set_InPVactDependentInterestScaler(set_InNewProductHandler)
+
+* - default: 0
+* - description: todo
+* - identifier: Priorität
+* - type: Integer
+PARAMETER par_InPVactDependentInterestScaler_priority(set_InPVactDependentInterestScaler)
+
+* - description: Diese Funktion
+* - identifier: Verteilungsfunktion
+* - type: Boolean
+PARAMETER par_link_InPVactDependentInterestScaler_InUnivariateDoubleDistribution_distribution(set_InPVactDependentInterestScaler,set_InUnivariateDoubleDistribution)
 
 * - identifier: InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData
 * - type: String

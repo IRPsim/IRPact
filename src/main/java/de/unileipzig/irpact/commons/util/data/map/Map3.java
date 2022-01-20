@@ -54,6 +54,13 @@ public class Map3<A, B, C> {
         map.clear();
     }
 
+    public void clear(A a) {
+        Map<B, C> map0 = getMap0(a);
+        if(map0 != null) {
+            map0.clear();
+        }
+    }
+
     public C put(A a, B b, C c) {
         return getMap0(a).put(b, c);
     }

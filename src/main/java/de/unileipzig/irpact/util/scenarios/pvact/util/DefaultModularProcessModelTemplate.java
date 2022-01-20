@@ -106,15 +106,20 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
             awaini.setName(getAwarenessInterestHandlerName());
             awaini.setPriority(1);
 
-            InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
-            initAdopter.setName(getInitAdopterHandlerName());
-            initAdopter.setFile(getValidRealAdoptionFile());
-            initAdopter.setScale(true);
-            initAdopter.setFixError(true);
+            InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = createInPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
             initAdopter.setPriority(2);
 
             _mpm.addNewProductHandlers(awaini, initAdopter);
         });
+    }
+
+    protected InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData createInPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData() {
+        InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData initAdopter = new InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData();
+        initAdopter.setName(getInitAdopterHandlerName());
+        initAdopter.setFile(getValidRealAdoptionFile());
+        initAdopter.setScale(true);
+        initAdopter.setFixError(true);
+        return initAdopter;
     }
 
     public void setRaEnabled(boolean raEnabled) {

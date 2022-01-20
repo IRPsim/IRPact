@@ -3,10 +3,8 @@ package de.unileipzig.irpact.commons.distribution;
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
-import de.unileipzig.irpact.commons.exception.IRPactRuntimeException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.RndGen;
-import org.apache.commons.math3.distribution.AbstractRealDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.NoBracketingException;
 
@@ -14,7 +12,7 @@ import org.apache.commons.math3.exception.NoBracketingException;
  * @author Daniel Abitz
  */
 public class TruncatedNormalDistribution
-        extends AbstractRealDistribution
+        extends AbstractRealDistributionWithRounding
         implements Nameable, BoundedUnivariateDoubleDistribution, ChecksumComparable {
 
     protected String name;
@@ -209,7 +207,8 @@ public class TruncatedNormalDistribution
     @Override
     public double sample() {
         checkInitalized();
-        return super.sample();
+        double result = super.sample();
+        return roundValue(result);
     }
 
     //=========================

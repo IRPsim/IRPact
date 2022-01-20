@@ -49,9 +49,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.components.init.gene
 import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.product.*;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
+import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.*;
 import de.unileipzig.irpact.io.param.input.time.InDiscreteTimeModel;
@@ -133,8 +131,6 @@ public enum TreeViewStructureEnum {
     DISTRIBUTIONS_BOUNDNORM(DISTRIBUTIONS, InBoundedNormalDistribution.class),
     DISTRIBUTIONS_SLOWTRUNCNORM(DISTRIBUTIONS, InSlowTruncatedNormalDistribution.class),
     DISTRIBUTIONS_TRUNCNORM(DISTRIBUTIONS, InTruncatedNormalDistribution.class),
-    DISTRIBUTIONS_BOUNDUNIDOUBLE(DISTRIBUTIONS, InBoundedUniformDoubleDistribution.class),
-    DISTRIBUTIONS_BOUNDUNIINT(DISTRIBUTIONS, InBoundedUniformIntegerDistribution.class),
 
     AGENTS(ROOT, IOConstants.AGENTS),
     AGENTS_CONSUMER(AGENTS, IOConstants.CONSUMER),
@@ -183,6 +179,10 @@ public enum TreeViewStructureEnum {
     PRODUCTS_INITADOPT_PVACTATTRBASED(PRODUCTS_INITADOPT, InPVactAttributeBasedInitialAdoption.class),
     PRODUCTS_INITADOPT_PVACTFILECAGBASED(PRODUCTS_INITADOPT, InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class),
     PRODUCTS_INITADOPT_PVACTFILEWEIGHTEDCAGBASED(PRODUCTS_INITADOPT, InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.class),
+    PRODUCTS_INITADOPT_PVACTDEFAULTAWE(PRODUCTS_INITADOPT, InPVactDefaultAwarenessHandler.class),
+    PRODUCTS_INITADOPT_PVACTDEFAULTINTER(PRODUCTS_INITADOPT, InPVactDefaultInterestHandler.class),
+    PRODUCTS_INITADOPT_PVACTDEFAULTAWEINTER(PRODUCTS_INITADOPT, InPVactDefaultAwarenessInterestHandler.class),
+    PRODUCTS_INITADOPT_PVACTDEPENTINTER(PRODUCTS_INITADOPT, InPVactDependentInterestScaler.class),
     
     //process model
     PROCESS_MODULAR4(ROOT, IOConstants.PROCESS_MODEL4),

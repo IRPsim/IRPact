@@ -861,8 +861,6 @@ public class InRoot implements RootClass {
             InBernoulliDistribution.class,
             InBooleanDistribution.class,
             InBoundedNormalDistribution.class,
-            InBoundedUniformDoubleDistribution.class,
-            InBoundedUniformIntegerDistribution.class,
             InDiracUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
@@ -1077,7 +1075,10 @@ public class InRoot implements RootClass {
 
             InNewProductHandler.class,
             InPVactAttributeBasedInitialAdoption.class,
+            InPVactDefaultAwarenessHandler.class,
             InPVactDefaultAwarenessInterestHandler.class,
+            InPVactDefaultInterestHandler.class,
+            InPVactDependentInterestScaler.class,
             InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class,
             InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.class,
 

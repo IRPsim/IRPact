@@ -95,7 +95,7 @@ public class InColorARGB implements InColor {
     }
 
     public InColorARGB copy(String newName, int newPriority) {
-        return new InColorARGB(newName, alpha,red, green, blue, newPriority);
+        return new InColorARGB(newName, alpha, red, green, blue, newPriority);
     }
 
     @Override
@@ -165,5 +165,17 @@ public class InColorARGB implements InColor {
     @Override
     public Color parse(IRPactInputParser parser) throws ParsingException {
         return toColor();
+    }
+
+    @Override
+    public String toString() {
+        return "InColorARGB{" +
+                "name='" + name + '\'' +
+                ", priority=" + priority +
+                ", alpha=" + alpha +
+                ", red=" + red +
+                ", green=" + green +
+                ", blue=" + blue +
+                '}';
     }
 }
