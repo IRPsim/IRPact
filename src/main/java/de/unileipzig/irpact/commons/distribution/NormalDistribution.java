@@ -1,7 +1,6 @@
 package de.unileipzig.irpact.commons.distribution;
 
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.Rnd;
 
 /**
@@ -9,7 +8,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
  *
  * @author Daniel Abitz
  */
-public class NormalDistribution extends NameableBase implements UnivariateDoubleDistribution {
+public class NormalDistribution extends AbstractUnivariateDistributionWithRounding {
 
     protected Rnd rnd;
     protected double mean;
@@ -63,7 +62,8 @@ public class NormalDistribution extends NameableBase implements UnivariateDouble
 
     @Override
     public double drawDoubleValue() {
-        return rnd.nextGaussian(standardDeviation, mean);
+        double result = rnd.nextGaussian(standardDeviation, mean);
+        return roundValue(result);
     }
 
     @Override

@@ -1,11 +1,7 @@
 package de.unileipzig.irpact.util.scenarios.pvact;
 
 import de.unileipzig.irpact.core.logging.IRPLevel;
-import de.unileipzig.irpact.core.postprocessing.LazyData2FileLinker;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.RAModelData;
-import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
-import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.io.param.input.InGeneral;
@@ -17,32 +13,16 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
+import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
 import de.unileipzig.irpact.io.param.input.file.InFile;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
-import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
-import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
-import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.*;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.product.initial.InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
@@ -55,11 +35,9 @@ import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InSpatialDistribution;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.util.scenarios.AbstractScenario;
-import de.unileipzig.irpact.util.scenarios.CorporateDesignUniLeipzig;
-import de.unileipzig.irpact.util.scenarios.pvact.toymodels.util.ModularProcessModelManager;
 import de.unileipzig.irpact.util.scenarios.pvact.util.RealDataModularProcessModelTemplate;
+import de.unileipzig.irpact.util.scenarios.pvact.util.RealDataModularProcessModelTemplateWithInterest;
 
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -400,6 +378,20 @@ public abstract class AbstractPVactScenario extends AbstractScenario {
         mpm.setDistanceFilterSupplier(() -> scheme);
         mpm.setPvFileSupplier(this::getPVFile);
         mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        return mpm;
+    }
+
+    public RealDataModularProcessModelTemplate createRealDataTemplateWithInterest(
+            String name,
+            InUncertaintySupplier uncertainty,
+            InNodeDistanceFilterScheme scheme,
+            InUnivariateDoubleDistribution interestDistribution) {
+        RealDataModularProcessModelTemplateWithInterest mpm = new RealDataModularProcessModelTemplateWithInterest(name);
+        mpm.setUncertaintySupplier(() -> uncertainty);
+        mpm.setDistanceFilterSupplier(() -> scheme);
+        mpm.setPvFileSupplier(this::getPVFile);
+        mpm.setRealAdoptionFileSupplier(this::getRealAdoptionDataFile);
+        mpm.setInterestDistribution(interestDistribution);
         return mpm;
     }
 

@@ -17,13 +17,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_INITADOPT_PVACTATTRBASED;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_INITADOPT_PVACTDEFAULTAWEINTER;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
-@LocalizedUiResource.PutClassPath(PRODUCTS_INITADOPT_PVACTATTRBASED)
+@LocalizedUiResource.PutClassPath(PRODUCTS_INITADOPT_PVACTDEFAULTAWEINTER)
 public class InPVactDefaultAwarenessInterestHandler implements InNewProductHandler {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -89,7 +89,7 @@ public class InPVactDefaultAwarenessInterestHandler implements InNewProductHandl
         handler.setInterestAttributeName(RAConstants.INITIAL_PRODUCT_INTEREST);
 
         Rnd rnd = parser.deriveRnd();
-        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "AttributeBasedInitialAdoption '{}' uses seed: {}", getName(), rnd.getInitialSeed());
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "DefaultAwarenessInterestHandler '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         handler.setRnd(rnd);
         handler.setPriority(getPriority());
 

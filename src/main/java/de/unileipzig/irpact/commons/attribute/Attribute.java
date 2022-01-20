@@ -46,4 +46,8 @@ public interface Attribute extends AttributeBase {
             return toString();
         }
     }
+
+    //=========================
+    //v2
+    //=========================
 }

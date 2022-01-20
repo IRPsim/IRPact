@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
+import de.unileipzig.irpact.commons.distribution.RoundingMode;
 import de.unileipzig.irpact.commons.distribution.SlowTruncatedNormalDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
@@ -23,9 +24,9 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.DISTRIBU
 /**
  * @author Daniel Abitz
  */
-@Definition(ignore = true)
-@LocalizedUiResource.Ignore
+@Definition
 @LocalizedUiResource.PutClassPath(DISTRIBUTIONS_SLOWTRUNCNORM)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -95,6 +96,39 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
     )
     @LocalizedUiResource.AddEntry
     public boolean upperBoundInclusive;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeNoRounding = true;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeFloor = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeCeil = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeRound = false;
 
     public InSlowTruncatedNormalDistribution() {
     }
@@ -188,6 +222,40 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
         return upperBoundInclusive;
     }
 
+    public RoundingMode getRoundingMode() {
+        return RoundingMode.get(
+                modeNoRounding,
+                modeFloor,
+                modeCeil,
+                modeRound
+        );
+    }
+
+    public void setRoundingMode(RoundingMode mode) {
+        modeNoRounding = false;
+        modeFloor = false;
+        modeCeil = false;
+        modeRound = false;
+
+        switch (mode) {
+            case NONE:
+                modeNoRounding = true;
+                break;
+
+            case FLOOR:
+                modeFloor = true;
+                break;
+
+            case CEIL:
+                modeCeil = true;
+                break;
+
+            case ROUND:
+                modeRound = true;
+                break;
+        }
+    }
+
     @Override
     public SlowTruncatedNormalDistribution parse(IRPactInputParser parser) throws ParsingException {
         SlowTruncatedNormalDistribution dist = new SlowTruncatedNormalDistribution();
@@ -200,6 +268,7 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
         dist.setLowerBound(getLowerBound());
         dist.setLowerBoundInclusive(isLowerBoundInclusive());
         dist.setUpperBoundInclusive(isUpperBoundInclusive());
+        dist.setRoundingMode(getRoundingMode());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "SlowTruncatedNormalDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }

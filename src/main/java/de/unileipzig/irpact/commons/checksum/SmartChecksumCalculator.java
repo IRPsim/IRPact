@@ -16,12 +16,6 @@ public class SmartChecksumCalculator extends ChecksumCalculator {
     public SmartChecksumCalculator() {
     }
 
-    public int getSystemChecksum(Object value) {
-        return value == null
-                ? ChecksumComparable.NULL_CHECKSUM
-                : System.identityHashCode(value);
-    }
-
     @Override
     public int getChecksum(Object value) {
         if(value == null) {
