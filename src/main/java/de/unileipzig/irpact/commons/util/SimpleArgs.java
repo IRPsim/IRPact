@@ -115,6 +115,10 @@ public class SimpleArgs implements Args {
         return getArgs0(o);
     }
 
+    public List<String> getDirect() {
+        return getArgs0(null);
+    }
+
     public String get(String option) throws IllegalArgumentException {
         List<String> list = getAll(option);
         return list.size() < 1
@@ -169,6 +173,14 @@ public class SimpleArgs implements Args {
         return this;
     }
 
+    public SimpleArgs addDirect(String... args) {
+        if(args != null && args.length > 0) {
+            List<String> list = getDirect();
+            Collections.addAll(list, args);
+        }
+        return this;
+    }
+
     public SimpleArgs setAll(String option, String... args) throws IllegalArgumentException {
         requiresNonNull(args);
         List<String> list = getAll(option);
@@ -213,7 +225,9 @@ public class SimpleArgs implements Args {
         boolean changed = false;
         for(Map.Entry<String, List<String>> entry: argsMapping.entrySet()) {
             String option = entry.getKey();
-            changed |= target.add(option);
+            if(option != null) {
+                changed |= target.add(option);
+            }
             for(String v: entry.getValue()) {
                 String value = addQuotesIfRequired(v);
                 changed |= target.add(value);

@@ -76,6 +76,59 @@ public class PerformanceCalculator {
         return count;
     }
 
+    public static int[] getGlobalAnnualNumberOfAdoptions(
+            RealAdoptionData realData,
+            SimulationEnvironment environment,
+            Product product,
+            String zipKey,
+            List<String> allZips,
+            List<Integer> years,
+            boolean cumulative) {
+
+        List<String> validZips = new ArrayList<>();
+        List<String> invalidZips = new ArrayList<>();
+
+        realData.getValidZips(allZips, validZips);
+        realData.getInvalidZips(allZips, invalidZips);
+
+        int[] adoptions = new int[years.size()];
+        for(int i = 0; i < years.size(); i++) {
+            adoptions[i] = getNumberOfAdoptions(environment, zipKey, validZips, product, years.get(i));
+        }
+
+        if(cumulative) {
+            for(int i = 1; i < adoptions.length; i++) {
+                adoptions[i] += adoptions[i - 1];
+            }
+        }
+        return adoptions;
+    }
+
+    public static int[] getGlobalAnnualNumberOfRealAdoptions(
+            RealAdoptionData realData,
+            List<String> allZips,
+            List<Integer> years,
+            boolean cumulative) {
+
+        List<String> validZips = new ArrayList<>();
+        List<String> invalidZips = new ArrayList<>();
+
+        realData.getValidZips(allZips, validZips);
+        realData.getInvalidZips(allZips, invalidZips);
+
+        int[] adoptions = new int[years.size()];
+        for(int i = 0; i < years.size(); i++) {
+            adoptions[i] = realData.getUncumulated(years.get(i), validZips);
+        }
+
+        if(cumulative) {
+            for(int i = 1; i < adoptions.length; i++) {
+                adoptions[i] += adoptions[i - 1];
+            }
+        }
+        return adoptions;
+    }
+
     public static double calculateGlobal(
             PerformanceMetric metric,
             RealAdoptionData realData,

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -71,6 +72,8 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("callUtilities", "Calls Utilities, all arguments will be transmitted to Utilities, IRPact is not called.");
 
             bundle.put("testCl", "For testing the command line.");
+
+            bundle.put("calculatePerformance", "currently supported: RMSD, MAE, FSAPE, globalAdoptionDelta, absoluteAnnualAdoptionDelta, cumulativeAnnualAdoptionDelta");
 
             fallback = bundle;
         }
@@ -298,6 +301,17 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             hidden = true
     )
     private boolean testCl;
+
+    //=========================
+    //Performance
+    //=========================
+
+    @CommandLine.Option(
+            names = { "--calculatePerformance" },
+            descriptionKey = "calculatePerformance",
+            split = ","
+    )
+    private String[] calculatePerformance;
 
     //=========================
     //rest
@@ -692,5 +706,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
                 return CommandLine.ExitCode.USAGE;
             }
         }
+    }
+
+    public String[] getCalculatePerformanceArray() {
+        return calculatePerformance == null
+                ? new String[0]
+                : calculatePerformance;
     }
 }

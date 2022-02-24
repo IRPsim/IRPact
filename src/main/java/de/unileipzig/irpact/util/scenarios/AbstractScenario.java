@@ -219,9 +219,11 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
         run(args, data);
     }
 
-    public void runLegacy() throws Throwable {
+    public void runLegacy(String... additionalArgs) throws Throwable {
         IRPArgs args = new IRPArgs();
+        args.addDirect(additionalArgs);
         updateArgs(args);
+
         List<InRoot> roots = createSetupAndValidateRoots();
         if(roots.size() != 1) {
             throw new IllegalArgumentException("legacy does not supports multiple years");
