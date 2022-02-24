@@ -3,6 +3,7 @@ package de.unileipzig.irpact.io.param;
 import de.unileipzig.irpact.commons.util.MultiCounter;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
+import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.ParserInput;
@@ -14,6 +15,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.annotation.*;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -536,6 +538,25 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
                 : null;
     }
 
+    @SuppressWarnings("unchecked")
+    protected static <A extends Annotation, B extends Annotation> B[] getRepeatableAnnotationArrayOrNull(
+            Class<A> a,
+            Class<B> b,
+            AnnotatedElement e,
+            Function<? super A, ? extends B[]> getArrayFunction) {
+        if(e.isAnnotationPresent(a)) {
+            return getArrayFunction.apply(e.getAnnotation(a));
+        }
+        else if(e.isAnnotationPresent(b)){
+            B[] arr = (B[]) Array.newInstance(b, 1);
+            arr[0] = e.getAnnotation(b);
+            return arr;
+        }
+        else {
+            return null;
+        }
+    }
+
     public void add(Iterable<? extends ParserInput> c) {
         //1. parse annotations
         parseAnnotations(c, ParserInput::getClazz);
@@ -837,8 +858,14 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
     }
 
     protected void handleXorWithoutUnselectRule(Class<?> c) {
-        XorWithoutUnselectRules rules = getAnnotationOrNull(c, XorWithoutUnselectRules.class);
-        if(rules == null || rules.value().length == 0) {
+        XorWithoutUnselectRule[] rules = getRepeatableAnnotationArrayOrNull(
+                XorWithoutUnselectRules.class,
+                XorWithoutUnselectRule.class,
+                c,
+                XorWithoutUnselectRules::value
+        );
+
+        if(rules == null || rules.length == 0) {
             return;
         }
 
@@ -846,7 +873,7 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
         Map<String, XorWithoutUnselectRule> groupedRules = new HashMap<>();
         Map<String, List<Field>> groupedFields = new HashMap<>();
 
-        for(XorWithoutUnselectRule rule: rules.value()) {
+        for(XorWithoutUnselectRule rule: rules) {
             if(groupedRules.containsKey(rule.value())) {
                 throw new IllegalArgumentException("XorWithoutUnselectRule '" + rule.value() + "' already exists.");
             }
@@ -876,16 +903,19 @@ public abstract class LocalizedUiResource extends TreeAnnotationResource {
 
                 XorWithoutUnselectRuleBuilder builder = new XorWithoutUnselectRuleBuilder();
                 builder.setKeyModifier(ParamUtil.buildDefaultParameterNameOperator(c));
+
                 if(isValid(rule.rawTrue())) {
                     builder.setTrueValue(rule.rawTrue());
                 } else {
                     builder.setTrueValue(bool2str(rule.trueValue()));
                 }
+
                 if(isValid(rule.rawFalse())) {
                     builder.setFalseValue(rule.rawFalse());
                 } else {
-                    builder.setFalseValue(bool2str(rule.trueValue()));
+                    builder.setFalseValue(bool2str(rule.falseValue()));
                 }
+
                 for(Field field: fieldList) {
                     builder.addKey(field.getName());
                 }

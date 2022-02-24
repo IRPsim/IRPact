@@ -417,6 +417,13 @@ PARAMETER par_InNormalDistribution_mean(set_InNormalDistribution)
 * - domain: [0|1]
 * - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
 * - identifier: Kein Runden
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 1, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 1, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 1, par_InNormalDistribution_modeRound = 0)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 0, par_InNormalDistribution_modeNoRounding = 1)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 0, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 0, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeNoRounding == 0, par_InNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InNormalDistribution_modeNoRounding(set_InNormalDistribution)
 
@@ -424,6 +431,13 @@ PARAMETER par_InNormalDistribution_modeNoRounding(set_InNormalDistribution)
 * - domain: [0|1]
 * - description: Die Zahl wird immer abgerundet.
 * - identifier: Abrunden
+* - rule: IF (par_InNormalDistribution_modeFloor == 1, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeFloor == 1, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeFloor == 1, par_InNormalDistribution_modeRound = 0)
+* - rule: IF (par_InNormalDistribution_modeFloor == 0, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeFloor == 0, par_InNormalDistribution_modeFloor = 1)
+* - rule: IF (par_InNormalDistribution_modeFloor == 0, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeFloor == 0, par_InNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InNormalDistribution_modeFloor(set_InNormalDistribution)
 
@@ -431,6 +445,13 @@ PARAMETER par_InNormalDistribution_modeFloor(set_InNormalDistribution)
 * - domain: [0|1]
 * - description: Die Zahl wird immer aufgerundet.
 * - identifier: Aufrunden
+* - rule: IF (par_InNormalDistribution_modeCeil == 1, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeCeil == 1, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeCeil == 1, par_InNormalDistribution_modeRound = 0)
+* - rule: IF (par_InNormalDistribution_modeCeil == 0, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeCeil == 0, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeCeil == 0, par_InNormalDistribution_modeCeil = 1)
+* - rule: IF (par_InNormalDistribution_modeCeil == 0, par_InNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InNormalDistribution_modeCeil(set_InNormalDistribution)
 
@@ -438,6 +459,13 @@ PARAMETER par_InNormalDistribution_modeCeil(set_InNormalDistribution)
 * - domain: [0|1]
 * - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
 * - identifier: Kaufmännisches Runden
+* - rule: IF (par_InNormalDistribution_modeRound == 1, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 1, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 1, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 0, par_InNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 0, par_InNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 0, par_InNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InNormalDistribution_modeRound == 0, par_InNormalDistribution_modeRound = 1)
 * - type: Boolean
 PARAMETER par_InNormalDistribution_modeRound(set_InNormalDistribution)
 
@@ -485,6 +513,13 @@ PARAMETER par_InSlowTruncatedNormalDistribution_upperBoundInclusive(set_InSlowTr
 * - domain: [0|1]
 * - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
 * - identifier: Kein Runden
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 1, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 1, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 1, par_InSlowTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 0, par_InSlowTruncatedNormalDistribution_modeNoRounding = 1)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 0, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 0, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeNoRounding == 0, par_InSlowTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InSlowTruncatedNormalDistribution_modeNoRounding(set_InSlowTruncatedNormalDistribution)
 
@@ -492,6 +527,13 @@ PARAMETER par_InSlowTruncatedNormalDistribution_modeNoRounding(set_InSlowTruncat
 * - domain: [0|1]
 * - description: Die Zahl wird immer abgerundet.
 * - identifier: Abrunden
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 1, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 1, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 1, par_InSlowTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 0, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 0, par_InSlowTruncatedNormalDistribution_modeFloor = 1)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 0, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeFloor == 0, par_InSlowTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InSlowTruncatedNormalDistribution_modeFloor(set_InSlowTruncatedNormalDistribution)
 
@@ -499,6 +541,13 @@ PARAMETER par_InSlowTruncatedNormalDistribution_modeFloor(set_InSlowTruncatedNor
 * - domain: [0|1]
 * - description: Die Zahl wird immer aufgerundet.
 * - identifier: Aufrunden
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 1, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 1, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 1, par_InSlowTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 0, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 0, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 0, par_InSlowTruncatedNormalDistribution_modeCeil = 1)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeCeil == 0, par_InSlowTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InSlowTruncatedNormalDistribution_modeCeil(set_InSlowTruncatedNormalDistribution)
 
@@ -506,6 +555,13 @@ PARAMETER par_InSlowTruncatedNormalDistribution_modeCeil(set_InSlowTruncatedNorm
 * - domain: [0|1]
 * - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
 * - identifier: Kaufmännisches Runden
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 1, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 1, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 1, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 0, par_InSlowTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 0, par_InSlowTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 0, par_InSlowTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InSlowTruncatedNormalDistribution_modeRound == 0, par_InSlowTruncatedNormalDistribution_modeRound = 1)
 * - type: Boolean
 PARAMETER par_InSlowTruncatedNormalDistribution_modeRound(set_InSlowTruncatedNormalDistribution)
 
@@ -541,6 +597,13 @@ PARAMETER par_InTruncatedNormalDistribution_upperBound(set_InTruncatedNormalDist
 * - domain: [0|1]
 * - description: Es wird nicht gerundet. Die Zahl bleibt unverändert.
 * - identifier: Kein Runden
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 1, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 1, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 1, par_InTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 0, par_InTruncatedNormalDistribution_modeNoRounding = 1)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 0, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 0, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeNoRounding == 0, par_InTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InTruncatedNormalDistribution_modeNoRounding(set_InTruncatedNormalDistribution)
 
@@ -548,6 +611,13 @@ PARAMETER par_InTruncatedNormalDistribution_modeNoRounding(set_InTruncatedNormal
 * - domain: [0|1]
 * - description: Die Zahl wird immer abgerundet.
 * - identifier: Abrunden
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 1, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 1, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 1, par_InTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 0, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 0, par_InTruncatedNormalDistribution_modeFloor = 1)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 0, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeFloor == 0, par_InTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InTruncatedNormalDistribution_modeFloor(set_InTruncatedNormalDistribution)
 
@@ -555,6 +625,13 @@ PARAMETER par_InTruncatedNormalDistribution_modeFloor(set_InTruncatedNormalDistr
 * - domain: [0|1]
 * - description: Die Zahl wird immer aufgerundet.
 * - identifier: Aufrunden
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 1, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 1, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 1, par_InTruncatedNormalDistribution_modeRound = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 0, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 0, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 0, par_InTruncatedNormalDistribution_modeCeil = 1)
+* - rule: IF (par_InTruncatedNormalDistribution_modeCeil == 0, par_InTruncatedNormalDistribution_modeRound = 0)
 * - type: Boolean
 PARAMETER par_InTruncatedNormalDistribution_modeCeil(set_InTruncatedNormalDistribution)
 
@@ -562,6 +639,13 @@ PARAMETER par_InTruncatedNormalDistribution_modeCeil(set_InTruncatedNormalDistri
 * - domain: [0|1]
 * - description: Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet.
 * - identifier: Kaufmännisches Runden
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 1, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 1, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 1, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 0, par_InTruncatedNormalDistribution_modeNoRounding = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 0, par_InTruncatedNormalDistribution_modeFloor = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 0, par_InTruncatedNormalDistribution_modeCeil = 0)
+* - rule: IF (par_InTruncatedNormalDistribution_modeRound == 0, par_InTruncatedNormalDistribution_modeRound = 1)
 * - type: Boolean
 PARAMETER par_InTruncatedNormalDistribution_modeRound(set_InTruncatedNormalDistribution)
 
@@ -1295,6 +1379,9 @@ PARAMETER par_InAdoptionPhaseOverviewImage_enabled(set_InAdoptionPhaseOverviewIm
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 1, par_InAdoptionPhaseOverviewImage_useR = 0)
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 0, par_InAdoptionPhaseOverviewImage_useGnuplot = 1)
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useGnuplot == 0, par_InAdoptionPhaseOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAdoptionPhaseOverviewImage_useGnuplot(set_InAdoptionPhaseOverviewImage)
 
@@ -1302,6 +1389,9 @@ PARAMETER par_InAdoptionPhaseOverviewImage_useGnuplot(set_InAdoptionPhaseOvervie
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 1, par_InAdoptionPhaseOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 0, par_InAdoptionPhaseOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InAdoptionPhaseOverviewImage_useR == 0, par_InAdoptionPhaseOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAdoptionPhaseOverviewImage_useR(set_InAdoptionPhaseOverviewImage)
 
@@ -1375,6 +1465,9 @@ PARAMETER par_InAnnualBucketImage_enabled(set_InAnnualBucketImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 1, par_InAnnualBucketImage_useR = 0)
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useGnuplot = 1)
+* - rule: IF (par_InAnnualBucketImage_useGnuplot == 0, par_InAnnualBucketImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAnnualBucketImage_useGnuplot(set_InAnnualBucketImage)
 
@@ -1382,6 +1475,9 @@ PARAMETER par_InAnnualBucketImage_useGnuplot(set_InAnnualBucketImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InAnnualBucketImage_useR == 1, par_InAnnualBucketImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualBucketImage_useR == 0, par_InAnnualBucketImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAnnualBucketImage_useR(set_InAnnualBucketImage)
 
@@ -1493,6 +1589,9 @@ PARAMETER par_InAnnualInterestImage_enabled(set_InAnnualInterestImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InAnnualInterestImage_useGnuplot == 1, par_InAnnualInterestImage_useR = 0)
+* - rule: IF (par_InAnnualInterestImage_useGnuplot == 0, par_InAnnualInterestImage_useGnuplot = 1)
+* - rule: IF (par_InAnnualInterestImage_useGnuplot == 0, par_InAnnualInterestImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAnnualInterestImage_useGnuplot(set_InAnnualInterestImage)
 
@@ -1500,6 +1599,9 @@ PARAMETER par_InAnnualInterestImage_useGnuplot(set_InAnnualInterestImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InAnnualInterestImage_useR == 1, par_InAnnualInterestImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualInterestImage_useR == 0, par_InAnnualInterestImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualInterestImage_useR == 0, par_InAnnualInterestImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAnnualInterestImage_useR(set_InAnnualInterestImage)
 
@@ -1600,6 +1702,9 @@ PARAMETER par_InAnnualMilieuImage_enabled(set_InAnnualMilieuImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InAnnualMilieuImage_useGnuplot == 1, par_InAnnualMilieuImage_useR = 0)
+* - rule: IF (par_InAnnualMilieuImage_useGnuplot == 0, par_InAnnualMilieuImage_useGnuplot = 1)
+* - rule: IF (par_InAnnualMilieuImage_useGnuplot == 0, par_InAnnualMilieuImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InAnnualMilieuImage_useGnuplot(set_InAnnualMilieuImage)
 
@@ -1607,6 +1712,9 @@ PARAMETER par_InAnnualMilieuImage_useGnuplot(set_InAnnualMilieuImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InAnnualMilieuImage_useR == 1, par_InAnnualMilieuImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualMilieuImage_useR == 0, par_InAnnualMilieuImage_useGnuplot = 0)
+* - rule: IF (par_InAnnualMilieuImage_useR == 0, par_InAnnualMilieuImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InAnnualMilieuImage_useR(set_InAnnualMilieuImage)
 
@@ -1706,6 +1814,9 @@ PARAMETER par_InComparedAnnualImage_enabled(set_InComparedAnnualImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InComparedAnnualImage_useGnuplot == 1, par_InComparedAnnualImage_useR = 0)
+* - rule: IF (par_InComparedAnnualImage_useGnuplot == 0, par_InComparedAnnualImage_useGnuplot = 1)
+* - rule: IF (par_InComparedAnnualImage_useGnuplot == 0, par_InComparedAnnualImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InComparedAnnualImage_useGnuplot(set_InComparedAnnualImage)
 
@@ -1713,6 +1824,9 @@ PARAMETER par_InComparedAnnualImage_useGnuplot(set_InComparedAnnualImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InComparedAnnualImage_useR == 1, par_InComparedAnnualImage_useGnuplot = 0)
+* - rule: IF (par_InComparedAnnualImage_useR == 0, par_InComparedAnnualImage_useGnuplot = 0)
+* - rule: IF (par_InComparedAnnualImage_useR == 0, par_InComparedAnnualImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InComparedAnnualImage_useR(set_InComparedAnnualImage)
 
@@ -1806,6 +1920,9 @@ PARAMETER par_InComparedAnnualZipImage_enabled(set_InComparedAnnualZipImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 1, par_InComparedAnnualZipImage_useR = 0)
+* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 0, par_InComparedAnnualZipImage_useGnuplot = 1)
+* - rule: IF (par_InComparedAnnualZipImage_useGnuplot == 0, par_InComparedAnnualZipImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InComparedAnnualZipImage_useGnuplot(set_InComparedAnnualZipImage)
 
@@ -1813,6 +1930,9 @@ PARAMETER par_InComparedAnnualZipImage_useGnuplot(set_InComparedAnnualZipImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InComparedAnnualZipImage_useR == 1, par_InComparedAnnualZipImage_useGnuplot = 0)
+* - rule: IF (par_InComparedAnnualZipImage_useR == 0, par_InComparedAnnualZipImage_useGnuplot = 0)
+* - rule: IF (par_InComparedAnnualZipImage_useR == 0, par_InComparedAnnualZipImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InComparedAnnualZipImage_useR(set_InComparedAnnualZipImage)
 
@@ -1906,6 +2026,9 @@ PARAMETER par_InCumulatedAnnualInterestImage_enabled(set_InCumulatedAnnualIntere
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InCumulatedAnnualInterestImage_useGnuplot == 1, par_InCumulatedAnnualInterestImage_useR = 0)
+* - rule: IF (par_InCumulatedAnnualInterestImage_useGnuplot == 0, par_InCumulatedAnnualInterestImage_useGnuplot = 1)
+* - rule: IF (par_InCumulatedAnnualInterestImage_useGnuplot == 0, par_InCumulatedAnnualInterestImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InCumulatedAnnualInterestImage_useGnuplot(set_InCumulatedAnnualInterestImage)
 
@@ -1913,6 +2036,9 @@ PARAMETER par_InCumulatedAnnualInterestImage_useGnuplot(set_InCumulatedAnnualInt
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InCumulatedAnnualInterestImage_useR == 1, par_InCumulatedAnnualInterestImage_useGnuplot = 0)
+* - rule: IF (par_InCumulatedAnnualInterestImage_useR == 0, par_InCumulatedAnnualInterestImage_useGnuplot = 0)
+* - rule: IF (par_InCumulatedAnnualInterestImage_useR == 0, par_InCumulatedAnnualInterestImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InCumulatedAnnualInterestImage_useR(set_InCumulatedAnnualInterestImage)
 
@@ -2013,6 +2139,9 @@ PARAMETER par_InCustomAverageQuantilRangeImage_enabled(set_InCustomAverageQuanti
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 1, par_InCustomAverageQuantilRangeImage_useR = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 1)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useGnuplot == 0, par_InCustomAverageQuantilRangeImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InCustomAverageQuantilRangeImage_useGnuplot(set_InCustomAverageQuantilRangeImage)
 
@@ -2020,6 +2149,9 @@ PARAMETER par_InCustomAverageQuantilRangeImage_useGnuplot(set_InCustomAverageQua
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 1, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InCustomAverageQuantilRangeImage_useR == 0, par_InCustomAverageQuantilRangeImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InCustomAverageQuantilRangeImage_useR(set_InCustomAverageQuantilRangeImage)
 
@@ -2111,6 +2243,9 @@ PARAMETER par_InInterestOverviewImage_enabled(set_InInterestOverviewImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InInterestOverviewImage_useGnuplot == 1, par_InInterestOverviewImage_useR = 0)
+* - rule: IF (par_InInterestOverviewImage_useGnuplot == 0, par_InInterestOverviewImage_useGnuplot = 1)
+* - rule: IF (par_InInterestOverviewImage_useGnuplot == 0, par_InInterestOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InInterestOverviewImage_useGnuplot(set_InInterestOverviewImage)
 
@@ -2118,6 +2253,9 @@ PARAMETER par_InInterestOverviewImage_useGnuplot(set_InInterestOverviewImage)
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InInterestOverviewImage_useR == 1, par_InInterestOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InInterestOverviewImage_useR == 0, par_InInterestOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InInterestOverviewImage_useR == 0, par_InInterestOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InInterestOverviewImage_useR(set_InInterestOverviewImage)
 
@@ -2215,6 +2353,9 @@ PARAMETER par_InProcessPhaseOverviewImage_enabled(set_InProcessPhaseOverviewImag
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 1, par_InProcessPhaseOverviewImage_useR = 0)
+* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 0, par_InProcessPhaseOverviewImage_useGnuplot = 1)
+* - rule: IF (par_InProcessPhaseOverviewImage_useGnuplot == 0, par_InProcessPhaseOverviewImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InProcessPhaseOverviewImage_useGnuplot(set_InProcessPhaseOverviewImage)
 
@@ -2222,6 +2363,9 @@ PARAMETER par_InProcessPhaseOverviewImage_useGnuplot(set_InProcessPhaseOverviewI
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InProcessPhaseOverviewImage_useR == 1, par_InProcessPhaseOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InProcessPhaseOverviewImage_useR == 0, par_InProcessPhaseOverviewImage_useGnuplot = 0)
+* - rule: IF (par_InProcessPhaseOverviewImage_useR == 0, par_InProcessPhaseOverviewImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InProcessPhaseOverviewImage_useR(set_InProcessPhaseOverviewImage)
 
@@ -2301,6 +2445,9 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_enabled(set_InSpecialAverageQuan
 * - domain: [0|1]
 * - description: todo
 * - identifier: useGnuplot
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 1, par_InSpecialAverageQuantilRangeImage_useR = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 1)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useGnuplot == 0, par_InSpecialAverageQuantilRangeImage_useR = 0)
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_useGnuplot(set_InSpecialAverageQuantilRangeImage)
 
@@ -2308,6 +2455,9 @@ PARAMETER par_InSpecialAverageQuantilRangeImage_useGnuplot(set_InSpecialAverageQ
 * - domain: [0|1]
 * - description: todo
 * - identifier: useR
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 1, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useGnuplot = 0)
+* - rule: IF (par_InSpecialAverageQuantilRangeImage_useR == 0, par_InSpecialAverageQuantilRangeImage_useR = 1)
 * - type: Boolean
 PARAMETER par_InSpecialAverageQuantilRangeImage_useR(set_InSpecialAverageQuantilRangeImage)
 
@@ -4021,6 +4171,17 @@ SET set_InSpace2D(set_InSpatialModel)
 * - domain: [0|1]
 * - description: Nutzt die Manhattenmetrik für die Berechnung der Abstände.
 * - identifier: Manhattenmetrik
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useManhatten = 1)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useManhatten == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
 
@@ -4028,6 +4189,17 @@ PARAMETER par_InSpace2D_useManhatten(set_InSpace2D)
 * - domain: [0|1]
 * - description: Nutzt die euklidische Metrik für die Berechnung der Abstände.
 * - identifier: Euklidische Metrik
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid = 1)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 
@@ -4035,6 +4207,17 @@ PARAMETER par_InSpace2D_useEuclid(set_InSpace2D)
 * - domain: [0|1]
 * - description: Nutzt die quadratische euklidische Metrik für die Berechnung der Abstände. Im Vergleich zur normalen euklidischen Distanz sqrt((x2 - x1)^2 * (y2 - y1)^2) wird hier die Wurzel weggelassen und der Abstand mittels (x2 - x1)^2 * (y2 - y1)^2 berechnet.
 * - identifier: Euklidische Metrik (quadratisch)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useEuclid2 = 1)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useEuclid2 == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
 
@@ -4042,6 +4225,17 @@ PARAMETER par_InSpace2D_useEuclid2(set_InSpace2D)
 * - domain: [0|1]
 * - description: Nutzt die Maximumsmetrik für die Berechnung der Abstände.
 * - identifier: Maximumsmetrik
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useMaximum = 1)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useMaximum == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 
@@ -4049,6 +4243,17 @@ PARAMETER par_InSpace2D_useMaximum(set_InSpace2D)
 * - domain: [0|1]
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Meterbasis statt.
 * - identifier: Haversine (Meter)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 1, par_InSpace2D_useHaversineKM = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineM = 1)
+* - rule: IF (par_InSpace2D_useHaversineM == 0, par_InSpace2D_useHaversineKM = 0)
 * - type: Boolean
 PARAMETER par_InSpace2D_useHaversineM(set_InSpace2D)
 
@@ -4056,6 +4261,17 @@ PARAMETER par_InSpace2D_useHaversineM(set_InSpace2D)
 * - domain: [0|1]
 * - description: Nutzt die Haversine-Formel für die Berechnung der Entfernungen. Die Berechnungen finden auf Kilometerbasis statt.
 * - identifier: Haversine (Kilometer)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 1, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useManhatten = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useEuclid2 = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useMaximum = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineM = 0)
+* - rule: IF (par_InSpace2D_useHaversineKM == 0, par_InSpace2D_useHaversineKM = 1)
 * - type: Boolean
 PARAMETER par_InSpace2D_useHaversineKM(set_InSpace2D)
 
@@ -4254,6 +4470,9 @@ SCALAR sca_InGraphvizGeneral_preferredImageHeight
 * - domain: [0|1]
 * - description: Nutzt für die Grapherzeugung ein positionsbasiertes Layout. Das genaue Layout ist NEATO kombiniert mit -n. Dieses Layout setzt vorraus, dass die Agenten eine Position besitzen. Zusätzlich benötigt es eine eingestellte Bildgröße. Falls diese fehlt, wird ein (ca.) 1000x1000 Pixel großes Bild erzeugt. Dieses Layout kann zu Verzerrungen führen, da es unter Umständen (z.B. bei Geoinformationen) die Daten in das gewünschte Ausgabeformat transformiert. Um das Seitenverhältnis beizubehalten, kann die entsprechende Option genutzt werden.
 * - identifier: Positionsbasiertes Layout
+* - rule: IF (par_InGraphvizGeneral_positionBasedLayout == 1, par_InGraphvizGeneral_freeLayout = 0)
+* - rule: IF (par_InGraphvizGeneral_positionBasedLayout == 0, par_InGraphvizGeneral_positionBasedLayout = 1)
+* - rule: IF (par_InGraphvizGeneral_positionBasedLayout == 0, par_InGraphvizGeneral_freeLayout = 0)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_positionBasedLayout
 
@@ -4261,6 +4480,9 @@ SCALAR sca_InGraphvizGeneral_positionBasedLayout
 * - domain: [0|1]
 * - description: Nutzt für die Grapherzeugung ein kräftebasierentes Layout. Das genaue Layout ist SFDP mit der overlap-Option prism.
 * - identifier: Freies Layout
+* - rule: IF (par_InGraphvizGeneral_freeLayout == 1, par_InGraphvizGeneral_positionBasedLayout = 0)
+* - rule: IF (par_InGraphvizGeneral_freeLayout == 0, par_InGraphvizGeneral_positionBasedLayout = 0)
+* - rule: IF (par_InGraphvizGeneral_freeLayout == 0, par_InGraphvizGeneral_freeLayout = 1)
 * - type: Boolean
 SCALAR sca_InGraphvizGeneral_freeLayout
 
@@ -4309,11 +4531,11 @@ SCALAR sca_InGeneral_timeout
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Millisekunden angegeben.
 * - identifier: Timeout in Millisekunden
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMs = 1)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMs
 
@@ -4321,11 +4543,11 @@ SCALAR sca_InGeneral_timeoutUseMs
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Sekunden angegeben.
 * - identifier: Timeout in Sekunden
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseSec = 1)
+* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseSec
 
@@ -4333,11 +4555,11 @@ SCALAR sca_InGeneral_timeoutUseSec
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Minuten angegeben.
 * - identifier: Timeout in Minuten
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMs = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseSec = 0)
+* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMin
 
@@ -4466,19 +4688,19 @@ SCALAR sca_InGeneral_innerParallelism
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelOff = 1)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelOff
 
@@ -4486,19 +4708,19 @@ SCALAR sca_InGeneral_levelOff
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf TRACE.
 * - identifier: Level: TRACE
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelTrace = 1)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelTrace
 
@@ -4506,19 +4728,19 @@ SCALAR sca_InGeneral_levelTrace
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf DEBUG.
 * - identifier: Level: DEBUG
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelDebug = 1)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelDebug
 
@@ -4526,19 +4748,19 @@ SCALAR sca_InGeneral_levelDebug
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf INFO.
 * - identifier: Level: INFO
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelInfo = 1)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelInfo
 
@@ -4546,19 +4768,19 @@ SCALAR sca_InGeneral_levelInfo
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf WARN.
 * - identifier: Level: WARN
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelWarn = 1)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelWarn
 
@@ -4566,19 +4788,19 @@ SCALAR sca_InGeneral_levelWarn
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ERROR.
 * - identifier: Level: ERROR
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelError = 1)
+* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelError
 
@@ -4586,19 +4808,19 @@ SCALAR sca_InGeneral_levelError
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ALL.
 * - identifier: Level: ALL
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelAll = 1)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelOff = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelTrace = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelDebug = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelInfo = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelWarn = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelError = 0)
+* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelAll
 
@@ -4726,9 +4948,9 @@ PARAMETER par_InTestData_testValue2(set_InTestData)
 * - domain: [0|1]
 * - description: xor test
 * - identifier: g0 v0
-* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 1)
-* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value01 = 1)
-* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 1)
+* - rule: IF (par_InTestData_value01 == 1, par_InTestData_value02 = 0)
+* - rule: IF (par_InTestData_value01 == 0, par_InTestData_value01 = 1)
+* - rule: IF (par_InTestData_value01 == 0, par_InTestData_value02 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value01(set_InTestData)
 
@@ -4736,9 +4958,9 @@ PARAMETER par_InTestData_value01(set_InTestData)
 * - domain: [0|1]
 * - description: xor test
 * - identifier: g0 v1
-* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 1)
-* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 1)
-* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value02 = 1)
+* - rule: IF (par_InTestData_value02 == 1, par_InTestData_value01 = 0)
+* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value01 = 0)
+* - rule: IF (par_InTestData_value02 == 0, par_InTestData_value02 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value02(set_InTestData)
 
@@ -4774,19 +4996,19 @@ PARAMETER par_InTestData_value14(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v0
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value21 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value21 = 1)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value21 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value21(set_InTestData)
 
@@ -4794,19 +5016,19 @@ PARAMETER par_InTestData_value21(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v1
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value22 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value22 = 1)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value22 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value22(set_InTestData)
 
@@ -4814,19 +5036,19 @@ PARAMETER par_InTestData_value22(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v2
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value23 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value23 = 1)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value23 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value23(set_InTestData)
 
@@ -4834,19 +5056,19 @@ PARAMETER par_InTestData_value23(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v3
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value24 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value24 = 1)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value24 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value24(set_InTestData)
 
@@ -4854,19 +5076,19 @@ PARAMETER par_InTestData_value24(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v4
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value25 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value25 = 1)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value25 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value25(set_InTestData)
 
@@ -4874,19 +5096,19 @@ PARAMETER par_InTestData_value25(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v5
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value26 == 1, par_InTestData_value27 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value26 = 1)
+* - rule: IF (par_InTestData_value26 == 0, par_InTestData_value27 = 0)
 * - type: Boolean
 PARAMETER par_InTestData_value26(set_InTestData)
 
@@ -4894,19 +5116,19 @@ PARAMETER par_InTestData_value26(set_InTestData)
 * - domain: [0|1]
 * - description: unselectable
 * - identifier: g2 v6
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 1)
-* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value27 = 1)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value27 == 1, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value21 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value22 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value23 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value24 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value25 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value26 = 0)
+* - rule: IF (par_InTestData_value27 == 0, par_InTestData_value27 = 1)
 * - type: Boolean
 PARAMETER par_InTestData_value27(set_InTestData)
 

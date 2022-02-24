@@ -7,10 +7,7 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.time.TimeUtil;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.ImageUtil;
-import de.unileipzig.irpact.commons.util.ProgressCalculator;
-import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
@@ -22,7 +19,6 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.postprocessing.BasicPostprocessingManager;
-import de.unileipzig.irpact.core.postprocessing.PostprocessingManager;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -1092,8 +1088,37 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void runPostprocessing() {
-        PostprocessingManager postprocessor = new BasicPostprocessingManager(META_DATA, CL_OPTIONS, inRoot, environment);
+        BasicPostprocessingManager postprocessor = new BasicPostprocessingManager(META_DATA, CL_OPTIONS, inRoot, environment);
         postprocessor.execute();
+        printPerformanceResult(postprocessor.getPerformanceNode());
+    }
+
+    private void printPerformanceResult(ObjectNode performanceResult) {
+        LOGGER.info("[printPerformanceResult] size={}", performanceResult.size());
+        if(performanceResult.isEmpty()) {
+            return;
+        }
+
+        ConsoleUtil.enable();
+        if(isSingleValue(performanceResult)) {
+            LOGGER.info("[printPerformanceResult] print single value");
+            System.out.println(getSingleValue(performanceResult));
+        } else {
+            LOGGER.info("[printPerformanceResult] print array value");
+            System.out.println(printMultiValue(performanceResult));
+        }
+    }
+
+    private static boolean isSingleValue(ObjectNode node) {
+        return node.size() == 1 && node.elements().next().isValueNode();
+    }
+
+    private static double getSingleValue(ObjectNode node) {
+        return node.elements().next().doubleValue();
+    }
+
+    private static String printMultiValue(ObjectNode node) {
+        return JsonUtil.toMinimalString(node);
     }
 
     private void finalTask() {

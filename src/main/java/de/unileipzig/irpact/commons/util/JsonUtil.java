@@ -39,6 +39,12 @@ public final class JsonUtil {
     private JsonUtil() {
     }
 
+    public static void addAll(ArrayNode arr, int[] iarr) {
+        for(int i: iarr) {
+            arr.add(i);
+        }
+    }
+
     public static void applyPrettyPrinter(Path input, PrettyPrinter printer) throws IOException {
         applyPrettyPrinter(input, StandardCharsets.UTF_8, printer);
     }

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.data4;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.resource.JsonResource;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
@@ -28,6 +29,8 @@ public class DataProcessor4 extends PostProcessor {
     protected static final String POPULATION_OVERVIEW_BASENAME = "Populationsuebersicht";
     protected static final String ADOPTION_OVERVIEW_BASENAME = "Adoptionsuebersicht";
 
+    protected ObjectNode performanceNode;
+
     public DataProcessor4(
             MetaData metaData,
             MainCommandLineOptions clOptions,
@@ -43,6 +46,10 @@ public class DataProcessor4 extends PostProcessor {
 
     public SimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    public ObjectNode getPerformanceNode() {
+        return performanceNode;
     }
 
     protected void loadLocalizedData() throws IOException {
@@ -95,6 +102,7 @@ public class DataProcessor4 extends PostProcessor {
             PerformanceEvaluator performance = new PerformanceEvaluator(this);
             performance.init();
             performance.execute();
+            performanceNode = performance.getPerfomance(clOptions.getCalculatePerformanceArray());
         } catch (Throwable t) {
             error("unexpected error while handling 'PerformanceEvaluator'", t);
         }
