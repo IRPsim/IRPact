@@ -19,7 +19,6 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.postprocessing.BasicPostprocessingManager;
-import de.unileipzig.irpact.core.postprocessing.PostprocessingManager;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -1100,6 +1099,7 @@ public final class IRPact implements IRPActAccess {
             return;
         }
 
+        ConsoleUtil.enable();
         if(isSingleValue(performanceResult)) {
             LOGGER.info("[printPerformanceResult] print single value");
             System.out.println(getSingleValue(performanceResult));

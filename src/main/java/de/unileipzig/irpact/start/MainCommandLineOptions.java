@@ -74,6 +74,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("testCl", "For testing the command line.");
 
             bundle.put("calculatePerformance", "currently supported: RMSD, MAE, FSAPE, globalAdoptionDelta, absoluteAnnualAdoptionDelta, cumulativeAnnualAdoptionDelta");
+            bundle.put("noConsole", "disables console logging");
 
             fallback = bundle;
         }
@@ -312,6 +313,12 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             split = ","
     )
     private String[] calculatePerformance;
+
+    @CommandLine.Option(
+            names = { "--noConsole" },
+            descriptionKey = "noConsole"
+    )
+    private boolean noConsole;
 
     //=========================
     //rest
@@ -712,5 +719,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return calculatePerformance == null
                 ? new String[0]
                 : calculatePerformance;
+    }
+
+    public boolean isNoConsole() {
+        return noConsole;
     }
 }
