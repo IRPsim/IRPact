@@ -16,7 +16,6 @@ import de.unileipzig.irpact.core.postprocessing.data3.PerformanceCalculator;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -158,7 +157,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected int[] getGlobalAnnualNumberOfAdoptions(Product product, boolean cumulative) {
         return PerformanceCalculator.getGlobalAnnualNumberOfAdoptions(
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,
@@ -170,7 +169,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected int[] getGlobalAnnualNumberOfRealAdoptions(boolean cumulative) {
         return PerformanceCalculator.getGlobalAnnualNumberOfRealAdoptions(
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getAllZips(RAConstants.ZIP),
                 processor.getAllSimulationYears(),
                 cumulative
@@ -188,7 +187,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
     protected double calcGlobal(PerformanceMetric metric, Product product) {
         return PerformanceCalculator.calculateGlobal(
                 metric,
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,
@@ -200,7 +199,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
     protected double calcZIP(PerformanceMetric metric, Product product, String zip) {
         return PerformanceCalculator.calculateZIP(
                 metric,
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,
