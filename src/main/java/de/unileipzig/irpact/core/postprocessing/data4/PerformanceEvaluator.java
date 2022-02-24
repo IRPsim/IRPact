@@ -16,6 +16,7 @@ import de.unileipzig.irpact.core.postprocessing.data3.PerformanceCalculator;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.Product;
+import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -79,7 +80,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected void analysePerfomance0() throws IOException {
         Product product = processor.getUniqueProduct();
-        RealAdoptionData realAdoptionData = processor.getUniqueRealAdoptionData();
+        RealAdoptionData realAdoptionData = processor.getUniqueScaledRealAdoptionData();
         List<String> zips = processor.getAllZips(RAConstants.ZIP);
 
         Path target = processor.getPathToDownloadDir(PERFORMANCE_XLSX);
