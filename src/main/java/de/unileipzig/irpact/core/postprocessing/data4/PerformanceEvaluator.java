@@ -79,7 +79,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected void analysePerfomance0() throws IOException {
         Product product = processor.getUniqueProduct();
-        RealAdoptionData realAdoptionData = processor.getUniqueRealAdoptionData();
+        RealAdoptionData realAdoptionData = processor.getUniqueScaledRealAdoptionData();
         List<String> zips = processor.getAllZips(RAConstants.ZIP);
 
         Path target = processor.getPathToDownloadDir(PERFORMANCE_XLSX);
@@ -157,7 +157,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected int[] getGlobalAnnualNumberOfAdoptions(Product product, boolean cumulative) {
         return PerformanceCalculator.getGlobalAnnualNumberOfAdoptions(
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,
@@ -169,7 +169,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
 
     protected int[] getGlobalAnnualNumberOfRealAdoptions(boolean cumulative) {
         return PerformanceCalculator.getGlobalAnnualNumberOfRealAdoptions(
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getAllZips(RAConstants.ZIP),
                 processor.getAllSimulationYears(),
                 cumulative
@@ -187,7 +187,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
     protected double calcGlobal(PerformanceMetric metric, Product product) {
         return PerformanceCalculator.calculateGlobal(
                 metric,
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,
@@ -199,7 +199,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
     protected double calcZIP(PerformanceMetric metric, Product product, String zip) {
         return PerformanceCalculator.calculateZIP(
                 metric,
-                processor.getUniqueRealAdoptionData(),
+                processor.getUniqueScaledRealAdoptionData(),
                 processor.getEnvironment(),
                 product,
                 RAConstants.ZIP,

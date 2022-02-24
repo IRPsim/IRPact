@@ -311,6 +311,13 @@ public abstract class PostProcessor implements LoggingHelper {
         }
     }
 
+    public RealAdoptionData getUniqueScaledRealAdoptionData() {
+        List<InRealAdoptionDataFile> realAdoptionDataFiles = inRoot.findFiles(InRealAdoptionDataFile.class);
+        if(realAdoptionDataFiles.isEmpty()) throw new IllegalStateException("missing real adoption data");
+        if(realAdoptionDataFiles.size() > 1) throw new IllegalStateException("too many adoption files");
+        return getScaledRealAdoptionData(realAdoptionDataFiles.get(0));
+    }
+
     public RealAdoptionData getScaledRealAdoptionData(InRealAdoptionDataFile file) {
         RealAdoptionData realAdoptionData = getRealAdoptionData(file);
         double scaleFactor = getScaleFactor();
