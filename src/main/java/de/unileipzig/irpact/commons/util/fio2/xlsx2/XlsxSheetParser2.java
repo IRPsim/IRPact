@@ -9,6 +9,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -236,6 +237,10 @@ public class XlsxSheetParser2<T> {
                     break;
 
                 case BLANK:
+                    if(isEmptyRow(row)) {
+                        return true;
+                    }
+
                     if(blankConverter == null) {
                         throw unknownCellType(cell);
                     }
@@ -251,6 +256,17 @@ public class XlsxSheetParser2<T> {
         rowConsumer.accept(rowElement, rowIndex);
 
         return false;
+    }
+
+    protected boolean isEmptyRow(Row row) {
+        Iterator<Cell> iter = row.cellIterator();
+        while(iter.hasNext()) {
+            Cell cell = iter.next();
+            if(cell.getCellType() != CellType.BLANK) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void handleEndOfData() {

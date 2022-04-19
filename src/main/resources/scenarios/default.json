@@ -318,6 +318,8 @@
       "set_InCommunicationModule3_actionnode3" : { },
       "set_InComparedAnnualImage" : { },
       "set_InComparedAnnualZipImage" : { },
+      "set_InComparedCumulatedAnnualImage" : { },
+      "set_InComparedCumulatedAnnualZipImage" : { },
       "set_InCompleteGraphTopology" : { },
       "set_InComplexAffinityEntry" : {
         "TRA_TRA" : {
@@ -437,7 +439,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2022_01_20_T_10_28_55" : {
+        "CT_D_2022_04_19_T_16_10_21" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -708,6 +710,10 @@
       "par_link_InComparedAnnualImage_InRealAdoptionDataFile_realData" : { },
       "par_link_InComparedAnnualZipImage_InColorPalette_colorPalette" : { },
       "par_link_InComparedAnnualZipImage_InRealAdoptionDataFile_realData" : { },
+      "par_link_InComparedCumulatedAnnualImage_InColorPalette_colorPalette" : { },
+      "par_link_InComparedCumulatedAnnualImage_InRealAdoptionDataFile_realData" : { },
+      "par_link_InComparedCumulatedAnnualZipImage_InColorPalette_colorPalette" : { },
+      "par_link_InComparedCumulatedAnnualZipImage_InRealAdoptionDataFile_realData" : { },
       "par_link_InComplexAffinityEntry_InConsumerAgentGroup_srcCag" : {
         "TRA_TRA" : {
           "TRA" : 1.0

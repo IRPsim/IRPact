@@ -51,6 +51,8 @@ public class ImageProcessor2 extends PostProcessor {
         SELECTORS.add(new AnnualMilieuSelector(this));
         SELECTORS.add(new ComparedAnnualSelector(this));
         SELECTORS.add(new ComparedAnnualZipSelector(this));
+        SELECTORS.add(new ComparedCumulatedAnnualSelector(this));
+        SELECTORS.add(new ComparedCumulatedAnnualZipSelector(this));
         SELECTORS.add(new CumulatedAnnualInterestSelector(this));
         SELECTORS.add(new CustomAverageQuantilRangeSelector(this));
         SELECTORS.add(new InterestOverviewSelector(this));

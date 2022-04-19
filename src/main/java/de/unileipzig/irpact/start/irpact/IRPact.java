@@ -111,6 +111,12 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenVergleich";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
 
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS = "JaehrlicheKumulierteAdoptionenVergleich";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS + ".png";
+
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP = "JaehrlicheKumulierteAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP_PNG = IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP + ".png";
+
     //UMBENNEN (ProzessModelPhasen)
     public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW = "Prozessmodellphasenuebersicht";
     public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW_PNG = IMAGE_PROCESS_MODEL_PHASE_OVERVIEW + ".png";

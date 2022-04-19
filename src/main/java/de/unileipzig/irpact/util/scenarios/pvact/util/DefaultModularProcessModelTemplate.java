@@ -1089,6 +1089,18 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         annualZipImage.setColorPalette(colorPalette);
         changed |= images.add(annualZipImage);
 
+        //Compared Cumulated Annual
+        InComparedCumulatedAnnualImage annualCumulatedImage = InComparedCumulatedAnnualImage.createDefault();
+        annualCumulatedImage.setRealData(getValidRealAdoptionFile());
+        annualCumulatedImage.setColorPalette(colorPalette);
+        changed |= images.add(annualCumulatedImage);
+
+        //Compared Cumulated Annual Zip
+        InComparedCumulatedAnnualZipImage annualCumulatedZipImage = InComparedCumulatedAnnualZipImage.createDefault();
+        annualCumulatedZipImage.setRealData(getValidRealAdoptionFile());
+        annualCumulatedZipImage.setColorPalette(colorPalette);
+        changed |= images.add(annualCumulatedZipImage);
+
         //Interest
         InInterestOverviewImage interestOverview = InInterestOverviewImage.createDefault();
         interestOverview.setColorPalette(colorPalette);

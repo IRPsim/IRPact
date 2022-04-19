@@ -126,14 +126,25 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
     protected abstract AnnualEnumeratedAdoptionData<T> newInstance();
 
     public AnnualEnumeratedAdoptionData<T> cumulate() {
+        NavigableSet<Integer> years = new TreeSet<>(data.getFirstKeys());
+        return cumulate(years.first(), years.last());
+    }
+
+    public AnnualEnumeratedAdoptionData<T> cumulate(int first, int last) {
+        NavigableSet<Integer> years = new TreeSet<>();
+        for(int y = first; y < last; y++) {
+            years.add(y);
+        }
+        return cumulate(new ArrayList<>(years));
+    }
+
+    public AnnualEnumeratedAdoptionData<T> cumulate(List<Integer> years) {
         if(isCumulated()) {
             return this;
         }
 
         AnnualEnumeratedAdoptionData<T> cumulated = newInstance();
         cumulated.setCumulated(true);
-        List<Integer> years = new ArrayList<>(data.getFirstKeys());
-        Collections.sort(years);
         Set<Product> products = data.getAllSecondKeys();
         Set<T> values = data.getAllThirdKeys();
         for(Product product: products) {

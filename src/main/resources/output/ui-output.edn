@@ -46,12 +46,6 @@
             :image "Adoptionsphasenuebersicht.png"
           } 
           {
-            :label "Jährliche Adoptionen im Vergleich" 
-            :icon "fa fa-file-image-o" 
-            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
-            :image "JaehrlicheAdoptionenVergleich.png"
-          } 
-          {
             :label "Jährliche Übersicht der interessierten Agenten" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die jährliche Anzahl der interessierten Agenten." 
@@ -62,6 +56,24 @@
             :icon "fa fa-file-image-o" 
             :description "Zeigt die jährliche kumulierte Anzahl der interessierten Agenten." 
             :image "JaehrlichesKumuliertesInteresse.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenVergleich.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenVergleich.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich (PLZ)" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenPLZVergleich.png"
           }
         ]
       } 

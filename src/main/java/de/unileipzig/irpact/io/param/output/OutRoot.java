@@ -295,7 +295,21 @@ public class OutRoot implements RootClass {
         image8.setImage(IRPact.IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW_PNG);
         image8.setDescription("Zeigt die jährliche kumulierte Anzahl der interessierten Agenten.");
 
-        adoptionSections.addAll(image1, image2, image3, image4, image5, image6, image7, image8);
+        Section image9 = new Section();
+        image9.setPriority(9);
+        image9.setLabel("Jährliche kumulierte Adoptionen im Vergleich");
+        image9.setIcon(IRPact.ICON_IMAGE);
+        image9.setImage(IRPact.IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_PNG);
+        image9.setDescription("Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
+
+        Section image10 = new Section();
+        image10.setPriority(10);
+        image10.setLabel("Jährliche kumulierte Adoptionen im Vergleich (PLZ)");
+        image10.setIcon(IRPact.ICON_IMAGE);
+        image10.setImage(IRPact.IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP_PNG);
+        image10.setDescription("Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten.");
+
+        adoptionSections.addAll(image1, image2, image3, image4, image5, image9, image7, image8, image9, image10);
 
         return adoptionSection;
     }

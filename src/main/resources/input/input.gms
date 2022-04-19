@@ -2011,6 +2011,218 @@ PARAMETER par_link_InComparedAnnualZipImage_InColorPalette_colorPalette(set_InCo
 * - type: Boolean
 PARAMETER par_link_InComparedAnnualZipImage_InRealAdoptionDataFile_realData(set_InComparedAnnualZipImage,set_InRealAdoptionDataFile)
 
+* - identifier: InComparedCumulatedAnnualImage
+* - type: String
+SET set_InComparedCumulatedAnnualImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_enabled(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InComparedCumulatedAnnualImage_useGnuplot == 1, par_InComparedCumulatedAnnualImage_useR = 0)
+* - rule: IF (par_InComparedCumulatedAnnualImage_useGnuplot == 0, par_InComparedCumulatedAnnualImage_useGnuplot = 1)
+* - rule: IF (par_InComparedCumulatedAnnualImage_useGnuplot == 0, par_InComparedCumulatedAnnualImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_useGnuplot(set_InComparedCumulatedAnnualImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - rule: IF (par_InComparedCumulatedAnnualImage_useR == 1, par_InComparedCumulatedAnnualImage_useGnuplot = 0)
+* - rule: IF (par_InComparedCumulatedAnnualImage_useR == 0, par_InComparedCumulatedAnnualImage_useGnuplot = 0)
+* - rule: IF (par_InComparedCumulatedAnnualImage_useR == 0, par_InComparedCumulatedAnnualImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_useR(set_InComparedCumulatedAnnualImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_storeScript(set_InComparedCumulatedAnnualImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_storeData(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_storeImage(set_InComparedCumulatedAnnualImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualImage_imageWidth(set_InComparedCumulatedAnnualImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualImage_imageHeight(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: linewidth
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualImage_linewidth(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: skipInvalidZips
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_skipInvalidZips(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: showPreYear
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_showPreYear(set_InComparedCumulatedAnnualImage)
+
+* - default: 0
+* - domain: [0,10]
+* - description: todo
+* - identifier: customImageId
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualImage_customImageId(set_InComparedCumulatedAnnualImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InComparedCumulatedAnnualImage_InColorPalette_colorPalette(set_InComparedCumulatedAnnualImage,set_InColorPalette)
+
+* - description: todo
+* - identifier: realData
+* - type: Boolean
+PARAMETER par_link_InComparedCumulatedAnnualImage_InRealAdoptionDataFile_realData(set_InComparedCumulatedAnnualImage,set_InRealAdoptionDataFile)
+
+* - identifier: InComparedCumulatedAnnualZipImage
+* - type: String
+SET set_InComparedCumulatedAnnualZipImage(set_InLoggingResultImage2)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: enabled
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_enabled(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: useGnuplot
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useGnuplot == 1, par_InComparedCumulatedAnnualZipImage_useR = 0)
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useGnuplot == 0, par_InComparedCumulatedAnnualZipImage_useGnuplot = 1)
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useGnuplot == 0, par_InComparedCumulatedAnnualZipImage_useR = 0)
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_useGnuplot(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: useR
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useR == 1, par_InComparedCumulatedAnnualZipImage_useGnuplot = 0)
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useR == 0, par_InComparedCumulatedAnnualZipImage_useGnuplot = 0)
+* - rule: IF (par_InComparedCumulatedAnnualZipImage_useR == 0, par_InComparedCumulatedAnnualZipImage_useR = 1)
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_useR(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeScript
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_storeScript(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeData
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_storeData(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: storeImage
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_storeImage(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1280
+* - domain: (0,)
+* - description: todo
+* - identifier: imageWidth
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualZipImage_imageWidth(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 720
+* - domain: (0,)
+* - description: todo
+* - identifier: imageHeight
+* - unit: [Pixel]
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualZipImage_imageHeight(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: (0,)
+* - description: todo
+* - identifier: linewidth
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualZipImage_linewidth(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: skipInvalidZips
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_skipInvalidZips(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: showPreYear
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_showPreYear(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 0
+* - domain: [0,10]
+* - description: todo
+* - identifier: customImageId
+* - type: Integer
+PARAMETER par_InComparedCumulatedAnnualZipImage_customImageId(set_InComparedCumulatedAnnualZipImage)
+
+* - description: Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet.
+* - identifier: Zu nutzende Farben
+* - type: Boolean
+PARAMETER par_link_InComparedCumulatedAnnualZipImage_InColorPalette_colorPalette(set_InComparedCumulatedAnnualZipImage,set_InColorPalette)
+
+* - description: todo
+* - identifier: realData
+* - type: Boolean
+PARAMETER par_link_InComparedCumulatedAnnualZipImage_InRealAdoptionDataFile_realData(set_InComparedCumulatedAnnualZipImage,set_InRealAdoptionDataFile)
+
 * - identifier: InCumulatedAnnualInterestImage
 * - type: String
 SET set_InCumulatedAnnualInterestImage(set_InLoggingResultImage2)

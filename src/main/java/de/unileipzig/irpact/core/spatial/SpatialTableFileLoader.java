@@ -192,6 +192,7 @@ public class SpatialTableFileLoader implements SpatialInformationLoader {
         parser.setTextConverter(STR2ATTR);
         parser.setNumericConverter(NUM2ATTR);
         parser.setEmptyConverter(EMPTY2ATTR);
+        parser.setUseStrIfEmpty(true);
         parser.setNumberOfInfoRows(0);
 
         XlsxTable<SpatialAttribute> table = new XlsxTable<>();

@@ -112,6 +112,18 @@
             :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
+            :label "Kumulierte Adoptionen mit Realdaten" 
+            :set "set_InComparedCumulatedAnnualImage" 
+            :description "todo" 
+            :tags [["InComparedCumulatedAnnualImage" "enabled"] ["InComparedCumulatedAnnualImage" "useGnuplot"] ["InComparedCumulatedAnnualImage" "useR"] ["InComparedCumulatedAnnualImage" "storeScript"] ["InComparedCumulatedAnnualImage" "storeData"] ["InComparedCumulatedAnnualImage" "storeImage"] ["InComparedCumulatedAnnualImage" "imageWidth"] ["InComparedCumulatedAnnualImage" "imageHeight"] ["InComparedCumulatedAnnualImage" "linewidth"] ["InComparedCumulatedAnnualImage" "skipInvalidZips"] ["InComparedCumulatedAnnualImage" "showPreYear"] ["InComparedCumulatedAnnualImage" "customImageId"] ["link" "InComparedCumulatedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualImage" "InRealAdoptionDataFile" "realData"]]
+          } 
+          {
+            :label "PLZ-basierte kumulierte Adoptionen mit Realdaten" 
+            :set "set_InComparedCumulatedAnnualZipImage" 
+            :description "todo" 
+            :tags [["InComparedCumulatedAnnualZipImage" "enabled"] ["InComparedCumulatedAnnualZipImage" "useGnuplot"] ["InComparedCumulatedAnnualZipImage" "useR"] ["InComparedCumulatedAnnualZipImage" "storeScript"] ["InComparedCumulatedAnnualZipImage" "storeData"] ["InComparedCumulatedAnnualZipImage" "storeImage"] ["InComparedCumulatedAnnualZipImage" "imageWidth"] ["InComparedCumulatedAnnualZipImage" "imageHeight"] ["InComparedCumulatedAnnualZipImage" "linewidth"] ["InComparedCumulatedAnnualZipImage" "skipInvalidZips"] ["InComparedCumulatedAnnualZipImage" "showPreYear"] ["InComparedCumulatedAnnualZipImage" "customImageId"] ["link" "InComparedCumulatedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
+          } 
+          {
             :label "Adoptionsphasenübersicht" 
             :set "set_InAdoptionPhaseOverviewImage" 
             :description "todo" 

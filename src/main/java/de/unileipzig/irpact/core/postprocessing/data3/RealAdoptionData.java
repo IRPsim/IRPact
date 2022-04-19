@@ -53,9 +53,21 @@ public interface RealAdoptionData {
 
     int getUncumulated(int year, String zip);
 
+    default int get(boolean cumulated, int year, String zips) {
+        return cumulated
+                ? getCumulated(year, zips)
+                : getUncumulated(year, zips);
+    }
+
     int getCumulated(int year, Collection<? extends String> zips);
 
     int getUncumulated(int year, Collection<? extends String> zips);
+
+    default int get(boolean cumulated, int year, Collection<? extends String> zips) {
+        return cumulated
+                ? getCumulated(year, zips)
+                : getUncumulated(year, zips);
+    }
 
     int getCumulated(int year);
 

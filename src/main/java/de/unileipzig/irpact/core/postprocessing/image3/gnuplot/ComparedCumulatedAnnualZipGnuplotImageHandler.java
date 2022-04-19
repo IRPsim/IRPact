@@ -10,7 +10,7 @@ import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
 import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageDataWithCache;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractComparedAnnualZipImageHandler;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InComparedAnnualZipImage;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InComparedCumulatedAnnualZipImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
@@ -19,15 +19,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class ComparedAnnualZipGnuplotImageHandler
-        extends AbstractComparedAnnualZipImageHandler<InComparedAnnualZipImage>
-        implements GnuplotHelperAPI<InComparedAnnualZipImage> {
+public class ComparedCumulatedAnnualZipGnuplotImageHandler
+        extends AbstractComparedAnnualZipImageHandler<InComparedCumulatedAnnualZipImage>
+        implements GnuplotHelperAPI<InComparedCumulatedAnnualZipImage> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualZipGnuplotImageHandler.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedCumulatedAnnualZipGnuplotImageHandler.class);
 
-    public ComparedAnnualZipGnuplotImageHandler(
+    public ComparedCumulatedAnnualZipGnuplotImageHandler(
             ImageProcessor2 processor,
-            InComparedAnnualZipImage imageConfiguration) {
+            InComparedCumulatedAnnualZipImage imageConfiguration) {
         super(processor, imageConfiguration);
     }
 
@@ -52,7 +52,7 @@ public class ComparedAnnualZipGnuplotImageHandler
 
     @Override
     protected String getResourceKey() {
-        return "COMPARED_ANNUAL_ZIP";
+        return "COMPARED_CUMULATED_ANNUAL_ZIP";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ComparedAnnualZipGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InComparedAnnualZipImage image, ImageData data) throws Throwable {
+    public GnuPlotBuilder getBuilder(InComparedCumulatedAnnualZipImage image, ImageData data) throws Throwable {
         CsvJsonTableImageDataWithCache dataWithCache = (CsvJsonTableImageDataWithCache) data;
 
 //        return GnuPlotFactory.interactionLineChart0(
@@ -94,7 +94,7 @@ public class ComparedAnnualZipGnuplotImageHandler
     }
 
     @Override
-    public ImageData createData(InComparedAnnualZipImage image) throws Throwable {
+    public ImageData createData(InComparedCumulatedAnnualZipImage image) throws Throwable {
         RealAdoptionData realData = processor.getRealAdoptionData(image.getRealData());
         JsonTableData3 data;
         boolean validZipsOnly = image.isSkipInvalidZips();
@@ -121,7 +121,7 @@ public class ComparedAnnualZipGnuplotImageHandler
                     getLocalizedString("realSuffix"),
                     showPreYear,
                     validZipsOnly,
-                    false,
+                    true,
                     individualColumnCounter
             );
         } else {
@@ -131,7 +131,7 @@ public class ComparedAnnualZipGnuplotImageHandler
                     getLocalizedString("realSuffix"),
                     showPreYear,
                     validZipsOnly,
-                    false,
+                    true,
                     individualColumnCounter
             );
         }

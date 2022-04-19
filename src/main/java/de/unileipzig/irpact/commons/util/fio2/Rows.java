@@ -54,7 +54,7 @@ public final class Rows<T> {
                 columnSize = row.size();
             } else {
                 if(columnSize != row.size()) {
-                    throw new IllegalStateException("row " + rowIndex + " has other length: " + row.size() + " != " + columnSize);
+                    throw new IllegalStateException("row " + rowIndex + " has other length: " + row.size() + " != " + columnSize + "(" + row + ")");
                 }
             }
             rowIndex++;

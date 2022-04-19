@@ -19,7 +19,7 @@ import de.unileipzig.irptools.util.log.IRPLogger;
  * @author Daniel Abitz
  */
 public class ComparedAnnualGnuplotImageHandler
-        extends AbstractComparedAnnualImageHandler
+        extends AbstractComparedAnnualImageHandler<InComparedAnnualImage>
         implements GnuplotHelperAPI<InComparedAnnualImage> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualGnuplotImageHandler.class);
@@ -120,7 +120,8 @@ public class ComparedAnnualGnuplotImageHandler
                     getLocalizedString("simu"),
                     getLocalizedString("real"),
                     showPreYear,
-                    validZipsOnly
+                    validZipsOnly,
+                    false
             );
         } else {
             data = createUnscaledData(
@@ -128,7 +129,8 @@ public class ComparedAnnualGnuplotImageHandler
                     getLocalizedString("simu"),
                     getLocalizedString("real"),
                     showPreYear,
-                    validZipsOnly
+                    validZipsOnly,
+                    false
             );
         }
         return new CsvJsonTableImageData(data, getCsvDelimiter());

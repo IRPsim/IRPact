@@ -6,6 +6,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -53,12 +54,20 @@ public class AnnualEnumeratedAdoptionZips extends AnnualEnumeratedAdoptionData<S
 
     @Override
     protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
-        data.update(year, ap.getProduct(), getZip(ca));
+        update(year, ap.getProduct(), getZip(ca));
     }
 
     @Override
     protected void updateInitial(ConsumerAgent ca, AdoptedProduct ap) {
-        initial.update(ap.getProduct(), getZip(ca));
+        updateInitial(ap.getProduct(), getZip(ca));
+    }
+
+    public void update(int year, Product product, String zip) {
+        data.update(year, product, zip);
+    }
+
+    public void updateInitial(Product product, String zip) {
+        initial.update(product, zip);
     }
 
     @Override

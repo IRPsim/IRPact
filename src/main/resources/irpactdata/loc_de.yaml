@@ -619,6 +619,55 @@ InComparedAnnualImage_realData:
   gams_identifier: "realData"
   gams_description: "todo"
 
+InComparedCumulatedAnnualImage:
+  edn_label: "Kumulierte Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedCumulatedAnnualImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedCumulatedAnnualImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
 InComparedAnnualZipImage:
   edn_label: "PLZ-basierte Adoptionen mit Realdaten"
   edn_description: "todo"
@@ -665,6 +714,55 @@ InComparedAnnualZipImage_colorPalette:
   gams_identifier: "Zu nutzende Farben"
   gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
 InComparedAnnualZipImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
+InComparedCumulatedAnnualZipImage:
+  edn_label: "PLZ-basierte kumulierte Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedCumulatedAnnualZipImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedCumulatedAnnualZipImage_realData:
   gams_identifier: "realData"
   gams_description: "todo"
 

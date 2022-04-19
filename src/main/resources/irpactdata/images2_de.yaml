@@ -39,8 +39,32 @@ GNUPLOT:
     simuSuffix: ""
     realSuffix: "-Real"
 
+  COMPARED_CUMULATED_ANNUAL_ZIP:
+    title: |-
+      Jährliche kumulierte Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keytitle0: "Reale Daten"
+    keytitle1: "PLZ"
+    dashtype0lab: "nein"
+    dashtype1lab: "ja"
+    sep: ";"
+    simuSuffix: ""
+    realSuffix: "-Real"
+
   COMPARED_ANNUAL:
     title: "Jährliche Adoptionen im Vergleich zu realen Daten"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    reallab: "Real"
+    simulab: "Simuliert"
+    sep: ";"
+    simu: "Simulation"
+    real: "Real"
+
+  COMPARED_CUMULATED_ANNUAL:
+    title: "Jährliche kumulierte Adoptionen im Vergleich zu realen Daten"
     xlab: "Jahre"
     ylab: "Adoptionen"
     reallab: "Real"

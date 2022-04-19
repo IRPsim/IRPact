@@ -1,16 +1,15 @@
 package de.unileipzig.irpact.core.postprocessing.image3.gnuplot;
 
-import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.ScaledRealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageDataWithCache;
+import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageData;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
-import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractComparedAnnualZipImageHandler;
-import de.unileipzig.irpact.io.param.input.visualisation.result2.InComparedAnnualZipImage;
+import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractComparedAnnualImageHandler;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.InComparedCumulatedAnnualImage;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotBuilder;
 import de.unileipzig.irpact.util.gnuplot.builder.GnuPlotFactory2;
@@ -19,15 +18,15 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 /**
  * @author Daniel Abitz
  */
-public class ComparedAnnualZipGnuplotImageHandler
-        extends AbstractComparedAnnualZipImageHandler<InComparedAnnualZipImage>
-        implements GnuplotHelperAPI<InComparedAnnualZipImage> {
+public class ComparedCumulatedAnnualGnuplotImageHandler
+        extends AbstractComparedAnnualImageHandler<InComparedCumulatedAnnualImage>
+        implements GnuplotHelperAPI<InComparedCumulatedAnnualImage> {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedAnnualZipGnuplotImageHandler.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(ComparedCumulatedAnnualGnuplotImageHandler.class);
 
-    public ComparedAnnualZipGnuplotImageHandler(
+    public ComparedCumulatedAnnualGnuplotImageHandler(
             ImageProcessor2 processor,
-            InComparedAnnualZipImage imageConfiguration) {
+            InComparedCumulatedAnnualImage imageConfiguration) {
         super(processor, imageConfiguration);
     }
 
@@ -52,7 +51,7 @@ public class ComparedAnnualZipGnuplotImageHandler
 
     @Override
     protected String getResourceKey() {
-        return "COMPARED_ANNUAL_ZIP";
+        return "COMPARED_CUMULATED_ANNUAL";
     }
 
     @Override
@@ -66,82 +65,74 @@ public class ComparedAnnualZipGnuplotImageHandler
     }
 
     @Override
-    public GnuPlotBuilder getBuilder(InComparedAnnualZipImage image, ImageData data) throws Throwable {
-        CsvJsonTableImageDataWithCache dataWithCache = (CsvJsonTableImageDataWithCache) data;
-
-//        return GnuPlotFactory.interactionLineChart0(
+    public GnuPlotBuilder getBuilder(InComparedCumulatedAnnualImage image, ImageData data) throws Throwable {
+//        int n;
+//        if(hasValidScale()) {
+//            if(image.isShowUnscaled()) {
+//                n = 3;
+//            } else {
+//                n = 2;
+//            }
+//        } else {
+//            n = 2;
+//        }
+//        return GnuPlotFactory.interactionLineChartForNValues0(
+//                n,
 //                getLocalizedString("title"),
 //                getLocalizedString("xlab"), getLocalizedString("ylab"),
-//                getLocalizedString("keytitle0"), getLocalizedString("keytitle1"),
-//                getLocalizedString("dashtype0lab"), getLocalizedString("dashtype1lab"),
 //                getLocalizedString("sep"),
 //                image.getLinewidth(),
 //                image.getImageWidth(), image.getImageHeight()
 //        );
-        return GnuPlotFactory2.multiLinePlotWithTwoDashtypes(
+        return GnuPlotFactory2.simpleMultiLinePlot(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
-                getLocalizedString("keytitle0"), getLocalizedString("keytitle1"),
-                getLocalizedString("dashtype0lab"), getLocalizedString("dashtype1lab"),
+                getLocalizedString("sep"),
                 getHexRGBPaletteOrNull(),
                 image.getLinewidth(),
-                1, 2,
-                getCsvDelimiter(),
                 image.getImageWidth(), image.getImageHeight(),
-                null, null,
-                dataWithCache.getFromCacheAuto("columnCount")
+                null, null
         );
     }
 
     @Override
-    public ImageData createData(InComparedAnnualZipImage image) throws Throwable {
+    public ImageData createData(InComparedCumulatedAnnualImage image) throws Throwable {
         RealAdoptionData realData = processor.getRealAdoptionData(image.getRealData());
         JsonTableData3 data;
         boolean validZipsOnly = image.isSkipInvalidZips();
         boolean showPreYear = image.isShowPreYear();
-        MutableInt individualColumnCounter = MutableInt.empty();
         if(hasValidScale()) {
             ScaledRealAdoptionData scaledData = (ScaledRealAdoptionData) processor.getScaledRealAdoptionData(image.getRealData());
 //            if(image.isShowUnscaled()) {
 //                data = createScaledAndUnscaledData(
 //                        realData,
 //                        scaledData,
-//                        getLocalizedString("simuSuffix"),
-//                        getLocalizedString("realScaledSuffix"), //deprecated
-//                        getLocalizedString("realUnscaledSuffix"), //deprecated
+//                        getLocalizedString("simu"),
+//                        getLocalizedString("realScaled"), //deprecated
+//                        getLocalizedString("realUnscaled"), //deprecated
 //                        showPreYear,
-//                        validZipsOnly,
-//                        individualColumnCounter
+//                        validZipsOnly
 //                );
 //            } else {
 //            }
             data = createScaledData(
                     scaledData,
-                    getLocalizedString("simuSuffix"),
-                    getLocalizedString("realSuffix"),
+                    getLocalizedString("simu"),
+                    getLocalizedString("real"),
                     showPreYear,
                     validZipsOnly,
-                    false,
-                    individualColumnCounter
+                    true
             );
         } else {
             data = createUnscaledData(
                     realData,
-                    getLocalizedString("simuSuffix"),
-                    getLocalizedString("realSuffix"),
+                    getLocalizedString("simu"),
+                    getLocalizedString("real"),
                     showPreYear,
                     validZipsOnly,
-                    false,
-                    individualColumnCounter
+                    true
             );
         }
-
-        if(individualColumnCounter.isEmpty()) {
-            throw new IllegalArgumentException("missing column count");
-        }
-
-        CsvJsonTableImageDataWithCache dataWithCache = new CsvJsonTableImageDataWithCache(data, getCsvDelimiter());
-        dataWithCache.putInCache("columnCount", individualColumnCounter.get());
-        return dataWithCache;
+        return new CsvJsonTableImageData(data, getCsvDelimiter());
     }
 }
