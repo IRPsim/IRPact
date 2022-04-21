@@ -153,9 +153,9 @@ public class WeightedConsumerGroupBasedInitialAdoptionWithRealData extends Abstr
 
         for(String zip: zips) {
             int realAdoptions = adoptionData.getCumulated(initialAdoptionYear, zip);
-            LOGGER.trace("zip '{}' adoptions: {}", zip, realAdoptions);
+            trace("zip '{}' year '{}' adoptions: {}", zip, initialAdoptionYear, realAdoptions);
             if(realAdoptions < 1) {
-                LOGGER.trace("skip zip '{}'", zip);
+                trace("skip zip '{}'", zip);
                 continue;
             }
 

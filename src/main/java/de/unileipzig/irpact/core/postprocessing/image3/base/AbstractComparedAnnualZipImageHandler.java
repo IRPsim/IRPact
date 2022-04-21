@@ -168,7 +168,7 @@ public abstract class AbstractComparedAnnualZipImageHandler<T extends InOutputIm
                 columnIndex = 0;
                 data.setInt(rowIndex, columnIndex++, yearBeforeStart);
                 for(String zip: validZips) {
-                    double realScaled = scaledData.hasZip(zip) ? scaledData.get(cumulated, yearBeforeStart, zip) : 0;
+                    double realScaled = scaledData.hasZip(zip) ? scaledData.get(true, yearBeforeStart, zip) : 0;
                     data.setDouble(rowIndex, columnIndex++, realScaled); //simu == real
                     data.setDouble(rowIndex, columnIndex++, realScaled);
                 }
@@ -236,7 +236,7 @@ public abstract class AbstractComparedAnnualZipImageHandler<T extends InOutputIm
                 columnIndex = 0;
                 data.setInt(rowIndex, columnIndex++, yearBeforeStart);
                 for(String zip: validZips) {
-                    double real = realData.hasZip(zip) ? realData.get(cumulated, yearBeforeStart, zip) : 0;
+                    double real = realData.hasZip(zip) ? realData.get(true, yearBeforeStart, zip) : 0;
                     data.setDouble(rowIndex, columnIndex++, real); //simu == real
                     data.setDouble(rowIndex, columnIndex++, real);
                 }

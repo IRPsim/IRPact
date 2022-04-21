@@ -148,10 +148,9 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
         if(showPreYear) {
             rowIndex++;
             int yearBeforeStart = processor.getPreFirstSimulationYear();
-            warn("WTFWTFWTF: {} {} {}", yearBeforeStart, processor.getAllSimulationYears(), processor.getAllSimulationYearsPrior());
             if(scaledData.hasYear(yearBeforeStart)) {
                 data.setInt(rowIndex, 0, yearBeforeStart);
-                double realScaled = scaledData.get(cumulated, yearBeforeStart, validZips);
+                double realScaled = scaledData.get(true, yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
             } else {
@@ -208,7 +207,7 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
             int yearBeforeStart = processor.getPreFirstSimulationYear();
             if(realData.hasYear(yearBeforeStart)) {
                 data.setInt(rowIndex, 0, yearBeforeStart);
-                double realScaled = realData.get(cumulated, yearBeforeStart, validZips);
+                double realScaled = realData.get(true, yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
             } else {
