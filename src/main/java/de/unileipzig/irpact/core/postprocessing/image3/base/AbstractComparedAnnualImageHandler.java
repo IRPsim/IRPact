@@ -154,7 +154,7 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
 
-                info("[createUnscaledData]");
+                info("[createScaledData]");
                 info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
                 info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
                 info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, scaledData.get(cumulated, yearBeforeStart, scaledData.getAllZips()));
