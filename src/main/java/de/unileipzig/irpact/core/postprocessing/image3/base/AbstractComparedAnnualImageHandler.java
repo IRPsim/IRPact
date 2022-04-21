@@ -154,11 +154,25 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
 
-                info("[createScaledData]");
-                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
-                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
-                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, scaledData.get(cumulated, yearBeforeStart, scaledData.getAllZips()));
-                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, scaledData.getCumulated(yearBeforeStart));
+//                info("[createScaledData] @ {}", yearBeforeStart);
+//                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
+//                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
+//                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, scaledData.get(cumulated, yearBeforeStart, scaledData.getAllZips()));
+//                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, scaledData.getCumulated(yearBeforeStart));
+//
+//                info("[{}] years: {}", getResourceKey(), processor.getAllSimulationYears());
+//                simuData.getInitial().map().forEach((p, m1) -> {
+//                    m1.forEach((z, c) -> {
+//                        info("[{}] (initial) {} {} {}", getResourceKey(), p.getName(), z, c);
+//                    });
+//                });
+//                simuData.getData().map().forEach((y, m1) -> {
+//                    m1.forEach((p, m2) -> {
+//                        m2.forEach((z, c) -> {
+//                            info("[{}] ({}) {} {} {}", getResourceKey(), y, p.getName(), z, c);
+//                        });
+//                    });
+//                });
             } else {
                 info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, scaledData.getAllYears());
             }

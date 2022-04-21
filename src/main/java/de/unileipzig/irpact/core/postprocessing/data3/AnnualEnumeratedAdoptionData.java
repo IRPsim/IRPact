@@ -45,6 +45,10 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
         this.filter = filter;
     }
 
+    public CountMap2D<Product, T> getInitial() {
+        return initial;
+    }
+
     public CountMap3D<Integer, Product, T> getData() {
         return data;
     }
@@ -146,7 +150,9 @@ public abstract class AnnualEnumeratedAdoptionData<T> {
         AnnualEnumeratedAdoptionData<T> cumulated = newInstance();
         cumulated.setCumulated(true);
         Set<Product> products = data.getAllSecondKeys();
-        Set<T> values = data.getAllThirdKeys();
+        Set<T> values = new LinkedHashSet<>();
+        initial.getAllSecondsKeys(values);
+        data.getAllThirdKeys(values);
         for(Product product: products) {
             for(T value: values) {
                 cumulated.initial.init(product, value, initial.getCount(product, value));
