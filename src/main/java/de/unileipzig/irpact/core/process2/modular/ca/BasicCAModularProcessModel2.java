@@ -51,7 +51,7 @@ public class BasicCAModularProcessModel2
     protected Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected boolean yearChange = false;
 
-    protected Set<BasicConsumerAgentData2> plans = SetSupplier.CONCURRENT_HASH.newSet();
+    protected Set<BasicConsumerAgentData2> plans = SetSupplier.CONCURRENT_LINKED_HASH.newSet();
     protected List<Reevaluator<ConsumerAgentData2>> initializationTasks = new ArrayList<>();
     protected List<Reevaluator<ConsumerAgentData2>> startOfYearTasks = new ArrayList<>();
     protected List<Reevaluator<ConsumerAgentData2>> midOfYearTasks = new ArrayList<>();

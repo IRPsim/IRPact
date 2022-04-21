@@ -3,7 +3,6 @@ package de.unileipzig.irpact.commons.util;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.checksum.Checksums;
 
-import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

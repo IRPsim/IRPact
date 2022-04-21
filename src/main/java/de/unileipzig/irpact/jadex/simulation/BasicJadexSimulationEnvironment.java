@@ -56,7 +56,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected Rnd rnd;
     protected boolean restored = false;
 
-    protected final Set<CloseableSimulationEntity> CLOSABLE_ENTITIES = SetSupplier.CONCURRENT_HASH.newSet();
+    protected final Set<CloseableSimulationEntity> CLOSABLE_ENTITIES = SetSupplier.CONCURRENT_LINKED_HASH.newSet();
 
     protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected final DataStore STORE = newStore();

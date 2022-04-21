@@ -11,7 +11,8 @@ public enum SetSupplier {
     UNKNOWN(-1),
     HASH(0),
     LINKED(1),
-    CONCURRENT_HASH(2);
+    CONCURRENT_HASH(2),
+    CONCURRENT_LINKED_HASH(3);
 
     private final int ID;
 
@@ -34,6 +35,9 @@ public enum SetSupplier {
             case 2:
                 return Collections.synchronizedSet(new HashSet<>());
 
+            case 3:
+                return Collections.synchronizedSet(new LinkedHashSet<>());
+
             default:
                 throw new IllegalStateException("unknown");
         }
@@ -49,6 +53,9 @@ public enum SetSupplier {
 
             case 2:
                 return CONCURRENT_HASH;
+
+            case 3:
+                return CONCURRENT_LINKED_HASH;
 
             default:
                 return UNKNOWN;
