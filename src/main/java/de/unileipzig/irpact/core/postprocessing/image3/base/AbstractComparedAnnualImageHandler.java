@@ -153,6 +153,12 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
                 double realScaled = scaledData.get(true, yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
+
+                info("[createUnscaledData]");
+                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
+                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
+                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, scaledData.get(cumulated, yearBeforeStart, scaledData.getAllZips()));
+                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, scaledData.getCumulated(yearBeforeStart));
             } else {
                 info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, scaledData.getAllYears());
             }
@@ -210,6 +216,12 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
                 double realScaled = realData.get(true, yearBeforeStart, validZips);
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
+
+                info("[createUnscaledData]");
+                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
+                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
+                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, realData.get(cumulated, yearBeforeStart, realData.getAllZips()));
+                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, realData.getCumulated(yearBeforeStart));
             } else {
                 info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, realData.getAllYears());
             }
