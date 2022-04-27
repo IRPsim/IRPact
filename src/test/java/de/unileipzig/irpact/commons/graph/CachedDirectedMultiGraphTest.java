@@ -3,7 +3,6 @@ package de.unileipzig.irpact.commons.graph;
 import de.unileipzig.irpact.commons.util.CollectionUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;

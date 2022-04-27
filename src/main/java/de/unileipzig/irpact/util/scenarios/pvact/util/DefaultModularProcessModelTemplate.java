@@ -1,8 +1,10 @@
 package de.unileipzig.irpact.util.scenarios.pvact.util;
 
+import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAModelData;
 import de.unileipzig.irpact.core.process2.handler.InitializationHandler;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.reevaluate.Reevaluator;
 import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InPVFile;
@@ -13,6 +15,7 @@ import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process.ra.InNodeDistanceFilterScheme;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.InUncertaintySupplier;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InSpecialUtilityCsvValueLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
@@ -65,6 +68,10 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     protected Supplier<? extends InColorPalette> colorPaletteSupplier;
 
     protected boolean raEnabled = true;
+    protected boolean raLogging = true;
+    protected boolean specialLogging = false;
+    protected boolean neighbourLogging = true;
+    protected int maxToStore = 0;
 
     public DefaultModularProcessModelTemplate(String mpmName) {
         this(new ModuleManager(), new AttributeNameManager(), mpmName);
@@ -122,12 +129,44 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         return initAdopter;
     }
 
+    public void setSpecialLogging(boolean specialLogging) {
+        this.specialLogging = specialLogging;
+    }
+
+    public boolean isSpecialLogging() {
+        return specialLogging;
+    }
+
     public void setRaEnabled(boolean raEnabled) {
         this.raEnabled = raEnabled;
     }
 
     public boolean isRaEnabled() {
         return raEnabled;
+    }
+
+    public void setRaLogging(boolean raLogging) {
+        this.raLogging = raLogging;
+    }
+
+    public boolean isRaLogging() {
+        return raLogging;
+    }
+
+    public void setMaxToStore(int maxToStore) {
+        this.maxToStore = maxToStore;
+    }
+
+    public int getMaxToStore() {
+        return maxToStore;
+    }
+
+    public void setNeighbourLogging(boolean neighbourLogging) {
+        this.neighbourLogging = neighbourLogging;
+    }
+
+    public boolean isNeighbourLogging() {
+        return neighbourLogging;
     }
 
     //=========================
@@ -864,7 +903,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
     protected void setupCommunicationModule(InCommunicationModule3 module) {
         module.setRaEnabled(isRaEnabled());
-        module.setRaLoggingEnabled(true);
+        module.setRaLoggingEnabled(isRaLogging());
         module.setRaStoreXlsx(true);
         module.setRaKeepCsv(false);
         module.setRaOpinionLogging(false);
@@ -952,7 +991,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         //neighborhood
         InNeighbourhoodOverview neighbourhoodOverview = new InNeighbourhoodOverview();
         neighbourhoodOverview.setName("NEIGHBOURHOOD");
-        neighbourhoodOverview.setEnabled(true);
+        neighbourhoodOverview.setEnabled(isNeighbourLogging());
         neighbourhoodOverview.setStoreXlsx(true);
         neighbourhoodOverview.setNodeFilterScheme(getValidDistanceFilterScheme());
         changed |= c.add(neighbourhoodOverview);
@@ -1202,14 +1241,27 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         decisionMakingReevaluator.setModules(decisionReevalPhaseUpdater);
 
         InReevaluatorModule3 reevalNode = mm.create("REEVAL", InReevaluatorModule3::new);
-        reevalNode.setInput(
-                findLoggingModule(getNpvReevalLoggerModuleName()),
-                findLoggingModule(getEnvReevalLoggerName()),
-                findLoggingModule(getNovReevalLoggerModuleName()),
-                findLoggingModule(getSocialShareReevalLoggerModuleName()),
-                findLoggingModule(getLocalShareReevalLoggerModuleName()),
-                findLoggingModule(getUtilityReevalLoggerModuleName())
-        );
+        if(specialLogging) {
+            InSpecialUtilityCsvValueLoggingModule3 specialLogger = new InSpecialUtilityCsvValueLoggingModule3();
+            specialLogger.setName("SPECIAL_UTILITY_LOGGER");
+            specialLogger.setUtilityModule(getUtilitySumModule());
+            specialLogger.setUtilityLogger(findLoggingModule(getUtilityReevalLoggerModuleName()));
+            specialLogger.setLocalShareLogger(findLoggingModule(getLocalShareReevalLoggerModuleName()));
+            specialLogger.setSocialShareLogger(findLoggingModule(getSocialShareReevalLoggerModuleName()));
+            specialLogger.setEnvLogger(findLoggingModule(getEnvReevalLoggerName()));
+            specialLogger.setNovLogger(findLoggingModule(getNovReevalLoggerModuleName()));
+            specialLogger.setNpvLogger(findLoggingModule(getNpvReevalLoggerModuleName()));
+            reevalNode.setInput(specialLogger);
+        } else {
+            reevalNode.setInput(
+                    findLoggingModule(getNpvReevalLoggerModuleName()),
+                    findLoggingModule(getEnvReevalLoggerName()),
+                    findLoggingModule(getNovReevalLoggerModuleName()),
+                    findLoggingModule(getSocialShareReevalLoggerModuleName()),
+                    findLoggingModule(getLocalShareReevalLoggerModuleName()),
+                    findLoggingModule(getUtilityReevalLoggerModuleName())
+            );
+        }
 
         InMultiReevaluator initLinker = new InMultiReevaluator();
         initLinker.setName("INIT_LINKER");
@@ -1294,6 +1346,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
         InLogisticModule3 logisticNPV = mm.create(getLogisticNpvModuleName(), InLogisticModule3::new);
         setupNPVLogisticModule(logisticNPV);
+        logisticNPV.specialId = SpecialUtilityCsvValueLoggingModule2.NPV_ID;
 
         //npv logging
         InCsvValueLoggingModule3 npvLogger = mm.create(getNpvLoggerModuleName(), this::createDefaultLoggingModule);
@@ -1324,6 +1377,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         //env comp
         InAttributeInputModule3 envAttr = mm.create(getEnvInputModuleName(), InAttributeInputModule3::new);
         envAttr.setAttribute(anm.get(getEnvironmentalConcernAttributeName()));
+        envAttr.specialId = SpecialUtilityCsvValueLoggingModule2.ENV_ID;
 
         //env logging
         InCsvValueLoggingModule3 envLogger = mm.create(getEnvLoggerModuleName(), this::createDefaultLoggingModule);
@@ -1338,6 +1392,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
         //nov comp
         InAttributeInputModule3 novAttr = mm.create(getNovInputModuleName(), InAttributeInputModule3::new);
         novAttr.setAttribute(anm.get(getNoveltySeekingAttributeName()));
+        novAttr.specialId = SpecialUtilityCsvValueLoggingModule2.NOV_ID;
 
         InCsvValueLoggingModule3 novLogger = mm.create(getNovLoggerModuleName(), this::createDefaultLoggingModule);
         novLogger.setInput(novAttr);
@@ -1350,8 +1405,9 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
         //local
         InLocalShareOfAdopterModule3 localShare = mm.create(getLocalShareModuleName(), InLocalShareOfAdopterModule3::new);
-        localShare.setMaxToStore(0);
+        localShare.setMaxToStore(getMaxToStore());
         localShare.setNodeFilterScheme(getValidDistanceFilterScheme());
+        localShare.specialId = SpecialUtilityCsvValueLoggingModule2.LOCAL_SHARE_ID;
 
         InCsvValueLoggingModule3 localLogger = mm.create(getLocalShareLoggerModuleName(), this::createDefaultLoggingModule);
         localLogger.setInput(localShare);
@@ -1361,6 +1417,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
 
         //social
         InSocialShareOfAdopterModule3 socialShare = mm.create(getSocialShareModuleName(), InSocialShareOfAdopterModule3::new);
+        socialShare.specialId = SpecialUtilityCsvValueLoggingModule2.SOCIAL_SHARE_ID;
 
         InCsvValueLoggingModule3 socialLogger = mm.create(getSocialShareLoggerModuleName(), this::createDefaultLoggingModule);
         socialLogger.setInput(socialShare);
@@ -1396,6 +1453,7 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
                 novWeight,
                 socComp
         );
+        utilitySum.specialId = SpecialUtilityCsvValueLoggingModule2.UTILTIY_ID;
 
         InCsvValueLoggingModule3 utilityLogger = mm.create(getUtilityLoggerModuleName(), this::createDefaultLoggingModule);
         utilityLogger.setInput(utilitySum);
@@ -1410,6 +1468,13 @@ public class DefaultModularProcessModelTemplate implements ModularProcessModelTe
     }
     protected InCsvValueLoggingModule3 getUtilityPart() {
         return mm.registerIfNotExists(getUtilityModuleName(), this::createUtilityPart);
+    }
+    protected InSumModule3 getUtilitySumModule() {
+        try {
+            return (InSumModule3) getUtilityPart().getInput();
+        } catch (ParsingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected InDoAdoptModule3 createDecisionMakingPart(String moduleName) {

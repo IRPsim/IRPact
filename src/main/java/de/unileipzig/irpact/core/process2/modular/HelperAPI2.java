@@ -10,6 +10,7 @@ import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.Module2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -193,5 +194,48 @@ public interface HelperAPI2 extends Nameable, LoggingHelper {
                 book,
                 sheetData
         );
+    }
+
+    //=========================
+    //Helper
+    //=========================
+
+    default void setSpecialData(int id, double value, Object input) {
+        if(input instanceof ConsumerAgentData2) {
+            ConsumerAgentData2 data = (ConsumerAgentData2) input;
+            setSpecialData(id, value, (SpecialUtilityCsvValueLoggingModule2.Data) data.get(SpecialUtilityCsvValueLoggingModule2.DATA_ID));
+        }
+    }
+
+    default void setSpecialData(int id, double value, SpecialUtilityCsvValueLoggingModule2.Data data) {
+        if(data == null) {
+            return;
+        }
+
+        switch (id) {
+            case SpecialUtilityCsvValueLoggingModule2.UTILTIY_ID:
+                data.setUtility(value);
+                break;
+
+            case SpecialUtilityCsvValueLoggingModule2.LOCAL_SHARE_ID:
+                data.setLocalShare(value);
+                break;
+
+            case SpecialUtilityCsvValueLoggingModule2.SOCIAL_SHARE_ID:
+                data.setSocialShare(value);
+                break;
+
+            case SpecialUtilityCsvValueLoggingModule2.ENV_ID:
+                data.setEnv(value);
+                break;
+
+            case SpecialUtilityCsvValueLoggingModule2.NOV_ID:
+                data.setNov(value);
+                break;
+
+            case SpecialUtilityCsvValueLoggingModule2.NPV_ID:
+                data.setNpv(value);
+                break;
+        }
     }
 }

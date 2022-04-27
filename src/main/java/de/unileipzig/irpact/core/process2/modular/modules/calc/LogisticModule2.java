@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModule2_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -22,6 +23,7 @@ public class LogisticModule2<I>
 
     protected double L = 1.0;
     protected double k = 1.0;
+    protected int specialId = SpecialUtilityCsvValueLoggingModule2.UNSET_ID;
 
     public void setL(double l) {
         L = l;
@@ -37,6 +39,10 @@ public class LogisticModule2<I>
 
     public double getK() {
         return k;
+    }
+
+    public void setSpecialId(int specialId) {
+        this.specialId = specialId;
     }
 
     @Override
@@ -90,6 +96,7 @@ public class LogisticModule2<I>
         checkAndWarnNaN(input, x0, getX0(), "x0");
         double r = MathUtil.logistic(getL(), getK(), x, x0);
         checkAndWarnNaN(input, r, "result");
+        setSpecialData(specialId, r, input);
         return r;
     }
 }

@@ -80,7 +80,8 @@ public class SpecialAverageQuantilRangeGnuplotImageHandler
                 getHexRGBPaletteOrNull(),
                 image.getLinewidth(),
                 image.getImageWidth(), image.getImageHeight(),
-                null, null
+                null, null,
+                null
         );
     }
 

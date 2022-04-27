@@ -145,8 +145,9 @@ public final class GnuPlotFactory2 {
             List<String> hexColors,
             int lineWidth,
             int width, int height,
-            Number minY, Number maxY) {
-        return simpleMultiLinePlot(title, xlab, ylab, sep, hexColors, lineWidth, width, height, minY, maxY, true);
+            Number minY, Number maxY,
+            Number ytics) {
+        return simpleMultiLinePlot(title, xlab, ylab, sep, hexColors, lineWidth, width, height, minY, maxY, ytics, true);
     }
 
     public static GnuPlotBuilder simpleMultiLinePlot(
@@ -157,6 +158,7 @@ public final class GnuPlotFactory2 {
             int lineWidth,
             int width, int height,
             Number minY, Number maxY,
+            Number ytics,
             boolean showKey) {
         PlotCommandBuilder plot = new PlotCommandBuilder();
         plot.linebreak();
@@ -187,6 +189,9 @@ public final class GnuPlotFactory2 {
         builder.add(getUsageComment());
         builder.addComment("===style===");
         builder.setStyleDataLinesPoints();
+        if(ytics != null) {
+            builder.setYtics(ytics.doubleValue());
+        }
         if(showKey) {
             builder.setLegendOutsideRightTop();
         } else {
@@ -223,6 +228,7 @@ public final class GnuPlotFactory2 {
             String sep,
             int width, int height,
             Number minY, Number maxY,
+            Number ytics,
             int numberOfIndividualColumns) {
 
         PlotCommandBuilder plot = new PlotCommandBuilder();
@@ -305,6 +311,9 @@ public final class GnuPlotFactory2 {
         builder.add(getUsageComment());
         builder.addComment("===style===");
         builder.setStyleDataLinesPoints();
+        if(ytics != null) {
+            builder.setYtics(ytics.doubleValue());
+        }
         builder.setLegendOutsideRightTop();
         if(hexColors != null) {
             builder.setStyleLineWithWidthAndRGB(createIndexListWithStartAt1(hexColors), createList(hexColors, lineWidth), updateHexColor(hexColors));

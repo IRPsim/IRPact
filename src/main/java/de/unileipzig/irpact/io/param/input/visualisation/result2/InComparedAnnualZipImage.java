@@ -147,6 +147,21 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
     @FieldDefinition
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean startAtMinValue = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    public boolean autoTickY = true;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
             customImageDefault = true,
             customImageDomain = true
     )
@@ -311,6 +326,22 @@ public class InComparedAnnualZipImage implements InLoggingResultImage2 {
 
     public boolean isShowPreYear() {
         return showPreYear;
+    }
+
+    public boolean isStartAtMinValue() {
+        return startAtMinValue;
+    }
+
+    public void setStartAtMinValue(boolean startAtMinValue) {
+        this.startAtMinValue = startAtMinValue;
+    }
+
+    public boolean isAutoTickY() {
+        return autoTickY;
+    }
+
+    public void setAutoTickY(boolean autoTickY) {
+        this.autoTickY = autoTickY;
     }
 
     public void setCustomImageId(int customImageId) {

@@ -446,8 +446,10 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         List<PostAction> postActions = new ArrayList<>();
 
         //start
+        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} tasks", getName(), agents.size());
+//        logOrder1(agents);
         List<IRPactAgentAPI> shuffledAgents = shuffleIfRequired(agents);
-        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} tasks", getName(), shuffledAgents.size());
+//        logOrder1(shuffledAgents);
         for(IRPactAgentAPI agent: shuffledAgents) {
             try {
                 if(firstAction) {
@@ -463,8 +465,10 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
         log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) {} tasks finished", getName(), shuffledAgents.size());
 
         //postaction
+        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} postactions", getName(), postActions.size());
+//        logOrder2(postActions);
         List<PostAction> shuffledPostActions = shuffleIfRequired(postActions);
-        log().trace(IRPSection.SIMULATION_PROCESS, "[{}] (self) start {} postactions", getName(), shuffledPostActions.size());
+//        logOrder2(shuffledPostActions);
         for(PostAction action: shuffledPostActions) {
             try {
                 action.execute();
@@ -474,6 +478,24 @@ public class JadexIRPactAgentManagerAgentBDI extends AbstractJadexAgentBDI imple
             }
         }
     }
+
+//    private void logOrder1(List<IRPactAgentAPI> agents) {
+//        StringBuilder sb = new StringBuilder();
+//        for(IRPactAgentAPI agent: agents) {
+//            sb.append(agent.getName()).append(" ");
+//        }
+//        String str = sb.toString();
+//        log().info("[1] {} {}", str.hashCode(), str);
+//    }
+//
+//    private void logOrder2(List<PostAction> actions) {
+//        StringBuilder sb = new StringBuilder();
+//        for(PostAction action: actions) {
+//            sb.append(action.getInputName()).append(" ");
+//        }
+//        String str = sb.toString();
+//        log().info("[2] {} {}", str.hashCode(), str);
+//    }
 
     //=========================
     //IRPactAgentAPILoopTask

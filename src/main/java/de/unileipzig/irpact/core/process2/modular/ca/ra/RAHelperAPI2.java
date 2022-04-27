@@ -6,8 +6,6 @@ import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MutableBoolean;
 import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.logging.data.AgentDataState;
-import de.unileipzig.irpact.core.logging.data.AgentDataStateLoggingHelper;
 import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -385,112 +383,6 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //local
     //==========
 
-    default double getShareOfAdopterInLocalNetwork(
-            ConsumerAgentData2 input,
-            NodeFilter filter,
-            int maxToStore) {
-
-        if(maxToStore < 1) {
-            return getShareOfAdopterInLocalNetwork(input, filter);
-        }
-
-        boolean neighboursChecked = getSharedData().contains(input.getAgent(), NEIGHBOURS_CHECKED_KEY);
-
-        if(neighboursChecked) {
-            List<ConsumerAgent> neighbours = getSharedData().getAuto(input.getAgent(), NEIGHBOURS_KEY);
-            if(neighbours == null) {
-                return getShareOfAdopterInLocalNetwork(input, filter);
-            } else {
-                return getShareOfAdopterInNeighbourhood(input, neighbours);
-            }
-        } else {
-            getSharedData().put(input.getAgent(), NEIGHBOURS_CHECKED_KEY, true);
-            return getShareOfAdopterInLocalNetworkAndTryToCache(input, filter, maxToStore);
-        }
-    }
-
-    default double getShareOfAdopterInLocalNetworkAndTryToCache(
-            ConsumerAgentData2 input,
-            NodeFilter filter,
-            int maxToStore) {
-
-        MutableDouble total = MutableDouble.zero();
-        MutableDouble adopter = MutableDouble.zero();
-
-        MutableBoolean addNeighbours = MutableBoolean.trueValue();
-        List<ConsumerAgent> neighbours = new ArrayList<>(maxToStore);
-
-        streamNeighbours(input.getEnvironment(), input.getAgent(), filter)
-                .forEach(target -> {
-                    //update list
-                    if(addNeighbours.isTrue()) {
-                        if(neighbours.size() >= maxToStore) {
-                            addNeighbours.setFalse();
-                            neighbours.clear();
-                        } else {
-                            neighbours.add(target);
-                        }
-                    }
-                    //check
-                    if(isFeasibleAndFinancialNeighbour(target, input.getProduct())) {
-                        total.inc();
-                        if(target.hasAdopted(input.getProduct())) {
-                            adopter.inc();
-                        }
-                    }
-                });
-
-        if(addNeighbours.isTrue()) {
-            getSharedData().put(input.getAgent(), NEIGHBOURS_KEY, neighbours);
-        }
-
-        if(total.isZero()) {
-            return 0.0;
-        } else {
-            return adopter.get() / total.get();
-        }
-    }
-
-    default double getShareOfAdopterInNeighbourhood(
-            ConsumerAgentData2 input,
-            Collection<? extends ConsumerAgent> neighbours) {
-        double total = 0.0;
-        double adopter = 0.0;
-        for(ConsumerAgent agent: neighbours) {
-            if(isFeasibleAndFinancialNeighbour(agent, input.getProduct())) {
-                total++;
-                if(agent.hasAdopted(input.getProduct())) {
-                    adopter++;
-                }
-            }
-        }
-        return total == 0.0
-                ? 0.0
-                : adopter / total;
-    }
-
-
-    default double getShareOfAdopterInLocalNetwork(
-            ConsumerAgentData2 input,
-            NodeFilter filter) {
-        MutableDouble total = MutableDouble.zero();
-        MutableDouble adopter = MutableDouble.zero();
-
-        streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), filter)
-                .forEach(target -> {
-                    total.inc();
-                    if(target.hasAdopted(input.getProduct())) {
-                        adopter.inc();
-                    }
-                });
-
-        if(total.isZero()) {
-            return 0.0;
-        } else {
-            return adopter.get() / total.get();
-        }
-    }
-
     default Stream<ConsumerAgent> streamNeighbours(
             SimulationEnvironment environment,
             ConsumerAgent source,
@@ -509,6 +401,84 @@ public interface RAHelperAPI2 extends HelperAPI2 {
             NodeFilter filter) {
         return streamNeighbours(environment, source, filter)
                 .filter(target -> isFeasibleAndFinancialNeighbour(target, product));
+    }
+
+    default double getShareOfAdopterInLocalNetwork(
+            ConsumerAgentData2 input,
+            NodeFilter filter,
+            int maxToStore) {
+
+        Stream<? extends ConsumerAgent> neighbours = null;
+
+        if(maxToStore < 1) {
+            neighbours = streamNeighbours(input.getEnvironment(), input.getAgent(), filter);
+        } else {
+            boolean neighboursChecked = getSharedData().contains(input.getAgent(), NEIGHBOURS_CHECKED_KEY);
+            if(neighboursChecked) {
+                List<ConsumerAgent> neighboursList = getSharedData().getAuto(input.getAgent(), NEIGHBOURS_KEY);
+                neighbours = neighboursList.stream();
+            } else {
+                getSharedData().put(input.getAgent(), NEIGHBOURS_CHECKED_KEY, true);
+                tryStoreShareOfAdopterInLocalNetwork(input, filter, maxToStore);
+            }
+
+            if(neighbours == null) {
+                neighbours = streamNeighbours(input.getEnvironment(), input.getAgent(), filter);
+            }
+        }
+
+        return getShareOfAdopterInNeighbourhood(input, input.getProduct(), neighbours);
+    }
+
+    default void tryStoreShareOfAdopterInLocalNetwork(
+            ConsumerAgentData2 input,
+            NodeFilter filter,
+            int maxToStore) {
+
+        MutableBoolean addNeighbours = MutableBoolean.trueValue();
+        ArrayList<ConsumerAgent> neighbours = new ArrayList<>(maxToStore);
+
+        streamNeighbours(input.getEnvironment(), input.getAgent(), filter)
+                .forEach(target -> {
+                    //update list
+                    if(addNeighbours.isTrue()) {
+                        if(neighbours.size() >= maxToStore) {
+                            addNeighbours.setFalse();
+                            neighbours.clear();
+                        } else {
+                            neighbours.add(target);
+                        }
+                    }
+                });
+
+        if(addNeighbours.isTrue()) {
+            neighbours.trimToSize();
+            trace("[{}] '{}' store neighbours: {} ({})", getName(), input.getAgentName(), neighbours.size(), maxToStore);
+            getSharedData().put(input.getAgent(), NEIGHBOURS_KEY, neighbours);
+        }
+    }
+
+    default double getShareOfAdopterInNeighbourhood(
+            ConsumerAgentData2 input,
+            Product product,
+            Stream<? extends ConsumerAgent> neighbours) {
+        MutableDouble total = MutableDouble.zero();
+        MutableDouble adopter = MutableDouble.zero();
+
+        neighbours
+                .filter(target -> isFeasibleAndFinancialNeighbour(target, product))
+                .forEach(target -> {
+                    total.inc();
+                    if(target.hasAdopted(input.getProduct())) {
+                        adopter.inc();
+                    }
+                });
+
+        if(total.isZero()) {
+            return 0.0;
+        } else {
+            return adopter.get() / total.get();
+        }
     }
 
     //==========

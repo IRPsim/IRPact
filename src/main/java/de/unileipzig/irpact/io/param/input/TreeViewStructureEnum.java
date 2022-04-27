@@ -39,6 +39,7 @@ import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InTh
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InSpecialUtilityCsvValueLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
@@ -261,6 +262,7 @@ public enum TreeViewStructureEnum {
     //number logging
     PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING),
     PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING_CSV(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InCsvValueLoggingModule3.class),
+    PROCESS_MODEL4_PVACTMODULES_UTILITYLOGGING_CSV(PROCESS_MODEL4_PVACTMODULES_NUMBERLOGGING, InSpecialUtilityCsvValueLoggingModule3.class),
     //pv general
     PROCESS_MODEL4_PVACTMODULES_PVGENERAL(PROCESS_MODEL4_PVACTMODULES, IOConstants.PROCESS_MODEL4_PVACTMODULES_PVGENERAL),
     PROCESS_MODEL4_PVACTMODULES_PVGENERAL_DECISIONDECIDER(PROCESS_MODEL4_PVACTMODULES_PVGENERAL, InDecisionMakingDeciderModule3.class),

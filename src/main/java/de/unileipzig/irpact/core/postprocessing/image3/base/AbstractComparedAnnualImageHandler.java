@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image3.base;
 
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionZips;
@@ -18,6 +19,8 @@ import java.util.List;
 public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage2>
         extends AbstractImageHandler<T>
         implements LoggingHelper {
+
+    protected static final int MIN_ROW_COUNT = 5;
 
     public AbstractComparedAnnualImageHandler(
             ImageProcessor2 processor,
@@ -113,6 +116,15 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
 //
 //        return data;
 //    }
+
+    protected MutableDouble getMax(JsonTableData3 tableData) {
+        MutableDouble min = MutableDouble.empty();
+        MutableDouble max = MutableDouble.empty();
+        for(int column = 1; column < tableData.getNumberOfColumns(); column++) {
+            tableData.getMinMax(column, 1, min, max);
+        }
+        return max;
+    }
 
     protected JsonTableData3 createScaledData(
             ScaledRealAdoptionData scaledData,
@@ -231,11 +243,11 @@ public abstract class AbstractComparedAnnualImageHandler<T extends InOutputImage
                 data.setDouble(rowIndex, 1, realScaled); //simu == real
                 data.setDouble(rowIndex, 2, realScaled);
 
-                info("[createUnscaledData]");
-                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
-                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
-                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, realData.get(cumulated, yearBeforeStart, realData.getAllZips()));
-                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, realData.getCumulated(yearBeforeStart));
+//                info("[createUnscaledData]");
+//                info("[{}] {} initial-simu: {}", getResourceKey(), yearBeforeStart, simuData.getInitialCount(product, validZips));
+//                info("[{}] {} initial-real: {}", getResourceKey(), yearBeforeStart, realScaled);
+//                info("[{}] {} initial-real2: {}", getResourceKey(), yearBeforeStart, realData.get(cumulated, yearBeforeStart, realData.getAllZips()));
+//                info("[{}] {} initial-real3: {}", getResourceKey(), yearBeforeStart, realData.getCumulated(yearBeforeStart));
             } else {
                 info("missing data, skip 'year before start' (year={}, available={}", yearBeforeStart, realData.getAllYears());
             }

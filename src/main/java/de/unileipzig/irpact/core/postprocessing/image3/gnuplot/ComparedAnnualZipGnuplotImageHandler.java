@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image3.gnuplot;
 
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -7,6 +8,7 @@ import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.ScaledRealAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
+import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageData;
 import de.unileipzig.irpact.core.postprocessing.image3.CsvJsonTableImageDataWithCache;
 import de.unileipzig.irpact.core.postprocessing.image3.ImageProcessor2;
 import de.unileipzig.irpact.core.postprocessing.image3.base.AbstractComparedAnnualZipImageHandler;
@@ -78,6 +80,19 @@ public class ComparedAnnualZipGnuplotImageHandler
 //                image.getLinewidth(),
 //                image.getImageWidth(), image.getImageHeight()
 //        );
+
+        Double ytics = null;
+        if(image.isAutoTickY()) {
+            CsvJsonTableImageData imageData = (CsvJsonTableImageData) data;
+            if(imageData.getData().getNumberOfRows() < MIN_ROW_COUNT) {
+                ytics = 1.0;
+            }
+        }
+
+        Double minY = image.isStartAtMinValue()
+                ? null
+                : 0.0;
+
         return GnuPlotFactory2.multiLinePlotWithTwoDashtypes(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
@@ -88,7 +103,8 @@ public class ComparedAnnualZipGnuplotImageHandler
                 1, 2,
                 getCsvDelimiter(),
                 image.getImageWidth(), image.getImageHeight(),
-                null, null,
+                minY, null,
+                ytics,
                 dataWithCache.getFromCacheAuto("columnCount")
         );
     }

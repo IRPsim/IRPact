@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.image3.gnuplot;
 
+import de.unileipzig.irpact.commons.util.data.MutableDouble;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.data3.RealAdoptionData;
@@ -84,6 +85,19 @@ public class ComparedCumulatedAnnualGnuplotImageHandler
 //                image.getLinewidth(),
 //                image.getImageWidth(), image.getImageHeight()
 //        );
+
+        Double ytics = null;
+        if(image.isAutoTickY()) {
+            CsvJsonTableImageData imageData = (CsvJsonTableImageData) data;
+            if(imageData.getData().getNumberOfRows() < MIN_ROW_COUNT) {
+                ytics = 1.0;
+            }
+        }
+
+        Double minY = image.isStartAtMinValue()
+                ? null
+                : 0.0;
+
         return GnuPlotFactory2.simpleMultiLinePlot(
                 getLocalizedString("title"),
                 getLocalizedString("xlab"), getLocalizedString("ylab"),
@@ -91,7 +105,8 @@ public class ComparedCumulatedAnnualGnuplotImageHandler
                 getHexRGBPaletteOrNull(),
                 image.getLinewidth(),
                 image.getImageWidth(), image.getImageHeight(),
-                null, null
+                minY, null,
+                ytics
         );
     }
 

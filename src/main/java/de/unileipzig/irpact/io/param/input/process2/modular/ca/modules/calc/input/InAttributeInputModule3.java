@@ -96,6 +96,13 @@ public class InAttributeInputModule3 implements InConsumerAgentInputModule2 {
         return getAttribute().getName();
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
+    public int specialId = -1;
+
     public InAttributeInputModule3() {
     }
 
@@ -129,6 +136,7 @@ public class InAttributeInputModule3 implements InConsumerAgentInputModule2 {
         AttributeModule2 module = new AttributeModule2();
         module.setName(getName());
         module.setAttributeName(getAttributeName());
+        module.setSpecialId(specialId);
 
         return module;
     }

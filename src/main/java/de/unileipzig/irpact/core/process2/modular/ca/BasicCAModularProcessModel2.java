@@ -406,7 +406,7 @@ public class BasicCAModularProcessModel2
 
             @Override
             public void run() {
-                trace("run 'createEndOfYearTask': {}", getName());
+                info("run 'createEndOfYearTask': {}", getName());
                 try {
                     runEndOfYear();
                 } catch (Throwable e) {
@@ -432,6 +432,7 @@ public class BasicCAModularProcessModel2
         if(task.reevaluateIndividual()) {
             trace("[{}] run reevaluator '{}' for '{}' plans", getName(), task.getName(), plans.size());
             for(BasicConsumerAgentData2 plan: plans) {
+                getEnvironment().getLifeCycleControl().pulse();
                 task.reevaluate(plan, null);
             }
         }

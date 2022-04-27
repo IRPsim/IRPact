@@ -130,6 +130,16 @@ public class IfElseActionModule2<I>
     }
 
     protected void run0(I input, List<PostAction2> actions) throws Throwable {
+//        if("IF_ELSE_REWIRE".equals(getName())) {
+//            onFalse.run(input, actions);
+//            return;
+//        }
+
+//        if("IF_ELSE_COMMU".equals(getName())) {
+//            onFalse.run(input, actions);
+//            return;
+//        }
+
         if(test.test(input, actions)) {
             onTrue.run(input, actions);
         } else {

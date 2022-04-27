@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.26.0" 
+        :description "IRPact v1.27.0" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -103,25 +103,25 @@
             :label "Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualImage" 
             :description "todo" 
-            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualImage" "enabled"] ["InComparedAnnualImage" "useGnuplot"] ["InComparedAnnualImage" "useR"] ["InComparedAnnualImage" "storeScript"] ["InComparedAnnualImage" "storeData"] ["InComparedAnnualImage" "storeImage"] ["InComparedAnnualImage" "imageWidth"] ["InComparedAnnualImage" "imageHeight"] ["InComparedAnnualImage" "linewidth"] ["InComparedAnnualImage" "skipInvalidZips"] ["InComparedAnnualImage" "showPreYear"] ["InComparedAnnualImage" "startAtMinValue"] ["InComparedAnnualImage" "autoTickY"] ["InComparedAnnualImage" "customImageId"] ["link" "InComparedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "PLZ-basierte Adoptionen mit Realdaten" 
             :set "set_InComparedAnnualZipImage" 
             :description "todo" 
-            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedAnnualZipImage" "enabled"] ["InComparedAnnualZipImage" "useGnuplot"] ["InComparedAnnualZipImage" "useR"] ["InComparedAnnualZipImage" "storeScript"] ["InComparedAnnualZipImage" "storeData"] ["InComparedAnnualZipImage" "storeImage"] ["InComparedAnnualZipImage" "imageWidth"] ["InComparedAnnualZipImage" "imageHeight"] ["InComparedAnnualZipImage" "linewidth"] ["InComparedAnnualZipImage" "skipInvalidZips"] ["InComparedAnnualZipImage" "showPreYear"] ["InComparedAnnualZipImage" "startAtMinValue"] ["InComparedAnnualZipImage" "autoTickY"] ["InComparedAnnualZipImage" "customImageId"] ["link" "InComparedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "Kumulierte Adoptionen mit Realdaten" 
             :set "set_InComparedCumulatedAnnualImage" 
             :description "todo" 
-            :tags [["InComparedCumulatedAnnualImage" "enabled"] ["InComparedCumulatedAnnualImage" "useGnuplot"] ["InComparedCumulatedAnnualImage" "useR"] ["InComparedCumulatedAnnualImage" "storeScript"] ["InComparedCumulatedAnnualImage" "storeData"] ["InComparedCumulatedAnnualImage" "storeImage"] ["InComparedCumulatedAnnualImage" "imageWidth"] ["InComparedCumulatedAnnualImage" "imageHeight"] ["InComparedCumulatedAnnualImage" "linewidth"] ["InComparedCumulatedAnnualImage" "skipInvalidZips"] ["InComparedCumulatedAnnualImage" "showPreYear"] ["InComparedCumulatedAnnualImage" "customImageId"] ["link" "InComparedCumulatedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedCumulatedAnnualImage" "enabled"] ["InComparedCumulatedAnnualImage" "useGnuplot"] ["InComparedCumulatedAnnualImage" "useR"] ["InComparedCumulatedAnnualImage" "storeScript"] ["InComparedCumulatedAnnualImage" "storeData"] ["InComparedCumulatedAnnualImage" "storeImage"] ["InComparedCumulatedAnnualImage" "imageWidth"] ["InComparedCumulatedAnnualImage" "imageHeight"] ["InComparedCumulatedAnnualImage" "linewidth"] ["InComparedCumulatedAnnualImage" "skipInvalidZips"] ["InComparedCumulatedAnnualImage" "showPreYear"] ["InComparedCumulatedAnnualImage" "startAtMinValue"] ["InComparedCumulatedAnnualImage" "autoTickY"] ["InComparedCumulatedAnnualImage" "customImageId"] ["link" "InComparedCumulatedAnnualImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "PLZ-basierte kumulierte Adoptionen mit Realdaten" 
             :set "set_InComparedCumulatedAnnualZipImage" 
             :description "todo" 
-            :tags [["InComparedCumulatedAnnualZipImage" "enabled"] ["InComparedCumulatedAnnualZipImage" "useGnuplot"] ["InComparedCumulatedAnnualZipImage" "useR"] ["InComparedCumulatedAnnualZipImage" "storeScript"] ["InComparedCumulatedAnnualZipImage" "storeData"] ["InComparedCumulatedAnnualZipImage" "storeImage"] ["InComparedCumulatedAnnualZipImage" "imageWidth"] ["InComparedCumulatedAnnualZipImage" "imageHeight"] ["InComparedCumulatedAnnualZipImage" "linewidth"] ["InComparedCumulatedAnnualZipImage" "skipInvalidZips"] ["InComparedCumulatedAnnualZipImage" "showPreYear"] ["InComparedCumulatedAnnualZipImage" "customImageId"] ["link" "InComparedCumulatedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
+            :tags [["InComparedCumulatedAnnualZipImage" "enabled"] ["InComparedCumulatedAnnualZipImage" "useGnuplot"] ["InComparedCumulatedAnnualZipImage" "useR"] ["InComparedCumulatedAnnualZipImage" "storeScript"] ["InComparedCumulatedAnnualZipImage" "storeData"] ["InComparedCumulatedAnnualZipImage" "storeImage"] ["InComparedCumulatedAnnualZipImage" "imageWidth"] ["InComparedCumulatedAnnualZipImage" "imageHeight"] ["InComparedCumulatedAnnualZipImage" "linewidth"] ["InComparedCumulatedAnnualZipImage" "skipInvalidZips"] ["InComparedCumulatedAnnualZipImage" "showPreYear"] ["InComparedCumulatedAnnualZipImage" "startAtMinValue"] ["InComparedCumulatedAnnualZipImage" "autoTickY"] ["InComparedCumulatedAnnualZipImage" "customImageId"] ["link" "InComparedCumulatedAnnualZipImage" "InColorPalette" "colorPalette"] ["link" "InComparedCumulatedAnnualZipImage" "InRealAdoptionDataFile" "realData"]]
           } 
           {
             :label "Adoptionsphasenübersicht" 
@@ -595,7 +595,7 @@
         :description "Darstellung des aktuellen Modulgraphs" 
         :graph {
           :edges {
-            :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
+            :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onTrueModule"] ["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentActionModule2" "onFalseModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "utilityLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "localShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "socialShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "envLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "novLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "npvLogger"] ["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InFeasibilityModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InInterestModule3" "evalranode3" "InConsumerAgentActionModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "adoptedModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentActionModule2" "impededModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
             :groups [
               {
                 :tags [["link" "InIfElseActionModule3" "actionnode3" "InConsumerAgentBoolModule2" "testModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentBoolModule2" "finCheckModule"]] 
@@ -608,19 +608,24 @@
                 :color "DarkCyan"
               } 
               {
-                :tags [["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"]] 
+                :tags [["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "drawModule"] ["link" "InThresholdReachedModule3" "boolnode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InBernoulliModule3" "boolnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InAddScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["link" "InMulScalarModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InProductModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "utilityLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "localShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "socialShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "envLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "novLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "npvLogger"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "thresholdModule"] ["link" "InDecisionMakingDeciderModule3" "evalranode3" "InConsumerAgentCalculationModule2" "utilityModule"]] 
                 :label "Berechnungskante" 
                 :color "Green"
               } 
               {
-                :tags [["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"] ["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"]] 
+                :tags [["link" "InRunUntilFailureModule3" "evalnode3" "InConsumerAgentModule2" "inputModule"]] 
                 :label "Systemkante" 
-                :color "Magenta"
+                :color "Blue"
               } 
               {
                 :tags [["link" "InDoAdoptModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "initModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "awarenessModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "feasibilityModule"] ["link" "InMainBranchingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "decisionModule"] ["link" "InPhaseUpdateModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InYearBasedAdoptionDeciderModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"] ["link" "InPhaseLoggingModule3" "evalranode3" "InConsumerAgentEvalRAModule2" "inputModule"]] 
                 :label "PVact-Kante" 
                 :color "#7012FE"
+              } 
+              {
+                :tags [["link" "InReevaluatorModule3" "reevalnode3" "InConsumerAgentModule2" "inputModule"]] 
+                :label "Reevalluierungskante" 
+                :color "Magenta"
               }
             ] 
             :heading "Kanten"
@@ -656,9 +661,9 @@
                   :value "#CAFE12"
                 } 
                 {
-                  :tags [["InCsvValueLoggingModule3" "calclognode3"]] 
+                  :tags [["InCsvValueLoggingModule3" "calclognode3"] ["InSpecialUtilityCsvValueLoggingModule3" "calcnode3"]] 
                   :label "Loggingmodule" 
-                  :value "#FEAF12"
+                  :value "Green"
                 } 
                 {
                   :tags [["InRunUntilFailureModule3" "evalnode3"]] 
@@ -702,9 +707,9 @@
                   :value "flower"
                 } 
                 {
-                  :tags [["InCsvValueLoggingModule3" "calclognode3"]] 
+                  :tags [["InCsvValueLoggingModule3" "calclognode3"] ["InSpecialUtilityCsvValueLoggingModule3" "calcnode3"]] 
                   :label "Loggingmodule" 
-                  :value "diamond"
+                  :value "square"
                 } 
                 {
                   :tags [["InRunUntilFailureModule3" "evalnode3"]] 
@@ -931,13 +936,13 @@
                 :label "LogisticModule" 
                 :set "set_InLogisticModule3_calcnode3" 
                 :description "L/(1+e^(-k*(x-x0)))" 
-                :tags [["InLogisticModule3" "calcnode3" "valueL"] ["InLogisticModule3" "calcnode3" "valueK"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"]]
+                :tags [["InLogisticModule3" "calcnode3" "valueL"] ["InLogisticModule3" "calcnode3" "valueK"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "xinputModule"] ["link" "InLogisticModule3" "calcnode3" "InConsumerAgentCalculationModule2" "x0inputModule"] ["InLogisticModule3" "calcnode3" "specialId"]]
               } 
               {
                 :label "SumModule" 
                 :set "set_InSumModule3_calcnode3" 
                 :description "todo" 
-                :tags [["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"]]
+                :tags [["link" "InSumModule3" "calcnode3" "InConsumerAgentCalculationModule2" "inputModule"] ["InSumModule3" "calcnode3" "specialId"]]
               } 
               {
                 :label "ProductModule" 
@@ -1003,7 +1008,7 @@
                 :label "Attributmodul" 
                 :set "set_InAttributeInputModule3_inputnode3" 
                 :description "todo" 
-                :tags [["link" "InAttributeInputModule3" "inputnode3" "InAttributeName" "attribute"]]
+                :tags [["link" "InAttributeInputModule3" "inputnode3" "InAttributeName" "attribute"] ["InAttributeInputModule3" "inputnode3" "specialId"]]
               } 
               {
                 :label "GlobalAvgNPVModule" 
@@ -1021,13 +1026,13 @@
                 :label "LocalShareOfAdopterModule" 
                 :set "set_InLocalShareOfAdopterModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InLocalShareOfAdopterModule3" "inputnode3" "maxToStore"] ["link" "InLocalShareOfAdopterModule3" "inputnode3" "InNodeDistanceFilterScheme" "nodeFilterScheme"]]
+                :tags [["InLocalShareOfAdopterModule3" "inputnode3" "maxToStore"] ["link" "InLocalShareOfAdopterModule3" "inputnode3" "InNodeDistanceFilterScheme" "nodeFilterScheme"] ["InLocalShareOfAdopterModule3" "inputnode3" "specialId"]]
               } 
               {
                 :label "SocialShareOfAdopterModule" 
                 :set "set_InSocialShareOfAdopterModule3_inputnode3" 
                 :description "todo" 
-                :tags [["InSocialShareOfAdopterModule3" "inputnode3" "placeholder"]]
+                :tags [["InSocialShareOfAdopterModule3" "inputnode3" "placeholder"] ["InSocialShareOfAdopterModule3" "inputnode3" "specialId"]]
               } 
               {
                 :label "AvgFinModule" 
@@ -1046,6 +1051,12 @@
                 :set "set_InCsvValueLoggingModule3_calclognode3" 
                 :description "todo" 
                 :tags [["InCsvValueLoggingModule3" "calclognode3" "enabled"] ["InCsvValueLoggingModule3" "calclognode3" "logReevaluatorCall"] ["InCsvValueLoggingModule3" "calclognode3" "logDefaultCall"] ["InCsvValueLoggingModule3" "calclognode3" "printHeader"] ["InCsvValueLoggingModule3" "calclognode3" "storeXlsx"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"]]
+              } 
+              {
+                :label "SpecialUtilityCsvValueLoggingModule3" 
+                :set "set_InSpecialUtilityCsvValueLoggingModule3_calcnode3" 
+                :description "todo" 
+                :tags [["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "utilityLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "localShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "socialShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "envLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "novLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "npvLogger"]]
               }
             ]
           } 

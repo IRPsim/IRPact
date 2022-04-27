@@ -90,6 +90,13 @@ public class InSocialShareOfAdopterModule3 implements InConsumerAgentInputModule
     )
     public double placeholder = 0;
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
+    public int specialId = -1;
+
     public InSocialShareOfAdopterModule3() {
     }
 
@@ -117,6 +124,7 @@ public class InSocialShareOfAdopterModule3 implements InConsumerAgentInputModule
 
         SocialShareOfAdopterModule2 module = new SocialShareOfAdopterModule2();
         module.setName(getName());
+        module.setSpecialId(specialId);
 
         return module;
     }

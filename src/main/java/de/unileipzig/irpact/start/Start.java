@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
+import de.unileipzig.irpact.commons.util.ConsoleUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -96,6 +97,9 @@ public final class Start {
 
     private boolean initLogging() {
         try {
+            if(options.isNoConsole()) {
+                ConsoleUtil.disable();
+            }
             IRPLogging.setFilterError(options.isFilterError());
             setupLogging();
             return true;

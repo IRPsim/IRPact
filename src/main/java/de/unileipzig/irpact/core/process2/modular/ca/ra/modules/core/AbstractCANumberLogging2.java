@@ -240,13 +240,8 @@ public abstract class AbstractCANumberLogging2
             );
         }
 
-        if(isEnabled()) {
-            if(doLog()) {
-                runLog(input, value);
-            } else {
-                trace("[{}] skip call", getName());
-            }
-        }
+        tryRunLog(input, value);
+
         return value;
     }
 
@@ -256,6 +251,16 @@ public abstract class AbstractCANumberLogging2
 
     protected boolean isNaN(double input) {
         return Double.isNaN(input);
+    }
+
+    public void tryRunLog(ConsumerAgentData2 input, double value) {
+        if(isEnabled()) {
+            if(doLog()) {
+                runLog(input, value);
+            } else {
+                trace("[{}] skip call", getName());
+            }
+        }
     }
 
     protected abstract void runLog(ConsumerAgentData2 input, double value);

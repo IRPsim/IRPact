@@ -34,7 +34,7 @@ public class SimpleConsumerAgentData implements ConsumerAgentData, ModularProces
     protected Map<String, Object> data;
 
     public SimpleConsumerAgentData() {
-        this(MapSupplier.CONCURRENT_HASH);
+        this(MapSupplier.CONCURRENT_LINKED);
     }
 
     public SimpleConsumerAgentData(MapSupplier mapSupplier) {
