@@ -3385,7 +3385,7 @@ InCsvValueLoggingModule3_inputModule:
   graphedge_label: *CALC_EDGE_LABEL
 
 InSpecialUtilityCsvValueLoggingModule3:
-  edn_label: "SpecialUtilityCsvValueLoggingModule3"
+  edn_label: "SpecialUtilityCsvValueLoggingModule"
   edn_description: "todo"
   graphnode_colorlabel: *LOGGING_MODULE_LABEL
   graphnode_borderlabel: *LOGGING_MODULE_LABEL

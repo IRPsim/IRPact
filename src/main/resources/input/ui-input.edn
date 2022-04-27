@@ -1053,7 +1053,7 @@
                 :tags [["InCsvValueLoggingModule3" "calclognode3" "enabled"] ["InCsvValueLoggingModule3" "calclognode3" "logReevaluatorCall"] ["InCsvValueLoggingModule3" "calclognode3" "logDefaultCall"] ["InCsvValueLoggingModule3" "calclognode3" "printHeader"] ["InCsvValueLoggingModule3" "calclognode3" "storeXlsx"] ["link" "InCsvValueLoggingModule3" "calclognode3" "InConsumerAgentCalculationModule2" "inputModule"]]
               } 
               {
-                :label "SpecialUtilityCsvValueLoggingModule3" 
+                :label "SpecialUtilityCsvValueLoggingModule" 
                 :set "set_InSpecialUtilityCsvValueLoggingModule3_calcnode3" 
                 :description "todo" 
                 :tags [["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InConsumerAgentCalculationModule2" "utilityModule"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "utilityLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "localShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "socialShareLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "envLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "novLogger"] ["link" "InSpecialUtilityCsvValueLoggingModule3" "calcnode3" "InCsvValueLoggingModule3" "calclognode3" "npvLogger"]]
