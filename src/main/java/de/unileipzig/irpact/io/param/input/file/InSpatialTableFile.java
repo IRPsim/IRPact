@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.file;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
@@ -94,10 +95,14 @@ public class InSpatialTableFile implements InFile {
 
     @Override
     public SpatialTableFileContent parse(IRPactInputParser parser) throws ParsingException {
+        return parse(parser.getResourceLoader());
+    }
+
+    public SpatialTableFileContent parse(ResourceLoader rloader) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             SpatialTableFileLoader loader = new SpatialTableFileLoader();
-            loader.setLoader(parser.getResourceLoader());
+            loader.setLoader(rloader);
             loader.setInputFileName(fileName);
             loader.setCoverage(getCoverage());
             loader.setSheetName(DEFAULT_SHEET_NAME);

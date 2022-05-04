@@ -8,7 +8,6 @@ import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
 import de.unileipzig.irpact.commons.util.data.Quadtree;
 import de.unileipzig.irpact.commons.util.table.Table;
-import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;

@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.file;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
@@ -79,10 +80,14 @@ public class InPVFile implements InFile {
 
     @Override
     public NPVXlsxData parse(IRPactInputParser parser) throws ParsingException {
+        return parse(parser.getResourceLoader());
+    }
+
+    public NPVXlsxData parse(ResourceLoader loader) throws ParsingException {
         try {
             String fileName = getFileNameWithoutExtension();
             PVFileLoader pvLoader = new PVFileLoader();
-            pvLoader.setLoader(parser.getResourceLoader());
+            pvLoader.setLoader(loader);
             pvLoader.setInputFileName(fileName);
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "try load '{}'", fileName);
             pvLoader.parse();

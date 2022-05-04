@@ -432,6 +432,7 @@ public class BasicCAModularProcessModel2
         if(task.reevaluateIndividual()) {
             trace("[{}] run reevaluator '{}' for '{}' plans", getName(), task.getName(), plans.size());
             for(BasicConsumerAgentData2 plan: plans) {
+                getEnvironment().getLifeCycleControl().pulse();
                 task.reevaluate(plan, null);
             }
         }
