@@ -99,6 +99,7 @@ public final class Start {
         try {
             if(options.isNoConsole()) {
                 ConsoleUtil.disable();
+                setThrowExceptionInMain(true);
             }
             IRPLogging.setFilterError(options.isFilterError());
             setupLogging();
@@ -261,6 +262,7 @@ public final class Start {
         Start start = new Start();
         Result result = start.run(args);
         if(result.isFailure() && result.hasCause() && isThrowExceptionInMain()) {
+            ConsoleUtil.enable();
             throw new StartException(result.getCause());
         }
     }

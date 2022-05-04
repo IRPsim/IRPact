@@ -47,6 +47,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
     public int outerPara = 1;
     public int maxStore = 20000;
     public int populationSize = 1341;
+    public double coverage = RealData.CONVERAGE_LEIPZIG;
 
     public RealPVactScenario_SingleRun_1kAgents(String name, String creator, String description) {
         super(name, creator, description);
@@ -121,7 +122,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
     @Override
     public List<InRoot> createInRootsOLD() {
         RealData realData = new RealData(this::createAgentGroup);
-        getSpatialFile().setCoverage(RealData.CONVERAGE);
+        getSpatialFile().setCoverage(coverage);
 
         InFileBasedPVactMilieuSupplier spatialDist = createSpatialDistribution("SpatialDist");
         realData.CAGS.forEach(cag -> cag.setSpatialDistribution(spatialDist));

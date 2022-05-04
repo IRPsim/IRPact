@@ -1105,14 +1105,19 @@ public final class IRPact implements IRPActAccess {
             return;
         }
 
-        ConsoleUtil.enable();
+        Runnable printTask;
         if(isSingleValue(performanceResult)) {
             LOGGER.info("[printPerformanceResult] print single value");
-            System.out.println(getSingleValue(performanceResult));
+            printTask = () -> System.out.println(getSingleValue(performanceResult));
         } else {
             LOGGER.info("[printPerformanceResult] print array value");
-            System.out.println(printMultiValue(performanceResult));
+            printTask = () -> System.out.println(printMultiValue(performanceResult));
         }
+
+        boolean consoleDisabled = ConsoleUtil.isDisabled();
+        if(consoleDisabled) ConsoleUtil.enable();
+        printTask.run();
+        if(consoleDisabled) ConsoleUtil.disable();
     }
 
     private static boolean isSingleValue(ObjectNode node) {
@@ -1135,6 +1140,7 @@ public final class IRPact implements IRPActAccess {
         copyLogIfPossible();;
         IRPLogging.terminate();
         clearConverterCache();
+        ConsoleUtil.enable();
     }
 
     private void copyLogIfPossible() {

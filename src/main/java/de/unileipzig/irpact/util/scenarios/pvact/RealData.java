@@ -139,6 +139,8 @@ public final class RealData {
     public static final double WEIGHT_LOCALE = 0.1589;
 
     public static final double CONVERAGE = 0.696375945;
+    public static final double CONVERAGE_LEIPZIG = 0.696375945;
+    public static final double CONVERAGE_DRESDEN = 0.724427331658821;
 
     public static final double[] COMMU = {
             0.204,
