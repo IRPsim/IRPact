@@ -3,6 +3,7 @@ package de.unileipzig.irpact.core.process2.modular.modules.calc;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.AbstractUniformMultiModuleN_2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -21,6 +22,7 @@ public class SumModule2<I>
 
     protected boolean checkNaN = true;
     protected boolean logWholeSum = true;
+    protected int specialId = SpecialUtilityCsvValueLoggingModule2.UNSET_ID;
 
     @Override
     protected void validateSelf() throws Throwable {
@@ -51,6 +53,16 @@ public class SumModule2<I>
     @Override
     public double calculate(I input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
+        double value = doCalculate(input, actions);
+        setSpecialData(specialId, value, input);
+        return value;
+    }
+
+    public void setSpecialId(int specialId) {
+        this.specialId = specialId;
+    }
+
+    protected double doCalculate(I input, List<PostAction2> actions) throws Throwable {
         if(checkNaN) {
             if(logWholeSum) {
                 return calculateWithoutNaNCheckAndLogSum(input, actions);

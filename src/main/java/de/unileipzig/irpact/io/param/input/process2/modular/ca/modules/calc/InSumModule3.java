@@ -102,6 +102,13 @@ public class InSumModule3 implements InConsumerAgentCalculationModule2 {
         this.inputModule = input;
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
+    public int specialId = -1;
+
     public InSumModule3() {
     }
 
@@ -129,6 +136,7 @@ public class InSumModule3 implements InConsumerAgentCalculationModule2 {
 
         SumModule2<ConsumerAgentData2> module = new SumModule2<>();
         module.setName(getName());
+        module.setSpecialId(specialId);
         for(InConsumerAgentCalculationModule2 submodule: getInput()) {
             module.add(parser.parseEntityTo(submodule));
         }

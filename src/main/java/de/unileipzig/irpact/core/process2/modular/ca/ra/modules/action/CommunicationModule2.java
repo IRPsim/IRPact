@@ -175,6 +175,13 @@ public class CommunicationModule2
         }
     }
 
+//    protected void printTargets(ConsumerAgentData2 input, List<SocialGraph.Node> targetList) {
+//        StringBuilder sb = new StringBuilder();
+//        targetList.forEach(n -> sb.append(n.getAgent().getName()).append(" "));
+//        String str = sb.toString();
+//        LOGGER.info("[COMMU] {} {} {}", input.getAgentName(), str.hashCode(), str);
+//    }
+
     @Override
     public void run(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
@@ -191,7 +198,9 @@ public class CommunicationModule2
         //create random target order
         List<SocialGraph.Node> targetList = new ArrayList<>();
         graph.getTargets(node, SocialGraph.Type.COMMUNICATION, targetList);
+//        printTargets(input, targetList);
         Collections.shuffle(targetList, rnd.getRandom());
+//        printTargets(input, targetList);
 
         for(SocialGraph.Node targetNode: targetList) {
             ConsumerAgent targetAgent = targetNode.getAgent(ConsumerAgent.class);

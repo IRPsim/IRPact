@@ -24,6 +24,7 @@ import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
 import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
 import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InSpecialUtilityCsvValueLoggingModule3;
 import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
 import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
@@ -1023,6 +1024,7 @@ public class InRoot implements RootClass {
             //calc-logging
             InConsumerAgentCalculationLoggingModule2.class,
             InCsvValueLoggingModule3.class,
+            InSpecialUtilityCsvValueLoggingModule3.class,
             //eval
             InConsumerAgentEvalModule2.class,
             InRunUntilFailureModule3.class,

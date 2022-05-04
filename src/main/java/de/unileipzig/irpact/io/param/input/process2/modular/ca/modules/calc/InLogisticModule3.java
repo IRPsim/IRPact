@@ -152,6 +152,13 @@ public class InLogisticModule3 implements InConsumerAgentCalculationModule2 {
         this.x0inputModule = new InConsumerAgentCalculationModule2[]{first};
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
+    public int specialId = -1;
+
     public InLogisticModule3() {
     }
 
@@ -183,6 +190,7 @@ public class InLogisticModule3 implements InConsumerAgentCalculationModule2 {
         module.setK(getValueK());
         module.setX(parser.parseEntityTo(getXInput()));
         module.setX0(parser.parseEntityTo(getX0Input()));
+        module.setSpecialId(specialId);
 
         return module;
     }

@@ -208,6 +208,10 @@ public class GnuPlotBuilder {
         setStyle("data linespoints");
     }
 
+    public void setYtics(double value) {
+        buildSet("ytics", value);
+    }
+
     public void setStyleHistrogramColumnStacked() {
         setStyle("histogram columnstacked");
     }

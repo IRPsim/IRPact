@@ -1889,6 +1889,20 @@ PARAMETER par_InComparedAnnualImage_skipInvalidZips(set_InComparedAnnualImage)
 PARAMETER par_InComparedAnnualImage_showPreYear(set_InComparedAnnualImage)
 
 * - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: startAtMinValue
+* - type: Boolean
+PARAMETER par_InComparedAnnualImage_startAtMinValue(set_InComparedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: autoTickY
+* - type: Boolean
+PARAMETER par_InComparedAnnualImage_autoTickY(set_InComparedAnnualImage)
+
+* - default: 0
 * - domain: [0,10]
 * - description: todo
 * - identifier: customImageId
@@ -1993,6 +2007,20 @@ PARAMETER par_InComparedAnnualZipImage_skipInvalidZips(set_InComparedAnnualZipIm
 * - identifier: showPreYear
 * - type: Boolean
 PARAMETER par_InComparedAnnualZipImage_showPreYear(set_InComparedAnnualZipImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: startAtMinValue
+* - type: Boolean
+PARAMETER par_InComparedAnnualZipImage_startAtMinValue(set_InComparedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: autoTickY
+* - type: Boolean
+PARAMETER par_InComparedAnnualZipImage_autoTickY(set_InComparedAnnualZipImage)
 
 * - default: 0
 * - domain: [0,10]
@@ -2101,6 +2129,20 @@ PARAMETER par_InComparedCumulatedAnnualImage_skipInvalidZips(set_InComparedCumul
 PARAMETER par_InComparedCumulatedAnnualImage_showPreYear(set_InComparedCumulatedAnnualImage)
 
 * - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: startAtMinValue
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_startAtMinValue(set_InComparedCumulatedAnnualImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: autoTickY
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualImage_autoTickY(set_InComparedCumulatedAnnualImage)
+
+* - default: 0
 * - domain: [0,10]
 * - description: todo
 * - identifier: customImageId
@@ -2205,6 +2247,20 @@ PARAMETER par_InComparedCumulatedAnnualZipImage_skipInvalidZips(set_InComparedCu
 * - identifier: showPreYear
 * - type: Boolean
 PARAMETER par_InComparedCumulatedAnnualZipImage_showPreYear(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 0
+* - domain: [0|1]
+* - description: todo
+* - identifier: startAtMinValue
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_startAtMinValue(set_InComparedCumulatedAnnualZipImage)
+
+* - default: 1
+* - domain: [0|1]
+* - description: todo
+* - identifier: autoTickY
+* - type: Boolean
+PARAMETER par_InComparedCumulatedAnnualZipImage_autoTickY(set_InComparedCumulatedAnnualZipImage)
 
 * - default: 0
 * - domain: [0,10]
@@ -3395,6 +3451,12 @@ PARAMETER par_link_InLogisticModule3_calcnode3_InConsumerAgentCalculationModule2
 * - type: Boolean
 PARAMETER par_link_InLogisticModule3_calcnode3_InConsumerAgentCalculationModule2_x0inputModule(set_InLogisticModule3_calcnode3,set_InConsumerAgentCalculationModule2)
 
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InLogisticModule3_calcnode3_specialId(set_InLogisticModule3_calcnode3)
+
 * - identifier: InMulScalarModule3_calcnode3
 * - type: String
 SET set_InMulScalarModule3_calcnode3(set_InConsumerAgentCalculationModule2)
@@ -3428,6 +3490,12 @@ SET set_InSumModule3_calcnode3(set_InConsumerAgentCalculationModule2)
 * - type: Boolean
 PARAMETER par_link_InSumModule3_calcnode3_InConsumerAgentCalculationModule2_inputModule(set_InSumModule3_calcnode3,set_InConsumerAgentCalculationModule2)
 
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InSumModule3_calcnode3_specialId(set_InSumModule3_calcnode3)
+
 * - identifier: InAttributeInputModule3_inputnode3
 * - type: String
 SET set_InAttributeInputModule3_inputnode3(set_InConsumerAgentInputModule2)
@@ -3436,6 +3504,12 @@ SET set_InAttributeInputModule3_inputnode3(set_InConsumerAgentInputModule2)
 * - identifier: attribute
 * - type: Boolean
 PARAMETER par_link_InAttributeInputModule3_inputnode3_InAttributeName_attribute(set_InAttributeInputModule3_inputnode3,set_InAttributeName)
+
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InAttributeInputModule3_inputnode3_specialId(set_InAttributeInputModule3_inputnode3)
 
 * - identifier: InAvgFinModule3_inputnode3
 * - type: String
@@ -3476,6 +3550,12 @@ PARAMETER par_InLocalShareOfAdopterModule3_inputnode3_maxToStore(set_InLocalShar
 * - type: Boolean
 PARAMETER par_link_InLocalShareOfAdopterModule3_inputnode3_InNodeDistanceFilterScheme_nodeFilterScheme(set_InLocalShareOfAdopterModule3_inputnode3,set_InNodeDistanceFilterScheme)
 
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InLocalShareOfAdopterModule3_inputnode3_specialId(set_InLocalShareOfAdopterModule3_inputnode3)
+
 * - identifier: InNaNModule3_inputnode3
 * - type: String
 SET set_InNaNModule3_inputnode3(set_InConsumerAgentInputModule2)
@@ -3507,6 +3587,12 @@ SET set_InSocialShareOfAdopterModule3_inputnode3(set_InConsumerAgentInputModule2
 * - identifier: ---
 * - type: Float
 PARAMETER par_InSocialShareOfAdopterModule3_inputnode3_placeholder(set_InSocialShareOfAdopterModule3_inputnode3)
+
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InSocialShareOfAdopterModule3_inputnode3_specialId(set_InSocialShareOfAdopterModule3_inputnode3)
 
 * - identifier: InValueModule3_inputnode3
 * - type: String
@@ -3566,6 +3652,45 @@ PARAMETER par_InCsvValueLoggingModule3_calclognode3_storeXlsx(set_InCsvValueLogg
 * - identifier: Eingabemodul
 * - type: Boolean
 PARAMETER par_link_InCsvValueLoggingModule3_calclognode3_InConsumerAgentCalculationModule2_inputModule(set_InCsvValueLoggingModule3_calclognode3,set_InConsumerAgentCalculationModule2)
+
+* - identifier: InSpecialUtilityCsvValueLoggingModule3_calcnode3
+* - type: String
+SET set_InSpecialUtilityCsvValueLoggingModule3_calcnode3(set_InConsumerAgentCalculationModule2)
+
+* - description: todo
+* - identifier: Utility-Modul
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InConsumerAgentCalculationModule2_utilityModule(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InConsumerAgentCalculationModule2)
+
+* - description: todo
+* - identifier: utilityLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_utilityLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
+
+* - description: todo
+* - identifier: localShareLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_localShareLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
+
+* - description: todo
+* - identifier: socialShareLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_socialShareLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
+
+* - description: todo
+* - identifier: envLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_envLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
+
+* - description: todo
+* - identifier: novLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_novLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
+
+* - description: todo
+* - identifier: npvLogger
+* - type: Boolean
+PARAMETER par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_npvLogger(set_InSpecialUtilityCsvValueLoggingModule3_calcnode3,set_InCsvValueLoggingModule3_calclognode3)
 
 * - identifier: InConsumerAgentEvalModule2
 * - hidden: 1

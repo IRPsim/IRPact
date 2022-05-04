@@ -609,6 +609,12 @@ InComparedAnnualImage_showPreYear:
 InComparedAnnualImage_showUnscaled:
   gams_identifier: "showUnscaled"
   gams_description: "todo"
+InComparedAnnualImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedAnnualImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
 InComparedAnnualImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
@@ -657,6 +663,12 @@ InComparedCumulatedAnnualImage_showPreYear:
   gams_description: "todo"
 InComparedCumulatedAnnualImage_showUnscaled:
   gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_autoTickY:
+  gams_identifier: "autoTickY"
   gams_description: "todo"
 InComparedCumulatedAnnualImage_customImageId:
   gams_identifier: "customImageId"
@@ -707,6 +719,12 @@ InComparedAnnualZipImage_showPreYear:
 InComparedAnnualZipImage_showUnscaled:
   gams_identifier: "showUnscaled"
   gams_description: "todo"
+InComparedAnnualZipImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedAnnualZipImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
 InComparedAnnualZipImage_customImageId:
   gams_identifier: "customImageId"
   gams_description: "todo"
@@ -755,6 +773,12 @@ InComparedCumulatedAnnualZipImage_showPreYear:
   gams_description: "todo"
 InComparedCumulatedAnnualZipImage_showUnscaled:
   gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_autoTickY:
+  gams_identifier: "autoTickY"
   gams_description: "todo"
 InComparedCumulatedAnnualZipImage_customImageId:
   gams_identifier: "customImageId"
@@ -1047,7 +1071,7 @@ informations:
 #update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.26.0"
+  edn_description: "IRPact v1.27.0"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -2720,7 +2744,7 @@ _ANCHORS:
   CALC_EDGE_LABEL: &CALC_EDGE_LABEL "Berechnungskante"
   SYSTEM_EDGE_LABEL: &SYSTEM_EDGE_LABEL "Systemkante"
   PVACT_EDGE_LABEL: &PVACT_EDGE_LABEL "PVact-Kante"
-  REEVAL_EDGE_LABEL: &REEVAL_EDGE_LABEL "Systemkante"
+  REEVAL_EDGE_LABEL: &REEVAL_EDGE_LABEL "Reevalluierungskante"
 
 _ACTION_HELPER:
   graphnode_colorlabel: *ACTION_MODULE_LABEL
@@ -3193,6 +3217,9 @@ InLogisticModule3_x0inputModule:
   gams_identifier: "x0 Modul"
   gams_description: "todo"
   graphedge_label: *CALC_EDGE_LABEL
+InLogisticModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
 
 InMulScalarModule3:
   edn_label: "MulScalarModule"
@@ -3229,6 +3256,9 @@ InSumModule3_inputModule:
   gams_identifier: "Eingabemodule"
   gams_description: "todo"
   graphedge_label: *CALC_EDGE_LABEL
+InSumModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
 
 # double - input
 process_modular3_PV_modules_input:
@@ -3243,6 +3273,9 @@ InAttributeInputModule3:
   graphnode_shapelabel: *INPUT_MODULE_LABEL
 InAttributeInputModule3_attribute:
   gams_identifier: "attribute"
+  gams_description: "todo"
+InAttributeInputModule3_specialId:
+  gams_identifier: "specialId"
   gams_description: "todo"
 
 InAvgFinModule3:
@@ -3277,6 +3310,9 @@ InLocalShareOfAdopterModule3_maxToStore:
 InLocalShareOfAdopterModule3_nodeFilterScheme:
   gams_identifier: "nodeFilterScheme"
   gams_description: "todo"
+InLocalShareOfAdopterModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
 
 InNaNModule3:
   edn_label: "NaNModule"
@@ -3306,6 +3342,9 @@ InSocialShareOfAdopterModule3:
   graphnode_shapelabel: *INPUT_MODULE_LABEL
 InSocialShareOfAdopterModule3_placeholder:
   gams_identifier: "---"
+  gams_description: "todo"
+InSocialShareOfAdopterModule3_specialId:
+  gams_identifier: "specialId"
   gams_description: "todo"
 
 InValueModule3:
@@ -3342,6 +3381,41 @@ InCsvValueLoggingModule3_storeXlsx:
   gams_description: "todo"
 InCsvValueLoggingModule3_inputModule:
   gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InSpecialUtilityCsvValueLoggingModule3:
+  edn_label: "SpecialUtilityCsvValueLoggingModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_utilityModule:
+  gams_identifier: "Utility-Modul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_utilityLogger:
+  gams_identifier: "utilityLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_localShareLogger:
+  gams_identifier: "localShareLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_socialShareLogger:
+  gams_identifier: "socialShareLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_envLogger:
+  gams_identifier: "envLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_novLogger:
+  gams_identifier: "novLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_npvLogger:
+  gams_identifier: "npvLogger"
   gams_description: "todo"
   graphedge_label: *CALC_EDGE_LABEL
 

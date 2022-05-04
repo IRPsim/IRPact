@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @author Daniel Abitz
@@ -39,9 +40,31 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
 
     public Path xlsx;
 
+    public boolean enableRALogging = true;
+    public boolean enableNeighbourLogging = true;
+    public boolean specialLogging = false;
+    public int innerPara = 8;
+    public int outerPara = 1;
+    public int maxStore = 20000;
+    public int populationSize = 1341;
+
     public RealPVactScenario_SingleRun_1kAgents(String name, String creator, String description) {
         super(name, creator, description);
         setRevision(REVISION);
+    }
+
+    public RealPVactScenario_SingleRun_1kAgents apply(Consumer<RealPVactScenario_SingleRun_1kAgents> instance) {
+        instance.accept(this);
+        return this;
+    }
+
+    public void setSpecialLogging(boolean specialLogging) {
+        this.specialLogging = specialLogging;
+    }
+
+    public RealPVactScenario_SingleRun_1kAgents withSpecialLogging(boolean specialLogging) {
+        setSpecialLogging(specialLogging);
+        return this;
     }
 
     protected InPVactConsumerAgentGroup createAgentGroup(String name) {
@@ -158,7 +181,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
 
         InFileBasedPVactConsumerAgentPopulation population = createFullPopulation("Pop", realData.CAGS.cags());
         population.setUseAll(false);
-        population.setDesiredSize(1341);
+        population.setDesiredSize(populationSize);
 
         Map<InPVactConsumerAgentGroup, Integer> edgeCount = realData.CAGS.map(RealData.calcEdgeCount(
                 RealData.XLSX_ORDER_ARR,
@@ -176,6 +199,10 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         List<InPostDataAnalysis> postData = new ArrayList<>();
 
         RealDataModularProcessModelTemplate mpm = createTemplate();
+        mpm.setSpecialLogging(specialLogging);
+        mpm.setMaxToStore(maxStore);
+        mpm.setNeighbourLogging(enableNeighbourLogging);
+        mpm.setRaLogging(enableRALogging);
 
         mpm.createModel();
         setupCommunicationModuleLogging(mpm.getCommunicationModule());
@@ -213,8 +240,8 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
 
-        root.getGeneral().setOuterParallelism(1);
-        root.getGeneral().setInnerParallelism(8);
+        root.getGeneral().setOuterParallelism(outerPara);
+        root.getGeneral().setInnerParallelism(innerPara);
 
         root.setAffinities(affinities);
         root.setConsumerAgentGroups(realData.CAGS.cags());

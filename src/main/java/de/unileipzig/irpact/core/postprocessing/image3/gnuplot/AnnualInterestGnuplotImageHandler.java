@@ -68,6 +68,7 @@ public class AnnualInterestGnuplotImageHandler
                 image.getLinewidth(),
                 image.getImageWidth(), image.getImageHeight(),
                 getMinYOrNull(), getMaxYOrNull(),
+                null,
                 false
         );
     }

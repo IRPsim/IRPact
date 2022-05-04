@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.graph;
 
 import de.unileipzig.irpact.commons.util.Rnd;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -48,6 +49,41 @@ public class CachedDirectedMultiGraph<V, E, T> implements DirectedMultiGraph<V, 
         this.vertexMap0Supplier = vertexMap0Supplier;
         this.vertices = verticiesSupplier.get();
         this.edges = edgesSupplier.get();
+    }
+
+    @Override
+    public void print(Appendable target, Function<? super V, ? extends String> vToString, Function<? super E, ? extends String> eToString, Function<? super T, ? extends String> tToString) throws IOException {
+        for(V vertex: getVertices()) {
+            target.append(vToString.apply(vertex));
+            target.append("\n");
+            VertexData<V, E, T> vertexData = vertices.get(vertex);
+
+            for(Map.Entry<T, Map<V, E>> inEdges: vertexData.getInEdges().entrySet()) {
+                target.append("  in edges (");
+                target.append(String.valueOf(tToString.apply(inEdges.getKey())));
+                target.append(") (count=");
+                target.append(Integer.toString(inEdges.getValue().size()));
+                target.append(")\n");
+                for(V linked: inEdges.getValue().keySet()) {
+                    target.append("    ");
+                    target.append(vToString.apply(linked));
+                    target.append("\n");
+                }
+            }
+
+            for(Map.Entry<T, Map<V, E>> outEdges: vertexData.getOutEdges().entrySet()) {
+                target.append("  out edges (");
+                target.append(String.valueOf(tToString.apply(outEdges.getKey())));
+                target.append(") (count=");
+                target.append(Integer.toString(outEdges.getValue().size()));
+                target.append(")\n");
+                for(V linked: outEdges.getValue().keySet()) {
+                    target.append("    ");
+                    target.append(vToString.apply(linked));
+                    target.append("\n");
+                }
+            }
+        }
     }
 
     public void setValidate(boolean validate) {

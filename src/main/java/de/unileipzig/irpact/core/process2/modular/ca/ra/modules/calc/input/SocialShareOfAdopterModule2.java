@@ -7,6 +7,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -24,6 +25,11 @@ public class SocialShareOfAdopterModule2
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SocialShareOfAdopterModule2.class);
 
     protected boolean logSocialNetworkCount = false;
+    protected int specialId = SpecialUtilityCsvValueLoggingModule2.UNSET_ID;
+
+    public void setSpecialId(int specialId) {
+        this.specialId = specialId;
+    }
 
     @Override
     public IRPLogger getDefaultLogger() {
@@ -54,7 +60,9 @@ public class SocialShareOfAdopterModule2
             logSocialNetwork(input);
         }
 
-        return getShareOfAdopterInSocialNetwork(input);
+        double value = getShareOfAdopterInSocialNetwork(input);
+        setSpecialData(specialId, value, input);
+        return value;
     }
 
     protected void logSocialNetwork(ConsumerAgentData2 input) {

@@ -4,6 +4,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
@@ -21,6 +22,7 @@ public class AttributeModule2
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AttributeModule2.class);
 
     protected String attributeName;
+    protected int specialId = SpecialUtilityCsvValueLoggingModule2.UNSET_ID;
 
     public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
@@ -40,6 +42,10 @@ public class AttributeModule2
         if(attributeName == null) {
             throw new NullPointerException("missing attribute name");
         }
+    }
+
+    public void setSpecialId(int specialId) {
+        this.specialId = specialId;
     }
 
     @Override
@@ -66,6 +72,7 @@ public class AttributeModule2
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         double value = getValue(input);
         checkAndWarnNaN(input, value, getAttributeName());
+        setSpecialData(specialId, value, input);
         return value;
     }
 }

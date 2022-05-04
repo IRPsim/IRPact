@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.resource.BasicResourceLoader;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
-import de.unileipzig.irpact.commons.util.ConsoleUtil;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -280,11 +279,6 @@ public class Preloader {
     }
 
     private void forceLoggingToConsole() {
-        if(clOptions.isNoConsole()) {
-            ConsoleUtil.disable();
-            return;
-        }
-
         IRPLogging.forceWriteToConsoleAndFile();
         LOGGER.warn("force logging to console and file (initial args: {})", clOptions.printArgs());
     }

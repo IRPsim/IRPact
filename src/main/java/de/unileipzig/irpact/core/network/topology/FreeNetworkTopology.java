@@ -161,6 +161,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     public void initalize(SimulationEnvironment environment, SocialGraph graph) throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
 
+//        LOGGER.info("RND: {}", getRnd().getInitialSeed());
+
         if(environment.isRestored()) {
             LOGGER.warn("DIRTY FIX");
             return;
@@ -188,6 +190,16 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         targetCache.clear();
         System.gc();
         LOGGER.trace("total added: {}", added);
+
+//        try {
+//            StringBuilder sb = new StringBuilder();
+//            graph.printGraph(sb);
+//            LOGGER.info("graph:\n{}", sb.toString());
+//        } catch (IOException e) {
+//            throw new UncheckedIOException(e);
+//        }
+//
+//        if(true) throw new RuntimeException();
     }
 
     protected Collection<ConsumerAgent> drawTargets(
@@ -378,8 +390,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
      */
     protected static class CagOrder {
 
-        protected DataCounter<ConsumerAgentGroup> existingLinkCounter = new DataCounter<>();
-        protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>();
+        protected DataCounter<ConsumerAgentGroup> existingLinkCounter = new DataCounter<>(new LinkedHashMap<>());
+        protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>(new LinkedHashMap<>());
         protected ConsumerAgentGroup skipSelfReferentialGroup;
 
         protected CagOrder() {

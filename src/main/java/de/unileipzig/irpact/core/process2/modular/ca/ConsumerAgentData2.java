@@ -42,6 +42,8 @@ public interface ConsumerAgentData2 extends InputData2 {
 
     Object put(Object id, Object data);
 
+    Object remove(Object id);
+
     //=========================
     //run
     //=========================

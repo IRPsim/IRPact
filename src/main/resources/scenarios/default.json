@@ -439,7 +439,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2022_04_19_T_16_10_21" : {
+        "CT_D_2022_04_27_T_11_14_27" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -526,7 +526,7 @@
         "DO_NOTHING" : { }
       },
       "set_InScenarioVersion" : {
-        "v1_26_0" : {
+        "v1_27_0" : {
           "par_InScenarioVersion_placeholder" : 0
         }
       },
@@ -557,6 +557,7 @@
         }
       },
       "set_InSpecialAverageQuantilRangeImage" : { },
+      "set_InSpecialUtilityCsvValueLoggingModule3_calcnode3" : { },
       "set_InSumModule3_calcnode3" : { },
       "set_InTestData" : { },
       "set_InThresholdReachedModule3_boolnode3" : { },
@@ -942,6 +943,13 @@
       },
       "par_link_InSpecialAverageQuantilRangeImage_InColorPalette_colorPalette" : { },
       "par_link_InSpecialAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InConsumerAgentCalculationModule2_utilityModule" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_envLogger" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_localShareLogger" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_novLogger" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_npvLogger" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_socialShareLogger" : { },
+      "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InCsvValueLoggingModule3_calclognode3_utilityLogger" : { },
       "par_link_InSumModule3_calcnode3_InConsumerAgentCalculationModule2_inputModule" : { },
       "par_link_InThresholdReachedModule3_boolnode3_InConsumerAgentCalculationModule2_drawModule" : { },
       "par_link_InThresholdReachedModule3_boolnode3_InConsumerAgentCalculationModule2_thresholdModule" : { },

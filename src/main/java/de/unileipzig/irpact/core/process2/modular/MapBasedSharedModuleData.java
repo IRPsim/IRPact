@@ -18,7 +18,7 @@ public class MapBasedSharedModuleData implements SharedModuleData {
     protected Map<Object, Map<Object, Object>> keyKeyValueMapping;
 
     public MapBasedSharedModuleData() {
-        this(MapSupplier.CONCURRENT_HASH);
+        this(MapSupplier.CONCURRENT_LINKED);
     }
 
     public MapBasedSharedModuleData(MapSupplier mapSupplier) {

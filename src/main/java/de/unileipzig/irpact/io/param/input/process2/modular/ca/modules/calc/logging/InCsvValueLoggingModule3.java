@@ -183,6 +183,9 @@ public class InCsvValueLoggingModule3 implements InConsumerAgentCalculationLoggi
     public void setInput(InConsumerAgentCalculationModule2 first) {
         this.inputModule = new InConsumerAgentCalculationModule2[]{first};
     }
+    public void removeInput() {
+        this.inputModule = new InConsumerAgentCalculationModule2[0];
+    }
 
     public InCsvValueLoggingModule3() {
     }

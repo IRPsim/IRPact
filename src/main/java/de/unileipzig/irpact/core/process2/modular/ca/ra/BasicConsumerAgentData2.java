@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.util.data.map.Map3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.ProcessPlan2;
@@ -13,6 +14,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.CAModularProcessPlan2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Daniel Abitz
  */
 public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerAgentData2, Nameable {
+
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(BasicConsumerAgentData2.class);
 
     protected final Map<Object, Object> cache = new ConcurrentHashMap<>();
     protected final Map3<Long, Object, Object> runCache = Map3.newConcurrentHashMap();
@@ -105,6 +109,11 @@ public class BasicConsumerAgentData2 implements CAModularProcessPlan2, ConsumerA
     @Override
     public Object put(Object id, Object data) {
         return cache.put(id, data);
+    }
+
+    @Override
+    public Object remove(Object id) {
+        return cache.remove(id);
     }
 
     @Override

@@ -11,6 +11,7 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -417,5 +418,15 @@ public class BasicSocialGraph implements SocialGraph, LoggableChecksum {
     @Override
     public Set<? extends Edge> removeAllEdges(Type type) {
         return GRAPH.removeAllEdges(type);
+    }
+
+    @Override
+    public void printGraph(Appendable target) throws IOException {
+        GRAPH.print(
+                target,
+                Node::getLabel,
+                Edge::printLabel,
+                Enum::name
+        );
     }
 }

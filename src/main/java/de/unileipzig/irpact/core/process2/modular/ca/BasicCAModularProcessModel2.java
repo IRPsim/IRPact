@@ -406,7 +406,7 @@ public class BasicCAModularProcessModel2
 
             @Override
             public void run() {
-                trace("run 'createEndOfYearTask': {}", getName());
+                info("run 'createEndOfYearTask': {}", getName());
                 try {
                     runEndOfYear();
                 } catch (Throwable e) {

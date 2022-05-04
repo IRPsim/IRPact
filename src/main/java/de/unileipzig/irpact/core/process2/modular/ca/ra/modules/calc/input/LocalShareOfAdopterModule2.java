@@ -1,20 +1,17 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input;
 
-import de.unileipzig.irpact.commons.Nameable;
-import de.unileipzig.irpact.commons.logging.LazyString;
-import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process2.PostAction2;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.SpecialUtilityCsvValueLoggingModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Daniel Abitz
@@ -28,6 +25,7 @@ public class LocalShareOfAdopterModule2
     protected boolean logLocalNetwork = false;
     protected NodeFilterScheme nodeFilterScheme;
     protected int maxToStore = 0;
+    protected int specialId = SpecialUtilityCsvValueLoggingModule2.UNSET_ID;
 
     public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
@@ -43,6 +41,10 @@ public class LocalShareOfAdopterModule2
 
     public int getMaxToStore() {
         return maxToStore;
+    }
+
+    public void setSpecialId(int specialId) {
+        this.specialId = specialId;
     }
 
     @Override
@@ -88,36 +90,39 @@ public class LocalShareOfAdopterModule2
 
         NodeFilter nodeFilter = getNodeFilter(input, nodeFilterScheme);
 
-        if(logLocalNetwork) {
-            logLocalNetwork(input, nodeFilter);
-        }
+//        if(logLocalNetwork) {
+//            logLocalNetwork(input, nodeFilter);
+//        }
 
-        return getShareOfAdopterInLocalNetwork(
+        double value = getShareOfAdopterInLocalNetwork(
                 input,
                 nodeFilter,
                 maxToStore
         );
+
+        setSpecialData(specialId, value, input);
+        return value;
     }
 
-    protected void logLocalNetwork(ConsumerAgentData2 input, NodeFilter nodeFilter) {
-        trace(
-                "[{}]@[{}] logLocalNetwork all={}, feasible={}, adopter={}",
-                getName(), input.getAgentName(),
-                new LazyString(() -> {
-                    List<ConsumerAgent> list = streamNeighbours(input.getEnvironment(), input.getAgent(), nodeFilter).collect(Collectors.toList());
-                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
-                    return "{size=" + names.size() + "; " + names + "}";
-                }),
-                new LazyString(() -> {
-                    List<ConsumerAgent> list = streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), nodeFilter).collect(Collectors.toList());
-                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
-                    return "{size=" + names.size() + "; " + names + "}";
-                }),
-                new LazyString(() -> {
-                    List<ConsumerAgent> list = streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), nodeFilter).filter(_agent -> _agent.hasAdopted(input.getProduct())).collect(Collectors.toList());
-                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
-                    return "{size=" + names.size() + "; " + names + "}";
-                })
-        );
-    }
+//    protected void logLocalNetwork(ConsumerAgentData2 input, NodeFilter nodeFilter) {
+//        trace(
+//                "[{}]@[{}] logLocalNetwork all={}, feasible={}, adopter={}",
+//                getName(), input.getAgentName(),
+//                new LazyString(() -> {
+//                    List<ConsumerAgent> list = streamNeighbours(input.getEnvironment(), input.getAgent(), nodeFilter).collect(Collectors.toList());
+//                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+//                    return "{size=" + names.size() + "; " + names + "}";
+//                }),
+//                new LazyString(() -> {
+//                    List<ConsumerAgent> list = streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), nodeFilter).collect(Collectors.toList());
+//                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+//                    return "{size=" + names.size() + "; " + names + "}";
+//                }),
+//                new LazyString(() -> {
+//                    List<ConsumerAgent> list = streamFeasibleAndFinancialNeighbours(input.getEnvironment(), input.getAgent(), input.getProduct(), nodeFilter).filter(_agent -> _agent.hasAdopted(input.getProduct())).collect(Collectors.toList());
+//                    List<String> names = list.stream().map(Nameable::getName).collect(Collectors.toList());
+//                    return "{size=" + names.size() + "; " + names + "}";
+//                })
+//        );
+//    }
 }

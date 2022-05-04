@@ -115,6 +115,13 @@ public class InLocalShareOfAdopterModule3 implements InConsumerAgentInputModule2
         }
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
+    public int specialId = -1;
+
     public InLocalShareOfAdopterModule3() {
     }
 
@@ -142,6 +149,7 @@ public class InLocalShareOfAdopterModule3 implements InConsumerAgentInputModule2
 
         LocalShareOfAdopterModule2 module = new LocalShareOfAdopterModule2();
         module.setName(getName());
+        module.setSpecialId(specialId);
         module.setMaxToStore(maxToStore);
         if(hasNodeFilterScheme()) {
             InNodeDistanceFilterScheme inFilterScheme = getNodeFilterScheme();

@@ -15,7 +15,7 @@ public class UncertaintyCache extends NameableBase {
     protected Map<ConsumerAgent, Uncertainty> cache;
 
     public UncertaintyCache() {
-        this(MapSupplier.HASH);
+        this(MapSupplier.LINKED);
     }
 
     public UncertaintyCache(MapSupplier supplier) {
