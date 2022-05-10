@@ -4110,6 +4110,126 @@ SCALAR sca_InSpecialPVactInput_const2019
 * - type: Float
 SCALAR sca_InSpecialPVactInput_const2020
 
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2021
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2021
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2022
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2022
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2023
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2023
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2024
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2024
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2025
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2025
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2026
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2026
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2027
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2027
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2028
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2028
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2029
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2029
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2030
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2030
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2031
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2031
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2032
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2032
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2033
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2033
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2034
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2034
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2035
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2035
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2036
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2036
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2037
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2037
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2038
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2038
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2039
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2039
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2040
+* - type: Float
+SCALAR sca_InSpecialPVactInput_const2040
+
 * - default: 0
 * - domain: [0|1]
 * - description: Aktiviert bzw. deaktiviert die Nutzung der hier definierten Renovierungsraten im Modell.
@@ -4194,6 +4314,126 @@ SCALAR sca_InSpecialPVactInput_reno2019
 * - identifier: Jahr 2020
 * - type: Float
 SCALAR sca_InSpecialPVactInput_reno2020
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2021
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2021
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2022
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2022
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2023
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2023
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2024
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2024
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2025
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2025
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2026
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2026
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2027
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2027
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2028
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2028
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2029
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2029
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2030
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2030
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2031
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2031
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2032
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2032
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2033
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2033
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2034
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2034
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2035
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2035
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2036
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2036
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2037
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2037
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2038
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2038
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2039
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2039
+
+* - default: 0.0
+* - description: Stellt die Renovierungsrate für das Jahr 2020 ein.
+* - identifier: Jahr 2040
+* - type: Float
+SCALAR sca_InSpecialPVactInput_reno2040
 
 * - identifier: InBasicProductGroup
 * - type: String

@@ -3938,6 +3938,66 @@ InSpecialPVactInput_const2019:
 InSpecialPVactInput_const2020:
   gams_identifier: "Jahr 2020"
   gams_description: "Stellt die Konstruktionsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2021:
+  gams_identifier: "Jahr 2021"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2022:
+  gams_identifier: "Jahr 2022"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2023:
+  gams_identifier: "Jahr 2023"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2024:
+  gams_identifier: "Jahr 2024"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2025:
+  gams_identifier: "Jahr 2025"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2026:
+  gams_identifier: "Jahr 2026"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2027:
+  gams_identifier: "Jahr 2027"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2028:
+  gams_identifier: "Jahr 2028"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2029:
+  gams_identifier: "Jahr 2029"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2030:
+  gams_identifier: "Jahr 2030"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2031:
+  gams_identifier: "Jahr 2031"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2032:
+  gams_identifier: "Jahr 2032"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2033:
+  gams_identifier: "Jahr 2033"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2034:
+  gams_identifier: "Jahr 2034"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2035:
+  gams_identifier: "Jahr 2035"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2036:
+  gams_identifier: "Jahr 2036"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2037:
+  gams_identifier: "Jahr 2037"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2038:
+  gams_identifier: "Jahr 2038"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2039:
+  gams_identifier: "Jahr 2039"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2040:
+  gams_identifier: "Jahr 2040"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
 
 special_input_pvact_renorate:
   edn_label: "Jährliche Renovierungsraten"
@@ -3984,6 +4044,66 @@ InSpecialPVactInput_reno2019:
   gams_description: "Stellt die Renovierungsrate für das Jahr 2019 ein."
 InSpecialPVactInput_reno2020:
   gams_identifier: "Jahr 2020"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2021:
+  gams_identifier: "Jahr 2021"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2022:
+  gams_identifier: "Jahr 2022"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2023:
+  gams_identifier: "Jahr 2023"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2024:
+  gams_identifier: "Jahr 2024"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2025:
+  gams_identifier: "Jahr 2025"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2026:
+  gams_identifier: "Jahr 2026"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2027:
+  gams_identifier: "Jahr 2027"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2028:
+  gams_identifier: "Jahr 2028"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2029:
+  gams_identifier: "Jahr 2029"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2030:
+  gams_identifier: "Jahr 2030"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2031:
+  gams_identifier: "Jahr 2031"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2032:
+  gams_identifier: "Jahr 2032"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2033:
+  gams_identifier: "Jahr 2033"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2034:
+  gams_identifier: "Jahr 2034"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2035:
+  gams_identifier: "Jahr 2035"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2036:
+  gams_identifier: "Jahr 2036"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2037:
+  gams_identifier: "Jahr 2037"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2038:
+  gams_identifier: "Jahr 2038"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2039:
+  gams_identifier: "Jahr 2039"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2040:
+  gams_identifier: "Jahr 2040"
   gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
 
 
