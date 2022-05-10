@@ -468,6 +468,27 @@ public class InGeneral implements Copyable {
         return getOuterParallelism() * getInnerParallelism();
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logAdoptionAnalysis = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logResultAdoptionsAll = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logPerformance = false;
+
     //=========================
     //general logging
     //=========================
@@ -628,27 +649,6 @@ public class InGeneral implements Copyable {
     //=========================
     //result logging
     //=========================
-
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
-    public boolean logResultAdoptionsAll = false;
-
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
-    public boolean logAdoptionAnalysis = false;
-
-    @FieldDefinition
-    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
-    @LocalizedUiResource.SimpleSet(
-            boolDomain = true
-    )
-    public boolean logPerformance = false;
 
     @FieldDefinition
     @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)

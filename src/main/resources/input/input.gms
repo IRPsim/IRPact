@@ -5023,6 +5023,27 @@ SCALAR sca_InGeneral_innerParallelism
 
 * - default: 0
 * - domain: [0|1]
+* - description: Erstellt eine Adoptionsanalyse.json für die programmatische Auswertung. Diese beinhaltet die kumulierten Adoptionsdaten untergliedert nach Jahr und Postleitzahl.
+* - identifier: Adoptionsanalyse
+* - type: Boolean
+SCALAR sca_InGeneral_logAdoptionAnalysis
+
+* - default: 0
+* - domain: [0|1]
+* - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
+* - identifier: Komplettausgabe
+* - type: Boolean
+SCALAR sca_InGeneral_logResultAdoptionsAll
+
+* - default: 0
+* - domain: [0|1]
+* - description: Performance.xlsx
+* - identifier: Performance
+* - type: Boolean
+SCALAR sca_InGeneral_logPerformance
+
+* - default: 0
+* - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
 * - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 0)
@@ -5195,20 +5216,6 @@ SCALAR sca_InGeneral_logInitialization
 * - identifier: Simulationsprozess loggen?
 * - type: Boolean
 SCALAR sca_InGeneral_logSimulation
-
-* - default: 0
-* - domain: [0|1]
-* - description: Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben.
-* - identifier: Komplettausgabe
-* - type: Boolean
-SCALAR sca_InGeneral_logResultAdoptionsAll
-
-* - default: 0
-* - domain: [0|1]
-* - description: Performance.xlsx
-* - identifier: Performance
-* - type: Boolean
-SCALAR sca_InGeneral_logPerformance
 
 * - default: 0
 * - domain: [0|1]

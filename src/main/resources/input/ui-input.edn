@@ -48,7 +48,7 @@
       {
         :label "Spezielle Einstellungen" 
         :description "Hier lassen sich spezielle Modi aktivieren." 
-        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNonErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"] ["InGeneral" "forceLogToConsole"] ["InGeneral" "debugTask"] ["InGeneral" "outerParallelism"] ["InGeneral" "innerParallelism"]] 
+        :tags [["InGeneral" "runPVAct"] ["InGeneral" "runOptActDemo"] ["InGeneral" "runMode"] ["InGeneral" "scenarioMode"] ["InGeneral" "passErrorMessageToOutput"] ["InGeneral" "printStacktraceImage"] ["InGeneral" "printNonErrorImage"] ["InGeneral" "copyLogIfPossible"] ["InGeneral" "skipPersist"] ["InGeneral" "forceLogToConsole"] ["InGeneral" "debugTask"] ["InGeneral" "outerParallelism"] ["InGeneral" "innerParallelism"] ["InGeneral" "logAdoptionAnalysis"] ["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"]] 
         :sections [
           {
             :label "Binäre Daten" 
@@ -1361,7 +1361,7 @@
           {
             :label "Datenausgabe" 
             :description "Hier kann die Datenausgabe konfiguriert werden." 
-            :tags [["InGeneral" "logResultAdoptionsAll"] ["InGeneral" "logPerformance"] ["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"]]
+            :tags [["InGeneral" "logPhaseOverview"] ["InGeneral" "logInterest"] ["InGeneral" "logEvaluation"] ["InGeneral" "evaluationBucketSize"]]
           }
         ]
       }
