@@ -1012,6 +1012,9 @@ data_output:
 InGeneral_logResultAdoptionsAll:
   gams_identifier: "Komplettausgabe"
   gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
+InGeneral_logAdoptionAnalysis:
+  gams_identifier: "Adoptionsanalyse"
+  gams_description: "Erstellt eine Adoptionsanalyse.json für die programmatische Auswertung. Diese beinhaltet die kumulierten Adoptionsdaten untergliedert nach Jahr und Postleitzahl."
 InGeneral_logPerformance:
   gams_identifier: "Performance"
   gams_description: "Performance.xlsx"
@@ -4198,7 +4201,7 @@ InGeneral_logNonAdopterAnalysis:
 InGeneral_logInitialAdopterAnalysis:
   gams_identifier: "Initiale Adopter"
   gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
-InGeneral_logAdoptionAnalysis:
+InGeneral_logAdoptionAnalysis_OLD:
   gams_identifier: "Adoptions"
   gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
 InGeneral_logDecisionAnalysis:

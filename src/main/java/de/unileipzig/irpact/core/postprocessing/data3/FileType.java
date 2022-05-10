@@ -5,5 +5,6 @@ package de.unileipzig.irpact.core.postprocessing.data3;
  */
 public enum FileType {
     XLSX,
-    CSV
+    CSV,
+    JSON
 }

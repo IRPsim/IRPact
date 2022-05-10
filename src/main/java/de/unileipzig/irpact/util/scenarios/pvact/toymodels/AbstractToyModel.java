@@ -294,6 +294,7 @@ public abstract class AbstractToyModel extends AbstractPVactScenario {
         root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
+        root.getGeneral().logAdoptionAnalysis = true;
 
         root.getGeneral().setOuterParallelism(1);
         root.getGeneral().setInnerParallelism(8);

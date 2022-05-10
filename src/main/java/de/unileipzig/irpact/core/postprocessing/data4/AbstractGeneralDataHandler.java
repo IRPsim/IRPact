@@ -42,6 +42,9 @@ public abstract class AbstractGeneralDataHandler implements DataHandler, Logging
             case CSV:
                 return getTargetDir().resolve(baseName + ".csv");
 
+            case JSON:
+                return getTargetDir().resolve(baseName + ".json");
+
             default:
                 throw new IllegalArgumentException("unsupported type: " + type);
         }

@@ -24,6 +24,7 @@ public class BasicSettings implements Settings, ChecksumComparable {
     protected MainCommandLineOptions clOptions;
 
     protected boolean logResultAdoptionsAll = false;
+    protected boolean logAdoptionAnalysis = false;
     protected boolean logPerformance = false;
 
     protected boolean logScriptAdoptionsZip = false;
@@ -220,6 +221,16 @@ public class BasicSettings implements Settings, ChecksumComparable {
     @Override
     public boolean isLogResultAdoptionsAll() {
         return logResultAdoptionsAll;
+    }
+
+    @Override
+    public void setLogAdoptionAnalysis(boolean logAdoptionAnalysis) {
+        this.logAdoptionAnalysis = logAdoptionAnalysis;
+    }
+
+    @Override
+    public boolean isLogAdoptionAnalysis() {
+        return logAdoptionAnalysis;
     }
 
     @Override

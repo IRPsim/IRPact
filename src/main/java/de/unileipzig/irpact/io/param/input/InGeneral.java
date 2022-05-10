@@ -641,6 +641,13 @@ public class InGeneral implements Copyable {
     @LocalizedUiResource.SimpleSet(
             boolDomain = true
     )
+    public boolean logAdoptionAnalysis = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean logPerformance = false;
 
     @FieldDefinition
@@ -761,6 +768,7 @@ public class InGeneral implements Copyable {
 
     public void enableAllResultLogging() {
         logResultAdoptionsAll = true;
+        logAdoptionAnalysis = true;
         logPerformance = true;
         logPhaseOverview = true;
         logInterest = true;
@@ -800,6 +808,7 @@ public class InGeneral implements Copyable {
 
     public void parseSettings(Settings settings) {
         settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
+        settings.setLogAdoptionAnalysis(logAdoptionAnalysis);
         settings.setLogPerformance(logPerformance);
 
         settings.setLogScriptAdoptionsZip(logScriptAdoptionsZip);

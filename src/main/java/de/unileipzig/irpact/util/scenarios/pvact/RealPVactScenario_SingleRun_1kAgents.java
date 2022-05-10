@@ -240,6 +240,7 @@ public class RealPVactScenario_SingleRun_1kAgents extends AbstractPVactScenario 
         root.getGeneral().setPersistDisabled(true);
         root.getGeneral().setCopyLogIfPossible(true);
         root.getGeneral().logResultAdoptionsAll = true;
+        root.getGeneral().logAdoptionAnalysis = true;
 
         root.getGeneral().setOuterParallelism(outerPara);
         root.getGeneral().setInnerParallelism(innerPara);

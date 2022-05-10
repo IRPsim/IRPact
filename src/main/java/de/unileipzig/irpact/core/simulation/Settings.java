@@ -92,6 +92,9 @@ public interface Settings {
     void setLogResultAdoptionsAll(boolean log);
     boolean isLogResultAdoptionsAll();
 
+    void setLogAdoptionAnalysis(boolean log);
+    boolean isLogAdoptionAnalysis();
+
     void setLogPerformance(boolean log);
     boolean isLogPerformance();
 

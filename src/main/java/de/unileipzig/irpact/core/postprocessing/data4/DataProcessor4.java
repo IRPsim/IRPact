@@ -28,6 +28,7 @@ public class DataProcessor4 extends PostProcessor {
 
     protected static final String POPULATION_OVERVIEW_BASENAME = "Populationsuebersicht";
     protected static final String ADOPTION_OVERVIEW_BASENAME = "Adoptionsuebersicht";
+    protected static final String ADOPTION_ANALYSIS_BASENAME = "AdoptionAnalysis";
 
     protected ObjectNode performanceNode;
 
@@ -65,6 +66,7 @@ public class DataProcessor4 extends PostProcessor {
         try {
             handlePopulationOverview();
             handleAdoptionOverview();
+            handleAdoptionAnalysis();
             handlePerformanceEvaluator();
             executeDataHandler();
         } catch (Throwable t) {
@@ -86,6 +88,10 @@ public class DataProcessor4 extends PostProcessor {
     }
 
     protected void handleAdoptionOverview() {
+        if(!getSettings().isLogResultAdoptionsAll()) {
+            return;
+        }
+
         try {
             trace("handle AdoptionOverview '{}'", ADOPTION_OVERVIEW_BASENAME);
             AdoptionOverview overview = new AdoptionOverview(this, ADOPTION_OVERVIEW_BASENAME);
@@ -96,7 +102,26 @@ public class DataProcessor4 extends PostProcessor {
         }
     }
 
+    protected void handleAdoptionAnalysis() {
+        if(!getSettings().isLogAdoptionAnalysis()) {
+            return;
+        }
+
+        try {
+            trace("handle AdoptionAnalysis '{}'", ADOPTION_ANALYSIS_BASENAME);
+            AdoptionAnalysis analysis = new AdoptionAnalysis(this, ADOPTION_ANALYSIS_BASENAME);
+            analysis.init();
+            analysis.execute();
+        } catch (Throwable t) {
+            error("unexpected error while handling 'adoption analysis'", t);
+        }
+    }
+
     protected void handlePerformanceEvaluator() {
+        if(!getSettings().isLogPerformance()) {
+            return;
+        }
+
         try {
             trace("handle AdoptionOverview '{}'", ADOPTION_OVERVIEW_BASENAME);
             PerformanceEvaluator performance = new PerformanceEvaluator(this);
