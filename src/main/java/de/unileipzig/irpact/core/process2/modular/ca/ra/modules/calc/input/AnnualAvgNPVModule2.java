@@ -24,6 +24,10 @@ public class AnnualAvgNPVModule2
     protected NPVDataSupplier dataSupplier;
     protected NPVData data;
 
+    public void setData(NPVData data) {
+        this.data = data;
+    }
+
     @Override
     public IRPLogger getDefaultLogger() {
         return LOGGER;

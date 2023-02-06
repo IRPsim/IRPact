@@ -13,10 +13,7 @@ import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
-import de.unileipzig.irpact.core.process.ra.npv.NPVCalculator;
-import de.unileipzig.irpact.core.process.ra.npv.NPVData;
-import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
-import de.unileipzig.irpact.core.process.ra.npv.NPVMatrix;
+import de.unileipzig.irpact.core.process.ra.npv.*;
 import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.product.Product;
@@ -43,10 +40,41 @@ public interface RAHelperAPI2 extends HelperAPI2 {
     //individual keys
     Object NODE_FILTER = new Object();
     Object UTILITY = new Object();
+    Object NPV_ASSET = new Object();
+    Object NPV_NONASSET = new Object();
 
     //=========================
     //general
     //=========================
+
+    default AssetNPVDataSupplier getAssetNPVDataSupplier(SimulationEnvironment environment, NPVData data) {
+        DataStore store = environment.getGlobalData();
+        AssetNPVDataSupplier dataSupplier = store.getAuto(NPV_ASSET, data);
+        if (dataSupplier == null) {
+            NPVCalculator calculator = new NPVCalculator();
+            calculator.setData(data);
+
+            int firstYear = environment.getTimeModel().getFirstSimulationYear();
+            int lastYear = environment.getTimeModel().getLastSimulationYear();
+            int preFirstYear = firstYear - 1;
+
+            trace(IRPSection.INITIALIZATION_PARAMETER, "calculating npv matrix from '{}' (first={}) to '{}'", preFirstYear, firstYear, lastYear);
+            dataSupplier = new AssetNPVDataSupplier();
+            dataSupplier.setAttributeHelper(environment.getAttributeHelper());
+            for(int y = preFirstYear; y <= lastYear; y++) {
+                trace("calculate year '{}'", y);
+                NPVMatrix matrix = new NPVMatrix();
+                matrix.calculate(calculator, y);
+                dataSupplier.put(y, matrix);
+            }
+            dataSupplier.addAssets(environment.getAgents().streamConsumerAgents());
+            trace(IRPSection.INITIALIZATION_PARAMETER, "AssetNPVDataSupplier for NPVDAta '{}' created", data);
+            store.put(NPV_ASSET, data, dataSupplier);
+        } else {
+            trace(IRPSection.INITIALIZATION_PARAMETER, "AssetNPVDataSupplier for NPVDAta '{}' already exists", data);
+        }
+        return dataSupplier;
+    }
 
     default NPVDataSupplier getNPVDataSupplier(SimulationEnvironment environment, NPVData data) {
         DataStore store = environment.getGlobalData();

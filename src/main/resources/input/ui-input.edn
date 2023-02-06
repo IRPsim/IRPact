@@ -12,7 +12,7 @@
       {
         :label "Über IRPact" 
         :set "set_InIRPactVersion" 
-        :description "IRPact v1.27.0" 
+        :description "IRPact v1.27.0 (x)" 
         :tags [["InIRPactVersion" "placeholder"]]
       } 
       {
@@ -656,7 +656,7 @@
                   :value "Green"
                 } 
                 {
-                  :tags [["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
+                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "#CAFE12"
                 } 
@@ -702,7 +702,7 @@
                   :value "square"
                 } 
                 {
-                  :tags [["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
+                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "flower"
                 } 
@@ -1013,14 +1013,44 @@
               {
                 :label "GlobalAvgNPVModule" 
                 :set "set_InGlobalAvgNPVModule3_inputnode3" 
-                :description "todo" 
+                :description "Berechnet den globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung unabhängig von den Agenten." 
                 :tags [["link" "InGlobalAvgNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalAvgAssetNPVModule" 
+                :set "set_InGlobalAvgAssetNPVModule3_inputnode3" 
+                :description "Berechnet den globalen (über alle Jahre) durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet." 
+                :tags [["link" "InGlobalAvgAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "NPVModule" 
                 :set "set_InNPVModule3_inputnode3" 
-                :description "todo" 
+                :description "Berechnet den NPV für einen einzelnen Agenten in Abhängigkeit des Jahres." 
                 :tags [["link" "InNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AssetNPVModule" 
+                :set "set_InAssetNPVModule3_inputnode3" 
+                :description "Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet." 
+                :tags [["link" "InAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualAvgNPVModule" 
+                :set "set_InAnnualAvgNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen." 
+                :tags [["link" "InAnnualAvgNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualAvgAgentNPVModule" 
+                :set "set_InAnnualAvgAgentNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten." 
+                :tags [["link" "InAnnualAvgAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualAvgAgentAssetNPVModule" 
+                :set "set_InAnnualAvgAgentAssetNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet." 
+                :tags [["link" "InAnnualAvgAgentAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "LocalShareOfAdopterModule" 

@@ -1074,7 +1074,7 @@ informations:
 #update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.27.0"
+  edn_description: "IRPact v1.27.0 (x)"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -3291,13 +3291,73 @@ InAvgFinModule3_placeholder:
   gams_identifier: "---"
   gams_description: "todo"
 
+InNPVModule3:
+  edn_label: "NPVModule"
+  edn_description: "Berechnet den NPV für einen einzelnen Agenten in Abhängigkeit des Jahres."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 InGlobalAvgNPVModule3:
   edn_label: "GlobalAvgNPVModule"
-  edn_description: "todo"
+  edn_description: "Berechnet den globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung unabhängig von den Agenten."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
 InGlobalAvgNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgAgentAssetNPVModule2:
+  edn_label: "AnnualAvgAgentAssetNPVModule"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgAgentAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAssetNPVModule3:
+  edn_label: "AssetNPVModule"
+  edn_description: "Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalAvgAssetNPVModule3:
+  edn_label: "GlobalAvgAssetNPVModule"
+  edn_description: "Berechnet den globalen (über alle Jahre) durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalAvgAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgNPVModule2:
+  edn_label: "AnnualAvgNPVModule"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgAgentNPVModule2:
+  edn_label: "AnnualAvgAgentNPVModule"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgAgentNPVModule2_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
@@ -3325,16 +3385,6 @@ InNaNModule3:
   graphnode_shapelabel: *INPUT_MODULE_LABEL
 InNaNModule3_placeholder:
   gams_identifier: "---"
-  gams_description: "todo"
-
-InNPVModule3:
-  edn_label: "NPVModule"
-  edn_description: "todo"
-  graphnode_colorlabel: *INPUT_MODULE_LABEL
-  graphnode_borderlabel: *INPUT_MODULE_LABEL
-  graphnode_shapelabel: *INPUT_MODULE_LABEL
-InNPVModule3_pvFile:
-  gams_identifier: "pvFile"
   gams_description: "todo"
 
 InSocialShareOfAdopterModule3:

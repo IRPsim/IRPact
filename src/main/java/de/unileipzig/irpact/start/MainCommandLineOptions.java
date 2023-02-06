@@ -3,6 +3,8 @@ package de.unileipzig.irpact.start;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.AbstractCommandLineOptions;
 import de.unileipzig.irpact.commons.resource.MapResourceBundle;
+import de.unileipzig.irpact.commons.util.Rnd;
+import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
@@ -10,13 +12,13 @@ import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
 import de.unileipzig.irpact.util.R.RscriptEngine;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotEngine;
 import de.unileipzig.irptools.defstructure.DefinitionMapper;
+import de.unileipzig.irptools.util.log.IRPLogger;
 import picocli.CommandLine;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
+import java.io.UncheckedIOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -75,6 +77,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
             bundle.put("calculatePerformance", "currently supported: RMSD, MAE, FSAPE, globalAdoptionDelta, absoluteAnnualAdoptionDelta, cumulativeAnnualAdoptionDelta");
             bundle.put("noConsole", "disables console logging");
+            bundle.put("runId", "Set an id for the run and creates special in- and output directories.");
 
             fallback = bundle;
         }
@@ -83,6 +86,9 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     private static final String TRUE1 = "1";
     private static final String FALSE0 = "0";
+
+
+    private final IRPLogger LOGGER = IRPLogging.getLogger(MainCommandLineOptions.class);
 
     //=========================
     //core irpact
@@ -320,6 +326,14 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     )
     private boolean noConsole;
 
+    @CommandLine.Option(
+            names = { "--runId" },
+            descriptionKey = "runId",
+            arity = "0..1",
+            fallbackValue = "__RANDOM_NUMBER__"
+    )
+    private String runId;
+
     //=========================
     //rest
     //=========================
@@ -466,7 +480,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         if(parent == null) {
             throw new IllegalArgumentException("invalid output path, no parent: " + output);
         }
-        return parent;
+        if (hasRunId()) {
+            return parent.resolve(getRunId());
+        } else {
+            return parent;
+        }
     }
 
     public Path getOutputDir() {
@@ -474,7 +492,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         if(outputDir == null) {
             return getOutputPathDir();
         } else {
-            return outputDir;
+            if (hasRunId()) {
+                return outputDir.resolve(getRunId());
+            } else {
+                return outputDir;
+            }
         }
     }
     public Path getCreatedOutputDir() throws IOException {
@@ -538,7 +560,13 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
     public Path getLogPath() {
         checkExecuted();
-        return logPath;
+        if (hasRunId()) {
+            String logFile = logPath.getFileName().toString();
+            String newFile = getRunId() + "_" + logFile;
+            return logPath.resolveSibling(newFile);
+        } else {
+            return logPath;
+        }
     }
     public void setLogPath(Path logPath) {
         checkExecuted();
@@ -574,9 +602,72 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     }
     public Path getDataDirPath() {
         checkExecuted();
-        return dataDirPath == null
-                ? ResourceLoader.EXTERN_RESOURCES_PATH
-                : dataDirPath;
+        if (hasRunId()) {
+            Path path = dataDirPath == null
+                    ? ResourceLoader.EXTERN_RESOURCES_PATH
+                    : dataDirPath;
+            Path parent = path.getParent();
+            String dirName = path.getFileName().toString();
+            String tmpName = getRunId() + "_" + dirName;
+            Path tmpSubDir = parent.resolve(tmpName);
+            if (!Files.exists(tmpSubDir)) {
+                try {
+                    Files.createDirectory(tmpSubDir);
+                    copyInputData(path, tmpSubDir);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }
+            return tmpSubDir;
+        } else {
+            return dataDirPath == null
+                    ? ResourceLoader.EXTERN_RESOURCES_PATH
+                    : dataDirPath;
+        }
+    }
+
+    private void copyInputData(Path source, Path target, CopyOption... options) throws IOException {
+        Files.walkFileTree(source, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                Path dst = target.resolve(source.relativize(dir).toString());
+                LOGGER.trace("copy dir {} -> {}", dir, dst);
+                Files.createDirectories(dst);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Path dst = target.resolve(source.relativize(file).toString());
+                LOGGER.trace("copy file {} -> {}", file, dst);
+                Files.copy(file, dst, options);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    public void clearTmpInputIfRequired() throws IOException {
+        if (hasRunId()) {
+            deleteDir(getDataDirPath());
+        }
+    }
+
+    private void deleteDir(Path dirToDelete) throws IOException {
+        Files.walkFileTree(dirToDelete, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                LOGGER.trace("delete dir {}", dir);
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                LOGGER.trace("delete file {}", file);
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 
     public boolean isSkipPersistenceCheck() {
@@ -629,6 +720,25 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             return Locale.forLanguageTag(tag);
         } catch (Exception e) {
             return ifNotFound;
+        }
+    }
+
+    public boolean hasRunId() {
+        return runId != null;
+    }
+
+    public String getRunId() {
+        if (hasRunId()) {
+            if ("__RANDOM_NUMBER__".equals(runId)) {
+                long rnd = Rnd.nextLongGlobal();
+                runId = "runId" + Long.toUnsignedString(rnd);
+            }
+            if (!runId.startsWith("runId")) {
+                runId = "runId" + runId;
+            }
+            return runId;
+        } else {
+            throw new UnsupportedOperationException();
         }
     }
 

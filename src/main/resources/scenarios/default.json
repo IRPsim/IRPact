@@ -163,10 +163,14 @@
       "set_InAgentPopulation" : {
         "PopulationSize" : { }
       },
+      "set_InAnnualAvgAgentAssetNPVModule2_inputnode3" : { },
+      "set_InAnnualAvgAgentNPVModule2_inputnode3" : { },
+      "set_InAnnualAvgNPVModule2_inputnode3" : { },
       "set_InAnnualBucketImage" : { },
       "set_InAnnualInterestImage" : { },
       "set_InAnnualInterestLogger" : { },
       "set_InAnnualMilieuImage" : { },
+      "set_InAssetNPVModule3_inputnode3" : { },
       "set_InAttributeInputModule3_inputnode3" : { },
       "set_InAttributeName" : { },
       "set_InAvgFinModule3_inputnode3" : { },
@@ -470,6 +474,7 @@
       "set_InGeneralConsumerAgentGroup" : { },
       "set_InGeneralConsumerAgentGroupAttribute" : { },
       "set_InGenericOutputImage" : { },
+      "set_InGlobalAvgAssetNPVModule3_inputnode3" : { },
       "set_InGlobalAvgNPVModule3_inputnode3" : { },
       "set_InGnuPlotOutputImage" : { },
       "set_InGraphTopologyScheme" : {
@@ -480,7 +485,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2022_05_10_T_13_02_38" : {
+        "CT_D_2023_02_06_T_05_58_55" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -666,10 +671,14 @@
         }
       },
       "par_link_InAgentAttributeScaler_InAttributeName_attribute" : { },
+      "par_link_InAnnualAvgAgentAssetNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualAvgAgentNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualAvgNPVModule2_inputnode3_InPVFile_pvFile" : { },
       "par_link_InAnnualBucketImage_InColorPalette_colorPalette" : { },
       "par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
       "par_link_InAnnualInterestImage_InColorPalette_colorPalette" : { },
       "par_link_InAnnualMilieuImage_InColorPalette_colorPalette" : { },
+      "par_link_InAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InAttributeInputModule3_inputnode3_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : {
         "ProcessModel" : {
@@ -865,6 +874,7 @@
       "par_link_InGeneralConsumerAgentGroupAttribute_InAttributeName_attrName" : { },
       "par_link_InGeneralConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InGenericOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
+      "par_link_InGlobalAvgAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InGlobalAvgNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InIfElseActionModule3_actionnode3_InConsumerAgentActionModule2_onFalseModule" : { },

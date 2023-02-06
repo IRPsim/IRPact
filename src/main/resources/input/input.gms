@@ -3496,6 +3496,42 @@ PARAMETER par_link_InSumModule3_calcnode3_InConsumerAgentCalculationModule2_inpu
 * - type: Integer
 PARAMETER par_InSumModule3_calcnode3_specialId(set_InSumModule3_calcnode3)
 
+* - identifier: InAnnualAvgAgentAssetNPVModule2_inputnode3
+* - type: String
+SET set_InAnnualAvgAgentAssetNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualAvgAgentAssetNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgAgentAssetNPVModule2_inputnode3,set_InPVFile)
+
+* - identifier: InAnnualAvgAgentNPVModule2_inputnode3
+* - type: String
+SET set_InAnnualAvgAgentNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualAvgAgentNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgAgentNPVModule2_inputnode3,set_InPVFile)
+
+* - identifier: InAnnualAvgNPVModule2_inputnode3
+* - type: String
+SET set_InAnnualAvgNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualAvgNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgNPVModule2_inputnode3,set_InPVFile)
+
+* - identifier: InAssetNPVModule3_inputnode3
+* - type: String
+SET set_InAssetNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAssetNPVModule3_inputnode3_InPVFile_pvFile(set_InAssetNPVModule3_inputnode3,set_InPVFile)
+
 * - identifier: InAttributeInputModule3_inputnode3
 * - type: String
 SET set_InAttributeInputModule3_inputnode3(set_InConsumerAgentInputModule2)
@@ -3525,6 +3561,15 @@ PARAMETER par_InAvgFinModule3_inputnode3_placeholder(set_InAvgFinModule3_inputno
 * - hidden: 1
 * - type: String
 SET set_InConsumerAgentInputModule2(set_InConsumerAgentCalculationModule2)
+
+* - identifier: InGlobalAvgAssetNPVModule3_inputnode3
+* - type: String
+SET set_InGlobalAvgAssetNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InGlobalAvgAssetNPVModule3_inputnode3_InPVFile_pvFile(set_InGlobalAvgAssetNPVModule3_inputnode3,set_InPVFile)
 
 * - identifier: InGlobalAvgNPVModule3_inputnode3
 * - type: String

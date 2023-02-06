@@ -165,7 +165,14 @@ public final class Start {
         if(isHelpOrVersion()) return result;
         if(isRunIRPtools()) return runIRPtools();
         if(isRunUtilities()) return runUtilities();
-        return runPreloader(scenario, callbacks);
+        Result result = runPreloader(scenario, callbacks);
+        LOGGER.trace("clearTmpInputIfRequired");
+        try {
+            options.clearTmpInputIfRequired();
+        } catch (IOException e) {
+            LOGGER.error("clearTmpInputIfRequired", e);
+        }
+        return result;
     }
 
     private Result runIRPtools() {
