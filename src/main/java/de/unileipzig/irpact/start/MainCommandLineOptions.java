@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.resource.MapResourceBundle;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.LocalShareOfAdopterModule2;
 import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irpact.start.irpact.executors.IRPactExecutors;
@@ -76,8 +77,11 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("testCl", "For testing the command line.");
 
             bundle.put("calculatePerformance", "currently supported: RMSD, MAE, FSAPE, globalAdoptionDelta, absoluteAnnualAdoptionDelta, cumulativeAnnualAdoptionDelta");
+            bundle.put("printAdoptions", "prints annual adoptions as array");
+            bundle.put("printAdoptionsVerbose", "prints annual adoptions as map");
             bundle.put("noConsole", "disables console logging");
             bundle.put("runId", "Set an id for the run and creates special in- and output directories.");
+            bundle.put("disableKdtree", "Disables the kd-tree");
 
             fallback = bundle;
         }
@@ -321,10 +325,28 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
     private String[] calculatePerformance;
 
     @CommandLine.Option(
+        names = { "--printAdoptions" },
+        descriptionKey = "printAdoptions"
+    )
+    private boolean printAdoptions;
+
+    @CommandLine.Option(
+        names = { "--printAdoptionsVerbose" },
+        descriptionKey = "printAdoptionsVerbose"
+    )
+    private boolean printAdoptionsVerbose;
+
+    @CommandLine.Option(
             names = { "--noConsole" },
             descriptionKey = "noConsole"
     )
     private boolean noConsole;
+
+    @CommandLine.Option(
+        names = { "--disableKdtree" },
+        descriptionKey = "disableKdtree"
+    )
+    private boolean disableKdtree;
 
     @CommandLine.Option(
             names = { "--runId" },
@@ -752,6 +774,7 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             throw new IllegalStateException("already executed");
         }
         executed = true;
+        LocalShareOfAdopterModule2.useKdtree = !disableKdtree;
         return validate();
     }
 
@@ -829,6 +852,14 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         return calculatePerformance == null
                 ? new String[0]
                 : calculatePerformance;
+    }
+
+    public boolean isPrintAdoptions() {
+        return printAdoptions;
+    }
+
+    public boolean isPrintAdoptionsVerbose() {
+        return printAdoptionsVerbose;
     }
 
     public boolean isNoConsole() {

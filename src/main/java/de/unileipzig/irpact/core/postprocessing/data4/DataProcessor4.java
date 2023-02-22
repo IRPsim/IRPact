@@ -1,7 +1,11 @@
 package de.unileipzig.irpact.core.postprocessing.data4;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.resource.JsonResource;
+import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -30,7 +34,7 @@ public class DataProcessor4 extends PostProcessor {
     protected static final String ADOPTION_OVERVIEW_BASENAME = "Adoptionsuebersicht";
     protected static final String ADOPTION_ANALYSIS_BASENAME = "AdoptionAnalysis";
 
-    protected ObjectNode performanceNode;
+    protected ObjectNode resultInformation;
 
     public DataProcessor4(
             MetaData metaData,
@@ -50,7 +54,7 @@ public class DataProcessor4 extends PostProcessor {
     }
 
     public ObjectNode getPerformanceNode() {
-        return performanceNode;
+        return resultInformation;
     }
 
     protected void loadLocalizedData() throws IOException {
@@ -112,6 +116,18 @@ public class DataProcessor4 extends PostProcessor {
             AdoptionAnalysis analysis = new AdoptionAnalysis(this, ADOPTION_ANALYSIS_BASENAME);
             analysis.init();
             analysis.execute();
+            if (clOptions.isPrintAdoptions()) {
+                ArrayNode node = analysis.getSimpleInformation();
+                ObjectNode root = JsonUtil.JSON.createObjectNode();
+                root.set("adoptions", node);
+                appendToInformationResult(root);
+            }
+            if (clOptions.isPrintAdoptionsVerbose()) {
+                ObjectNode node = analysis.getVerboseInformation();
+                ObjectNode root = JsonUtil.JSON.createObjectNode();
+                root.set("adoptionsVerbose", node);
+                appendToInformationResult(root);
+            }
         } catch (Throwable t) {
             error("unexpected error while handling 'adoption analysis'", t);
         }
@@ -127,7 +143,8 @@ public class DataProcessor4 extends PostProcessor {
             PerformanceEvaluator performance = new PerformanceEvaluator(this);
             performance.init();
             performance.execute();
-            performanceNode = performance.getPerfomance(clOptions.getCalculatePerformanceArray());
+            ObjectNode performanceNode = performance.getPerfomance(clOptions.getCalculatePerformanceArray());
+            appendToInformationResult(performanceNode);
         } catch (Throwable t) {
             error("unexpected error while handling 'PerformanceEvaluator'", t);
         }
@@ -144,6 +161,13 @@ public class DataProcessor4 extends PostProcessor {
                 }
             }
         }
+    }
+
+    protected void appendToInformationResult(ObjectNode node) {
+        if (resultInformation == null) {
+            resultInformation = JsonUtil.JSON.createObjectNode();
+        }
+        resultInformation.setAll(node);
     }
 
     @Override

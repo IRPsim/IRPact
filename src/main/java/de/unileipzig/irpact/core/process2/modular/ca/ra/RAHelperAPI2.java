@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra;
 
+import de.unileipzig.irpact.commons.advanced.KDTree2D;
 import de.unileipzig.irpact.commons.time.TimeUtil;
 import de.unileipzig.irpact.commons.time.Timestamp;
 import de.unileipzig.irpact.commons.util.data.DataStore;
@@ -10,6 +11,7 @@ import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessageCollection;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -18,6 +20,7 @@ import de.unileipzig.irpact.core.process2.modular.ca.ConsumerAgentData2;
 import de.unileipzig.irpact.core.process2.modular.HelperAPI2;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.develop.Todo;
 
 import java.time.ZonedDateTime;
@@ -429,6 +432,17 @@ public interface RAHelperAPI2 extends HelperAPI2 {
             NodeFilter filter) {
         return streamNeighbours(environment, source, filter)
                 .filter(target -> isFeasibleAndFinancialNeighbour(target, product));
+    }
+
+    default double getShareOfAdopterInLocalNetwork(
+        ConsumerAgentData2 input,
+        MaxDistanceNodeFilter filter,
+        KDTree2D<ConsumerAgent> kdtree) {
+        List<ConsumerAgent> neighbours = new ArrayList<>(2000);
+        Metric2D metric = (Metric2D) filter.getMetric();
+        double radius = filter.getMaxDistance();
+        kdtree.circularQuery(input.getAgent(), radius, neighbours, metric);
+        return getShareOfAdopterInNeighbourhood(input, input.getProduct(), neighbours.stream());
     }
 
     default double getShareOfAdopterInLocalNetwork(

@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.postprocessing.data4;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -11,6 +12,9 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 /**
  * @author Daniel Abitz
@@ -18,6 +22,7 @@ import java.util.List;
 public class AdoptionAnalysis extends AbstractGeneralDataHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AdoptionAnalysis.class);
+    private NavigableMap<Integer, Integer> annualData = new TreeMap<>();
 
     public AdoptionAnalysis(DataProcessor4 processor, String baseName) {
         super(processor, baseName);
@@ -82,10 +87,27 @@ public class AdoptionAnalysis extends AbstractGeneralDataHandler {
                 yearNode.put(zip, adoptions);
             }
             yearNode.put("total", totalYear);
+            annualData.put(year, totalYear);
             totalAll = Math.max(totalAll, totalYear);
         }
         cumulatedNode.put("total", totalAll);
 
+        return rootNode;
+    }
+
+    protected ObjectNode getVerboseInformation() {
+        ObjectNode rootNode = JsonUtil.JSON.createObjectNode();
+        for (Map.Entry<Integer, Integer> entry : annualData.entrySet()) {
+            rootNode.put(Integer.toString(entry.getKey()), entry.getValue());
+        }
+        return rootNode;
+    }
+
+    protected ArrayNode getSimpleInformation() {
+        ArrayNode rootNode = JsonUtil.JSON.createArrayNode();
+        for (Map.Entry<Integer, Integer> entry : annualData.entrySet()) {
+            rootNode.add(entry.getValue());
+        }
         return rootNode;
     }
 }

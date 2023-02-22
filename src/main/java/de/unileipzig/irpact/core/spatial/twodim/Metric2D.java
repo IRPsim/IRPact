@@ -115,4 +115,8 @@ public enum Metric2D implements Metric {
         Point2D t = Metric2D.cast(to);
         return distance(f, t);
     }
+
+    public double distance(double x1, double y1, double x2, double y2) {
+        return distance(new BasicPoint2D(x1, y1), new BasicPoint2D(x2, y2));
+    }
 }

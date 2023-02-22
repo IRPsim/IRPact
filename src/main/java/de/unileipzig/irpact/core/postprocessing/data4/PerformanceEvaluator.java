@@ -72,7 +72,7 @@ public class PerformanceEvaluator extends AbstractGeneralDataHandler {
                 continue;
             }
 
-            result.put(pType.print(), resultNode.get(pType.print()));
+            result.set(pType.print(), resultNode.get(pType.print()));
         }
         return result;
     }

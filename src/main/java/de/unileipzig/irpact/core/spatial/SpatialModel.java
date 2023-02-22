@@ -17,6 +17,8 @@ public interface SpatialModel extends SimulationEntity, InitalizablePart {
 
     double distance(SpatialInformation from, SpatialInformation to);
 
+    Metric getMetric();
+
     //=========================
     // data
     //=========================
