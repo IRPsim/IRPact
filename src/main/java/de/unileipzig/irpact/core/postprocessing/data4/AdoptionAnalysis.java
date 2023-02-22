@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionData;
 import de.unileipzig.irpact.core.postprocessing.data3.AnnualEnumeratedAdoptionZips;
 import de.unileipzig.irpact.core.postprocessing.data3.FileType;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -22,7 +23,8 @@ import java.util.TreeMap;
 public class AdoptionAnalysis extends AbstractGeneralDataHandler {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(AdoptionAnalysis.class);
-    private NavigableMap<Integer, Integer> annualData = new TreeMap<>();
+    private NavigableMap<Integer, Integer> annualDataCumulated = new TreeMap<>();
+    private NavigableMap<Integer, Integer> annualDataUncumulated = new TreeMap<>();
 
     public AdoptionAnalysis(DataProcessor4 processor, String baseName) {
         super(processor, baseName);
@@ -69,6 +71,7 @@ public class AdoptionAnalysis extends AbstractGeneralDataHandler {
         List<Integer> years = processor.getAllSimulationYears();
         List<String> zips = processor.getAllZips(RAConstants.ZIP);
         AnnualEnumeratedAdoptionZips data = getCumulatedAdoptionData();
+        AnnualEnumeratedAdoptionData<String> uncumulated = getAdoptionData();
 
         ObjectNode rootNode = JsonUtil.JSON.createObjectNode();
         ObjectNode cumulatedNode = rootNode.putObject("cumulated");
@@ -80,14 +83,18 @@ public class AdoptionAnalysis extends AbstractGeneralDataHandler {
             ObjectNode yearNode = cumulatedNode.putObject(Integer.toString(year));
             yearNode.putNull("total"); //placeholder
             int totalYear = 0;
+            int totalYearUncumulated = 0;
             for(String zip: zips) {
                 int adoptions = data.getCount(year, product, zip);
+                int uncumulatedAdoptions = uncumulated.getCount(year, product, zip);
 
                 totalYear += adoptions;
+                totalYearUncumulated += uncumulatedAdoptions;
                 yearNode.put(zip, adoptions);
             }
             yearNode.put("total", totalYear);
-            annualData.put(year, totalYear);
+            annualDataCumulated.put(year, totalYear);
+            annualDataUncumulated.put(year, totalYearUncumulated);
             totalAll = Math.max(totalAll, totalYear);
         }
         cumulatedNode.put("total", totalAll);
@@ -97,7 +104,15 @@ public class AdoptionAnalysis extends AbstractGeneralDataHandler {
 
     protected ObjectNode getVerboseInformation() {
         ObjectNode rootNode = JsonUtil.JSON.createObjectNode();
-        for (Map.Entry<Integer, Integer> entry : annualData.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : annualDataUncumulated.entrySet()) {
+            rootNode.put(Integer.toString(entry.getKey()), entry.getValue());
+        }
+        return rootNode;
+    }
+
+    protected ObjectNode getVerboseCumulatedInformation() {
+        ObjectNode rootNode = JsonUtil.JSON.createObjectNode();
+        for (Map.Entry<Integer, Integer> entry : annualDataCumulated.entrySet()) {
             rootNode.put(Integer.toString(entry.getKey()), entry.getValue());
         }
         return rootNode;
@@ -105,7 +120,15 @@ public class AdoptionAnalysis extends AbstractGeneralDataHandler {
 
     protected ArrayNode getSimpleInformation() {
         ArrayNode rootNode = JsonUtil.JSON.createArrayNode();
-        for (Map.Entry<Integer, Integer> entry : annualData.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : annualDataUncumulated.entrySet()) {
+            rootNode.add(entry.getValue());
+        }
+        return rootNode;
+    }
+
+    protected ArrayNode getSimpleCumulatedInformation() {
+        ArrayNode rootNode = JsonUtil.JSON.createArrayNode();
+        for (Map.Entry<Integer, Integer> entry : annualDataCumulated.entrySet()) {
             rootNode.add(entry.getValue());
         }
         return rootNode;

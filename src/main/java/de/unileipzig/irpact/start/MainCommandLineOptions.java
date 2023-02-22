@@ -79,6 +79,8 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
             bundle.put("calculatePerformance", "currently supported: RMSD, MAE, FSAPE, globalAdoptionDelta, absoluteAnnualAdoptionDelta, cumulativeAnnualAdoptionDelta");
             bundle.put("printAdoptions", "prints annual adoptions as array");
             bundle.put("printAdoptionsVerbose", "prints annual adoptions as map");
+            bundle.put("printAdoptionsCumulated", "prints cumulated annual adoptions as array");
+            bundle.put("printAdoptionsCumulatedVerbose", "prints cumulated annual adoptions as map");
             bundle.put("noConsole", "disables console logging");
             bundle.put("runId", "Set an id for the run and creates special in- and output directories.");
             bundle.put("disableKdtree", "Disables the kd-tree");
@@ -335,6 +337,18 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
         descriptionKey = "printAdoptionsVerbose"
     )
     private boolean printAdoptionsVerbose;
+
+    @CommandLine.Option(
+        names = { "--printAdoptionsCumulated" },
+        descriptionKey = "printAdoptionsCumulated"
+    )
+    private boolean printAdoptionsCumulated;
+
+    @CommandLine.Option(
+        names = { "--printAdoptionsCumulatedVerbose" },
+        descriptionKey = "printAdoptionsCumulatedVerbose"
+    )
+    private boolean printAdoptionsCumulatedVerbose;
 
     @CommandLine.Option(
             names = { "--noConsole" },
@@ -860,6 +874,14 @@ public class MainCommandLineOptions extends AbstractCommandLineOptions {
 
     public boolean isPrintAdoptionsVerbose() {
         return printAdoptionsVerbose;
+    }
+
+    public boolean isPrintAdoptionsCumulated() {
+        return printAdoptionsCumulated;
+    }
+
+    public boolean isPrintAdoptionsCumulatedVerbose() {
+        return printAdoptionsCumulatedVerbose;
     }
 
     public boolean isNoConsole() {

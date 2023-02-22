@@ -128,6 +128,18 @@ public class DataProcessor4 extends PostProcessor {
                 root.set("adoptionsVerbose", node);
                 appendToInformationResult(root);
             }
+            if (clOptions.isPrintAdoptionsCumulated()) {
+                ArrayNode node = analysis.getSimpleCumulatedInformation();
+                ObjectNode root = JsonUtil.JSON.createObjectNode();
+                root.set("adoptionsCumulated", node);
+                appendToInformationResult(root);
+            }
+            if (clOptions.isPrintAdoptionsCumulatedVerbose()) {
+                ObjectNode node = analysis.getVerboseCumulatedInformation();
+                ObjectNode root = JsonUtil.JSON.createObjectNode();
+                root.set("adoptionsCumulatedVerbose", node);
+                appendToInformationResult(root);
+            }
         } catch (Throwable t) {
             error("unexpected error while handling 'adoption analysis'", t);
         }

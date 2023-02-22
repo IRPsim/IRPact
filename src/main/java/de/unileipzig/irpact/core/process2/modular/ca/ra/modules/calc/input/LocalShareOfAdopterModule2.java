@@ -132,6 +132,7 @@ public class LocalShareOfAdopterModule2
 
         double value;
         if (useKdtree && nodeFilter instanceof MaxDistanceNodeFilter) {
+            trace("use kd-tree");
             value = getShareOfAdopterInLocalNetwork(
                 input,
                 (MaxDistanceNodeFilter) nodeFilter,
