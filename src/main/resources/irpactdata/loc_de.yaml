@@ -3301,6 +3301,31 @@ InNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InSelectNPVModule3:
+  edn_label: "NPV-Auswahl-Module"
+  edn_description: "Berechnet den NPV auf verschiedene Varianten: 1:
+    1: der Standard-NPV des Agenten für das Simulationsjahr
+    2: NPV für einen Agenten basierend auf Dachanteil
+     
+  3: jährlicher Durchschnitt über alle möglichen Dachkombinationen
+  4: jährlicher Durchschnitt über existierende Dachkombinationen
+  5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
+      
+    6: globale Durchschnitt über alle möglichen Dachkombiniationen und Jahre
+    7: globaler Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
+      
+  
+  "
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InSelectNPVModule3_npvId:
+  gams_identifier: "NPV-ID"
+  gams_description: "Der zu nutzende NPV-Typ."
+InSelectNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 InGlobalAvgNPVModule3:
   edn_label: "GlobalAvgNPVModule"
   edn_description: "Berechnet den globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung unabhängig von den Agenten."

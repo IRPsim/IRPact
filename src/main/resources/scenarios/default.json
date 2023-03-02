@@ -485,7 +485,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2023_02_22_T_10_25_42" : {
+        "CT_D_2023_03_02_T_07_45_53" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -576,6 +576,7 @@
           "par_InScenarioVersion_placeholder" : 0
         }
       },
+      "set_InSelectNPVModule3_inputnode3" : { },
       "set_InSlowTruncatedNormalDistribution" : { },
       "set_InSocialShareOfAdopterModule3_inputnode3" : { },
       "set_InSpace2D" : {
@@ -992,6 +993,7 @@
           "DO_NOTHING" : 0.0
         }
       },
+      "par_link_InSelectNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InSpecialAverageQuantilRangeImage_InColorPalette_colorPalette" : { },
       "par_link_InSpecialAverageQuantilRangeImage_InConsumerAgentCalculationLoggingModule2_loggingModules" : { },
       "par_link_InSpecialUtilityCsvValueLoggingModule3_calcnode3_InConsumerAgentCalculationModule2_utilityModule" : { },

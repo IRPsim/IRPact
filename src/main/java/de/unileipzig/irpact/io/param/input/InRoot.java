@@ -1024,6 +1024,7 @@ public class InRoot implements RootClass {
             InLocalShareOfAdopterModule3.class,
             InNaNModule3.class,
             InNPVModule3.class,
+            InSelectNPVModule3.class,
             InSocialShareOfAdopterModule3.class,
             InValueModule3.class,
             //calc-logging

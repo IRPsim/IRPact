@@ -3620,6 +3620,22 @@ SET set_InNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InNPVModule3_inputnode3_InPVFile_pvFile(set_InNPVModule3_inputnode3,set_InPVFile)
 
+* - identifier: InSelectNPVModule3_inputnode3
+* - type: String
+SET set_InSelectNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
+
+* - default: 1
+* - domain: [1,7]
+* - description: Der zu nutzende NPV-Typ.
+* - identifier: NPV-ID
+* - type: Integer
+PARAMETER par_InSelectNPVModule3_inputnode3_npvId(set_InSelectNPVModule3_inputnode3)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InSelectNPVModule3_inputnode3_InPVFile_pvFile(set_InSelectNPVModule3_inputnode3,set_InPVFile)
+
 * - fill: #CAFE12
 * - color: #CAFE12
 * - shape: flower
