@@ -1,10 +1,12 @@
 package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input;
 
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAgentAssetNPVModule;
+
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAgentAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAssetNPVModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -21,10 +23,7 @@ import de.unileipzig.irptools.defstructure.annotation.graph.Subsets;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
 import java.lang.invoke.MethodHandles;
-
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAgentAssetNPVModule;
 
 /**
  * @author Daniel Abitz
@@ -55,6 +54,7 @@ import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_
         )
 )
 @LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAgentAssetNPVModule)
+@Deprecated
 public class InAnnualAvgAgentAssetNPVModule2 implements InConsumerAgentInputModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -121,14 +121,14 @@ public class InAnnualAvgAgentAssetNPVModule2 implements InConsumerAgentInputModu
     }
 
     @Override
-    public AnnualAvgAgentAssetNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public AnnualAvgAssetNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        AnnualAvgAgentAssetNPVModule2 module = new AnnualAvgAgentAssetNPVModule2();
+        AnnualAvgAssetNPVModule2 module = new AnnualAvgAssetNPVModule2();
         module.setName(getName());
         applyPvFile(parser, module);
 
@@ -139,7 +139,7 @@ public class InAnnualAvgAgentAssetNPVModule2 implements InConsumerAgentInputModu
         return parser.parseEntityTo(getPvFile());
     }
 
-    private void applyPvFile(IRPactInputParser parser, AnnualAvgAgentAssetNPVModule2 module) throws ParsingException {
+    private void applyPvFile(IRPactInputParser parser, AnnualAvgAssetNPVModule2 module) throws ParsingException {
         if(hasPvFile()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
             NPVXlsxData xlsxData = getNPVData(parser);

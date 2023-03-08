@@ -142,6 +142,9 @@ public class DecisionMakingDeciderModule2
         } else {
             trace("[{}]@[{}] store utility={} for product={}", getName(), input.getAgentName(), utility, input.getProductName());
             setUtility(input, utility);
+            if(input.isUnderConstruction() || input.isUnderRenovation()) {
+                trace3("[{}]@[{}] [ADOPTED] isUnderConstruction={} isUnderRenovation={}", getName(), printInputInfo(input), input.isUnderConstruction(), input.isUnderRenovation());
+            }
             return RAStage2.ADOPTED;
         }
     }

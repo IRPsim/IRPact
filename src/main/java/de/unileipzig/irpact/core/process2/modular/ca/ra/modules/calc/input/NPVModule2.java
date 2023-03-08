@@ -19,7 +19,7 @@ public class NPVModule2
         extends AbstractCACalculationModule2
         implements RAHelperAPI2 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(NPVModule2.class);
+    public static final IRPLogger LOGGER = IRPLogging.getLogger(NPVModule2.class);
 
     protected NPVDataSupplier dataSupplier;
     protected NPVData data;
@@ -47,6 +47,9 @@ public class NPVModule2
     @Override
     public void initialize(SimulationEnvironment environment) throws Throwable {
         dataSupplier = getNPVDataSupplier(environment, data);
+
+//        dataSupplier.logInfo(LOGGER, environment);
+//        if (true) throw new Exception("KILL IT WITH FIRE");
     }
 
     @Override

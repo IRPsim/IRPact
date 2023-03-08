@@ -58,10 +58,14 @@ public class FeasibilityModule2
 
     @Override
     public RAStage2 apply(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
-        traceModuleCall(input);
+        //traceModuleCall(input);
+        traceModuleCall(input, "isShareOf1Or2FamilyHouse=" + isShareOf1Or2FamilyHouse(input) + " isHouseOwner=" + isHouseOwner(input));
 
         if(isShareOf1Or2FamilyHouse(input) && isHouseOwner(input)) {
             doSelfActionAndAllowAttention(input);
+            if(input.isUnderConstruction() || input.isUnderRenovation()) {
+                trace3("[{}]@[{}] [FEASIBILITY] isUnderConstruction={} isUnderRenovation={}", getName(), printInputInfo(input), input.isUnderConstruction(), input.isUnderRenovation());
+            }
             return RAStage2.DECISION_MAKING;
         }
 

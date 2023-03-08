@@ -67,6 +67,7 @@ public class InterestModule2
 
         if(isAware(input)) {
             if(input.isUnderConstruction() || input.isUnderRenovation()) {
+                trace3("[{}]@[{}] [INTEREST] isUnderConstruction={} isUnderRenovation={}", getName(), printInputInfo(input), input.isUnderConstruction(), input.isUnderRenovation());
                 makeInterested(input);
                 doSelfActionAndAllowAttention(input);
                 return RAStage2.FEASIBILITY;

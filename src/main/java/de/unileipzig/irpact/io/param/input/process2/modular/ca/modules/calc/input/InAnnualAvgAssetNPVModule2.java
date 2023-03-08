@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input;
 
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgNPVModule;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAgentNPVModule;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAssetNPVModule2;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
@@ -53,9 +54,8 @@ import java.lang.invoke.MethodHandles;
                 )
         )
 )
-@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgNPVModule)
-@Deprecated
-public class InAnnualAvgNPVModule2 implements InConsumerAgentInputModule2 {
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAssetNPVModule2)
+public class InAnnualAvgAssetNPVModule2 implements InConsumerAgentInputModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -98,25 +98,25 @@ public class InAnnualAvgNPVModule2 implements InConsumerAgentInputModule2 {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public InAnnualAvgNPVModule2() {
+    public InAnnualAvgAssetNPVModule2() {
     }
 
-    public InAnnualAvgNPVModule2(String name) {
+    public InAnnualAvgAssetNPVModule2(String name) {
         setName(name);
     }
 
-    public InAnnualAvgNPVModule2(String name, InPVFile pvFile) {
+    public InAnnualAvgAssetNPVModule2(String name, InPVFile pvFile) {
         setName(name);
         setPvFile(pvFile);
     }
 
     @Override
-    public InAnnualAvgNPVModule2 copy(CopyCache cache) {
+    public InAnnualAvgAssetNPVModule2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InAnnualAvgNPVModule2 newCopy(CopyCache cache) {
-        InAnnualAvgNPVModule2 copy = new InAnnualAvgNPVModule2();
+    public InAnnualAvgAssetNPVModule2 newCopy(CopyCache cache) {
+        InAnnualAvgAssetNPVModule2 copy = new InAnnualAvgAssetNPVModule2();
         return Dev.throwException();
     }
 

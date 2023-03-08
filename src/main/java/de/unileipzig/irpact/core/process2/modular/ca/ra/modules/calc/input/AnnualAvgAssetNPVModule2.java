@@ -9,17 +9,16 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.RAHelperAPI2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irptools.util.log.IRPLogger;
-
 import java.util.List;
 
 /**
  * @author Daniel Abitz
  */
-public class GlobalAvgNPVModule2
+public class AnnualAvgAssetNPVModule2
         extends AbstractCACalculationModule2
         implements RAHelperAPI2 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(GlobalAvgNPVModule2.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(AnnualAvgAssetNPVModule2.class);
 
     protected NPVDataSupplier dataSupplier;
     protected NPVData data;
@@ -49,6 +48,7 @@ public class GlobalAvgNPVModule2
 
         traceModuleInitalization();
         dataSupplier = getNPVDataSupplier(environment, data);
+
         setInitalized();
     }
 
@@ -62,13 +62,12 @@ public class GlobalAvgNPVModule2
             return;
         }
 
-        traceModuleSetup();
         setSetupCalled();
     }
 
     @Override
     public double calculate(ConsumerAgentData2 input, List<PostAction2> actions) throws Throwable {
         traceModuleCall(input);
-        return dataSupplier.globalAvgNPV(getCurrentYear(input));
+        return dataSupplier.annualAvgAssetNPV(getCurrentYear(input));
     }
 }

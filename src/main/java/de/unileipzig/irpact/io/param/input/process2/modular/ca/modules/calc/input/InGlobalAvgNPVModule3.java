@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAgentNPVModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -121,14 +121,14 @@ public class InGlobalAvgNPVModule3 implements InConsumerAgentInputModule2 {
     }
 
     @Override
-    public GlobalAvgNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public GlobalAvgAgentNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        GlobalAvgNPVModule2 module = new GlobalAvgNPVModule2();
+        GlobalAvgAgentNPVModule2 module = new GlobalAvgAgentNPVModule2();
         module.setName(getName());
         applyPvFile(parser, module);
 
@@ -139,7 +139,7 @@ public class InGlobalAvgNPVModule3 implements InConsumerAgentInputModule2 {
         return parser.parseEntityTo(getPvFile());
     }
 
-    private void applyPvFile(IRPactInputParser parser, GlobalAvgNPVModule2 module) throws ParsingException {
+    private void applyPvFile(IRPactInputParser parser, GlobalAvgAgentNPVModule2 module) throws ParsingException {
         if(hasPvFile()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
             NPVXlsxData xlsxData = getNPVData(parser);

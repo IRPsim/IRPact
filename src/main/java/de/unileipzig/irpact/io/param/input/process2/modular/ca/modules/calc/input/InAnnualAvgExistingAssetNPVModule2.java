@@ -1,12 +1,13 @@
 package de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input;
 
-import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgNPVModule;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgAssetNPVModule2;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgExistingAssetNPVModule2;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgExistingAssetNPVModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.develop.Dev;
@@ -53,9 +54,8 @@ import java.lang.invoke.MethodHandles;
                 )
         )
 )
-@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgNPVModule)
-@Deprecated
-public class InAnnualAvgNPVModule2 implements InConsumerAgentInputModule2 {
+@LocalizedUiResource.PutClassPath(PROCESS_MODEL4_PVACTMODULES_NUMBERINPUT_AnnualAvgExistingAssetNPVModule2)
+public class InAnnualAvgExistingAssetNPVModule2 implements InConsumerAgentInputModule2 {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
     public static Class<?> thisClass() {
@@ -98,37 +98,37 @@ public class InAnnualAvgNPVModule2 implements InConsumerAgentInputModule2 {
         this.pvFile = new InPVFile[]{pvFile};
     }
 
-    public InAnnualAvgNPVModule2() {
+    public InAnnualAvgExistingAssetNPVModule2() {
     }
 
-    public InAnnualAvgNPVModule2(String name) {
+    public InAnnualAvgExistingAssetNPVModule2(String name) {
         setName(name);
     }
 
-    public InAnnualAvgNPVModule2(String name, InPVFile pvFile) {
+    public InAnnualAvgExistingAssetNPVModule2(String name, InPVFile pvFile) {
         setName(name);
         setPvFile(pvFile);
     }
 
     @Override
-    public InAnnualAvgNPVModule2 copy(CopyCache cache) {
+    public InAnnualAvgExistingAssetNPVModule2 copy(CopyCache cache) {
         return cache.copyIfAbsent(this, this::newCopy);
     }
 
-    public InAnnualAvgNPVModule2 newCopy(CopyCache cache) {
-        InAnnualAvgNPVModule2 copy = new InAnnualAvgNPVModule2();
+    public InAnnualAvgExistingAssetNPVModule2 newCopy(CopyCache cache) {
+        InAnnualAvgExistingAssetNPVModule2 copy = new InAnnualAvgExistingAssetNPVModule2();
         return Dev.throwException();
     }
 
     @Override
-    public AnnualAvgAssetNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
+    public AnnualAvgExistingAssetNPVModule2 parse(IRPactInputParser parser) throws ParsingException {
         if(parser.isRestored()) {
             throw new UnsupportedOperationException();
         }
 
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "parse module {} '{}", thisName(), getName());
 
-        AnnualAvgAssetNPVModule2 module = new AnnualAvgAssetNPVModule2();
+        AnnualAvgExistingAssetNPVModule2 module = new AnnualAvgExistingAssetNPVModule2();
         module.setName(getName());
         applyPvFile(parser, module);
 
@@ -139,7 +139,7 @@ public class InAnnualAvgNPVModule2 implements InConsumerAgentInputModule2 {
         return parser.parseEntityTo(getPvFile());
     }
 
-    private void applyPvFile(IRPactInputParser parser, AnnualAvgAssetNPVModule2 module) throws ParsingException {
+    private void applyPvFile(IRPactInputParser parser, AnnualAvgExistingAssetNPVModule2 module) throws ParsingException {
         if(hasPvFile()) {
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "load pv file '{}'" , getPvFile().getName());
             NPVXlsxData xlsxData = getNPVData(parser);

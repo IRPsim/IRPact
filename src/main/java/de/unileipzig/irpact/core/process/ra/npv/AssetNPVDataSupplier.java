@@ -5,8 +5,11 @@ import de.unileipzig.irpact.commons.util.data.Pair;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.process.ra.RAProcessModel;
+import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
 import de.unileipzig.irpact.core.util.AttributeHelper;
 
+import de.unileipzig.irptools.util.log.IRPLogger;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -96,6 +99,35 @@ public final class AssetNPVDataSupplier {
         return attributeHelper.getDouble(agent, RAConstants.NET_PRESENT_VALUE, true);
     }
 
+    public void logInfo(IRPLogger logger, SimulationEnvironment environment) {
+        logger.info("NPV INFORMATION");
+        int totalCount = assetCounts.values().stream().mapToInt(Integer::intValue).sum();
+        logger.info("sanity check: {} =? {} =? {}", totalCount, totalAssets, environment.getAgents().streamConsumerAgents().count());
+        logger.info("start={} end={}", environment.getSettings().getFirstSimulationYear(), environment.getSettings().getLastSimulationYear());
+        logger.info("CONSUMER AGENT OVERVIEW");
+        logger.info("agent N A weight npvs weightedNpvs");
+        environment.getAgents().streamConsumerAgents().forEach(agent -> {
+            int N = getN(agent);
+            int A = getA(agent);
+            double weight = getAssetWeight(agent);
+            double[] npvs = new double[environment.getSettings().getNumberOfSimulationYears()];
+            double[] weightedNpvs = new double[npvs.length];
+            for (int year = environment.getSettings().getFirstSimulationYear(), j = 0; year <= environment.getSettings().getLastSimulationYear(); year++, j++) {
+                npvs[j] = npData.get(year).getValue(N, A);
+                weightedNpvs[j] = NPV(agent, year);
+            }
+            logger.info("{} {} {} {} {} {}", agent.getName(), N, A, weight, Arrays.toString(npvs), Arrays.toString(weightedNpvs));
+        });
+        logger.info("STATICS OVERVIEW");
+        logger.info("year annual global global2");
+        for (int year = environment.getSettings().getFirstSimulationYear(); year <= environment.getSettings().getLastSimulationYear(); year++) {
+            double annual = annualAvgAgentNPV(environment.getAgents().streamConsumerAgents(), year);
+            double global = calcGlobalAvgNPV(() -> environment.getAgents().streamConsumerAgents(), year);
+            double global2 = calcGlobalAvgNPV2(() -> environment.getAgents().streamConsumerAgents(), environment.getSettings().getFirstSimulationYear(), environment.getSettings().getLastSimulationYear());
+            logger.info("{} {} {} {}", year, annual, global, global2);
+        }
+    }
+
     private int getN(ConsumerAgent agent) {
         return attributeHelper.getInt(agent, RAConstants.SLOPE, true);
     }
@@ -167,21 +199,51 @@ public final class AssetNPVDataSupplier {
         }
     }
     private synchronized double calcGlobalAvgNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int year) {
-        if(globalAvgNPVCache.containsKey(year)) {
-            return globalAvgNPVCache.get(year);
+        if(globalAvgNPVCache.containsKey(0)) {
+            return globalAvgNPVCache.get(0);
         } else {
             if(npData.isEmpty()) {
                 throw new NoSuchElementException("missing npv data");
             }
 
+            ConsumerAgent first = supplier.get().findAny().get();
+            SimulationEnvironment environment = first.getEnvironment();
+            int startYear = environment.getSettings().getFirstSimulationYear();
+            int endYear = environment.getSettings().getLastSimulationYear();
+
             double totalAgents = (double) supplier.get().count();
             double result = 0.0;
-            for (NPVMatrix matrix : npData.values()) {
+            double total = 0;
+
+            for (int y = startYear; y <= endYear; y++) {
+                NPVMatrix matrix = npData.get(y);
+                total++;
                 double annualTotal = supplier.get().mapToDouble(agent -> NPV(agent, matrix)).sum();
-                result += (annualTotal / totalAgents);
+                double annual = (annualTotal / totalAgents);
+                result += annual;
             }
-            result /= npData.size();
-            globalAvgNPVCache.put(year, result);
+            result /= total;
+            globalAvgNPVCache.put(0, result);
+            return result;
+        }
+    }
+    private synchronized double calcGlobalAvgNPV2(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
+        if(globalAvgNPVCache.containsKey(1)) {
+            return globalAvgNPVCache.get(1);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            double result = 0.0;
+            double total = 0;
+            for (int year = start; year <= end; year++) {
+                double annual = annualAvgAgentNPV(supplier.get(), year);
+                result += annual;
+                total += 1;
+            }
+            result /= total;
+            globalAvgNPVCache.put(1, result);
             return result;
         }
     }

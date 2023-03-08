@@ -3514,6 +3514,24 @@ SET set_InAnnualAvgAgentNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InAnnualAvgAgentNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgAgentNPVModule2_inputnode3,set_InPVFile)
 
+* - identifier: InAnnualAvgAssetNPVModule2_inputnode3
+* - type: String
+SET set_InAnnualAvgAssetNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualAvgAssetNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgAssetNPVModule2_inputnode3,set_InPVFile)
+
+* - identifier: InAnnualAvgExistingAssetNPVModule2_inputnode3
+* - type: String
+SET set_InAnnualAvgExistingAssetNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualAvgExistingAssetNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualAvgExistingAssetNPVModule2_inputnode3,set_InPVFile)
+
 * - identifier: InAnnualAvgNPVModule2_inputnode3
 * - type: String
 SET set_InAnnualAvgNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
@@ -3570,6 +3588,15 @@ SET set_InGlobalAvgAssetNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
 * - identifier: pvFile
 * - type: Boolean
 PARAMETER par_link_InGlobalAvgAssetNPVModule3_inputnode3_InPVFile_pvFile(set_InGlobalAvgAssetNPVModule3_inputnode3,set_InPVFile)
+
+* - identifier: InGlobalAvgExistingAssetNPVModule3_inputnode3
+* - type: String
+SET set_InGlobalAvgExistingAssetNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InGlobalAvgExistingAssetNPVModule3_inputnode3_InPVFile_pvFile(set_InGlobalAvgExistingAssetNPVModule3_inputnode3,set_InPVFile)
 
 * - identifier: InGlobalAvgNPVModule3_inputnode3
 * - type: String
@@ -5169,11 +5196,11 @@ SCALAR sca_InGeneral_timeout
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Millisekunden angegeben.
 * - identifier: Timeout in Millisekunden
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 1, par_InGeneral_timeoutUseMin = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMs = 1)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMs == 0, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 1, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMs = 1)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMs == 0, sca_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMs
 
@@ -5181,11 +5208,11 @@ SCALAR sca_InGeneral_timeoutUseMs
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Sekunden angegeben.
 * - identifier: Timeout in Sekunden
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 1, par_InGeneral_timeoutUseMin = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseSec = 1)
-* - rule: IF (par_InGeneral_timeoutUseSec == 0, par_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 1, sca_InGeneral_timeoutUseMin = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseSec = 1)
+* - rule: IF (sca_InGeneral_timeoutUseSec == 0, sca_InGeneral_timeoutUseMin = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseSec
 
@@ -5193,11 +5220,11 @@ SCALAR sca_InGeneral_timeoutUseSec
 * - domain: [0|1]
 * - description: Die Länge des Timeouts wird in Minuten angegeben.
 * - identifier: Timeout in Minuten
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 1, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMs = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseSec = 0)
-* - rule: IF (par_InGeneral_timeoutUseMin == 0, par_InGeneral_timeoutUseMin = 1)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 1, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMs = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseSec = 0)
+* - rule: IF (sca_InGeneral_timeoutUseMin == 0, sca_InGeneral_timeoutUseMin = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_timeoutUseMin
 
@@ -5347,19 +5374,19 @@ SCALAR sca_InGeneral_logPerformance
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf OFF. Achtung: Damit wird das komplette Logging deaktiviert inklusive potentieller Fehlermeldungen.
 * - identifier: Level: OFF
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelOff == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelOff = 1)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelOff == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelOff == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelOff = 1)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelOff == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelOff
 
@@ -5367,19 +5394,19 @@ SCALAR sca_InGeneral_levelOff
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf TRACE.
 * - identifier: Level: TRACE
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelTrace == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelTrace = 1)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelTrace == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelTrace = 1)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelTrace == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelTrace
 
@@ -5387,19 +5414,19 @@ SCALAR sca_InGeneral_levelTrace
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf DEBUG.
 * - identifier: Level: DEBUG
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelDebug == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelDebug = 1)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelDebug == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelDebug = 1)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelDebug == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelDebug
 
@@ -5407,19 +5434,19 @@ SCALAR sca_InGeneral_levelDebug
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf INFO.
 * - identifier: Level: INFO
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelInfo == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelInfo = 1)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelInfo == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelInfo = 1)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelInfo == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelInfo
 
@@ -5427,19 +5454,19 @@ SCALAR sca_InGeneral_levelInfo
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf WARN.
 * - identifier: Level: WARN
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelWarn == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelWarn = 1)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelWarn == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelWarn = 1)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelWarn == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelWarn
 
@@ -5447,19 +5474,19 @@ SCALAR sca_InGeneral_levelWarn
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ERROR.
 * - identifier: Level: ERROR
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelError == 1, par_InGeneral_levelAll = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelError = 1)
-* - rule: IF (par_InGeneral_levelError == 0, par_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelError == 1, sca_InGeneral_levelAll = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelError = 1)
+* - rule: IF (sca_InGeneral_levelError == 0, sca_InGeneral_levelAll = 0)
 * - type: Boolean
 SCALAR sca_InGeneral_levelError
 
@@ -5467,19 +5494,19 @@ SCALAR sca_InGeneral_levelError
 * - domain: [0|1]
 * - description: Setzt das Logginglevel auf ALL.
 * - identifier: Level: ALL
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelAll == 1, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelOff = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelTrace = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelDebug = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelInfo = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelWarn = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelError = 0)
-* - rule: IF (par_InGeneral_levelAll == 0, par_InGeneral_levelAll = 1)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelAll == 1, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelOff = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelTrace = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelDebug = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelInfo = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelWarn = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelError = 0)
+* - rule: IF (sca_InGeneral_levelAll == 0, sca_InGeneral_levelAll = 1)
 * - type: Boolean
 SCALAR sca_InGeneral_levelAll
 

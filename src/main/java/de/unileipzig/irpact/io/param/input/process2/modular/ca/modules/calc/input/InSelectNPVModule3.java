@@ -6,12 +6,12 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAgentAssetNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAgentNPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgNPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AssetNPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAssetNPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgExistingAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAgentNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgExistingAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -80,12 +80,12 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
     }
 
     public static final int CASE_NPVModule2 = 1;
-    public static final int CASE_AssetNPVModule2 = 2;
-    public static final int CASE_AnnualAvgNPVModule2 = 3;
+    public static final int CASE_AnnualAvgExistingAssetNPVModule2 = 2;
+    public static final int CASE_AnnualAvgAssetNPVModule2 = 3;
     public static final int CASE_AnnualAvgAgentNPVModule2 = 4;
-    public static final int CASE_AnnualAvgAgentAssetNPVModule2 = 5;
-    public static final int CASE_GlobalAvgNPVModule2 = 6;
-    public static final int CASE_GlobalAvgAssetNPVModule2 = 7;
+    public static final int CASE_GlobalAvgExistingAssetNPVModule3 = 5;
+    public static final int CASE_GlobalAvgAssetNPVModule3 = 6;
+    public static final int CASE_GlobalAvgAgentNPVModule2 = 7;
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
@@ -165,16 +165,16 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
                 ((NPVModule2) module).setData(getPvFile(parser));
                 break;
 
-            case CASE_AssetNPVModule2:
-                module = new AssetNPVModule2();
+            case CASE_AnnualAvgExistingAssetNPVModule2:
+                module = new AnnualAvgExistingAssetNPVModule2();
                 module.setName(getName());
-                ((AssetNPVModule2) module).setData(getPvFile(parser));
+                ((AnnualAvgExistingAssetNPVModule2) module).setData(getPvFile(parser));
                 break;
 
-            case CASE_AnnualAvgNPVModule2:
-                module = new AnnualAvgNPVModule2();
+            case CASE_AnnualAvgAssetNPVModule2:
+                module = new AnnualAvgAssetNPVModule2();
                 module.setName(getName());
-                ((AnnualAvgNPVModule2) module).setData(getPvFile(parser));
+                ((AnnualAvgAssetNPVModule2) module).setData(getPvFile(parser));
                 break;
 
             case CASE_AnnualAvgAgentNPVModule2:
@@ -183,22 +183,22 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
                 ((AnnualAvgAgentNPVModule2) module).setData(getPvFile(parser));
                 break;
 
-            case CASE_AnnualAvgAgentAssetNPVModule2:
-                module = new AnnualAvgAgentAssetNPVModule2();
+            case CASE_GlobalAvgExistingAssetNPVModule3:
+                module = new GlobalAvgExistingAssetNPVModule3();
                 module.setName(getName());
-                ((AnnualAvgAgentAssetNPVModule2) module).setData(getPvFile(parser));
+                ((GlobalAvgExistingAssetNPVModule3) module).setData(getPvFile(parser));
                 break;
 
-            case CASE_GlobalAvgNPVModule2:
-                module = new GlobalAvgNPVModule2();
+            case CASE_GlobalAvgAssetNPVModule3:
+                module = new GlobalAvgAssetNPVModule3();
                 module.setName(getName());
-                ((GlobalAvgNPVModule2) module).setData(getPvFile(parser));
+                ((GlobalAvgAssetNPVModule3) module).setData(getPvFile(parser));
                 break;
 
-            case CASE_GlobalAvgAssetNPVModule2:
-                module = new GlobalAvgAssetNPVModule2();
+            case CASE_GlobalAvgAgentNPVModule2:
+                module = new GlobalAvgAgentNPVModule2();
                 module.setName(getName());
-                ((GlobalAvgAssetNPVModule2) module).setData(getPvFile(parser));
+                ((GlobalAvgAgentNPVModule2) module).setData(getPvFile(parser));
                 break;
 
             default:
