@@ -171,7 +171,13 @@
       "set_InAnnualBucketImage" : { },
       "set_InAnnualInterestImage" : { },
       "set_InAnnualInterestLogger" : { },
+      "set_InAnnualMaxAgentNPVModule2_inputnode3" : { },
+      "set_InAnnualMaxAssetNPVModule2_inputnode3" : { },
+      "set_InAnnualMaxExistingAssetNPVModule2_inputnode3" : { },
       "set_InAnnualMilieuImage" : { },
+      "set_InAnnualMinAgentNPVModule2_inputnode3" : { },
+      "set_InAnnualMinAssetNPVModule2_inputnode3" : { },
+      "set_InAnnualMinExistingAssetNPVModule2_inputnode3" : { },
       "set_InAssetNPVModule3_inputnode3" : { },
       "set_InAttributeInputModule3_inputnode3" : { },
       "set_InAttributeName" : { },
@@ -479,6 +485,12 @@
       "set_InGlobalAvgAssetNPVModule3_inputnode3" : { },
       "set_InGlobalAvgExistingAssetNPVModule3_inputnode3" : { },
       "set_InGlobalAvgNPVModule3_inputnode3" : { },
+      "set_InGlobalMaxAgentNPVModule2_inputnode3" : { },
+      "set_InGlobalMaxAssetNPVModule3_inputnode3" : { },
+      "set_InGlobalMaxExistingAssetNPVModule3_inputnode3" : { },
+      "set_InGlobalMinAgentNPVModule2_inputnode3" : { },
+      "set_InGlobalMinAssetNPVModule3_inputnode3" : { },
+      "set_InGlobalMinExistingAssetNPVModule3_inputnode3" : { },
       "set_InGnuPlotOutputImage" : { },
       "set_InGraphTopologyScheme" : {
         "Topology" : { }
@@ -488,7 +500,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2023_03_08_T_16_01_22" : {
+        "CT_D_2023_07_03_T_15_36_36" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -683,7 +695,13 @@
       "par_link_InAnnualBucketImage_InColorPalette_colorPalette" : { },
       "par_link_InAnnualBucketImage_InConsumerAgentCalculationLoggingModule2_loggingModule" : { },
       "par_link_InAnnualInterestImage_InColorPalette_colorPalette" : { },
+      "par_link_InAnnualMaxAgentNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualMaxAssetNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualMaxExistingAssetNPVModule2_inputnode3_InPVFile_pvFile" : { },
       "par_link_InAnnualMilieuImage_InColorPalette_colorPalette" : { },
+      "par_link_InAnnualMinAgentNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualMinAssetNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InAnnualMinExistingAssetNPVModule2_inputnode3_InPVFile_pvFile" : { },
       "par_link_InAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InAttributeInputModule3_inputnode3_InAttributeName_attribute" : { },
       "par_link_InBasicCAModularProcessModel_InConsumerAgentEvalModule2_startModule" : {
@@ -883,6 +901,12 @@
       "par_link_InGlobalAvgAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InGlobalAvgExistingAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InGlobalAvgNPVModule3_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMaxAgentNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMaxAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMaxExistingAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMinAgentNPVModule2_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMinAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
+      "par_link_InGlobalMinExistingAssetNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InGnuPlotOutputImage_InRealAdoptionDataFile_realAdoptionDataFile" : { },
       "par_link_InIfElseActionModule3_actionnode3_InConsumerAgentActionModule2_onFalseModule" : { },
       "par_link_InIfElseActionModule3_actionnode3_InConsumerAgentActionModule2_onTrueModule" : { },

@@ -3306,15 +3306,12 @@ InSelectNPVModule3:
   edn_description: "Berechnet den NPV auf verschiedene Varianten: 1:
     1: der Standard-NPV des Agenten für das Simulationsjahr
     2: NPV für einen Agenten basierend auf Dachanteil
-     
-  3: jährlicher Durchschnitt über alle möglichen Dachkombinationen
-  4: jährlicher Durchschnitt über existierende Dachkombinationen
-  5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
-      
+    3: jährlicher Durchschnitt über alle möglichen Dachkombinationen
+    4: jährlicher Durchschnitt über existierende Dachkombinationen
+    5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
     6: globale Durchschnitt über alle möglichen Dachkombiniationen und Jahre
     7: globaler Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
-      
-  
+    8 - 19: ...
   "
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
@@ -3327,8 +3324,8 @@ InSelectNPVModule3_pvFile:
   gams_description: "todo"
 
 InGlobalAvgNPVModule3:
-  edn_label: "GlobalAvgNPVModule"
-  edn_description: "Berechnet den globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung unabhängig von den Agenten."
+  edn_label: "GlobalAvgAgentNPVModule"
+  edn_description: "Berechnet den durchschnittlichen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
@@ -3336,10 +3333,30 @@ InGlobalAvgNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InGlobalMaxAgentNPVModule2:
+  edn_label: "GlobalMaxAgentNPVModule"
+  edn_description: "Berechnet den maximalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinAgentNPVModule2:
+  edn_label: "GlobalMinAgentNPVModule"
+  edn_description: "Berechnet den minimalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 # DEPRECATED
 InAnnualAvgAgentAssetNPVModule2:
   edn_label: "AnnualAvgAgentAssetNPVModule"
-  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet."
+  edn_description: "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
@@ -3357,6 +3374,26 @@ InAnnualAvgAssetNPVModule2_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InAnnualMaxAssetNPVModule2:
+  edn_label: "AnnualMaxAssetNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinAssetNPVModule2:
+  edn_label: "AnnualMinAssetNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 InAnnualAvgExistingAssetNPVModule2:
   edn_label: "AnnualAvgAssetNPVModule2"
   edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Dächer."
@@ -3367,8 +3404,28 @@ InAnnualAvgExistingAssetNPVModule2_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InAnnualMaxExistingAssetNPVModule2:
+  edn_label: "AnnualMaxExistingAssetNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxExistingAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinExistingAssetNPVModule2:
+  edn_label: "AnnualMinExistingAssetNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinExistingAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 InGlobalAvgExistingAssetNPVModule3:
-  edn_label: "AnnualAvgAssetNPVModule2"
+  edn_label: "AnnualAvgAssetNPVModule"
   edn_description: "Berechnet den simulationsweiten durchschnittlichen NPV auf Basis der existierenden Dächer."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
@@ -3377,10 +3434,30 @@ InGlobalAvgExistingAssetNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InGlobalMaxExistingAssetNPVModule3:
+  edn_label: "GlobalMaxExistingAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten maximalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxExistingAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinExistingAssetNPVModule3:
+  edn_label: "GlobalMinExistingAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten minimalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinExistingAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 # DEPRECATED
 InAssetNPVModule3:
   edn_label: "AssetNPVModule"
-  edn_description: "Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet."
+  edn_description: "(VERALTET) Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
@@ -3398,10 +3475,30 @@ InGlobalAvgAssetNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InGlobalMaxAssetNPVModule3:
+  edn_label: "GlobalMaxAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten maximalen NPV auf Basis aller Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinAssetNPVModule3:
+  edn_label: "GlobalMinAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten minimalen NPV auf Basis aller Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 # DEPRECATED
 InAnnualAvgNPVModule2:
   edn_label: "AnnualAvgNPVModule"
-  edn_description: "Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen."
+  edn_description: "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen."
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
@@ -3416,6 +3513,26 @@ InAnnualAvgAgentNPVModule2:
   graphnode_borderlabel: *INPUT_MODULE_LABEL
   graphnode_shapelabel: *INPUT_MODULE_LABEL
 InAnnualAvgAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMaxAgentNPVModule2:
+  edn_label: "AnnualMaxAgentNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinAgentNPVModule2:
+  edn_label: "AnnualMinAgentNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinAgentNPVModule2_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 

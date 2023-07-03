@@ -656,7 +656,7 @@
                   :value "Green"
                 } 
                 {
-                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgAssetNPVModule2" "inputnode3"] ["InAnnualAvgExistingAssetNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgExistingAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSelectNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
+                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgAssetNPVModule2" "inputnode3"] ["InAnnualAvgExistingAssetNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAnnualMaxAgentNPVModule2" "inputnode3"] ["InAnnualMaxAssetNPVModule2" "inputnode3"] ["InAnnualMaxExistingAssetNPVModule2" "inputnode3"] ["InAnnualMinAgentNPVModule2" "inputnode3"] ["InAnnualMinAssetNPVModule2" "inputnode3"] ["InAnnualMinExistingAssetNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgExistingAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InGlobalMaxAssetNPVModule3" "inputnode3"] ["InGlobalMaxExistingAssetNPVModule3" "inputnode3"] ["InGlobalMaxAgentNPVModule2" "inputnode3"] ["InGlobalMinAssetNPVModule3" "inputnode3"] ["InGlobalMinExistingAssetNPVModule3" "inputnode3"] ["InGlobalMinAgentNPVModule2" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSelectNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "#CAFE12"
                 } 
@@ -702,7 +702,7 @@
                   :value "square"
                 } 
                 {
-                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgAssetNPVModule2" "inputnode3"] ["InAnnualAvgExistingAssetNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgExistingAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSelectNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
+                  :tags [["InAnnualAvgAgentAssetNPVModule2" "inputnode3"] ["InAnnualAvgAgentNPVModule2" "inputnode3"] ["InAnnualAvgAssetNPVModule2" "inputnode3"] ["InAnnualAvgExistingAssetNPVModule2" "inputnode3"] ["InAnnualAvgNPVModule2" "inputnode3"] ["InAnnualMaxAgentNPVModule2" "inputnode3"] ["InAnnualMaxAssetNPVModule2" "inputnode3"] ["InAnnualMaxExistingAssetNPVModule2" "inputnode3"] ["InAnnualMinAgentNPVModule2" "inputnode3"] ["InAnnualMinAssetNPVModule2" "inputnode3"] ["InAnnualMinExistingAssetNPVModule2" "inputnode3"] ["InAssetNPVModule3" "inputnode3"] ["InAttributeInputModule3" "inputnode3"] ["InAvgFinModule3" "inputnode3"] ["InGlobalAvgAssetNPVModule3" "inputnode3"] ["InGlobalAvgExistingAssetNPVModule3" "inputnode3"] ["InGlobalAvgNPVModule3" "inputnode3"] ["InGlobalMaxAssetNPVModule3" "inputnode3"] ["InGlobalMaxExistingAssetNPVModule3" "inputnode3"] ["InGlobalMaxAgentNPVModule2" "inputnode3"] ["InGlobalMinAssetNPVModule3" "inputnode3"] ["InGlobalMinExistingAssetNPVModule3" "inputnode3"] ["InGlobalMinAgentNPVModule2" "inputnode3"] ["InLocalShareOfAdopterModule3" "inputnode3"] ["InNaNModule3" "inputnode3"] ["InNPVModule3" "inputnode3"] ["InSelectNPVModule3" "inputnode3"] ["InSocialShareOfAdopterModule3" "inputnode3"] ["InValueModule3" "inputnode3"]] 
                   :label "Eingabemodule" 
                   :value "flower"
                 } 
@@ -1011,16 +1011,58 @@
                 :tags [["link" "InAttributeInputModule3" "inputnode3" "InAttributeName" "attribute"] ["InAttributeInputModule3" "inputnode3" "specialId"]]
               } 
               {
-                :label "GlobalAvgNPVModule" 
+                :label "GlobalAvgAgentNPVModule" 
                 :set "set_InGlobalAvgNPVModule3_inputnode3" 
-                :description "Berechnet den globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung unabhängig von den Agenten." 
+                :description "Berechnet den durchschnittlichen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten." 
                 :tags [["link" "InGlobalAvgNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMaxAgentNPVModule" 
+                :set "set_InGlobalMaxAgentNPVModule2_inputnode3" 
+                :description "Berechnet den maximalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten." 
+                :tags [["link" "InGlobalMaxAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMinAgentNPVModule" 
+                :set "set_InGlobalMinAgentNPVModule2_inputnode3" 
+                :description "Berechnet den minimalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten." 
+                :tags [["link" "InGlobalMinAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "GlobalAvgAssetNPVModule" 
                 :set "set_InGlobalAvgAssetNPVModule3_inputnode3" 
                 :description "Berechnet den simulationsweiten durchschnittlichen NPV auf Basis aller Dachkombinationen." 
                 :tags [["link" "InGlobalAvgAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMaxAssetNPVModule" 
+                :set "set_InGlobalMaxAssetNPVModule3_inputnode3" 
+                :description "Berechnet den simulationsweiten maximalen NPV auf Basis aller Dachkombinationen." 
+                :tags [["link" "InGlobalMaxAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMinAssetNPVModule" 
+                :set "set_InGlobalMinAssetNPVModule3_inputnode3" 
+                :description "Berechnet den simulationsweiten minimalen NPV auf Basis aller Dachkombinationen." 
+                :tags [["link" "InGlobalMinAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualAvgAssetNPVModule" 
+                :set "set_InGlobalAvgExistingAssetNPVModule3_inputnode3" 
+                :description "Berechnet den simulationsweiten durchschnittlichen NPV auf Basis der existierenden Dächer." 
+                :tags [["link" "InGlobalAvgExistingAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMaxExistingAssetNPVModule" 
+                :set "set_InGlobalMaxExistingAssetNPVModule3_inputnode3" 
+                :description "Berechnet den simulationsweiten maximalen NPV auf Basis der existierenden Dächer." 
+                :tags [["link" "InGlobalMaxExistingAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "GlobalMinExistingAssetNPVModule" 
+                :set "set_InGlobalMinExistingAssetNPVModule3_inputnode3" 
+                :description "Berechnet den simulationsweiten minimalen NPV auf Basis der existierenden Dächer." 
+                :tags [["link" "InGlobalMinExistingAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "NPVModule" 
@@ -1031,23 +1073,19 @@
               {
                 :label "NPV-Auswahl-Module" 
                 :set "set_InSelectNPVModule3_inputnode3" 
-                :description "Berechnet den NPV auf verschiedene Varianten: 1: 1: der Standard-NPV des Agenten für das Simulationsjahr 2: NPV für einen Agenten basierend auf Dachanteil
-3: jährlicher Durchschnitt über alle möglichen Dachkombinationen 4: jährlicher Durchschnitt über existierende Dachkombinationen 5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
-6: globale Durchschnitt über alle möglichen Dachkombiniationen und Jahre 7: globaler Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
-
-" 
+                :description "Berechnet den NPV auf verschiedene Varianten: 1: 1: der Standard-NPV des Agenten für das Simulationsjahr 2: NPV für einen Agenten basierend auf Dachanteil 3: jährlicher Durchschnitt über alle möglichen Dachkombinationen 4: jährlicher Durchschnitt über existierende Dachkombinationen 5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen 6: globale Durchschnitt über alle möglichen Dachkombiniationen und Jahre 7: globaler Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen 8 - 19: ... " 
                 :tags [["InSelectNPVModule3" "inputnode3" "npvId"] ["link" "InSelectNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "AssetNPVModule" 
                 :set "set_InAssetNPVModule3_inputnode3" 
-                :description "Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet." 
+                :description "(VERALTET) Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet." 
                 :tags [["link" "InAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "AnnualAvgNPVModule" 
                 :set "set_InAnnualAvgNPVModule2_inputnode3" 
-                :description "Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen." 
+                :description "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen." 
                 :tags [["link" "InAnnualAvgNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
@@ -1057,15 +1095,51 @@
                 :tags [["link" "InAnnualAvgAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
+                :label "AnnualMaxAgentNPVModule" 
+                :set "set_InAnnualMaxAgentNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Agenten." 
+                :tags [["link" "InAnnualMaxAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualMinAgentNPVModule" 
+                :set "set_InAnnualMinAgentNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Agenten." 
+                :tags [["link" "InAnnualMinAgentNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
                 :label "AnnualAvgAssetNPVModule2" 
-                :set "set_InGlobalAvgExistingAssetNPVModule3_inputnode3" 
+                :set "set_InAnnualAvgExistingAssetNPVModule2_inputnode3" 
                 :description "Berechnet den jährlichen durchschnittlichen NPV auf Basis der aller möglichen Dachkombinationen." 
-                :tags [["link" "InAnnualAvgAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"] ["link" "InAnnualAvgExistingAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"] ["link" "InGlobalAvgExistingAssetNPVModule3" "inputnode3" "InPVFile" "pvFile"]]
+                :tags [["link" "InAnnualAvgAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"] ["link" "InAnnualAvgExistingAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualMaxAssetNPVModule" 
+                :set "set_InAnnualMaxAssetNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen maximalen NPV auf Basis der aller möglichen Dachkombinationen." 
+                :tags [["link" "InAnnualMaxAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualMinAssetNPVModule" 
+                :set "set_InAnnualMinAssetNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen minimalen NPV auf Basis der aller möglichen Dachkombinationen." 
+                :tags [["link" "InAnnualMinAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualMaxExistingAssetNPVModule" 
+                :set "set_InAnnualMaxExistingAssetNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Dächer." 
+                :tags [["link" "InAnnualMaxExistingAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
+              } 
+              {
+                :label "AnnualMinExistingAssetNPVModule" 
+                :set "set_InAnnualMinExistingAssetNPVModule2_inputnode3" 
+                :description "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Dächer." 
+                :tags [["link" "InAnnualMinExistingAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {
                 :label "AnnualAvgAgentAssetNPVModule" 
                 :set "set_InAnnualAvgAgentAssetNPVModule2_inputnode3" 
-                :description "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet." 
+                :description "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet." 
                 :tags [["link" "InAnnualAvgAgentAssetNPVModule2" "inputnode3" "InPVFile" "pvFile"]]
               } 
               {

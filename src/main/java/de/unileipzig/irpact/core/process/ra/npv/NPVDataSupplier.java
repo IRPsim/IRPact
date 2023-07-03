@@ -291,6 +291,42 @@ public final class NPVDataSupplier {
         }
     }
 
+    private Map<Integer, Double> annualMinAgentNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMinAgentNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(annualMinAgentNPVCache.containsKey(year)) {
+            return annualMinAgentNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            MutableDouble min = MutableDouble.empty();
+            agents.mapToDouble(agent -> NPV(agent, year))
+                .forEach(min::setMin);
+            double result = min.doubleValue();
+            annualMinAgentNPVCache.put(year, result);
+            return result;
+        }
+    }
+
+    private Map<Integer, Double> annualMaxAgentNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMaxAgentNPV(Stream<? extends ConsumerAgent> agents, final int year) {
+        if(annualMaxAgentNPVCache.containsKey(year)) {
+            return annualMaxAgentNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            MutableDouble max = MutableDouble.empty();
+            agents.mapToDouble(agent -> NPV(agent, year))
+                .forEach(max::setMax);
+            double result = max.doubleValue();
+            annualMaxAgentNPVCache.put(year, result);
+            return result;
+        }
+    }
+
     private MutableDouble globalAvgAgentNPV2Cache;
     public synchronized double globalAvgAgentNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
         if (globalAvgAgentNPV2Cache == null) {
@@ -304,6 +340,46 @@ public final class NPVDataSupplier {
             globalAvgAgentNPV2Cache = new MutableDouble(result);
         }
         return globalAvgAgentNPV2Cache.get();
+    }
+
+    private MutableDouble globalMaxAgentNPV2Cache;
+    public synchronized double globalMaxAgentNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
+        if (globalMaxAgentNPV2Cache == null) {
+            double max = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double annualMax = annualMaxAgentNPV(supplier.get(), year);
+                if (Double.isNaN(max)) {
+                    max = annualMax;
+                } else {
+                    max = Math.max(max, annualMax);
+                }
+            }
+            if (Double.isNaN(max)) {
+                throw new IllegalStateException("max is NaN");
+            }
+            globalMaxAgentNPV2Cache = new MutableDouble(max);
+        }
+        return globalMaxAgentNPV2Cache.get();
+    }
+
+    private MutableDouble globalMinAgentNPV2Cache;
+    public synchronized double globalMinAgentNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
+        if (globalMinAgentNPV2Cache == null) {
+            double min = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double annualMin = annualMinAgentNPV(supplier.get(), year);
+                if (Double.isNaN(min)) {
+                    min = annualMin;
+                } else {
+                    min = Math.min(min, annualMin);
+                }
+            }
+            if (Double.isNaN(min)) {
+                throw new IllegalStateException("min is NaN");
+            }
+            globalMinAgentNPV2Cache = new MutableDouble(min);
+        }
+        return globalMinAgentNPV2Cache.get();
     }
 
     private Map<Integer, Double> annualAvgAssetNPVCache = new ConcurrentHashMap<>();
@@ -332,6 +408,62 @@ public final class NPVDataSupplier {
         }
     }
 
+    private Map<Integer, Double> annualMinAssetNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMinAssetNPV(int year) {
+        if (annualMinAssetNPVCache.containsKey(year)) {
+            return annualMinAssetNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            double min = Double.NaN;
+
+            NPVMatrix matrix = npData.get(year);
+            for (int N = 0; N < matrix.getNmax(); N++) {
+                for (int A = 0; A < matrix.getAmax(); A++) {
+                    double current = matrix.getValue(N, A);
+                    if (Double.isNaN(min)) {
+                        min = current;
+                    } else {
+                        min = Math.min(min, current);
+                    }
+                }
+            }
+
+            annualMinAssetNPVCache.put(year, min);
+            return min;
+        }
+    }
+
+    private Map<Integer, Double> annualMaxAssetNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMaxAssetNPV(int year) {
+        if (annualMaxAssetNPVCache.containsKey(year)) {
+            return annualMaxAssetNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            double max = Double.NaN;
+
+            NPVMatrix matrix = npData.get(year);
+            for (int N = 0; N < matrix.getNmax(); N++) {
+                for (int A = 0; A < matrix.getAmax(); A++) {
+                    double current = matrix.getValue(N, A);
+                    if (Double.isNaN(max)) {
+                        max = current;
+                    } else {
+                        max = Math.max(max, current);
+                    }
+                }
+            }
+
+            annualMaxAssetNPVCache.put(year, max);
+            return max;
+        }
+    }
+
     private MutableDouble globalAvgAssetNPVCache;
     public synchronized double globalAvgAssetNPV(int start, int end) {
         if (globalAvgAssetNPVCache == null) {
@@ -345,6 +477,40 @@ public final class NPVDataSupplier {
             globalAvgAssetNPVCache = new MutableDouble(result);
         }
         return globalAvgAssetNPVCache.get();
+    }
+
+    private MutableDouble globalMaxAssetNPVCache;
+    public synchronized double globalMaxAssetNPV(int start, int end) {
+        if (globalMaxAssetNPVCache == null) {
+            double max = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double current = annualMaxAssetNPV(year);
+                if (Double.isNaN(max)) {
+                    max = current;
+                } else {
+                    max = Math.max(max, current);
+                }
+            }
+            globalMaxAssetNPVCache = new MutableDouble(max);
+        }
+        return globalMaxAssetNPVCache.get();
+    }
+
+    private MutableDouble globalMinAssetNPVCache;
+    public synchronized double globalMinAssetNPV(int start, int end) {
+        if (globalMinAssetNPVCache == null) {
+            double min = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double current = annualMinAssetNPV(year);
+                if (Double.isNaN(min)) {
+                    min = current;
+                } else {
+                    min = Math.min(min, current);
+                }
+            }
+            globalMinAssetNPVCache = new MutableDouble(min);
+        }
+        return globalMinAssetNPVCache.get();
     }
 
     private Map<Integer, Double> annualAvgExistingAssetNPVCache = new ConcurrentHashMap<>();
@@ -371,6 +537,46 @@ public final class NPVDataSupplier {
         }
     }
 
+    private Map<Integer, Double> annualMinExistingAssetNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMinExistingAssetNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        if (annualMinExistingAssetNPVCache.containsKey(year)) {
+            return annualMinExistingAssetNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            MutableDouble min = MutableDouble.empty();
+            agents.map(agent -> Pair.get(getN(agent), getA(agent)))
+                .distinct()
+                .mapToDouble(pair -> NPV(pair.first(), pair.second(), year))
+                .forEach(min::setMin);
+            double result = min.get();
+            annualMinExistingAssetNPVCache.put(year, result);
+            return result;
+        }
+    }
+
+    private Map<Integer, Double> annualMaxExistingAssetNPVCache = new ConcurrentHashMap<>();
+    public synchronized double annualMaxExistingAssetNPV(Stream<? extends ConsumerAgent> agents, int year) {
+        if (annualMaxExistingAssetNPVCache.containsKey(year)) {
+            return annualMaxExistingAssetNPVCache.get(year);
+        } else {
+            if(npData.isEmpty()) {
+                throw new NoSuchElementException("missing npv data");
+            }
+
+            MutableDouble min = MutableDouble.empty();
+            agents.map(agent -> Pair.get(getN(agent), getA(agent)))
+                .distinct()
+                .mapToDouble(pair -> NPV(pair.first(), pair.second(), year))
+                .forEach(min::setMax);
+            double result = min.get();
+            annualMaxExistingAssetNPVCache.put(year, result);
+            return result;
+        }
+    }
+
     private MutableDouble globalAvgExistingAssetNPVCache;
     public synchronized double globalAvgExistingAssetNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
         if (globalAvgExistingAssetNPVCache == null) {
@@ -384,5 +590,39 @@ public final class NPVDataSupplier {
             globalAvgExistingAssetNPVCache = new MutableDouble(result);
         }
         return globalAvgExistingAssetNPVCache.get();
+    }
+
+    private MutableDouble globalMaxExistingAssetNPVCache;
+    public synchronized double globalMaxExistingAssetNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
+        if (globalMaxExistingAssetNPVCache == null) {
+            double max = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double current = annualMaxExistingAssetNPV(supplier.get(), year);
+                if (Double.isNaN(max)) {
+                    max = current;
+                } else {
+                    max = Math.max(max, current);
+                }
+            }
+            globalMaxExistingAssetNPVCache = new MutableDouble(max);
+        }
+        return globalMaxExistingAssetNPVCache.get();
+    }
+
+    private MutableDouble globalMinExistingAssetNPVCache;
+    public synchronized double globalMinExistingAssetNPV(Supplier<? extends Stream<? extends ConsumerAgent>> supplier, int start, int end) {
+        if (globalMinExistingAssetNPVCache == null) {
+            double min = Double.NaN;
+            for (int year = start; year <= end; year++) {
+                double current = annualMinExistingAssetNPV(supplier.get(), year);
+                if (Double.isNaN(min)) {
+                    min = current;
+                } else {
+                    min = Math.min(min, current);
+                }
+            }
+            globalMinExistingAssetNPVCache = new MutableDouble(min);
+        }
+        return globalMinExistingAssetNPVCache.get();
     }
 }

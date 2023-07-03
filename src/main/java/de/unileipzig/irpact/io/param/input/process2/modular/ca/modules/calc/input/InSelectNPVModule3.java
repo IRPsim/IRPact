@@ -9,9 +9,21 @@ import de.unileipzig.irpact.core.process.ra.npv.NPVXlsxData;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAgentNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgAssetNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualAvgExistingAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMaxAgentNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMaxAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMaxExistingAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinAgentNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinExistingAssetNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAgentNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgExistingAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMaxAgentNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMaxAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMaxExistingAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinAgentNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinExistingAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -86,6 +98,18 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
     public static final int CASE_GlobalAvgExistingAssetNPVModule3 = 5;
     public static final int CASE_GlobalAvgAssetNPVModule3 = 6;
     public static final int CASE_GlobalAvgAgentNPVModule2 = 7;
+    public static final int CASE_AnnualMinExistingAssetNPVModule2 = 8;
+    public static final int CASE_AnnualMaxExistingAssetNPVModule2 = 9;
+    public static final int CASE_AnnualMinAssetNPVModule2 = 10;
+    public static final int CASE_AnnualMaxAssetNPVModule2 = 11;
+    public static final int CASE_AnnualMinAgentNPVModule2 = 12;
+    public static final int CASE_AnnualMaxAgentNPVModule2 = 13;
+    public static final int CASE_GlobalMinExistingAssetNPVModule3 = 14;
+    public static final int CASE_GlobalMaxExistingAssetNPVModule3 = 15;
+    public static final int CASE_GlobalMinAssetNPVModule3 = 16;
+    public static final int CASE_GlobalMaxAssetNPVModule3 = 17;
+    public static final int CASE_GlobalMinAgentNPVModule2 = 18;
+    public static final int CASE_GlobalMaxAgentNPVModule2 = 19;
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
@@ -103,7 +127,7 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
         intDefault = 1,
-        domain = "[1,7]"
+        domain = "[1,19]"
     )
     public long npvId = 1;
     public void setNpvId(int npvId) {
@@ -200,6 +224,79 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
                 module.setName(getName());
                 ((GlobalAvgAgentNPVModule2) module).setData(getPvFile(parser));
                 break;
+
+            case CASE_AnnualMinExistingAssetNPVModule2:
+                module = new AnnualMinExistingAssetNPVModule2();
+                module.setName(getName());
+                ((AnnualMinExistingAssetNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualMaxExistingAssetNPVModule2:
+                module = new AnnualMaxExistingAssetNPVModule2();
+                module.setName(getName());
+                ((AnnualMaxExistingAssetNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualMinAssetNPVModule2:
+                module = new AnnualMinAssetNPVModule2();
+                module.setName(getName());
+                ((AnnualMinAssetNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualMaxAssetNPVModule2:
+                module = new AnnualMaxAssetNPVModule2();
+                module.setName(getName());
+                ((AnnualMaxAssetNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualMinAgentNPVModule2:
+                module = new AnnualMinAgentNPVModule2();
+                module.setName(getName());
+                ((AnnualMinAgentNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualMaxAgentNPVModule2:
+                module = new AnnualMaxAgentNPVModule2();
+                module.setName(getName());
+                ((AnnualMaxAgentNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMinExistingAssetNPVModule3:
+                module = new GlobalMinExistingAssetNPVModule3();
+                module.setName(getName());
+                ((GlobalMinExistingAssetNPVModule3) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMaxExistingAssetNPVModule3:
+                module = new GlobalMaxExistingAssetNPVModule3();
+                module.setName(getName());
+                ((GlobalMaxExistingAssetNPVModule3) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMinAssetNPVModule3:
+                module = new GlobalMinAssetNPVModule3();
+                module.setName(getName());
+                ((GlobalMinAssetNPVModule3) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMaxAssetNPVModule3:
+                module = new GlobalMaxAssetNPVModule3();
+                module.setName(getName());
+                ((GlobalMaxAssetNPVModule3) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMinAgentNPVModule2:
+                module = new GlobalMinAgentNPVModule2();
+                module.setName(getName());
+                ((GlobalMinAgentNPVModule2) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalMaxAgentNPVModule2:
+                module = new GlobalMaxAgentNPVModule2();
+                module.setName(getName());
+                ((GlobalMaxAgentNPVModule2) module).setData(getPvFile(parser));
+                break;
+
 
             default:
                 throw new ParsingException("illegal NPV-ID: " + getNpvId());
