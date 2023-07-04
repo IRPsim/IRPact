@@ -3746,6 +3746,40 @@ SET set_InNaNModule3_inputnode3(set_InConsumerAgentInputModule2)
 * - type: Float
 PARAMETER par_InNaNModule3_inputnode3_placeholder(set_InNaNModule3_inputnode3)
 
+* - identifier: InNPVLogisticModule3_calcnode3
+* - type: String
+SET set_InNPVLogisticModule3_calcnode3(set_InConsumerAgentCalculationModule2)
+
+* - default: 1.0
+* - description: todo
+* - identifier: L
+* - type: Float
+PARAMETER par_InNPVLogisticModule3_calcnode3_valueL(set_InNPVLogisticModule3_calcnode3)
+
+* - default: 1.0
+* - description: todo
+* - identifier: k
+* - type: Float
+PARAMETER par_InNPVLogisticModule3_calcnode3_valueK(set_InNPVLogisticModule3_calcnode3)
+
+* - default: 1
+* - domain: [1,6]
+* - description: Der zu nutzende NPV-Typ.
+* - identifier: NPV-ID
+* - type: Integer
+PARAMETER par_InNPVLogisticModule3_calcnode3_npvId(set_InNPVLogisticModule3_calcnode3)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InNPVLogisticModule3_calcnode3_InPVFile_pvFile(set_InNPVLogisticModule3_calcnode3,set_InPVFile)
+
+* - default: -1
+* - description: todo
+* - identifier: specialId
+* - type: Integer
+PARAMETER par_InNPVLogisticModule3_calcnode3_specialId(set_InNPVLogisticModule3_calcnode3)
+
 * - identifier: InNPVModule3_inputnode3
 * - type: String
 SET set_InNPVModule3_inputnode3(set_InConsumerAgentInputModule2)

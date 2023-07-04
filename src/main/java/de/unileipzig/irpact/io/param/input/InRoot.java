@@ -1038,6 +1038,7 @@ public class InRoot implements RootClass {
             InGlobalMinAgentNPVModule2.class,
             InLocalShareOfAdopterModule3.class,
             InNaNModule3.class,
+            InNPVLogisticModule3.class,
             InNPVModule3.class,
             InSelectNPVModule3.class,
             InSocialShareOfAdopterModule3.class,

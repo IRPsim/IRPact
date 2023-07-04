@@ -3303,14 +3303,14 @@ InNPVModule3_pvFile:
 
 InSelectNPVModule3:
   edn_label: "NPV-Auswahl-Module"
-  edn_description: "Berechnet den NPV auf verschiedene Varianten: 1:
+  edn_description: "Berechnet den NPV auf verschiedene Varianten:
     1: der Standard-NPV des Agenten für das Simulationsjahr
-    2: NPV für einen Agenten basierend auf Dachanteil
+    2: jährlicher Durchschnitt über existierende Dachkombinationen
     3: jährlicher Durchschnitt über alle möglichen Dachkombinationen
-    4: jährlicher Durchschnitt über existierende Dachkombinationen
-    5: jährlicher Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
-    6: globale Durchschnitt über alle möglichen Dachkombiniationen und Jahre
-    7: globaler Durchschnitt über existierende Dachkombinationen mit Wichtung nach Anteilen
+    4: jährlicher Durchschnitt über alle Agenten
+    5: simulationsweiter Durchschnitt über existierende Dachkombinationen
+    6: simulationsweiter Durchschnitt über alle möglichen Dachkombinationen
+    7: simulationsweiter Durchschnitt über alle Agenten
     8 - 19: ...
   "
   graphnode_colorlabel: *INPUT_MODULE_LABEL
@@ -3321,6 +3321,35 @@ InSelectNPVModule3_npvId:
   gams_description: "Der zu nutzende NPV-Typ."
 InSelectNPVModule3_pvFile:
   gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InNPVLogisticModule3:
+  edn_label: "NPV-Logistikmodul"
+  edn_description: "L\\/(1+e^(-k*(x-x0))) mit x als NPV und x0:
+    1: jährliches min\\/max über existierende Dachkombinationen
+    2: jährliches min\\/max über alle möglichen Dachkombinationen
+    3: jährliches min\\/max über alle Agenten
+    4: simulationsweites min\\/max über existierende Dachkombinationen
+    5: simulationsweites min\\/max über alle möglichen Dachkombinationen
+    6: simulationsweites min\\/max über alle Agenten
+  "
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNPVLogisticModule3_valueL:
+  gams_identifier: "L"
+  gams_description: "todo"
+InNPVLogisticModule3_valueK:
+  gams_identifier: "k"
+  gams_description: "todo"
+InNPVLogisticModule3_npvId:
+  gams_identifier: "NPV-ID"
+  gams_description: "Der zu nutzende NPV-Typ."
+InNPVLogisticModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InNPVLogisticModule3_specialId:
+  gams_identifier: "specialId"
   gams_description: "todo"
 
 InGlobalAvgNPVModule3:

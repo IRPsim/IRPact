@@ -500,7 +500,7 @@
       "set_InIndependentConsumerAgentGroupAttribute" : { },
       "set_InIndependentProductGroupAttribute" : { },
       "set_InInformation" : {
-        "CT_D_2023_07_03_T_15_36_36" : {
+        "CT_D_2023_07_04_T_12_23_13" : {
           "par_InInformation_placeholder" : 0.0
         },
         "revision_2" : {
@@ -541,6 +541,7 @@
       "set_InNoDistance" : { },
       "set_InNOPModule3_actionnode3" : { },
       "set_InNormalDistribution" : { },
+      "set_InNPVLogisticModule3_calcnode3" : { },
       "set_InNPVModule3_inputnode3" : { },
       "set_InNumberOfTies" : { },
       "set_InOutputImage" : { },
@@ -929,6 +930,7 @@
       "par_link_InNameSplitConsumerAgentGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNameSplitProductGroupAttribute_InUnivariateDoubleDistribution_dist" : { },
       "par_link_InNeighbourhoodOverview_InNodeDistanceFilterScheme_nodeFilterScheme" : { },
+      "par_link_InNPVLogisticModule3_calcnode3_InPVFile_pvFile" : { },
       "par_link_InNPVModule3_inputnode3_InPVFile_pvFile" : { },
       "par_link_InNumberOfTies_InConsumerAgentGroup_cags" : { },
       "par_link_InPhaseLoggingModule3_evalranode3_InConsumerAgentEvalRAModule2_inputModule" : { },
