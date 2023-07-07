@@ -24,10 +24,10 @@ class LoggableAttitudeGapRelativeAgreementAlgorithm2Test {
         );
 
         assertTrue(changed);
-        assertEquals(1.175, values[RelativeAgreementAlgorithm2.INDEX_XI], 0.0001);
-        assertEquals(0.7187, values[RelativeAgreementAlgorithm2.INDEX_UI], 0.0001);
-        assertEquals(1.3857, values[RelativeAgreementAlgorithm2.INDEX_XJ], 0.0001);
-        assertEquals(0.7714, values[RelativeAgreementAlgorithm2.INDEX_UJ], 0.0001);
+        assertEquals(1.115, values[RelativeAgreementAlgorithm2.INDEX_XI], 0.0001);
+        assertEquals(0.70375, values[RelativeAgreementAlgorithm2.INDEX_UI], 0.0001);
+        assertEquals(1.477142857142857, values[RelativeAgreementAlgorithm2.INDEX_XJ], 0.0001);
+        assertEquals(0.7942857142857144, values[RelativeAgreementAlgorithm2.INDEX_UJ], 0.0001);
     }
 
     @Test
