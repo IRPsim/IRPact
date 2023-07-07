@@ -38,7 +38,7 @@ public class DefaultFeasibilityModule extends AbstractActionModule implements Co
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         trace("[{}] handle feasibility", data.getAgent().getName());
 
         boolean isShare = isShareOf1Or2FamilyHouse(data.getAgent());

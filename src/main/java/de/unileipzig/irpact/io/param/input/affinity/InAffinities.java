@@ -4,11 +4,13 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.agent.consumer.BasicConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -19,14 +21,13 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_CONSUMER_AFF_GRP;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_CONSUMER_AFF_GRP)
 public class InAffinities implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,18 +38,20 @@ public class InAffinities implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, CONSUMER, CONSUMER_AFFINITY, thisName());
-        addEntry(res, thisClass(), "entries");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InAffinityEntry[] entries;
 
     public InAffinities() {
@@ -66,18 +69,18 @@ public class InAffinities implements InIRPactEntity {
 
     public InAffinities newCopy(CopyCache cache) {
         InAffinities copy = new InAffinities();
-        copy._name = _name;
+        copy.name = name;
         copy.entries = cache.copyArray(entries);
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setEntries(Collection<? extends InAffinityEntry> entries) {

@@ -281,6 +281,7 @@ public class UnitStepDiscreteTimeModel extends AbstractJadexTimeModel {
                 clockTick,
                 tick
         );
+
         this.nowStamp = newNowStamp;
         return newNowStamp;
     }

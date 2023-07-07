@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.util.data.count;
 
 import de.unileipzig.irpact.commons.util.MapSupplier;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,14 @@ public class CountMap2D<A, B> {
 
     public MapSupplier supplier() {
         return mapSupplier;
+    }
+
+    public boolean getAllSecondsKeys(Collection<? super B> target) {
+        boolean changed = false;
+        for(Map<B, ?> map: counter.values()) {
+            changed |= target.addAll(map.keySet());
+        }
+        return changed;
     }
 
     public Map<A, Map<B, Integer>> map() {

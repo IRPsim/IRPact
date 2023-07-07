@@ -50,6 +50,7 @@ import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.Collection;
@@ -69,6 +70,7 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
 
     private final Map<Holder<InIRPactEntity>, Object> CACHE = new LinkedHashMap<>();
     private ResourceLoader resourceLoader;
+    private MainCommandLineOptions options;
 
     private final MutableInt simulationYear = MutableInt.empty();
     private BasicJadexSimulationEnvironment environment;
@@ -96,6 +98,15 @@ public class JadexRestoreUpdater implements IRPactRestoreUpdater, LoggingHelper 
     @Override
     public JadexSimulationEnvironment getEnvironment() {
         return environment;
+    }
+
+    public void setOptions(MainCommandLineOptions options) {
+        this.options = options;
+    }
+
+    @Override
+    public MainCommandLineOptions getOptions() {
+        return options;
     }
 
     @Override

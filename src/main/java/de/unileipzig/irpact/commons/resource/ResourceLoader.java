@@ -49,8 +49,20 @@ public interface ResourceLoader {
     //localized support
     //=========================
 
-    default boolean existsLocalized(String baseName, Locale locale, String extension) {
+    default boolean hasLocalized(String baseName, Locale locale, String extension) {
         return exists(LocaleUtil.buildName(baseName, locale, extension));
+    }
+
+    default InputStream getLocalized(String baseName, Locale locale, String extension) {
+        if(hasLocalizedInternal(baseName, locale, extension)) {
+            return getLocalizedInternalAsStream(baseName, locale, extension);
+        }
+
+        if(hasLocalizedExternal(baseName, locale, extension)) {
+            return getLocalizedExternalAsStream(baseName, locale, extension);
+        }
+
+        return null;
     }
 
     default boolean hasLocalizedExternal(String baseName, Locale locale, String extension) {

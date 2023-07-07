@@ -2,10 +2,11 @@ package de.unileipzig.irpact.commons.checksum;
 
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
-import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irptools.util.log.IRPLogger;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -14,50 +15,18 @@ import java.util.stream.Stream;
  */
 public abstract class ChecksumCalculator {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(ChecksumCalculator.class);
-
-    private static final int PRIM = 31;
+    protected static final int PRIM = 31;
 
     public ChecksumCalculator() {
     }
 
     //=========================
-    //logging
-    //=========================
-
-    private static String printClass(Object obj) {
-        if(obj == null) {
-            return "null";
-        } else {
-            return obj.getClass().getSimpleName();
-        }
-    }
-
-    private String printChecksum(Object obj) {
-        return Integer.toHexString(getChecksum(obj));
-    }
-
-    public void log(ChecksumInfo info) {
-        LOGGER.info("[checksum] '{}' ({}): {}",
-                info.getText(),
-                printClass(info.getValue()),
-                printChecksum(info.getValue())
-        );
-    }
-
-    public void log(ChecksumInfo... infos) {
-        log(Arrays.asList(infos));
-    }
-
-    public void log(Collection<? extends ChecksumInfo> infos) {
-        for(ChecksumInfo info: infos) {
-            log(info);
-        }
-    }
-
-    //=========================
     //general
     //=========================
+
+    public String printChecksum(Object obj) {
+        return Integer.toHexString(getChecksum(obj));
+    }
 
     public int getChecksum(int value) {
         return Integer.hashCode(value);
@@ -92,6 +61,12 @@ public abstract class ChecksumCalculator {
             return ChecksumComparable.DEFAULT_NONNULL_CHECKSUM;
         }
         return nameable.getName().hashCode();
+    }
+
+    public int getSystemChecksum(Object value) {
+        return value == null
+                ? ChecksumComparable.NULL_CHECKSUM
+                : System.identityHashCode(value);
     }
 
     //=========================

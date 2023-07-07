@@ -1,10 +1,10 @@
 package de.unileipzig.irpact.io.param.input.network;
 
 import de.unileipzig.irpact.commons.eval.NoDistance;
-import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
-import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
+import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.commons.spatial.DistanceEvaluator;
+import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.AgentManager;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
@@ -12,11 +12,13 @@ import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.FreeNetworkTopology;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.affinity.InAffinities;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -25,14 +27,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 
-import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
-import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.NETWORK_TOPO_FREE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(NETWORK_TOPO_FREE)
 public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -43,43 +44,50 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
-        addEntry(res, thisClass(), "initialWeight");
-        addEntry(res, thisClass(), "distanceEvaluator");
-        addEntry(res, thisClass(), "affinities");
-        addEntry(res, thisClass(), "numberOfTies");
-        addEntry(res, thisClass(), "allowLessEdges");
-
-        setHidden(res, thisClass(), "initialWeight");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InDistanceEvaluator[] distanceEvaluator;
-
-    @FieldDefinition
-    public InNumberOfTies[] numberOfTies;
-
-    @FieldDefinition
-    public InAffinities[] affinities;
-
-    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0,
+            hidden = true
+    )
     public double initialWeight;
 
     @FieldDefinition
-    public boolean allowLessEdges;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean allowLessEdges = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    public InDistanceEvaluator[] distanceEvaluator = new InDistanceEvaluator[0];
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    public InNumberOfTies[] numberOfTies = new InNumberOfTies[0];
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    public InAffinities[] affinities = new InAffinities[0];
 
     public InFreeNetworkTopology() {
     }
 
     public InFreeNetworkTopology(String name, InDistanceEvaluator evaluator, InNumberOfTies[] numberOfTies, double initialWeight) {
-        this._name = name;
+        this.name = name;
         this.distanceEvaluator = new InDistanceEvaluator[]{evaluator};
         this.numberOfTies = numberOfTies;
         this.initialWeight = initialWeight;
@@ -92,7 +100,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     public InFreeNetworkTopology newCopy(CopyCache cache) {
         InFreeNetworkTopology copy = new InFreeNetworkTopology();
-        copy._name = _name;
+        copy.name = name;
         copy.distanceEvaluator = cache.copyArray(distanceEvaluator);
         copy.numberOfTies = cache.copyArray(numberOfTies);
         copy.initialWeight = initialWeight;
@@ -102,11 +110,11 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public boolean hasDistanceEvaluator() {
@@ -207,12 +215,12 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
         if (this == o) return true;
         if (!(o instanceof InFreeNetworkTopology)) return false;
         InFreeNetworkTopology topology = (InFreeNetworkTopology) o;
-        return Double.compare(topology.initialWeight, initialWeight) == 0 && Objects.equals(_name, topology._name) && Arrays.equals(distanceEvaluator, topology.distanceEvaluator) && Arrays.equals(numberOfTies, topology.numberOfTies);
+        return Double.compare(topology.initialWeight, initialWeight) == 0 && Objects.equals(name, topology.name) && Arrays.equals(distanceEvaluator, topology.distanceEvaluator) && Arrays.equals(numberOfTies, topology.numberOfTies);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(_name, initialWeight);
+        int result = Objects.hash(name, initialWeight);
         result = 31 * result + Arrays.hashCode(distanceEvaluator);
         result = 31 * result + Arrays.hashCode(numberOfTies);
         return result;
@@ -221,7 +229,7 @@ public class InFreeNetworkTopology implements InGraphTopologyScheme {
     @Override
     public String toString() {
         return "InFreeNetworkTopology{" +
-                "_name='" + _name + '\'' +
+                "_name='" + name + '\'' +
                 ", distanceEvaluator=" + Arrays.toString(distanceEvaluator) +
                 ", numberOfTies=" + Arrays.toString(numberOfTies) +
                 ", initialWeight=" + initialWeight +

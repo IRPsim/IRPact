@@ -90,7 +90,7 @@ public class StageEvaluationModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         Stage stage = data.currentStage();
         if(stage == null) {
             throw new NullPointerException("Stage");

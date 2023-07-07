@@ -1,0 +1,66 @@
+#########################
+# Deutsche Lokalisierung für die Ausgabedaten
+#########################
+---
+# CSV
+CSV:
+  BUCKET_ANALYSER:
+    year: "Jahr"
+    bucket: "Bereich"
+    value: "Wert"
+    sep: ";"
+
+  NEIGHBOURHOOD_OVERVIEW:
+    sourceAgent: "Agent"
+    targetCount: "Anzahl"
+    targetAgent: "Agent{0}"
+    distanceValue: "Abstand{0}"
+    sep: ";"
+
+# XLSX
+XLSX:
+  BUCKET_ANALYSER:
+    bucket: "Bereich"
+    value: "Wert"
+    sep: ";"
+
+  POPULATION_OVERVIEW:
+    sheet: "Agentendaten"
+    agent: "Agent"
+    id: "Id"
+    milieu: "Milieu"
+    adress: "Adresse"
+    zip: "PLZ"
+    pp: "Kaufkraft_Euro"
+
+  ADOPTION_OVERVIEW:
+    sheet: "Agentendaten"
+    agent: "Agent"
+    id: "Id"
+    milieu: "Milieu"
+    adress: "Adresse"
+    zip: "PLZ"
+    pp: "Kaufkraft_Euro"
+    utility: "Utility"
+    product: "Produkt"
+    time: "Zeitpunkt"
+    phase: "Adoptionsphase"
+
+  NEIGHBOURHOOD_OVERVIEW:
+    sourceAgent: "Agent"
+    targetCount: "Anzahl"
+    targetAgent: "Agent{0}"
+    distanceValue: "Abstand{0}"
+    sheetName: "Daten"
+
+  PERFORMANCE:
+    sheetGlobal: "Global"
+    sheetZIP: "PLZ"
+    columnMetric: "Metrik"
+    columnValue: "Wert"
+    MAE: "MAE"
+    FSAPE: "FSAPE"
+    RMSD: "RMSD"
+    invalid: "Ungültige PLZs:"
+    unused: "Ungenutzte PLZs:"
+

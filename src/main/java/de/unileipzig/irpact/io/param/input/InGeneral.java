@@ -4,19 +4,18 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.data.MutableInt;
 import de.unileipzig.irpact.core.logging.*;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.simulation.BasicSettings;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexLifeCycleControl;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
-import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
-import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -24,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.*;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(global = true)
+@LocalizedUiResource.XorWithoutUnselectRule(InGeneral.TIME)
+@LocalizedUiResource.XorWithoutUnselectRule(InGeneral.LOG_LEVEL)
 public class InGeneral implements Copyable {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -41,100 +41,105 @@ public class InGeneral implements Copyable {
         return thisClass().getSimpleName();
     }
 
-    protected static final String[] timeUnitFieldNames = {"timeoutUseMs", "timeoutUseSec", "timeoutUseMin"};
-    protected static final String[] timeUnitFieldNamesWithoutDefault = {"timeoutUseMs", "timeoutUseSec"};
-    protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
-            .withTrueValue(Constants.TRUE1)
-            .withFalseValue(Constants.FALSE0)
-            .withKeys(timeUnitFieldNames);
+    static final String TIME = "TIME";
+    static final String LOG_LEVEL = "LOG_LEVEL";
 
-    protected static final String[] logLevelFieldNames = {"levelOff", "levelTrace", "levelDebug", "levelInfo", "levelWarn", "levelError", "levelAll"};
-    protected static final String[] logLevelFieldNamesWithoutDefault = {"levelOff", "levelTrace", "levelDebug", "levelWarn", "levelError", "levelAll"};
-    protected static final XorWithoutUnselectRuleBuilder logLevelBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
-            .withTrueValue(Constants.TRUE1)
-            .withFalseValue(Constants.FALSE0)
-            .withKeys(logLevelFieldNames);
+//    protected static final String[] timeUnitFieldNames = {"timeoutUseMs", "timeoutUseSec", "timeoutUseMin"};
+//    protected static final String[] timeUnitFieldNamesWithoutDefault = {"timeoutUseMs", "timeoutUseSec"};
+//    protected static final XorWithoutUnselectRuleBuilder timeUnitBuilder = new XorWithoutUnselectRuleBuilder()
+//            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
+//            .withTrueValue(Constants.TRUE1)
+//            .withFalseValue(Constants.FALSE0)
+//            .withKeys(timeUnitFieldNames);
 
-    public static void initRes(TreeAnnotationResource res) {
+//    protected static final String[] logLevelFieldNames = {"levelOff", "levelTrace", "levelDebug", "levelInfo", "levelWarn", "levelError", "levelAll"};
+//    protected static final String[] logLevelFieldNamesWithoutDefault = {"levelOff", "levelTrace", "levelDebug", "levelWarn", "levelError", "levelAll"};
+//    protected static final XorWithoutUnselectRuleBuilder logLevelBuilder = new XorWithoutUnselectRuleBuilder()
+//            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
+//            .withTrueValue(Constants.TRUE1)
+//            .withFalseValue(Constants.FALSE0)
+//            .withKeys(logLevelFieldNames);
+
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
         //general
-        putClassPath(res, thisClass(), GENERAL_SETTINGS);
-
-        addEntry(res, thisClass(), "seed");
-        addEntry(res, thisClass(), "timeout");
-        addEntry(res, thisClass(), "timeoutUseMs");
-        addEntry(res, thisClass(), "timeoutUseSec");
-        addEntry(res, thisClass(), "timeoutUseMin");
-        addEntry(res, thisClass(), "lastSimulationYear");
-
-        setDomain(res, thisClass(), "timout", DOMAIN_GEQ0);
-        setDomain(res, thisClass(), timeUnitFieldNames, DOMAIN_BOOLEAN);
-
-        setDefault(res, thisClass(), "seed", varargs(42));
-        setDefault(res, thisClass(), "timeout", varargs(1));
-        setDefault(res, thisClass(), timeUnitFieldNamesWithoutDefault, VALUE_FALSE);
-        setDefault(res, thisClass(), "timeoutUseMin", VALUE_TRUE);
-
-        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
-
-        //logging
-        putFieldPathAndAddEntry(res, thisClass(), "levelOff", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelTrace", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelDebug", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelInfo", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelWarn", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelError", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "levelAll", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAll", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", InRootUI.SETT_GENERAL_LOG);
-        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", InRootUI.SETT_GENERAL_LOG);
-
-        setDomain(res, thisClass(), logLevelFieldNames, DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logAll", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logAllIRPact", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logAllTools", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logInitialization", DOMAIN_BOOLEAN);
-        setDomain(res, thisClass(), "logSimulation", DOMAIN_BOOLEAN);
-
-        setDefault(res, thisClass(), logLevelFieldNamesWithoutDefault, VALUE_FALSE);
-        setDefault(res, thisClass(), "levelInfo", VALUE_TRUE);
-        setDefault(res, thisClass(), "logAll", VALUE_FALSE);
-        setDefault(res, thisClass(), "logAllIRPact", VALUE_FALSE);
-        setDefault(res, thisClass(), "logAllTools", VALUE_FALSE);
-        setDefault(res, thisClass(), "logInitialization", VALUE_FALSE);
-        setDefault(res, thisClass(), "logSimulation", VALUE_FALSE);
-
-        setRules(res, thisClass(), logLevelFieldNames, logLevelBuilder);
-
-        //special
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runOptActDemo", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runPVAct", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "scenarioMode", InRootUI.SETT_SPECIAL, VALUE_NEG_ONE, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "copyLogIfPossible", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "passErrorMessageToOutput", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printStacktraceImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", InRootUI.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", InRootUI.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", InRootUI.SETT_SPECIAL, VALUE_0, null);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "outerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", InRootUI.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
-
-        //data
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logResultAdoptionsAll", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPerformance", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPhaseOverview", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", InRootUI.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
-        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialComponent", InRootUI.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putClassPath(res, thisClass(), GENERAL_SETTINGS);
+//
+//        addEntry(res, thisClass(), "seed");
+//        addEntry(res, thisClass(), "timeout");
+//        addEntry(res, thisClass(), "timeoutUseMs");
+//        addEntry(res, thisClass(), "timeoutUseSec");
+//        addEntry(res, thisClass(), "timeoutUseMin");
+//        addEntry(res, thisClass(), "lastSimulationYear");
+//
+//        setDomain(res, thisClass(), "timout", DOMAIN_GEQ0);
+//        setDomain(res, thisClass(), timeUnitFieldNames, DOMAIN_BOOLEAN);
+//
+//        setDefault(res, thisClass(), "seed", varargs(42));
+//        setDefault(res, thisClass(), "timeout", varargs(1));
+//        setDefault(res, thisClass(), timeUnitFieldNamesWithoutDefault, VALUE_FALSE);
+//        setDefault(res, thisClass(), "timeoutUseMin", VALUE_TRUE);
+//
+//        setRules(res, thisClass(), timeUnitFieldNames, timeUnitBuilder);
+//
+//        //logging
+//        putFieldPathAndAddEntry(res, thisClass(), "levelOff", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelTrace", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelDebug", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelInfo", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelWarn", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelError", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "levelAll", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "logAll", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "logAllIRPact", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "logAllTools", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "logInitialization", TreeViewStructure.SETT_GENERAL_LOG);
+//        putFieldPathAndAddEntry(res, thisClass(), "logSimulation", TreeViewStructure.SETT_GENERAL_LOG);
+//
+//        setDomain(res, thisClass(), logLevelFieldNames, DOMAIN_BOOLEAN);
+//        setDomain(res, thisClass(), "logAll", DOMAIN_BOOLEAN);
+//        setDomain(res, thisClass(), "logAllIRPact", DOMAIN_BOOLEAN);
+//        setDomain(res, thisClass(), "logAllTools", DOMAIN_BOOLEAN);
+//        setDomain(res, thisClass(), "logInitialization", DOMAIN_BOOLEAN);
+//        setDomain(res, thisClass(), "logSimulation", DOMAIN_BOOLEAN);
+//
+//        setDefault(res, thisClass(), logLevelFieldNamesWithoutDefault, VALUE_FALSE);
+//        setDefault(res, thisClass(), "levelInfo", VALUE_TRUE);
+//        setDefault(res, thisClass(), "logAll", VALUE_FALSE);
+//        setDefault(res, thisClass(), "logAllIRPact", VALUE_FALSE);
+//        setDefault(res, thisClass(), "logAllTools", VALUE_FALSE);
+//        setDefault(res, thisClass(), "logInitialization", VALUE_FALSE);
+//        setDefault(res, thisClass(), "logSimulation", VALUE_FALSE);
+//
+//        setRules(res, thisClass(), logLevelFieldNames, logLevelBuilder);
+//
+//        //special
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runOptActDemo", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runPVAct", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "runMode", TreeViewStructure.SETT_SPECIAL, VALUE_NEG_ONE, null);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "scenarioMode", TreeViewStructure.SETT_SPECIAL, VALUE_NEG_ONE, null);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "copyLogIfPossible", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "passErrorMessageToOutput", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printStacktraceImage", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "printNoErrorImage", TreeViewStructure.SETT_SPECIAL, VALUE_TRUE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "skipPersist", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "forceLogToConsole", TreeViewStructure.SETT_SPECIAL, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "debugTask", TreeViewStructure.SETT_SPECIAL, VALUE_0, null);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "outerParallelism", TreeViewStructure.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "innerParallelism", TreeViewStructure.SETT_SPECIAL, VALUE_0, DOMAIN_GEQ0);
+//
+//        //data
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logResultAdoptionsAll", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPerformance", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logPhaseOverview", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logInterest", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logEvaluation", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "evaluationBucketSize", TreeViewStructure.SETT_DATAOUTPUT, VALUE_0_1, DOMAIN_GEQ0);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logAllEvaluation", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
+//        putFieldPathAndAddEntryWithDefaultAndDomain(res, thisClass(), "logFinancialComponent", TreeViewStructure.SETT_DATAOUTPUT, VALUE_FALSE, DOMAIN_BOOLEAN);
 
         //logging general
 //        putFieldPathAndAddEntry(res, thisClass(), "logLevel", GENERAL_SETTINGS, LOGGING, LOGGING_GENERAL);
@@ -160,6 +165,10 @@ public class InGeneral implements Copyable {
     public static final String SCA_INGENERAL_PRINTSTACKTRACEIMAGE = "sca_InGeneral_printStacktraceImage";
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 42
+    )
     public long seed = 42L;
     public void setSeed(long seed) {
         this.seed = seed;
@@ -169,7 +178,11 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
-    public long timeout = 1;
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 5
+    )
+    public long timeout = 5;
     public void setTimeout(long timeout) {
         this.timeout = timeout;
     }
@@ -182,10 +195,26 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(TIME)
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean timeoutUseMs = false;
     @FieldDefinition
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(TIME)
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean timeoutUseSec = false;
     @FieldDefinition
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(TIME)
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean timeoutUseMin = true;
     public TimeUnit getTimeoutUnit() throws ParsingException {
         List<TimeUnit> units = new ArrayList<>();
@@ -220,20 +249,38 @@ public class InGeneral implements Copyable {
         }
     }
 
-    //internal only
-    private final MutableInt firstSimulationYear0 = MutableInt.empty();
-    public boolean hasFirstSimulationYear() {
-        return firstSimulationYear0.hasValue();
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean enableFirstSimulationYear = false;
+    public void setEnableFirstSimulationYear(boolean enableFirstSimulationYear) {
+        this.enableFirstSimulationYear = enableFirstSimulationYear;
     }
-    public int getFirstSimulationYear() {
-        return firstSimulationYear0.get();
-    }
-    public void setFirstSimulationYear(int year) {
-        firstSimulationYear0.set(year);
+    public boolean isEnableFirstSimulationYear() {
+        return enableFirstSimulationYear;
     }
 
     @FieldDefinition
-    public int lastSimulationYear;
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int firstSimulationYear = 0;
+    public int getFirstSimulationYear() {
+        return firstSimulationYear;
+    }
+    public void setFirstSimulationYear(int year) {
+        this.firstSimulationYear = year;
+    }
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(TreeViewStructureEnum.SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
+    public int lastSimulationYear = 0;
     public void setFirstSimulationYearAsLast() {
         lastSimulationYear = getFirstSimulationYear();
     }
@@ -249,24 +296,22 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition(
-            name = "a",
-            gams = @GamsParameter(
-                    description = "Einlesen des zu optimierenden Jahres",
-                    identifier = "Jahreszahl",
-                    hidden = Constants.TRUE1
-            )
+            name = "a"
+    )
+    @LocalizedUiResource.AddEntry(SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            hidden = true
     )
     public int a;
 
     @FieldDefinition(
-            name = "delta_ii",
-            gams = @GamsParameter(
-                    description = "Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)",
-                    identifier = "Zeitschrittl\u00e4nge",
-                    domain = "(0,)",
-                    defaultValue = "0.25",
-                    hidden = Constants.TRUE1
-            )
+            name = "delta_ii"
+    )
+    @LocalizedUiResource.AddEntry(SETT_GENERAL)
+    @LocalizedUiResource.SimpleSet(
+            g0Domain = true,
+            decDefault = 0.25,
+            hidden = true
     )
     public double deltaii;
 
@@ -275,18 +320,39 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition
-    public boolean runPVAct;
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean runPVAct = false;
 
     @FieldDefinition
-    public boolean runOptActDemo;
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean runOptActDemo = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
     public int runMode = -1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = -1
+    )
     public int scenarioMode = -1;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean passErrorMessageToOutput = true;
     public void setPassErrorMessageToOutput(boolean passErrorMessageToOutput) {
         this.passErrorMessageToOutput = passErrorMessageToOutput;
@@ -296,6 +362,11 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
     public boolean printStacktraceImage = true;
     public void setPrintStacktraceImage(boolean printStacktraceImage) {
         this.printStacktraceImage = printStacktraceImage;
@@ -305,15 +376,24 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
-    public boolean printNoErrorImage = true;
-    public void setPrintNoErrorImage(boolean printNoErrorImage) {
-        this.printNoErrorImage = printNoErrorImage;
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    public boolean printNonErrorImage = true;
+    public void setPrintNonErrorImage(boolean printNonErrorImage) {
+        this.printNonErrorImage = printNonErrorImage;
     }
     public boolean shouldPrintNoErrorImage() {
-        return printNoErrorImage;
+        return printNonErrorImage;
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean copyLogIfPossible = false;
     public void setCopyLogIfPossible(boolean copyLogIfPossible) {
         this.copyLogIfPossible = copyLogIfPossible;
@@ -323,6 +403,10 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean skipPersist = false;
     public void setPersistDisabled(boolean disabled) {
         this.skipPersist = disabled;
@@ -332,6 +416,10 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean forceLogToConsole = false;
     public void setForceLogToConsole(boolean forceLogToConsole) {
         this.forceLogToConsole = forceLogToConsole;
@@ -342,9 +430,18 @@ public class InGeneral implements Copyable {
 
     //debug
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 0
+    )
     public int debugTask = 0;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            geq0Domain = true,
+            intDefault = 0
+    )
     public int outerParallelism = 0;
     public void setOuterParallelism(int outerParallelism) {
         this.outerParallelism = Math.max(0, outerParallelism);
@@ -354,6 +451,11 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            geq0Domain = true,
+            intDefault = 0
+    )
     public int innerParallelism = 0;
     public void setInnerParallelism(int innerParallelism) {
         this.innerParallelism = Math.max(0, innerParallelism);
@@ -366,24 +468,81 @@ public class InGeneral implements Copyable {
         return getOuterParallelism() * getInnerParallelism();
     }
 
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logAdoptionAnalysis = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logResultAdoptionsAll = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_SPECIAL)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logPerformance = false;
+
     //=========================
     //general logging
     //=========================
 
     @FieldDefinition
-    public boolean levelOff;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelOff = false;
     @FieldDefinition
-    public boolean levelTrace;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelTrace = false;
     @FieldDefinition
-    public boolean levelDebug;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelDebug = false;
     @FieldDefinition
-    public boolean levelInfo;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    public boolean levelInfo = true;
     @FieldDefinition
-    public boolean levelWarn;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelWarn = false;
     @FieldDefinition
-    public boolean levelError;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelError = false;
     @FieldDefinition
-    public boolean levelAll;
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry(LOG_LEVEL)
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean levelAll = false;
 
     public IRPLevel getLogLevel() throws ParsingException {
         List<IRPLevel> levels = new ArrayList<>();
@@ -444,19 +603,39 @@ public class InGeneral implements Copyable {
     }
 
     @FieldDefinition
-    public boolean logAll;
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logAll = false;
 
     @FieldDefinition
-    public boolean logAllIRPact;
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logAllIRPact = false;
 
     @FieldDefinition
-    public boolean logAllTools;
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logAllTools = false;
 
     @FieldDefinition
-    public boolean logInitialization;
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logInitialization = false;
 
     @FieldDefinition
-    public boolean logSimulation;
+    @LocalizedUiResource.AddEntry(SETT_GENERAL_LOG)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logSimulation = false;
 
     public void useInfoLogging() {
         setLogLevel(IRPLevel.INFO);
@@ -472,21 +651,31 @@ public class InGeneral implements Copyable {
     //=========================
 
     @FieldDefinition
-    public boolean logResultAdoptionsAll;
+    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logPhaseOverview = false;
 
     @FieldDefinition
-    public boolean logPerformance;
+    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logInterest = false;
 
     @FieldDefinition
-    public boolean logPhaseOverview;
+    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    public boolean logEvaluation = false;
 
     @FieldDefinition
-    public boolean logInterest;
-
-    @FieldDefinition
-    public boolean logEvaluation;
-
-    @FieldDefinition
+    @LocalizedUiResource.AddEntry(SETT_DATAOUTPUT)
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0.1
+    )
     public double evaluationBucketSize = 0.1;
     public void setEvaluationBucketSize(double evaluationBucketSize) {
         this.evaluationBucketSize = evaluationBucketSize;
@@ -495,21 +684,13 @@ public class InGeneral implements Copyable {
         return evaluationBucketSize;
     }
 
-    @FieldDefinition
-    public boolean logAllEvaluation;
-
-    @FieldDefinition
-    public boolean logFinancialComponent;
-
     //=========================
     //script + data logging
     //=========================
 
-    @FieldDefinition
-    public boolean logScriptAdoptionsZip;
+    public boolean logScriptAdoptionsZip = false;
 
-    @FieldDefinition
-    public boolean logScriptAdoptionsZipPhase;
+    public boolean logScriptAdoptionsZipPhase = false;
 
     //=========================
     //dev logging
@@ -559,8 +740,6 @@ public class InGeneral implements Copyable {
         //data logging
         //result logging
         copy.logResultAdoptionsAll = logResultAdoptionsAll;
-        copy.logAllEvaluation = logAllEvaluation;
-        copy.logFinancialComponent = logFinancialComponent;
         //script + data logging
         copy.logScriptAdoptionsZip = logScriptAdoptionsZip;
         copy.logScriptAdoptionsZipPhase = logScriptAdoptionsZipPhase;
@@ -589,12 +768,11 @@ public class InGeneral implements Copyable {
 
     public void enableAllResultLogging() {
         logResultAdoptionsAll = true;
+        logAdoptionAnalysis = true;
         logPerformance = true;
         logPhaseOverview = true;
         logInterest = true;
         logEvaluation = true;
-        logAllEvaluation = true;
-        logFinancialComponent = true;
     }
 
     public void enableAllScriptLogging() {
@@ -622,7 +800,6 @@ public class InGeneral implements Copyable {
     public void setup(IRPactInputParser parser) throws ParsingException {
         parseSettings(parser.getEnvironment().getSettings());
         parseDataAnalyserSettings(parser.getEnvironment().getDataAnalyser());
-        parseDataLoggerSettings(parser.getEnvironment().getDataLogger());
         parseSeed(parser);
         parseLifeCycleControl(parser);
 
@@ -631,6 +808,7 @@ public class InGeneral implements Copyable {
 
     public void parseSettings(Settings settings) {
         settings.setLogResultAdoptionsAll(logResultAdoptionsAll);
+        settings.setLogAdoptionAnalysis(logAdoptionAnalysis);
         settings.setLogPerformance(logPerformance);
 
         settings.setLogScriptAdoptionsZip(logScriptAdoptionsZip);
@@ -642,11 +820,6 @@ public class InGeneral implements Copyable {
         dataAnalyser.setLogPhaseTransition(logPhaseOverview);
         dataAnalyser.setLogEvaluationData(logEvaluation);
         dataAnalyser.setEvaluationBucketSize(evaluationBucketSize);
-    }
-
-    public void parseDataLoggerSettings(DataLogger dataLogger) {
-        dataLogger.enableLogEvaluation(logAllEvaluation);
-        dataLogger.enableLogFinancialComponent(logFinancialComponent);
     }
 
     private void parseSeed(IRPactInputParser parser) {

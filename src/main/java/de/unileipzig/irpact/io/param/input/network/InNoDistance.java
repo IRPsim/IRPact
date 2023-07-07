@@ -4,7 +4,9 @@ import de.unileipzig.irpact.commons.eval.NoDistance;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.spatial.BasicDistanceEvaluator;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -15,11 +17,13 @@ import java.util.Objects;
 import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.NETWORK_DISTFUNC_NO;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(NETWORK_DISTFUNC_NO)
 public class InNoDistance implements InDistanceEvaluator {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,23 +34,25 @@ public class InNoDistance implements InDistanceEvaluator {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), NETWORK, DIST_FUNC, thisName());
-        addEntry(res, thisClass(), "placeholderNoDistance");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int placeholderNoDistance;
 
     public InNoDistance() {
     }
 
     public InNoDistance(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
@@ -56,17 +62,17 @@ public class InNoDistance implements InDistanceEvaluator {
 
     public InNoDistance newCopy(CopyCache cache) {
         InNoDistance copy = new InNoDistance();
-        copy._name = _name;
+        copy.name = name;
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String _name) {
-        this._name = _name;
+        this.name = _name;
     }
 
     @Override
@@ -79,18 +85,18 @@ public class InNoDistance implements InDistanceEvaluator {
         if (this == o) return true;
         if (!(o instanceof InNoDistance)) return false;
         InNoDistance that = (InNoDistance) o;
-        return placeholderNoDistance == that.placeholderNoDistance && Objects.equals(_name, that._name);
+        return placeholderNoDistance == that.placeholderNoDistance && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name, placeholderNoDistance);
+        return Objects.hash(name, placeholderNoDistance);
     }
 
     @Override
     public String toString() {
         return "InNoDistance{" +
-                "_name='" + _name + '\'' +
+                "_name='" + name + '\'' +
                 ", placeholderNoDistance=" + placeholderNoDistance +
                 '}';
     }

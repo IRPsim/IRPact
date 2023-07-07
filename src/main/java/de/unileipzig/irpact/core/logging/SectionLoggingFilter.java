@@ -10,20 +10,22 @@ import java.util.*;
  */
 public final class SectionLoggingFilter implements LoggingFilter {
 
-    protected final EnumSet<IRPSection> SECTIONS;
+    private final EnumSet<IRPSection> SECTIONS;
+    private EnumSet<IRPSection> forcedSections;
 
-    protected boolean disabled = false;
-    protected boolean logAll = false;
-    protected boolean logIfSectionIsNull = true;
-    protected boolean logIfTypeIsUnknown = false;
-    protected boolean logDefault = true;
+    private boolean disabled = false;
+    private boolean logAll = false;
+    private boolean logIfSectionIsNull = true;
+    private boolean logIfTypeIsUnknown = false;
+    private boolean logDefault = true;
 
     public SectionLoggingFilter() {
-        this(EnumSet.noneOf(IRPSection.class));
+        this(EnumSet.noneOf(IRPSection.class), EnumSet.noneOf(IRPSection.class));
     }
 
-    public SectionLoggingFilter(EnumSet<IRPSection> sections) {
+    public SectionLoggingFilter(EnumSet<IRPSection> sections, EnumSet<IRPSection> forcedSections) {
         this.SECTIONS = sections;
+        linkForcedSections(forcedSections);
     }
 
     //=========================
@@ -58,10 +60,10 @@ public final class SectionLoggingFilter implements LoggingFilter {
     // sections
     //=========================
 
-
     public boolean add(IRPSection section) {
         return SECTIONS.add(section);
     }
+
     public boolean add(boolean add, IRPSection section) {
         if(add) {
             return add(section);
@@ -98,6 +100,20 @@ public final class SectionLoggingFilter implements LoggingFilter {
         return SECTIONS;
     }
 
+    void linkForcedSections(EnumSet<IRPSection> sections) {
+        this.forcedSections = sections == null
+                ? EnumSet.noneOf(IRPSection.class)
+                : sections;
+    }
+
+    private boolean test(IRPSection section) {
+        return forcedSections.contains(section) || SECTIONS.contains(section);
+    }
+
+    private boolean test(ComplexIRPSection section) {
+        return section.test(forcedSections) || section.test(SECTIONS);
+    }
+
     //=========================
     // access
     //=========================
@@ -126,10 +142,10 @@ public final class SectionLoggingFilter implements LoggingFilter {
             return logIfSectionIsNull;
         }
         if(section.getType() == IRPSection.class) {
-            return has((IRPSection) section);
+            return test((IRPSection) section);
         }
         if(section.getType() == ComplexIRPSection.class) {
-            return ((ComplexIRPSection) section).test(SECTIONS);
+            return test((ComplexIRPSection) section);
         }
 
         return logIfTypeIsUnknown;

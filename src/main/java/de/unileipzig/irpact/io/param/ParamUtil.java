@@ -12,8 +12,8 @@ import de.unileipzig.irpact.commons.util.fio2.xlsx2.StandardCellValueConverter2;
 import de.unileipzig.irpact.commons.util.fio2.xlsx2.XlsxSheetParser2;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
-import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
+import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.util.RuleBuilder;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -43,19 +43,36 @@ public final class ParamUtil {
     public static final String SHAPE_DIAMOND = "diamond";
     public static final String SHAPE_SQUARE = "square";
     public static final String SHAPE_PENTAGON = "pentagon";
+    public static final String SHAPE_CIRCLE = "circle";
+    public static final String SHAPE_RECTAGNLE = "rectangle";
+    public static final String SHAPE_ELLIPSE = "ellipse";
+    public static final String SHAPE_HEXAGON = "hexagon";
+    public static final String SHAPE_FLOWER = "flower";
+    public static final String SHAPE_CROSS = "cross";
+    public static final String SHAPE_TRIANGLE_DOWN = "triangle-down";
+    public static final String SHAPE_TRIANGLE_UP = "triangle-up";
 
+    public static final String COLOR_WHITE = "White";
     public static final String COLOR_DARK_CYAN = "DarkCyan";
     public static final String COLOR_LIGHT_SLATE_GREY = "LightSlateGrey";
     public static final String COLOR_GREEN = "Green";
     public static final String COLOR_RED = "Red";
     public static final String COLOR_BLUE = "Blue";
+    public static final String COLOR_YELLOW = "Yellow";
+    public static final String COLOR_MAGENTA = "Magenta";
+
+    public static final String COLOR_HEX_CAFE12 = "#CAFE12";
+    public static final String COLOR_HEX_7012FE = "#7012FE";
+    public static final String COLOR_HEX_FEAF12 = "#FEAF12";
 
     public static final String UNIT_PIXEL = "[Pixel]";
 
     public static final String DOMAIN_BOOLEAN = "[0|1]";
     public static final String DOMAIN_CLOSED_0_1 = "[0,1]";
+    public static final String DOMAIN_CLOSED_0_255 = "[0,255]";
     public static final String DOMAIN_GEQ0 = "[0,)";
     public static final String DOMAIN_G0 = "(0,)";
+    public static final String DOMAIN_CUSTOM_IMAGE = "[0," + IRPact.CUSTOM_IMAGE_SECTION_SIZE + "]";
 
     public static final Object[] VALUE_TRUE = {"1"};
     public static final Object[] VALUE_FALSE = {"0"};
@@ -69,7 +86,27 @@ public final class ParamUtil {
     public static final Object[] VALUE_0_5 = {"0.5"};
     public static final Object[] VALUE_0_1 = {"0.1"};
 
+    public static final String TRUE1 = "1";
+    public static final String FALSE0 = "0";
+
+    public static final String VALUE1 = "1";
+    public static final String VALUENEG1 = "-1";
+    public static final String VALUE0 = "0";
+
+
     private ParamUtil() {
+    }
+
+    public static String closedOpenDomain(int lower, int upper) {
+        return "[" + lower + "," + upper + ")";
+    }
+
+    public static String closedClosedDomain(int lower, int upper) {
+        return "[" + lower + "," + upper + "]";
+    }
+
+    public static String customImageDomain() {
+        return closedClosedDomain(0, IRPact.CUSTOM_IMAGE_SECTION_SIZE);
     }
 
     @SuppressWarnings("unchecked")
@@ -80,6 +117,25 @@ public final class ParamUtil {
     @SuppressWarnings("unchecked")
     public static <R> R getAs(Object input) {
         return (R) input;
+    }
+
+    public static <T> T[] set(T[] arr, T value) {
+        if(value == null) {
+            if(arr.length == 0) {
+                return arr;
+            } else {
+                return Arrays.copyOf(arr, 0);
+            }
+        } else {
+            if(arr.length == 1) {
+                arr[0] = value;
+                return arr;
+            } else {
+                T[] newArr = Arrays.copyOf(arr, 1);
+                newArr[0] = value;
+                return newArr;
+            }
+        }
     }
 
     public static <T> T[] add(T[] arr, T value) {
@@ -122,6 +178,10 @@ public final class ParamUtil {
 
     public static UnaryOperator<String> buildDefaultScalarNameOperator(Class<?> c) {
         return field -> buildDefaultScalarName(c, field);
+    }
+
+    public static Object[] asValue(Object singleton) {
+        return varargs(singleton);
     }
 
     public static Object[] varargs(Object singleton) {
@@ -521,9 +581,18 @@ public final class ParamUtil {
     public static void setColor(
             TreeAnnotationResource res,
             Class<?> c,
-            String icon) {
-        if(icon != null) {
-            computeEntryBuilderIfAbsent(res, c).setGamsColor(icon);
+            String color) {
+        if(color != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsColor(color);
+        }
+    }
+
+    public static void setFill(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String fill) {
+        if(fill != null) {
+            computeEntryBuilderIfAbsent(res, c).setGamsFill(fill);
         }
     }
 
@@ -531,9 +600,9 @@ public final class ParamUtil {
             TreeAnnotationResource res,
             Class<?> c,
             String field,
-            String icon) {
-        if(icon != null) {
-            computeEntryBuilderIfAbsent(res, c, field).setGamsColor(icon);
+            String color) {
+        if(color != null) {
+            computeEntryBuilderIfAbsent(res, c, field).setGamsColor(color);
         }
     }
 
@@ -573,6 +642,19 @@ public final class ParamUtil {
             String border) {
         setShape(res, c, shape);
         setColor(res, c, color);
+        //setBorder(res, c, border); //NOT SUPPORTED
+    }
+
+    public static void setShapeColorFillBorder(
+            TreeAnnotationResource res,
+            Class<?> c,
+            String shape,
+            String color,
+            String fill,
+            String border) {
+        setShape(res, c, shape);
+        setColor(res, c, color);
+        setFill(res, c, fill);
         //setBorder(res, c, border); //NOT SUPPORTED
     }
 

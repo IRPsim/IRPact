@@ -6,19 +6,20 @@ import de.unileipzig.irpact.commons.spatial.attribute.SpatialDoubleAttribute;
 import de.unileipzig.irpact.commons.spatial.attribute.SpatialStringAttribute;
 import de.unileipzig.irpact.commons.attribute.DataType;
 import de.unileipzig.irpact.commons.util.data.LinkedDataCollection;
+import de.unileipzig.irpact.commons.util.data.Quadtree;
 import de.unileipzig.irpact.commons.util.table.Table;
+import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.spatial.data.BasicSpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution.SelectAndGroupFilter;
 import de.unileipzig.irpact.core.spatial.distribution.SelectFilter;
 import de.unileipzig.irpact.core.spatial.twodim.BasicPoint2D;
+import de.unileipzig.irpact.core.spatial.twodim.Point2D;
 
+import java.awt.geom.Rectangle2D;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.LongSupplier;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,6 +80,13 @@ public final class SpatialUtil {
         return row.stream()
                 .map(Nameable::getName)
                 .collect(Collectors.toList());
+    }
+
+    public static int replaceInt(List<SpatialAttribute> row, String key, int newValue) {
+        SpatialDoubleAttribute attr = secureGet(row, key);
+        int oldValue = attr.getIntValue();
+        attr.setIntValue(newValue);
+        return oldValue;
     }
 
     public static double replaceDouble(List<SpatialAttribute> row, String key, double newValue) {
@@ -466,5 +474,29 @@ public final class SpatialUtil {
         }
 
         return validSizes;
+    }
+
+    <T extends SpatialAgent> void queryCircle(
+            Metric m,
+            Quadtree<? extends T> tree,
+            T source,
+            double maxDist,
+            Consumer<? super T> consumer) {
+        SpatialInformation srcInfo = source.getSpatialInformation();
+        Point2D srcP2 = (Point2D) srcInfo;
+        double px = srcP2.getX();
+        double py = srcP2.getY();
+        Rectangle2D.Double bb = new Rectangle2D.Double(
+                px - maxDist,
+                py - maxDist,
+                maxDist * 2,
+                maxDist * 2
+        );
+        tree.get(bb, tar -> {
+            SpatialInformation tarInfo = tar.getSpatialInformation();
+            if(m.distance(srcInfo, tarInfo) < maxDist) {
+                consumer.accept(tar);
+            }
+        });
     }
 }

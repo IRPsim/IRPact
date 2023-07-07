@@ -3,24 +3,24 @@ package de.unileipzig.irpact.io.param.input.product;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.FixProductFindingScheme;
 import de.unileipzig.irpact.core.product.Product;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
-import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS_FINDING_SCHEME;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_FINDSCHE_FIX;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_FINDSCHE_FIX)
 public class InFixProductFindingScheme implements InProductFindingScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,23 +31,25 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, PRODUCTS_FINDING_SCHEME, thisName());
-        addEntry(res, thisClass(), "refFixProduct");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InFixProduct[] refFixProduct;
+    @LocalizedUiResource.AddEntry
+    public InFixProduct[] refFixProduct = new InFixProduct[0];
 
     public InFixProductFindingScheme() {
     }
 
     public InFixProductFindingScheme(String name, InFixProduct product) {
-        this._name = name;
+        this.name = name;
         setFixProduct(product);
     }
 
@@ -58,18 +60,18 @@ public class InFixProductFindingScheme implements InProductFindingScheme {
 
     public InFixProductFindingScheme newCopy(CopyCache cache) {
         InFixProductFindingScheme copy = new InFixProductFindingScheme();
-        copy._name = _name;
+        copy.name = name;
         copy.refFixProduct = cache.copyArray(refFixProduct);
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setFixProduct(InFixProduct refFixProduct) {

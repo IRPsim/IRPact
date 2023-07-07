@@ -60,7 +60,7 @@ public class AttributeInputModule extends AbstractConsumerAgentModule implements
     @Override
     public double calculate(ConsumerAgentData input) throws Throwable {
         String name = getValidAttributeName();
-        double value = getAttributeHelper().findDoubleValue(input.getAgent(), name);
+        double value = getAttributeHelper().getDouble(input.getAgent(), name, true);
         return getWeight() * value;
     }
 }

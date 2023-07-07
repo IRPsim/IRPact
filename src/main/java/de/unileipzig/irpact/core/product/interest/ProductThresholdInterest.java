@@ -27,4 +27,22 @@ public class ProductThresholdInterest extends ThresholdInterest<Product, Product
     public boolean hasThreshold(ProductGroup group) {
         return thresholds.containsKey(group);
     }
+
+    @Override
+    public boolean isInterested(Product item, double interest) {
+        Double t = thresholds.get(item.getGroup());
+        return t != null && interest >= t;
+    }
+
+    @Override
+    public String printInfo(Product product) {
+        if(hasThreshold(product.getGroup())) {
+            double v = getValue(product);
+            double t = getThresholdFor(product);
+            boolean i = isInterested(product);
+            return "value=" + v + ",threshold=" + t + ",interested=" + i;
+        } else {
+            return "MISSING";
+        }
+    }
 }

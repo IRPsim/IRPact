@@ -5,14 +5,14 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
-import de.unileipzig.irpact.core.process.ra.filter.RAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.core.network.filter.MaxDistanceNodeFilterScheme;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
  * @author Daniel Abitz
  */
-public class RAProcessPlanMaxDistanceFilterSchemePR extends BinaryPRBase<RAProcessPlanMaxDistanceFilterScheme> {
+public class RAProcessPlanMaxDistanceFilterSchemePR extends BinaryPRBase<MaxDistanceNodeFilterScheme> {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(RAProcessPlanMaxDistanceFilterSchemePR.class);
 
@@ -24,8 +24,8 @@ public class RAProcessPlanMaxDistanceFilterSchemePR extends BinaryPRBase<RAProce
     }
 
     @Override
-    public Class<RAProcessPlanMaxDistanceFilterScheme> getType() {
-        return RAProcessPlanMaxDistanceFilterScheme.class;
+    public Class<MaxDistanceNodeFilterScheme> getType() {
+        return MaxDistanceNodeFilterScheme.class;
     }
 
     //=========================
@@ -33,7 +33,7 @@ public class RAProcessPlanMaxDistanceFilterSchemePR extends BinaryPRBase<RAProce
     //=========================
 
     @Override
-    protected BinaryJsonData doInitalizePersist(RAProcessPlanMaxDistanceFilterScheme object, PersistManager manager) {
+    protected BinaryJsonData doInitalizePersist(MaxDistanceNodeFilterScheme object, PersistManager manager) {
         BinaryJsonData data = initData(object, manager);
         data.putText(object.getName());
         data.putDouble(object.getMaxDistance());
@@ -47,8 +47,8 @@ public class RAProcessPlanMaxDistanceFilterSchemePR extends BinaryPRBase<RAProce
     //=========================
 
     @Override
-    protected RAProcessPlanMaxDistanceFilterScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
-        RAProcessPlanMaxDistanceFilterScheme object = new RAProcessPlanMaxDistanceFilterScheme();
+    protected MaxDistanceNodeFilterScheme doInitalizeRestore(BinaryJsonData data, RestoreManager manager) throws RestoreException {
+        MaxDistanceNodeFilterScheme object = new MaxDistanceNodeFilterScheme();
         object.setName(data.getText());
         object.setMaxDistance(data.getDouble());
         object.setInclusive(data.getBoolean());

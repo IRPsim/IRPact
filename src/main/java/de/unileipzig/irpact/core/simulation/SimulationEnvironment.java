@@ -7,8 +7,7 @@ import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.core.agent.AgentManager;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
 import de.unileipzig.irpact.core.network.SocialNetwork;
 import de.unileipzig.irpact.core.persistence.PersistenceModul;
@@ -17,6 +16,7 @@ import de.unileipzig.irpact.core.product.ProductManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.time.TimeModel;
 import de.unileipzig.irpact.core.util.AttributeHelper;
+import de.unileipzig.irpact.core.util.MetaData;
 
 /**
  * @author Daniel Abitz
@@ -29,6 +29,23 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
 
     boolean isRestored();
 
+    void register(CloseableSimulationEntity entity);
+
+    boolean isRegistered(CloseableSimulationEntity entity);
+
+    default boolean registerIfNotRegistered(CloseableSimulationEntity entity) {
+        if(isRegistered(entity)) {
+            return false;
+        } else {
+            register(entity);
+            return true;
+        }
+    }
+
+    boolean unregister(CloseableSimulationEntity entity);
+
+    void closeEntities();
+
     //=========================
     //InitalizablePart extra
     //=========================
@@ -38,6 +55,8 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     //=========================
     //main components
     //=========================
+
+    MetaData getMetaData();
 
     Settings getSettings();
 
@@ -74,8 +93,6 @@ public interface SimulationEnvironment extends Nameable, InitalizablePart {
     DataStore getGlobalData();
 
     ProgressCalculator getProgressCalculator();
-
-    DataLogger getDataLogger();
 
     DataAnalyser getDataAnalyser();
 }

@@ -11,13 +11,13 @@ import de.unileipzig.irpact.core.agent.Agent;
 import de.unileipzig.irpact.core.agent.consumer.*;
 import de.unileipzig.irpact.core.agent.consumer.attribute.ConsumerAgentAttribute;
 import de.unileipzig.irpact.core.logging.*;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
 import de.unileipzig.irpact.core.process.PostAction;
 import de.unileipzig.irpact.core.process.ProcessPlanResult;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.Settings;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -45,8 +45,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 //    protected final Predicate<ConsumerAgent> IS_ADOPTER = ca -> ca.hasAdopted(getProduct());
 
     protected NodeFilter networkFilter;
-
-    protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
 
     public RAProcessPlan() {
     }
@@ -105,9 +103,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return modelData().getLogisticFactor();
     }
 
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return getModel().getRelativeAgreementAlgorithm();
-    }
+//    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+//        return getModel().getRelativeAgreementAlgorithm();
+//    }
 
     @Override
     public ProcessPlanResult execute() throws Throwable {
@@ -115,7 +113,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     @Override
-    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+    public ProcessPlanResult execute(List<PostAction> postActions) throws Throwable {
         if(currentStage == RAStage.PRE_INITIALIZATION) {
             return initPlan(postActions);
         } else {
@@ -127,7 +125,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
     //phases
     //=========================
 
-    protected ProcessPlanResult initPlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult initPlan(List<PostAction> postActions) throws Throwable {
         if(agent.hasAdopted(product)) {
             if(agent.hasInitialAdopted(product)) {
                 logPhaseTransition(DataAnalyser.Phase.INITIAL_ADOPTED, now());
@@ -143,7 +141,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return executePlan(postActions);
     }
 
-    protected ProcessPlanResult executePlan(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult executePlan(List<PostAction> postActions) throws Throwable {
         switch (currentStage) {
             case AWARENESS:
                 return handleInterest(postActions);
@@ -168,7 +166,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         agent.allowAttention();
     }
 
-    protected ProcessPlanResult handleInterest(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult handleInterest(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle interest", agent.getName());
 
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] current interest for '{}': {}", agent.getName(), product.getName(), getInterest(agent));
@@ -177,7 +175,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
             doSelfActionAndAllowAttention();
             LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] is interested in '{}'", agent.getName(), product.getName());
             logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
-            updateStage(RAStage.FEASIBILITY);
+            setStage(RAStage.FEASIBILITY);
             return ProcessPlanResult.IN_PROCESS;
         }
 
@@ -194,10 +192,20 @@ public class RAProcessPlan extends RAProcessPlanBase {
                 return ProcessPlanResult.IN_PROCESS;
             }
         }
+
+        if(model.isSkipAwareness()) {
+            LOGGER.trace("[{}] skip awareness", agent.getName());
+            makeAware(agent);
+            makeInterested(agent);
+            logPhaseTransition(DataAnalyser.Phase.FEASIBILITY, now());
+            setStage(RAStage.FEASIBILITY);
+            return handleFeasibility(postActions);
+        }
+
         return doAction(postActions);
     }
 
-    protected ProcessPlanResult doAction(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult doAction(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] doAction", agent.getName());
 
         agent.allowAttention();
@@ -205,19 +213,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(postActions == null) {
             return doAction0();
         } else {
-            postActions.add(new PostAction<RAProcessPlan>() {
+            postActions.add(new PostAction() {
 
                 private final RAProcessPlan plan = RAProcessPlan.this;
-
-                @Override
-                public boolean isSupported(Class<?> type) {
-                    return type.isInstance(plan);
-                }
-
-                @Override
-                public RAProcessPlan getInput() {
-                    return plan;
-                }
 
                 @Override
                 public String getInputName() {
@@ -458,7 +456,7 @@ public class RAProcessPlan extends RAProcessPlanBase {
         return ProcessPlanResult.IN_PROCESS;
     }
 
-    protected ProcessPlanResult handleFeasibility(List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult handleFeasibility(List<PostAction> postActions) throws Throwable {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle feasibility", agent.getName());
 
         boolean isShare = isShareOf1Or2FamilyHouse(agent);
@@ -468,18 +466,25 @@ public class RAProcessPlan extends RAProcessPlanBase {
         if(isShare && isOwner) {
             doSelfActionAndAllowAttention();
             logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
-            updateStage(RAStage.DECISION_MAKING);
+            setStage(RAStage.DECISION_MAKING);
             return ProcessPlanResult.IN_PROCESS;
+        }
+
+        if(model.isSkipFeasibility()) {
+            LOGGER.trace("[{}] skip feasibility", agent.getName());
+            logPhaseTransition(DataAnalyser.Phase.DECISION_MAKING, now());
+            setStage(RAStage.DECISION_MAKING);
+            return handleDecisionMaking(postActions);
         }
 
         return doAction(postActions);
     }
 
-    protected ProcessPlanResult handleDecisionMaking(List<PostAction<?>> postActions) {
+    protected ProcessPlanResult handleDecisionMaking(List<PostAction> postActions) {
         doSelfActionAndAllowAttention();
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] handle decision making", agent.getName());
 
-        DataLogger dataLogger = environment.getDataLogger();
+//        DataLogger dataLogger = null;//environment.getDataLogger();
         DataAnalyser dataAnalyser = environment.getDataAnalyser();
         IRPLoggingMessageCollection alm = new IRPLoggingMessageCollection()
                 .setLazy(true)
@@ -489,14 +494,15 @@ public class RAProcessPlan extends RAProcessPlanBase {
         Timestamp now = now();
         double ft = getFinancialThresholdAgent(agent);
         double financialThreshold = getFinancialThreshold(agent, product);
-        if(ft < financialThreshold) {
-            dataLogger.logEvaluationFailed(
-                    agent, product, now,
-                    financialThreshold, ft
-            );
+        boolean noFinancial = ft < financialThreshold;
+        if(noFinancial && model.isNotForceEvaluate()) {
+//            dataLogger.logEvaluationFailed(
+//                    agent, product, now,
+//                    financialThreshold, ft
+//            );
             alm.append("financial component < financial threshold ({} < {}) = {}", ft, financialThreshold, true);
             logCalculateDecisionMaking(alm);
-            updateStage(RAStage.IMPEDED);
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         }
 
@@ -550,33 +556,44 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
         dataAnalyser.logEvaluationData(
                 product, now,
+                noFinancial,
                 fin, env, nov, soc,
                 afin, benv, cnov, dsoc,
                 wafin, wbenv, wcnov, wdsoc,
                 B
         );
 
-        dataLogger.logEvaluationSuccess(
-                agent, product, now,
-                aWeight, bWeight, cWeight, dWeight,
-                a, b, c, d,
-                fin, env, nov, soc,
-                afin, benv, cnov, dsoc,
-                wafin, wbenv, wcnov, wdsoc,
-                financialThreshold, ft,
-                adoptionThreshold, B
-        );
+//        dataLogger.logEvaluationSuccess(
+//                agent, product, now,
+//                aWeight, bWeight, cWeight, dWeight,
+//                a, b, c, d,
+//                fin, env, nov, soc,
+//                afin, benv, cnov, dsoc,
+//                wafin, wbenv, wcnov, wdsoc,
+//                financialThreshold, ft,
+//                adoptionThreshold, B
+//        );
 
         alm.append("U < adoption threshold ({} < {}): {}", B, adoptionThreshold, noAdoption);
-        logCalculateDecisionMaking(alm);
 
-        if(noAdoption) {
-            updateStage(RAStage.IMPEDED);
+        alm.append("adoption uncertainty: {}", model.hasAdoptionCertainty());
+        boolean doNotAdopt = false;
+        if(model.hasAdoptionCertainty()) {
+            double adoptDraw = rnd.nextDouble();
+            double adoptThreshold = model.getAdoptionCertainty();
+            boolean doAdopt = adoptDraw < adoptThreshold;
+            doNotAdopt = !doAdopt;
+            alm.append("adoptDraw < adoptThreshold ({} < {}): {}", adoptDraw, adoptThreshold, doAdopt);
+        }
+
+        logCalculateDecisionMaking(alm);
+        if(doNotAdopt || noAdoption || noFinancial) {
+            setStage(RAStage.IMPEDED);
             return ProcessPlanResult.IMPEDED;
         } else {
             agent.adopt(need, product, now, determinePhase(now));
             logPhaseTransition(DataAnalyser.Phase.ADOPTED, now);
-            updateStage(RAStage.ADOPTED);
+            setStage(RAStage.ADOPTED);
             return ProcessPlanResult.ADOPTED;
         }
     }
@@ -591,11 +608,6 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected void logPhaseTransition(DataAnalyser.Phase phaseId, Timestamp now) {
         environment.getDataAnalyser().logPhaseTransition(agent, phaseId, product, now);
-    }
-
-    protected void updateStage(RAStage nextStage) {
-        logStageUpdate(nextStage);
-        currentStage = nextStage;
     }
 
     protected AdoptionPhase determinePhase(Timestamp ts) {
@@ -630,13 +642,13 @@ public class RAProcessPlan extends RAProcessPlanBase {
         double fin = (modelData().getWeightFT() * logisticFt) + (modelData().getWeightNPV() * logisticNpv);
 
         logFinancialComponent(ftAvg, ftThis, npvAvg, npvThis, getLogisticFactor(), ft, npv, logisticFt, logisticNpv, fin);
-        environment.getDataLogger().logFinancialComponent(
-                agent, product, now(),
-                getLogisticFactor(),
-                modelData().getWeightFT(), ftAvg, ftThis, ft, logisticFt,
-                modelData().getWeightNPV(), npvAvg, npvThis, npv, logisticNpv,
-                fin
-        );
+//        environment.getDataLogger().logFinancialComponent(
+//                agent, product, now(),
+//                getLogisticFactor(),
+//                modelData().getWeightFT(), ftAvg, ftThis, ft, logisticFt,
+//                modelData().getWeightNPV(), npvAvg, npvThis, npv, logisticNpv,
+//                fin
+//        );
 
         return fin;
     }
@@ -764,7 +776,9 @@ public class RAProcessPlan extends RAProcessPlanBase {
     }
 
     protected void makeInterested(ConsumerAgent agent) {
-        agent.makeInterested(product);
+        if(!isInterested(agent)) {
+            agent.makeInterested(product);
+        }
     }
 
     protected double getInterest(ConsumerAgent agent) {
@@ -773,6 +787,12 @@ public class RAProcessPlan extends RAProcessPlanBase {
 
     protected boolean isAware(ConsumerAgent agent) {
         return agent.isAware(product);
+    }
+
+    protected void makeAware(ConsumerAgent agent) {
+        if(!isAware(agent)) {
+            agent.makeAware(product);
+        }
     }
 
     protected double getInterestPoints(ConsumerAgent agent) {
@@ -850,28 +870,24 @@ public class RAProcessPlan extends RAProcessPlanBase {
         ConsumerAgentAttribute opinionThis = agent.getAttribute(attrName);
         Uncertainty uncertaintyThis = getUncertainty();
         ConsumerAgentAttribute opinionTarget = target.getAttribute(attrName);
-        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
-        if(uncertaintyTarget == null) {
-            LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
-        } else {
-            getRelativeAgreementAlgorithm().apply(
-                    getAgent().getName(),
-                    opinionThis,
-                    uncertaintyThis,
-                    target.getName(),
-                    opinionTarget,
-                    uncertaintyTarget
-            );
-        }
+//        Uncertainty uncertaintyTarget = getModel().getUncertaintyCache().getUncertainty(target);
+//        if(uncertaintyTarget == null) {
+//            LOGGER.warn(IRPSection.SIMULATION_PROCESS, "agent '{}' has no uncertainty - skip", target.getName());
+//        } else {
+//            getRelativeAgreementAlgorithm().apply(
+//                    getAgent().getName(),
+//                    opinionThis,
+//                    uncertaintyThis,
+//                    target.getName(),
+//                    opinionTarget,
+//                    uncertaintyTarget
+//            );
+//        }
     }
 
     //=========================
     //data logging
     //=========================
-
-    protected void logStageUpdate(RAStage nextStage)  {
-        LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), currentStage, nextStage);
-    }
 
     protected static IRPLogger getLogger(boolean logData) {
         return logData

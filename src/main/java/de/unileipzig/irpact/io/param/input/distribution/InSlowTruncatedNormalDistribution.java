@@ -1,26 +1,32 @@
 package de.unileipzig.irpact.io.param.input.distribution;
 
+import de.unileipzig.irpact.commons.distribution.RoundingMode;
 import de.unileipzig.irpact.commons.distribution.SlowTruncatedNormalDistribution;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
+import de.unileipzig.irptools.defstructure.annotation.GamsParameter;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.DISTRIBUTIONS_SLOWTRUNCNORM;
 
 /**
  * @author Daniel Abitz
  */
-@Definition(ignore = true)
+@Definition
+@LocalizedUiResource.PutClassPath(DISTRIBUTIONS_SLOWTRUNCNORM)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,57 +36,99 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
     public static String thisName() {
         return thisClass().getSimpleName();
     }
-    public static boolean isIgnored() {
-        if(thisClass().isAnnotationPresent(Definition.class)) {
-            Definition def = thisClass().getDeclaredAnnotation(Definition.class);
-            return def.ignore();
-        } else {
-            throw new IllegalArgumentException("missing definition annotation");
-        }
-    }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        if(isIgnored()) return;
-
-        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "standardDeviation");
-        addEntry(res, thisClass(), "mean");
-        addEntry(res, thisClass(), "lowerBound");
-        addEntry(res, thisClass(), "lowerBoundInclusive");
-        addEntry(res, thisClass(), "upperBound");
-        addEntry(res, thisClass(), "upperBoundInclusive");
-
-        setDefault(res, thisClass(), "standardDeviation", varargs("1"));
-        setDefault(res, thisClass(), "mean", varargs("0"));
-        setDefault(res, thisClass(), "lowerBound", varargs("-1"));
-        setDefault(res, thisClass(), "lowerBoundInclusive", VALUE_TRUE);
-        setDefault(res, thisClass(), "upperBound", varargs("1"));
-        setDefault(res, thisClass(), "upperBoundInclusive", VALUE_TRUE);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InSlowTruncatedNormalDistribution.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = VALUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double standardDeviation;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = VALUE0
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double mean;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = VALUENEG1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double lowerBound;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = TRUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public boolean lowerBoundInclusive;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = VALUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public double upperBound;
 
-    @FieldDefinition
+    @FieldDefinition(
+            gams = @GamsParameter(
+                    defaultValue = TRUE1
+            )
+    )
+    @LocalizedUiResource.AddEntry
     public boolean upperBoundInclusive;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeNoRounding = true;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeFloor = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeCeil = false;
+
+    @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
+    public boolean modeRound = false;
 
     public InSlowTruncatedNormalDistribution() {
     }
@@ -107,7 +155,7 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
 
     public InSlowTruncatedNormalDistribution newCopy(CopyCache cache) {
         InSlowTruncatedNormalDistribution copy = new InSlowTruncatedNormalDistribution();
-        copy._name = _name;
+        copy.name = name;
         copy.standardDeviation = standardDeviation;
         copy.mean = mean;
         copy.lowerBound = lowerBound;
@@ -118,12 +166,12 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public double getStandardDeviation() {
@@ -174,6 +222,40 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
         return upperBoundInclusive;
     }
 
+    public RoundingMode getRoundingMode() {
+        return RoundingMode.get(
+                modeNoRounding,
+                modeFloor,
+                modeCeil,
+                modeRound
+        );
+    }
+
+    public void setRoundingMode(RoundingMode mode) {
+        modeNoRounding = false;
+        modeFloor = false;
+        modeCeil = false;
+        modeRound = false;
+
+        switch (mode) {
+            case NONE:
+                modeNoRounding = true;
+                break;
+
+            case FLOOR:
+                modeFloor = true;
+                break;
+
+            case CEIL:
+                modeCeil = true;
+                break;
+
+            case ROUND:
+                modeRound = true;
+                break;
+        }
+    }
+
     @Override
     public SlowTruncatedNormalDistribution parse(IRPactInputParser parser) throws ParsingException {
         SlowTruncatedNormalDistribution dist = new SlowTruncatedNormalDistribution();
@@ -186,6 +268,7 @@ public class InSlowTruncatedNormalDistribution implements InUnivariateDoubleDist
         dist.setLowerBound(getLowerBound());
         dist.setLowerBoundInclusive(isLowerBoundInclusive());
         dist.setUpperBoundInclusive(isUpperBoundInclusive());
+        dist.setRoundingMode(getRoundingMode());
         LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "SlowTruncatedNormalDistribution '{}' uses seed: {}", getName(), rnd.getInitialSeed());
         return dist;
     }

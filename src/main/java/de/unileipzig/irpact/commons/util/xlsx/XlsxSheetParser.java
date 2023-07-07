@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -43,6 +40,8 @@ public class XlsxSheetParser<T> {
     protected Supplier<? extends List<T>> rowSupplier;
     protected Consumer<? super List<T>> rowConsumer;
 
+    protected boolean useStrIfEmpty = false;
+
     protected XSSFSheet sheet;
 
     public XlsxSheetParser() {
@@ -51,6 +50,10 @@ public class XlsxSheetParser<T> {
     //=========================
     //access
     //=========================
+
+    public void setUseStrIfEmpty(boolean useStrIfEmpty) {
+        this.useStrIfEmpty = useStrIfEmpty;
+    }
 
     public void setNumberOfInfoRows(int numberOfInfoRows) {
         this.numberOfInfoRows = numberOfInfoRows;
@@ -229,6 +232,18 @@ public class XlsxSheetParser<T> {
                     throw unknownCellType(cell);
             }
         }
+
+        for(int i = 0; i < header.length(); i++) {
+            if(rowData.get(i) == null) {
+                if(useStrIfEmpty) {
+                    T blankEntry = textConverter.convert(header, i, null);
+                    rowData.set(i, blankEntry);
+                } else {
+                    throw new NoSuchElementException("missing cell: " + header.getLabel(i));
+                }
+            }
+        }
+
         rowConsumer.accept(rowData);
 
         return false;

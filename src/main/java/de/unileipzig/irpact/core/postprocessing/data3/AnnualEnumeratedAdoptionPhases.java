@@ -2,7 +2,10 @@ package de.unileipzig.irpact.core.postprocessing.data3;
 
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.product.AdoptedProduct;
+import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.util.AdoptionPhase;
+
+import java.util.Collection;
 
 /**
  * @author Daniel Abitz
@@ -12,10 +15,28 @@ public class AnnualEnumeratedAdoptionPhases extends AnnualEnumeratedAdoptionData
     public AnnualEnumeratedAdoptionPhases() {
     }
 
+    public void initalize(
+            Collection<? extends Integer> years,
+            Collection<? extends Product> products,
+            Collection<? extends AdoptionPhase> phases) {
+        for(Product product: products) {
+            for(AdoptionPhase phase: phases) {
+                initial.init(product, phase, 0);
+                for(int year: years) {
+                    data.init(year, product, phase, 0);
+                }
+            }
+        }
+    }
+
     @Override
-    public void update(ConsumerAgent ca, AdoptedProduct ap) {
-        int year = ap.isInitial() ? INITIAL_YEAR : ap.getYear();
+    protected void update(int year, ConsumerAgent ca, AdoptedProduct ap) {
         data.update(year, ap.getProduct(), ap.getPhase());
+    }
+
+    @Override
+    protected void updateInitial(ConsumerAgent ca, AdoptedProduct ap) {
+        initial.update(ap.getProduct(), ap.getPhase());
     }
 
     @Override

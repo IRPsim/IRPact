@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.util.gnuplot.builder;
 
+import de.unileipzig.irpact.commons.color.ColorPalette;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.util.gnuplot.GnuPlotFileScript;
 
@@ -191,8 +192,24 @@ public class GnuPlotBuilder {
         setStyle("data lines");
     }
 
+    public void setStyleBoxplot() {
+        setStyleBoxplot(7);
+    }
+
+    public void setStyleBoxplot(int outlierPointType) {
+        setStyle("boxplot outliers pointtype", outlierPointType);
+    }
+
+    public void setStyleDataBoxplot() {
+        setStyle("data boxplot");
+    }
+
     public void setStyleDataLinesPoints() {
         setStyle("data linespoints");
+    }
+
+    public void setYtics(double value) {
+        buildSet("ytics", value);
     }
 
     public void setStyleHistrogramColumnStacked() {
@@ -203,8 +220,41 @@ public class GnuPlotBuilder {
         setStyle("histogram rowstacked");
     }
 
+    public void setStyleHistrogramClustered() {
+        setStyle("histogram clustered");
+    }
+
+    public void setFillSolid025() {
+        setStyle("fill solid 0.25 border -1");
+    }
+
     public void setFillSolid() {
         setStyle("fill solid 1.0 border -1");
+    }
+
+    public void setStyleLineWithWidthAndRGB(List<Integer> indicies, List<Number> widths, List<String> colors) {
+        for(int i = 0; i < colors.size(); i++) {
+            setStyleLineWithWidthAndRGB(indicies.get(i), widths.get(i), colors.get(i));
+        }
+    }
+
+    public void setStyleLineWithWidthAndTypeAndRGB(List<Integer> indicies, List<Number> widths, List<Integer> types, List<String> colors) {
+        for(int i = 0; i < colors.size(); i++) {
+            setStyleLineWithWidthAndTypeAndRGB(indicies.get(i), widths.get(i), types.get(i), "#" + colors.get(i));
+        }
+    }
+
+    public void setStyleLineWithWidthAndRGB(int index, Number width, String color) {
+        setStyleLineWithWidthAndTypeAndRGB(index, width, null, color);
+    }
+
+    public void setStyleLineWithWidthAndTypeAndRGB(int index, Number width, Integer dashtype, String color) {
+        StyleLineCommand cmd = new StyleLineCommand();
+        cmd.setIndex(index);
+        cmd.setWidth(width);
+        cmd.setType(dashtype);
+        cmd.setRGB(color == null ? null : quote(color));
+        add(cmd);
     }
 
     public void setBoxWidthAbsolute(String width) {
@@ -290,9 +340,17 @@ public class GnuPlotBuilder {
         buildSet("key outside right top vertical Left");
     }
 
+    public void hideLegend() {
+        buildSet("key off");
+    }
+
     public void setLegendOutsideRightTop(String label) {
         //buildSet("key outside right top vertical Left reverse noenhanced autotitle columnhead box lt black linewidth 1.0 dashtype solid title ", quote(label));
-        buildSet("key outside right top vertical Left title ", quote(label));
+        if(label == null || label.isEmpty()) {
+            setLegendOutsideRightTop();
+        } else {
+            buildSet("key outside right top vertical Left title", quote(label));
+        }
     }
 
     public void formatAndSetLegendOutsideRightTop(String label) {
@@ -316,7 +374,11 @@ public class GnuPlotBuilder {
     }
 
     public void printPngCairo(int width, int height) {
-        buildSet("terminal", "pngcairo", "size", width + "," + height);
+        if(width > 0 && height > 0) {
+            buildSet("terminal", "pngcairo", "size", width + "," + height);
+        } else {
+            printPngCairo();
+        }
     }
 
     public void setRawOutput(String target) {
@@ -335,12 +397,24 @@ public class GnuPlotBuilder {
         buildSet("datafile", "separator", quote(separator));
     }
 
-    public void plotGenericData(int arg) {
-        plotGenericData(arg, 1);
+    public void plotGenericData(int arg, int linewidth, ColorPalette cp) {
+        if(cp == null) {
+            plotGenericDataWithLinewidth(arg, linewidth);
+        } else {
+            plotGenericDataWithLinestyle(arg, cp.size());
+        }
     }
 
-    public void plotGenericData(int arg, int linewidth) {
-        add(new GenericPlotCommand(arg(arg), linewidth));
+    public void plotGenericDataWithLinestyle(int arg, int maxCycle) {
+        add(new GenericPlotCommandWithLinestyle(arg(arg), maxCycle));
+    }
+
+    public void plotGenericDataWithLinewidth(int arg) {
+        plotGenericDataWithLinewidth(arg, 1);
+    }
+
+    public void plotGenericDataWithLinewidth(int arg, int linewidth) {
+        add(new GenericPlotCommandWithLinewidth(arg(arg), linewidth));
     }
 
     public void plot3DataColumns(String phase0, String phase1, String phase2, int arg) {
@@ -390,9 +464,11 @@ public class GnuPlotBuilder {
     }
 
     public void setYRange(Object min, Object max) {
+        Object minObj = min == null ? "*" : min;
+        Object maxObj = max == null ? "*" : max;
         String range = Objects.equals(min, max)
                 ? "[*:*]"
-                : "[" + min + ":" + max + "]";
+                : "[" + minObj + ":" + maxObj + "]";
         buildSet("yrange", range);
     }
 

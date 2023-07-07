@@ -1,0 +1,140 @@
+#########################
+# Deutsche Lokalisierung für die Plots.
+#########################
+---
+GNUPLOT:
+  CUSTOM_AVERAGE_QUANTILE_RANGE:
+    title: "Quantilanalyse"
+    xlab: "Jahre"
+    ylab: ""
+    sep: ";"
+    years: "Jahre"
+    avg: "avg"
+
+  SPECIAL_AVERAGE_QUANTILE_RANGE:
+    title: "Quantilanalyse"
+    xlab: "Jahre"
+    ylab: ""
+    sep: ";"
+    years: "Jahre"
+    avg: "avg"
+    q0: "[0,10)"
+    q1: "[10,25)"
+    q2: "[25,50)"
+    q3: "[50,75)"
+    q4: "[75,90)"
+    q5: "[90,100)"
+
+  COMPARED_ANNUAL_ZIP:
+    title: |-
+      Jährliche Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keytitle0: "Reale Daten"
+    keytitle1: "PLZ"
+    dashtype0lab: "nein"
+    dashtype1lab: "ja"
+    sep: ";"
+    simuSuffix: ""
+    realSuffix: "-Real"
+
+  COMPARED_CUMULATED_ANNUAL_ZIP:
+    title: |-
+      Jährliche kumulierte Adoptionen in Bezug auf die Postleitzahlgebiete
+      im Vergleich zu realen Daten
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keytitle0: "Reale Daten"
+    keytitle1: "PLZ"
+    dashtype0lab: "nein"
+    dashtype1lab: "ja"
+    sep: ";"
+    simuSuffix: ""
+    realSuffix: "-Real"
+
+  COMPARED_ANNUAL:
+    title: "Jährliche Adoptionen im Vergleich zu realen Daten"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    reallab: "Real"
+    simulab: "Simuliert"
+    sep: ";"
+    simu: "Simulation"
+    real: "Real"
+
+  COMPARED_CUMULATED_ANNUAL:
+    title: "Jährliche kumulierte Adoptionen im Vergleich zu realen Daten"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    reallab: "Real"
+    simulab: "Simuliert"
+    sep: ";"
+    simu: "Simulation"
+    real: "Real"
+
+  ADOPTION_PHASE_OVERVIEW:
+    title: |-
+      Jährlich kumulierte Adoptionen in Bezug auf die Adoptionsphasen
+      (initiale Adopter: {0})
+    xlab: "Jahre"
+    ylab: "Adoptionen (kumuliert)"
+    keylab: "Adoptionsphase"
+    sep: ";"
+    initial: "Initial"
+    startMid: "Start-Mitte"
+    midEnd: "Mitte-Ende"
+    endStart: "Ende-Start"
+
+  PROCESS_PHASE_OVERVIEW:
+    title: "Prozessphasen"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keylab: "Phase"
+    sep: ";"
+    initialAdopted: "Initial adopted"
+    awareness: "Awareness"
+    feasibility: "Feasibility"
+    decisionMaking: "Decision Making"
+    adopted: "Adopted"
+
+  INTEREST_OVERVIEW:
+    title: "Interessensübersicht"
+    xlab: "Jahre"
+    ylab: "Interesse"
+    keylab: "Interesse"
+    sep: ";"
+
+  ANNUAL_BUCKETS:
+    title: "Bereichsanalyse"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    keylab: "Bereiche"
+    sep: ";"
+    headerYear: "year"
+    decimalSeparator: ","
+    rangeSeparator: ":"
+
+  ANNUAL_MILIEUS:
+    title: "Jährliche Adoptionen in Bezug auf die Milieus"
+    xlab: "Jahre"
+    ylab: "Adoptionen"
+    keylab: "Milieus"
+    sep: ";"
+    headerYear: "year"
+
+  ANNUAL_INTEREST:
+    title: "Übersicht der interessierten Agenten"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    sep: ";"
+    yearLabel: "Jahre"
+    dataLabel: "Anzahl"
+
+  CUMULATED_ANNUAL_INTEREST:
+    title: "Kumulierte Übersicht der interessierten Agenten"
+    xlab: "Jahre"
+    ylab: "Agenten"
+    sep: ";"
+    yearLabel: "Jahre"
+    dataLabel: "Anzahl"

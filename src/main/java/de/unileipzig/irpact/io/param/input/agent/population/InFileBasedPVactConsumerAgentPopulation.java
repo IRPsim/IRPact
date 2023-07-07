@@ -9,12 +9,14 @@ import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
 import de.unileipzig.irpact.core.spatial.SpatialTableFileContent;
 import de.unileipzig.irpact.core.spatial.SpatialUtil;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -24,15 +26,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static de.unileipzig.irpact.io.param.IOConstants.AGENTS;
-import static de.unileipzig.irpact.io.param.IOConstants.POPULATION;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_POP_FILEPVACT;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_POP_FILEPVACT)
 public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulation {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -43,34 +43,36 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
-        addEntry(res, thisClass(), "desiredSize");
-        addEntry(res, thisClass(), "useAll");
-        addEntry(res, thisClass(), "requiresDesiredTotalSize");
-        addEntry(res, thisClass(), "cags");
-        addEntry(res, thisClass(), "file");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InFileBasedPVactConsumerAgentPopulation.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int desiredSize;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public boolean useAll;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public boolean requiresDesiredTotalSize;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] cags;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InSpatialTableFile[] file;
 
     public InFileBasedPVactConsumerAgentPopulation() {
@@ -83,7 +85,7 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
 
     public InFileBasedPVactConsumerAgentPopulation newCopy(CopyCache cache) {
         InFileBasedPVactConsumerAgentPopulation copy = new InFileBasedPVactConsumerAgentPopulation();
-        copy._name = _name;
+        copy.name = name;
         copy.desiredSize = desiredSize;
         copy.requiresDesiredTotalSize = requiresDesiredTotalSize;
         copy.cags = cache.copyArray(cags);
@@ -93,11 +95,11 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public void setDesiredSize(int desiredSize) {
@@ -158,7 +160,23 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
                 isRequiresDesiredTotalSize()
         );
 
+        Map<String, Integer> maxSizes = SpatialUtil.calculateSizes(
+                fileContent.content(),
+                RAConstants.DOM_MILIEU,
+                cagNames,
+                -1,
+                isRequiresDesiredTotalSize()
+        );
+        int totalSize = maxSizes.values()
+                .stream()
+                .mapToInt(i -> i)
+                .sum();
+
         AgentPopulation population = parser.getEnvironment().getAgents().getInitialAgentPopulation();
+        int usedSize = sizes.values().stream().mapToInt(i -> i).sum();
+        population.setCoverage(fileContent.getCoverage());
+        population.setMaximumPossibleSize(totalSize);
+        LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set maximum possible size: {} (used={})", totalSize, usedSize);
         for(Map.Entry<String, Integer> entry: sizes.entrySet()) {
             ConsumerAgentGroup cag = getCag(entry.getKey(), cags);
             if(population.has(cag)) {
@@ -167,7 +185,6 @@ public class InFileBasedPVactConsumerAgentPopulation implements InAgentPopulatio
             population.set(cag, entry.getValue());
             LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "set initial size for cag '{}': {}", cag.getName(), entry.getValue());
         }
-
     }
 
     protected List<ConsumerAgentGroup> parseCags(InputParser parser) throws ParsingException {

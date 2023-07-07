@@ -14,11 +14,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * @author Daniel Abitz
  */
 public class PVFileLoader {
+
+    private static final String ALLGEMEIN = "Allgemein";
+    private static final String STRAHLUNG = "Strahlung";
+    private static final String AUSRICHTUNG = "Ausrichtung";
+    private static final String STROM = "Strom";
+    private static final String WIRKUNGSGRAD = "Wirkungsgrad";
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(SpatialTableFileLoader.class);
 
@@ -41,15 +48,15 @@ public class PVFileLoader {
         return data;
     }
 
-    public void initalize() throws MissingDataException {
+    public void parse() throws MissingDataException {
         try {
-            parse();
+            parse0();
         } catch (IOException | InvalidFormatException e) {
             throw new MissingDataException(e);
         }
     }
 
-    private void parse() throws IOException, InvalidFormatException {
+    private void parse0() throws IOException, InvalidFormatException {
         if(loader == null) {
             throw new NullPointerException("loader is null");
         }
@@ -88,8 +95,8 @@ public class PVFileLoader {
 
     private static NPVXlsxData parseXlsx(XSSFWorkbook book) {
         NPVXlsxData data = new NPVXlsxData();
-        data.setAllgemeinSheet(XlsxUtil.extractKeyValueTable(book.getSheetAt(0)));
-        data.putAllTables(XlsxUtil.extractTablesWithTwoHeaderLines(book, 1));
+        data.setAllgemeinSheet(XlsxUtil.extractKeyValueTable(book.getSheet(ALLGEMEIN)));
+        data.putAllTables(XlsxUtil.extractTablesWithTwoHeaderLines(book, Arrays.asList(STRAHLUNG, AUSRICHTUNG, STROM, WIRKUNGSGRAD)));
         return data;
     }
 }

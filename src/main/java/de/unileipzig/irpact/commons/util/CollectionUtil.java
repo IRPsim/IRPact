@@ -37,6 +37,51 @@ public final class CollectionUtil {
         return (Function<I, M>) HASHMAP_FUNC;
     }
 
+    public static <K, V> Map<K, V> newInstance(Map<K, V> map) {
+        if(map == null) {
+            return null;
+        }
+        if(map instanceof LinkedHashMap) {
+            return new LinkedHashMap<>();
+        }
+        if(map instanceof HashMap) {
+            return new HashMap<>();
+        }
+        if(map instanceof TreeMap) {
+            return new TreeMap<>(((TreeMap<K, V>) map).comparator());
+        }
+        throw new IllegalArgumentException("unsupported map: " + map.getClass());
+    }
+
+    public static <E> List<E> newInstance(List<E> list) {
+        if(list == null) {
+            return null;
+        }
+        if(list instanceof ArrayList) {
+            return new ArrayList<>();
+        }
+        if(list instanceof LinkedList) {
+            return new LinkedList<>();
+        }
+        throw new IllegalArgumentException("unsupported list: " + list.getClass());
+    }
+
+    public static <E> Set<E> newInstance(Set<E> set) {
+        if(set == null) {
+            return null;
+        }
+        if(set instanceof LinkedHashSet) {
+            return new LinkedHashSet<>();
+        }
+        if(set instanceof HashSet) {
+            return new HashSet<>();
+        }
+        if(set instanceof TreeSet) {
+            return new TreeSet<>(((TreeSet<E>) set).comparator());
+        }
+        throw new IllegalArgumentException("unsupported set: " + set.getClass());
+    }
+
     public static List<Object> listAll(Map<?, ?> map) {
         List<Object> objs = new ArrayList<>();
         for(Map.Entry<?, ?> entry: map.entrySet()) {

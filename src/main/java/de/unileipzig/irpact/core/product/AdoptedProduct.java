@@ -41,4 +41,8 @@ public interface AdoptedProduct extends ChecksumComparable {
     default boolean isProduct(Product product) {
         return getProduct() == product;
     }
+
+    boolean hasUtility();
+
+    double getUtility();
 }

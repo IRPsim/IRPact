@@ -4,8 +4,10 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.spatial.twodim.Metric2D;
 import de.unileipzig.irpact.core.spatial.twodim.Space2D;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.Constants;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -15,13 +17,15 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
 import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SPATIAL_MODEL_2D;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SPATIAL_MODEL_2D)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InSpace2D implements InSpatialModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -32,56 +36,78 @@ public class InSpace2D implements InSpatialModel {
         return thisClass().getSimpleName();
     }
 
+//    protected static final String[] metricFieldNames = {"useManhatten", "useEuclid", "useEuclid2", "useMaximum", "useHaversineM", "useHaversineKM"};
+//    protected static final XorWithoutUnselectRuleBuilder metricBuilder = new XorWithoutUnselectRuleBuilder()
+//            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
+//            .withTrueValue(Constants.TRUE1)
+//            .withFalseValue(Constants.FALSE0)
+//            .withKeys(metricFieldNames);
 
-    protected static final String[] metricFieldNames = {"useManhatten", "useEuclid", "useEuclid2", "useMaximum", "useHaversineM", "useHaversineKM"};
-    protected static final XorWithoutUnselectRuleBuilder metricBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultParameterNameOperator(thisClass()))
-            .withTrueValue(Constants.TRUE1)
-            .withFalseValue(Constants.FALSE0)
-            .withKeys(metricFieldNames);
-
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL, thisName());
-        addEntry(res, thisClass(), "useManhatten");
-        addEntry(res, thisClass(), "useEuclid");
-        addEntry(res, thisClass(), "useEuclid2");
-        addEntry(res, thisClass(), "useMaximum");
-        addEntry(res, thisClass(), "useHaversineM");
-        addEntry(res, thisClass(), "useHaversineKM");
-
-        setDefault(res, thisClass(), new String[]{"useManhatten", "useEuclid", "useEuclid2", "useMaximum", "useHaversineM"}, VALUE_FALSE);
-        setDefault(res, thisClass(), "useHaversineKM", VALUE_TRUE);
-
-        setRules(res, thisClass(), metricFieldNames, metricBuilder);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+//        res.setRules(thisClass(), metricFieldNames, metricBuilder);
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useManhatten = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useEuclid = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useEuclid2 = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useMaximum = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useHaversineM = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean useHaversineKM = true;
 
     public InSpace2D() {
     }
 
     public InSpace2D(String name, Metric2D metric) {
-        this._name = name;
+        this.name = name;
         setMetric(metric);
     }
 
@@ -92,7 +118,7 @@ public class InSpace2D implements InSpatialModel {
 
     public InSpace2D newCopy(CopyCache cache) {
         InSpace2D copy = new InSpace2D();
-        copy._name = _name;
+        copy.name = name;
         copy.useManhatten = useManhatten;
         copy.useEuclid = useEuclid;
         copy.useEuclid2 = useEuclid2;
@@ -104,7 +130,7 @@ public class InSpace2D implements InSpatialModel {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setMetric(Metric2D metric) {

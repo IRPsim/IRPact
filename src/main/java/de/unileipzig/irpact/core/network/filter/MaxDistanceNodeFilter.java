@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.core.agent.SpatialAgent;
 import de.unileipzig.irpact.core.network.SocialGraph;
+import de.unileipzig.irpact.core.spatial.Metric;
 import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 
@@ -61,6 +62,10 @@ public class MaxDistanceNodeFilter extends NameableBase implements NodeDistanceF
 
     public SpatialInformation getOrigin() {
         return origin;
+    }
+
+    public Metric getMetric() {
+        return model.getMetric();
     }
 
     @Override

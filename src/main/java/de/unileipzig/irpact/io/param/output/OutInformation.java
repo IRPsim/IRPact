@@ -27,8 +27,10 @@ public class OutInformation implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
         putClassPath(res, thisClass(), INFORMATIONS_OUT, thisName());
         addEntry(res, thisClass(), "placeholder");

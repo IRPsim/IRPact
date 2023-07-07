@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
+import de.unileipzig.irpact.develop.ToRemove;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.Constants;
@@ -17,11 +18,13 @@ import static de.unileipzig.irpact.io.param.ParamUtil.len;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public interface InOutputImage extends InIRPactEntity {
 
     String[] dataToVisualize = {
             "annualZip",
             "annualZipWithReal",
+            "annualZipWithRealTotal",
             "cumulativeAnnualPhase",
             "cumulativeAnnualPhase2",
             "annualInterest2D",

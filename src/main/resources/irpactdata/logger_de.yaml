@@ -1,0 +1,36 @@
+#########################
+# Deutsche Lokalisierung fuer Logger
+#########################
+---
+CsvValueLoggingModule2:
+  agentName: "Agent"
+  agentId: "ID"
+  productName: "Produkt"
+  time: "Datum"
+  value: "Wert"
+  nan: "NaN"
+  sheetName: "Daten"
+
+LoggableAttitudeGapRelativeAgreementAlgorithm2:
+  ni: "Agent_i"
+  xi: "x_i"
+  ui: "u_i"
+  newXi: "neues x_i"
+  newUi: "neues u_i"
+  nj: "Agent_j"
+  xj: "x_j"
+  uj: "u_j"
+  newXj: "neues x_j"
+  newUj: "neues u_j"
+  attr: "Attribut"
+  desc: "Info"
+  changed: "Geändert?"
+  time: "Zeitpunkt"
+  sheetName: "Daten"
+  defaultDescription: "DEFAULT"
+  neutralDescription: "NEUTRAL"
+  positiveDescription: "CONVERGENCE"
+  negativeDescription: "DIVERGENCE"
+
+
+

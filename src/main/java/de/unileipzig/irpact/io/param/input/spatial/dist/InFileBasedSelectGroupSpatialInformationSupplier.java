@@ -9,12 +9,14 @@ import de.unileipzig.irpact.core.spatial.SpatialUtil;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataCollection;
 import de.unileipzig.irpact.core.spatial.data.SpatialDataFilter;
 import de.unileipzig.irpact.core.spatial.distribution.SpatialInformationSupplier;
-import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -24,14 +26,13 @@ import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SPATIAL_DIST_FILE_FILEPOS_SELECTGROUP;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(SPATIAL_DIST_FILE_FILEPOS_SELECTGROUP)
 public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpatialDistributionWithCollection {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -42,39 +43,41 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), SPATIAL, SPATIAL_MODEL_DIST, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST_FILE_FILEPOS, thisName());
-        addEntry(res, thisClass(), "xPositionKey");
-        addEntry(res, thisClass(), "yPositionKey");
-        addEntry(res, thisClass(), "idKey");
-        addEntry(res, thisClass(), "attrFile");
-        addEntry(res, thisClass(), "selectKey");
-        addEntry(res, thisClass(), "groupKey");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InAttributeName[] xPositionKey;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] xPositionKey = new InAttributeName[0];
 
     @FieldDefinition
-    public InAttributeName[] yPositionKey;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] yPositionKey = new InAttributeName[0];
 
     @FieldDefinition
-    public InAttributeName[] idKey;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] idKey = new InAttributeName[0];
 
     @FieldDefinition
-    public InSpatialTableFile[] file;
+    @LocalizedUiResource.AddEntry
+    public InSpatialTableFile[] file = new InSpatialTableFile[0];
 
     @FieldDefinition
-    public InAttributeName[] selectKey;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] selectKey = new InAttributeName[0];
 
     @FieldDefinition
-    public InAttributeName[] groupKey;
+    @LocalizedUiResource.AddEntry
+    public InAttributeName[] groupKey = new InAttributeName[0];
 
     public InFileBasedSelectGroupSpatialInformationSupplier() {
     }
@@ -86,7 +89,7 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
 
     public InFileBasedSelectGroupSpatialInformationSupplier newCopy(CopyCache cache) {
         InFileBasedSelectGroupSpatialInformationSupplier copy = new InFileBasedSelectGroupSpatialInformationSupplier();
-        copy._name = _name;
+        copy.name = name;
         copy.xPositionKey = cache.copyArray(xPositionKey);
         copy.yPositionKey = cache.copyArray(yPositionKey);
         copy.idKey = cache.copyArray(idKey);
@@ -97,12 +100,12 @@ public class InFileBasedSelectGroupSpatialInformationSupplier implements InSpati
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setXPositionKey(InAttributeName xPositionKey) {

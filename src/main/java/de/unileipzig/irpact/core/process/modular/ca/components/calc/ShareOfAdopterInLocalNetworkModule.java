@@ -4,7 +4,7 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.filter.NodeFilter;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModule;
@@ -50,15 +50,15 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
         return weight;
     }
 
-    protected ProcessPlanNodeFilterScheme nodeFilterScheme;
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    protected NodeFilterScheme nodeFilterScheme;
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         this.nodeFilterScheme = nodeFilterScheme;
     }
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return nodeFilterScheme;
     }
-    protected ProcessPlanNodeFilterScheme getValidNodeFilterScheme() {
-        ProcessPlanNodeFilterScheme filter = getNodeFilterScheme();
+    protected NodeFilterScheme getValidNodeFilterScheme() {
+        NodeFilterScheme filter = getNodeFilterScheme();
         if(filter == null) {
             throw new NullPointerException("ProcessPlanNodeFilterScheme");
         }
@@ -69,7 +69,7 @@ public class ShareOfAdopterInLocalNetworkModule extends AbstractConsumerAgentMod
         if(data.has(getName())) {
             return data.retrieveAs(getName(), NodeFilter.class);
         } else {
-            NodeFilter filter = getValidNodeFilterScheme().createFilter(data.getPlan());
+            NodeFilter filter = getValidNodeFilterScheme().createFilter(data.getAgent());
             data.store(getName(), filter);
             return filter;
         }

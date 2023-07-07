@@ -10,13 +10,11 @@ import de.unileipzig.irpact.io.param.input.agent.consumer.InPVactConsumerAgentGr
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.distribution.InDiracUnivariateDistribution;
 import de.unileipzig.irpact.io.param.input.distribution.InUnivariateDoubleDistribution;
-import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.network.InUnlinkedGraphTopology;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.uncert.InPVactGroupBasedDeffuantUncertainty;
+import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
 import de.unileipzig.irpact.io.param.input.spatial.InSpace2D;
 import de.unileipzig.irpact.io.param.input.spatial.dist.InFileBasedPVactMilieuSupplier;
 import de.unileipzig.irpact.io.param.input.time.InUnitStepDiscreteTimeModel;
@@ -47,9 +45,8 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
 
     @Override
     protected InRoot createInRoot(int year, int delta) {
-        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_210322");
-        InPVFile pvFile = new InPVFile("Barwertrechner");
-        InRealAdoptionDataFile realData = new InRealAdoptionDataFile("PV_Diffusion_Leipzig");
+        InSpatialTableFile tableFile = new InSpatialTableFile("Datensatz_L");
+        InRealAdoptionDataFile realData = new InRealAdoptionDataFile("PV_Diffusion_L");
         InUnivariateDoubleDistribution constant0 = new InDiracUnivariateDistribution("dirac0", 0);
 
         //spatial
@@ -78,19 +75,17 @@ public class DefaultScenario extends AbstractScenario implements DefaultScenario
         InUnlinkedGraphTopology topology = new InUnlinkedGraphTopology("Topology");
 
         //process
-        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
-        uncertainty.setName("Unvertainty");
-        uncertainty.setDefaultValues();
-        uncertainty.setConsumerAgentGroups(cags);
+//        InPVactGroupBasedDeffuantUncertainty uncertainty = new InPVactGroupBasedDeffuantUncertainty();
+//        uncertainty.setName("Unvertainty");
+//        uncertainty.setDefaultValues();
+//        uncertainty.setConsumerAgentGroups(cags);
 
-        InRAProcessModel processModel = new InRAProcessModel();
+        InRunUntilFailureModule3 startModule = new InRunUntilFailureModule3();
+        startModule.setName("DO_NOTHING");
+
+        InBasicCAModularProcessModel processModel = new InBasicCAModularProcessModel();
         processModel.setName("ProcessModel");
-        processModel.setDefaultValues();
-        processModel.setNodeFilterScheme(new InRAProcessPlanMaxDistanceFilterScheme("MaxDistance", 100, true));
-        processModel.setPvFile(pvFile);
-        processModel.setUncertainty(uncertainty);
-        processModel.setSpeedOfConvergence(0.0);
-        processModel.addNewProductHandle(getDefaultInitialAdopterHandler());
+        processModel.setStartModule(startModule);
 
         //space
         InSpace2D space2D = new InSpace2D("Space2D", Metric2D.HAVERSINE_KM);

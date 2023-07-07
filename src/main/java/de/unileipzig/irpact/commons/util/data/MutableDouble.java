@@ -5,6 +5,7 @@ import de.unileipzig.irpact.commons.checksum.Checksums;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.DoubleUnaryOperator;
 
 /**
  * @author Daniel Abitz
@@ -39,6 +40,14 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         return new MutableDouble(Double.NaN);
     }
 
+    public static MutableDouble negativeMaxValue() {
+        return new MutableDouble(-Double.MAX_VALUE);
+    }
+
+    public static MutableDouble positiveMaxValue() {
+        return new MutableDouble(Double.MAX_VALUE);
+    }
+
     public static MutableDouble wrap(double value) {
         return new MutableDouble(value);
     }
@@ -55,6 +64,18 @@ public final class MutableDouble extends Number implements ChecksumComparable {
 
     public boolean isEmpty() {
         return !hasValue();
+    }
+
+    public double getOr(double ifEmpty) {
+        return isEmpty()
+                ? ifEmpty
+                : get();
+    }
+
+    public Double getOrBoxed(Double ifEmpty) {
+        return isEmpty()
+                ? ifEmpty
+                : get();
     }
 
     public void clear() {
@@ -118,6 +139,12 @@ public final class MutableDouble extends Number implements ChecksumComparable {
         value += delta;
     }
 
+    public void modifiy(DoubleUnaryOperator op) {
+        if(hasValue()) {
+            set(op.applyAsDouble(get()));
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public <T> Consumer<T> getIncConsumer() {
         return (Consumer<T>) INC_CONSUMER;
@@ -131,6 +158,10 @@ public final class MutableDouble extends Number implements ChecksumComparable {
     public boolean isEquals(double value) {
         requiresValue();
         return this.value == value;
+    }
+
+    public boolean isEquals(MutableDouble other) {
+        return isEquals(other.get());
     }
 
     public boolean isZero() {

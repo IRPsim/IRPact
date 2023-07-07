@@ -2,9 +2,11 @@ package de.unileipzig.irpact.io.param.input.time;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.DiscreteTimeModel;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -12,14 +14,14 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.TIME_DISCRET;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(ignore = true)
+@LocalizedUiResource.Ignore
+@LocalizedUiResource.PutClassPath(TIME_DISCRET)
 public class InDiscreteTimeModel implements InTimeModel {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,23 +32,28 @@ public class InDiscreteTimeModel implements InTimeModel {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), TIME, thisName());
-        addEntry(res, thisClass(), "timePerTickInMs");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public long timePerTickInMs;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            intDefault = 1000
+    )
+    public long timePerTickInMs = 1000;
 
     public InDiscreteTimeModel() {
     }
 
     public InDiscreteTimeModel(String name, long timePerTickInMs) {
-        this._name = name;
+        this.name = name;
         this.timePerTickInMs = timePerTickInMs;
     }
 
@@ -57,7 +64,7 @@ public class InDiscreteTimeModel implements InTimeModel {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public long getTimePerTickInMs() {
@@ -79,18 +86,18 @@ public class InDiscreteTimeModel implements InTimeModel {
         if (this == o) return true;
         if (!(o instanceof InDiscreteTimeModel)) return false;
         InDiscreteTimeModel timeModel = (InDiscreteTimeModel) o;
-        return timePerTickInMs == timeModel.timePerTickInMs && Objects.equals(_name, timeModel._name);
+        return timePerTickInMs == timeModel.timePerTickInMs && Objects.equals(name, timeModel.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_name, timePerTickInMs);
+        return Objects.hash(name, timePerTickInMs);
     }
 
     @Override
     public String toString() {
         return "InDiscreteTimeModel{" +
-                "_name='" + _name + '\'' +
+                "_name='" + name + '\'' +
                 ", timePerTickInMs=" + timePerTickInMs +
                 '}';
     }

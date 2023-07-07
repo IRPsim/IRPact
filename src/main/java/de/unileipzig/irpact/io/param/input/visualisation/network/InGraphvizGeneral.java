@@ -2,8 +2,7 @@ package de.unileipzig.irpact.io.param.input.visualisation.network;
 
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.io.param.input.InRootUI;
-import de.unileipzig.irptools.Constants;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.graphviz.LayoutAlgorithm;
@@ -13,7 +12,6 @@ import de.unileipzig.irptools.graphviz.StandardOutputFormat;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.Copyable;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
-import de.unileipzig.irptools.util.XorWithoutUnselectRuleBuilder;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
@@ -22,12 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.SETT_VISUNETWORK_GENERAL;
 
 /**
  * @author Daniel Abitz
  */
 @Definition(global = true)
+@LocalizedUiResource.PutClassPath(SETT_VISUNETWORK_GENERAL)
+@LocalizedUiResource.XorWithoutUnselectRule
 public class InGraphvizGeneral implements Copyable {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -38,56 +38,84 @@ public class InGraphvizGeneral implements Copyable {
         return thisClass().getSimpleName();
     }
 
-    protected static final String[] improvedLayoutFieldNames = {"positionBasedLayout", "freeLayout"};
-    protected static final XorWithoutUnselectRuleBuilder improvedLayoutBuilder = new XorWithoutUnselectRuleBuilder()
-            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
-            .withTrueValue(Constants.TRUE1)
-            .withFalseValue(Constants.FALSE0)
-            .withKeys(improvedLayoutFieldNames);
+//    protected static final String[] improvedLayoutFieldNames = {"positionBasedLayout", "freeLayout"};
+//    protected static final XorWithoutUnselectRuleBuilder improvedLayoutBuilder = new XorWithoutUnselectRuleBuilder()
+//            .withKeyModifier(buildDefaultScalarNameOperator(thisClass()))
+//            .withTrueValue(Constants.TRUE1)
+//            .withFalseValue(Constants.FALSE0)
+//            .withKeys(improvedLayoutFieldNames);
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISUNETWORK_GENERAL);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeEndImage", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeDotFile", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageWidth", VALUE_1000, DOMAIN_GEQ0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "preferredImageHeight", VALUE_1000, DOMAIN_GEQ0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "positionBasedLayout", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "freeLayout", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "keepAspectRatio", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "useDefaultPositionIfMissing", VALUE_FALSE, DOMAIN_BOOLEAN);
-
-        setRules(res, thisClass(), improvedLayoutFieldNames, improvedLayoutBuilder);
-
-        setUnit(res, thisClass(), "preferredImageWidth", UNIT_PIXEL);
-        setUnit(res, thisClass(), "preferredImageHeight", UNIT_PIXEL);
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+//        setRules(res, thisClass(), improvedLayoutFieldNames, improvedLayoutBuilder);
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeEndImage = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean storeDotFile = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            g0Domain = true,
+            intDefault = 1000,
+            pixelUnit = true
+    )
     public double preferredImageWidth = 1000;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            g0Domain = true,
+            intDefault = 1000,
+            pixelUnit = true
+    )
     public double preferredImageHeight = 1000;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true,
+            boolDefault = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean positionBasedLayout = true;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
+    @LocalizedUiResource.XorWithoutUnselectRuleEntry
     public boolean freeLayout = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean keepAspectRatio = false;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            boolDomain = true
+    )
     public boolean useDefaultPositionIfMissing = false;
 
     //helper

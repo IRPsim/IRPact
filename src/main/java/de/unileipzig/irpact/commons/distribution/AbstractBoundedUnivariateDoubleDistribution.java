@@ -1,12 +1,13 @@
 package de.unileipzig.irpact.commons.distribution;
 
-import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.DoubleRange;
 
 /**
  * @author Daniel Abitz
  */
-public abstract class AbstractBoundedUnivariateDoubleDistribution extends NameableBase implements BoundedUnivariateDoubleDistribution {
+public abstract class AbstractBoundedUnivariateDoubleDistribution
+        extends AbstractUnivariateDistributionWithRounding
+        implements BoundedUnivariateDoubleDistribution {
 
     protected double lowerBound;
     protected double upperBound;

@@ -18,8 +18,10 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 )
 public class SideCustom extends Side {
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
     }
 

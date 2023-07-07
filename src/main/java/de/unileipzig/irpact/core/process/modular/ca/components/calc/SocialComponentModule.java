@@ -2,7 +2,7 @@ package de.unileipzig.irpact.core.process.modular.ca.components.calc;
 
 import de.unileipzig.irpact.commons.checksum.Checksums;
 import de.unileipzig.irpact.core.logging.IRPLogging;
-import de.unileipzig.irpact.core.process.filter.ProcessPlanNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.NodeFilterScheme;
 import de.unileipzig.irpact.core.process.modular.ca.ConsumerAgentData;
 import de.unileipzig.irpact.core.process.modular.ca.components.ConsumerAgentCalculationModule;
 import de.unileipzig.irpact.core.process.modular.ca.components.base.AbstractConsumerAgentModuleWithNSubModules;
@@ -71,10 +71,10 @@ public class SocialComponentModule extends AbstractConsumerAgentModuleWithNSubMo
         return localWeight;
     }
 
-    public void setNodeFilterScheme(ProcessPlanNodeFilterScheme nodeFilterScheme) {
+    public void setNodeFilterScheme(NodeFilterScheme nodeFilterScheme) {
         getLocalNetworkSubModule().setNodeFilterScheme(nodeFilterScheme);
     }
-    public ProcessPlanNodeFilterScheme getNodeFilterScheme() {
+    public NodeFilterScheme getNodeFilterScheme() {
         return getLocalNetworkSubModule().getNodeFilterScheme();
     }
 

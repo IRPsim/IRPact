@@ -14,6 +14,7 @@ public abstract class AbstractMetricalSpatialModel extends AbstractSpatialModel 
         this.metric = metric;
     }
 
+    @Override
     public Metric getMetric() {
         return metric;
     }

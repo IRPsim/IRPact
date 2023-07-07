@@ -12,10 +12,9 @@ import de.unileipzig.irpact.commons.util.StringUtil;
 import de.unileipzig.irpact.commons.util.data.count.CountMap3D;
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
 import de.unileipzig.irpact.commons.util.io3.csv.CsvParser;
-import de.unileipzig.irpact.commons.util.io3.xlsx.XlsxSheetWriter3;
+import de.unileipzig.irpact.commons.util.io3.xlsx.DefaultXlsxSheetWriter3;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.PostProcessor;
 import de.unileipzig.irpact.core.process.ra.RAConstants;
@@ -32,13 +31,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 /**
  * @author Daniel Abitz
  */
+@Deprecated
 public class DataProcessor extends PostProcessor {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(DataProcessor.class);
@@ -46,11 +45,14 @@ public class DataProcessor extends PostProcessor {
     protected static final String RESULT_RES_BASENAME = "result";
     protected static final String RESULT_RES_EXTENSION = "yaml";
 
+
     protected static final String ALL_ADOPTIONS_XLSX = "Alle_Adoptionen.xlsx";
     protected static final String PERFORMANCE_XLSX = "Performance.xlsx";
     protected static final String PHASE_OVERVIEW_XLSX = "Phasenuebersicht.xlsx";
     protected static final String INTEREST_XLSX = "Interesse.xlsx";
-    protected static final String EVALUATION_XLSX = "Evaluierung.xlsx";
+    protected static final String SUCC_EVALUATION_XLSX = "Evaluierung_Erfolgreicher_Finanztest.xlsx";
+    protected static final String FAIL_EVALUATION_XLSX = "Evaluierung_Fehlgeschlagener_Finanztest.xlsx";
+    protected static final String BOTH_EVALUATION_XLSX = "Evaluierung_Kombiniert.xlsx";
 
     public DataProcessor(
             MetaData metaData,
@@ -102,15 +104,15 @@ public class DataProcessor extends PostProcessor {
             logEvaluationData();
         }
 
-        trace("isLogEvaluation: {}", getDataLogger().isLogEvaluation());
-        if(getDataLogger().isLogEvaluation()) {
-            logEvaluation();
-        }
-
-        trace("isLogFinancialComponent: {}", getDataLogger().isLogFinancialComponent());
-        if(getDataLogger().isLogFinancialComponent()) {
-            logFinancialComponent();
-        }
+//        trace("isLogEvaluation: {}", getDataLogger().isLogEvaluation());
+//        if(getDataLogger().isLogEvaluation()) {
+//            logEvaluation();
+//        }
+//
+//        trace("isLogFinancialComponent: {}", getDataLogger().isLogFinancialComponent());
+//        if(getDataLogger().isLogFinancialComponent()) {
+//            logFinancialComponent();
+//        }
     }
 
     protected void cleanUp() {
@@ -173,7 +175,6 @@ public class DataProcessor extends PostProcessor {
         globalSheetData.setString(2, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "MAE"));
         globalSheetData.setDouble(2, 1, globalMAE);
 
-
         double globalFSAPE = calcGlobal(FSAPE.INSTANCE, product);
         globalSheetData.setString(3, 0, getLocalizedString(FileType.XLSX, DataToAnalyse.PERFORMANCE, "FSAPE"));
         globalSheetData.setDouble(3, 1, globalFSAPE);
@@ -206,8 +207,8 @@ public class DataProcessor extends PostProcessor {
         }
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", target);
         XSSFWorkbook book = new XSSFWorkbook();
@@ -266,8 +267,8 @@ public class DataProcessor extends PostProcessor {
         logZipPhaseOverview(zips, years, product, sheets);
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", target);
         writer.write(target, sheets);
@@ -396,8 +397,8 @@ public class DataProcessor extends PostProcessor {
         logZipInterest(zips, years, interestValues, product, sheets);
 
         info("write {}", target);
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(target, sheets);
     }
 
@@ -486,25 +487,61 @@ public class DataProcessor extends PostProcessor {
         }
     }
 
-    protected void logEvaluationData0() throws IOException {
+    protected void logEvaluationData0() {
+        logSuccessfulEvaluation();
+        logFailedEvaluation();
+        logBothEvaluation();
+    }
+
+    protected void logSuccessfulEvaluation() {
+        try {
+            trace("log successful evaluation data");
+            logEvaluationData0(EvaluationMode.SUCCESS, getPath(SUCC_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logSuccessfulEvaluation'", t);
+        }
+    }
+
+    protected void logFailedEvaluation() {
+        try {
+            trace("log failed evaluation data");
+            logEvaluationData0(EvaluationMode.FAILURE, getPath(FAIL_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logFailedEvaluation'", t);
+        }
+    }
+
+    protected void logBothEvaluation() {
+        try {
+            trace("log both evaluation data");
+            logEvaluationData0(EvaluationMode.BOTH, getPath(BOTH_EVALUATION_XLSX));
+        } catch (Throwable t) {
+            error("error while running 'logBothEvaluation'", t);
+        }
+    }
+
+    protected void logEvaluationData0(EvaluationMode mode, Path target) throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         List<Product> products = getAllProducts();
         if(products.size() != 1) {
             throw new IllegalArgumentException("products");
         }
         Product product = products.get(0);
 
-        Path target = getPath(EVALUATION_XLSX);
-
         List<Integer> years = getAllSimulationYears();
 
         Map<String, JsonTableData3> sheets = new LinkedHashMap<>();
         for(EvaluationType type: EvaluationType.values()) {
-            logEvaluationData(type, years, product, sheets);
+            logEvaluationData(mode, type, years, product, sheets);
         }
 
         info("write {}", target);
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
         writer.write(target, sheets);
     }
 
@@ -525,6 +562,15 @@ public class DataProcessor extends PostProcessor {
         weightedCC,
         weightedDD,
         B
+    }
+
+    /**
+     * @author Daniel Abitz
+     */
+    private enum EvaluationMode {
+        SUCCESS,
+        FAILURE,
+        BOTH
     }
 
     protected String getSheetName(EvaluationType type) {
@@ -576,6 +622,10 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected int getEvaluationCount(EvaluationType type, DataAnalyser.EvaluationData data) {
+        if(data == null) {
+            return 0;
+        }
+
         switch (type) {
             case a:
                 return data.countA();
@@ -609,6 +659,7 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logEvaluationData(
+            EvaluationMode mode,
             EvaluationType type,
             List<Integer> years,
             Product product,
@@ -627,16 +678,44 @@ public class DataProcessor extends PostProcessor {
             for(DataAnalyser.Bucket bucket: buckets) {
                 row++;
                 sheetData.setString(row, 0, bucket.print(getDataAnalyser().getEvaluationBucketFormatter()));
-
-                DataAnalyser.EvaluationData data = getDataAnalyser().getEvaluationData(product, year, bucket);
-                int count = data == null
-                        ? 0
-                        : getEvaluationCount(type, data);
+                int count = getEvaluationCount(mode, type, product, year, bucket);
                 sheetData.setInt(row, column, count);
             }
         }
 
         sheets.put(getSheetName(type), sheetData);
+    }
+
+    protected int getEvaluationCount(
+            EvaluationMode mode,
+            EvaluationType type,
+            Product product,
+            int year,
+            DataAnalyser.Bucket bucket) {
+        switch (mode) {
+            case SUCCESS:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(true, product, year, bucket)
+                );
+            case FAILURE:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(false, product, year, bucket)
+                );
+            case BOTH:
+                return getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(true, product, year, bucket)
+                )
+                        + getEvaluationCount(
+                        type,
+                        getDataAnalyser().getEvaluationData(false, product, year, bucket)
+                );
+
+            default:
+                throw new IllegalArgumentException("unknown mode: " + mode);
+        }
     }
 
     protected void logEvaluation() {
@@ -649,6 +728,11 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logEvaluation0() throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_CSV);
         Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.ALL_EVAL_XLSX);
 
@@ -662,21 +746,23 @@ public class DataProcessor extends PostProcessor {
         trace("map csv to xlsx");
         data.mapColumn(3, 0, node -> {
             String str = node.textValue();
-            if(DataLogger.NO_VALUE.equals(str)) {
-                return node;
-            } else {
-                return data.getCreator().numberNode(Integer.parseInt(str));
-            }
+            return null;
+//            if(DataLogger.NO_VALUE.equals(str)) {
+//                return node;
+//            } else {
+//                return data.getCreator().numberNode(Integer.parseInt(str));
+//            }
         });
 
         for(int c = 4; c < 28; c++) {
             data.mapColumn(c, 0, node -> {
                 String str = node.textValue();
-                if(DataLogger.NO_VALUE.equals(str)) {
-                    return node;
-                } else {
-                    return data.getCreator().numberNode(Double.parseDouble(str));
-                }
+                return null;
+//                if(DataLogger.NO_VALUE.equals(str)) {
+//                    return node;
+//                } else {
+//                    return data.getCreator().numberNode(Double.parseDouble(str));
+//                }
             });
         }
 
@@ -712,20 +798,20 @@ public class DataProcessor extends PostProcessor {
         data.setString(0, 27, getAllEvalString("columnAdoptionValue"));
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", xlsxFile);
         writer.write(xlsxFile, getAllEvalString("sheet"), data);
 
         //cleanup
-        getDataLogger().finishLogEvaluation();
-        try {
-            trace("delete: {}", getDataLogger().getLogEvaluationTarget());
-            Files.deleteIfExists(getDataLogger().getLogEvaluationTarget());
-        } catch (IOException e) {
-            warn("deleting failed", e);
-        }
+//        getDataLogger().finishLogEvaluation();
+//        try {
+//            trace("delete: {}", getDataLogger().getLogEvaluationTarget());
+//            Files.deleteIfExists(getDataLogger().getLogEvaluationTarget());
+//        } catch (IOException e) {
+//            warn("deleting failed", e);
+//        }
     }
 
     protected String getAllEvalString(String key) {
@@ -742,6 +828,11 @@ public class DataProcessor extends PostProcessor {
     }
 
     protected void logFinancialComponent0() throws IOException {
+        if(true) {
+            warn("CURRENTLY DISABLED");
+            return;
+        }
+
         Path csvFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_CSV);
         Path xlsxFile = clOptions.getCreatedDownloadDir().resolve(IRPact.FIN_XLSX);
 
@@ -755,21 +846,23 @@ public class DataProcessor extends PostProcessor {
         trace("map csv to xlsx");
         data.mapColumn(3, 0, node -> {
             String str = node.textValue();
-            if(DataLogger.NO_VALUE.equals(str)) {
-                return node;
-            } else {
-                return data.getCreator().numberNode(Integer.parseInt(str));
-            }
+            return null;
+//            if(DataLogger.NO_VALUE.equals(str)) {
+//                return node;
+//            } else {
+//                return data.getCreator().numberNode(Integer.parseInt(str));
+//            }
         });
 
         for(int c = 4; c < 16; c++) {
             data.mapColumn(c, 0, node -> {
                 String str = node.textValue();
-                if(DataLogger.NO_VALUE.equals(str)) {
-                    return node;
-                } else {
-                    return data.getCreator().numberNode(Double.parseDouble(str));
-                }
+                return null;
+//                if(DataLogger.NO_VALUE.equals(str)) {
+//                    return node;
+//                } else {
+//                    return data.getCreator().numberNode(Double.parseDouble(str));
+//                }
             });
         }
 
@@ -793,20 +886,20 @@ public class DataProcessor extends PostProcessor {
         data.setString(0, 15, getFinString("columnFin"));
 
         //write
-        XlsxSheetWriter3<JsonNode> writer = new XlsxSheetWriter3<>();
-        writer.setCellHandler(XlsxSheetWriter3.forJson());
+        DefaultXlsxSheetWriter3<JsonNode> writer = new DefaultXlsxSheetWriter3<>();
+        writer.setCellHandler(DefaultXlsxSheetWriter3.forJson());
 
         info("write {}", xlsxFile);
         writer.write(xlsxFile, getFinString("sheet"), data);
 
         //cleanup
-        getDataLogger().finishLogFinancialComponent();
-        try {
-            trace("delete: {}", getDataLogger().getLogFinancialComponentTarget());
-            Files.deleteIfExists(getDataLogger().getLogFinancialComponentTarget());
-        } catch (IOException e) {
-            warn("deleting failed", e);
-        }
+//        getDataLogger().finishLogFinancialComponent();
+//        try {
+//            trace("delete: {}", getDataLogger().getLogFinancialComponentTarget());
+//            Files.deleteIfExists(getDataLogger().getLogFinancialComponentTarget());
+//        } catch (IOException e) {
+//            warn("deleting failed", e);
+//        }
     }
 
     protected String getFinString(String key) {
@@ -823,7 +916,7 @@ public class DataProcessor extends PostProcessor {
         if(realAdoptionDataFiles.size() > 1) throw new IllegalArgumentException("too many adoption files");
 
         InRealAdoptionDataFile file = realAdoptionDataFiles.get(0);
-        return getRealAdoptionData(file);
+        return getScaledRealAdoptionData(file);
     }
 
     protected Path getPath(String name) throws IOException {

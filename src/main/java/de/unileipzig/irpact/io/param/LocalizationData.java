@@ -33,7 +33,7 @@ public final class LocalizationData {
     }
 
     public LocalizationData(Path pathToFile, Charset charset) throws IOException {
-        this(JsonUtil.read(pathToFile, charset, JsonUtil.YAML));
+        this((ObjectNode) JsonUtil.read(pathToFile, charset, JsonUtil.YAML));
     }
 
     public LocalizationData(Reader reader) throws IOException {

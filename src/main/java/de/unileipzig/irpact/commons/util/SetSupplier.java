@@ -10,7 +10,9 @@ import java.util.*;
 public enum SetSupplier {
     UNKNOWN(-1),
     HASH(0),
-    LINKED(1);
+    LINKED(1),
+    CONCURRENT_HASH(2),
+    CONCURRENT_LINKED_HASH(3);
 
     private final int ID;
 
@@ -22,13 +24,19 @@ public enum SetSupplier {
         return ID;
     }
 
-    public <E> Set<E> newMap() {
+    public <E> Set<E> newSet() {
         switch (ID) {
             case 0:
                 return new HashSet<>();
 
             case 1:
                 return new LinkedHashSet<>();
+
+            case 2:
+                return Collections.synchronizedSet(new HashSet<>());
+
+            case 3:
+                return Collections.synchronizedSet(new LinkedHashSet<>());
 
             default:
                 throw new IllegalStateException("unknown");
@@ -42,6 +50,12 @@ public enum SetSupplier {
 
             case 1:
                 return LINKED;
+
+            case 2:
+                return CONCURRENT_HASH;
+
+            case 3:
+                return CONCURRENT_LINKED_HASH;
 
             default:
                 return UNKNOWN;

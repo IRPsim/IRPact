@@ -91,4 +91,46 @@ class TruncatedNormalDistributionTest {
             assertTrue(s <= tnd.getUpperBound(), "seed: " + tnd.getRandom().getInitialSeed());
         }
     }
+
+    @Test
+    void testRoundMode() {
+        TruncatedNormalDistribution tnd0 = new TruncatedNormalDistribution(
+                new Rnd(1),
+                5,
+                1,
+                2,
+                8
+        );
+        TruncatedNormalDistribution tnd1 = new TruncatedNormalDistribution(
+                new Rnd(1),
+                5,
+                1,
+                2,
+                8
+        );
+        TruncatedNormalDistribution tnd2 = new TruncatedNormalDistribution(
+                new Rnd(1),
+                5,
+                1,
+                2,
+                8
+        );
+        TruncatedNormalDistribution tnd3 = new TruncatedNormalDistribution(
+                new Rnd(1),
+                5,
+                1,
+                2,
+                8
+        );
+
+        tnd0.setRoundingMode(RoundingMode.NONE);
+        tnd1.setRoundingMode(RoundingMode.FLOOR);
+        tnd2.setRoundingMode(RoundingMode.CEIL);
+        tnd3.setRoundingMode(RoundingMode.ROUND);
+
+        assertEquals(5.6, tnd0.drawDoubleValue(), 0.1);
+        assertEquals(5.0, tnd1.drawDoubleValue());
+        assertEquals(6.0, tnd2.drawDoubleValue());
+        assertEquals(6.0, tnd3.drawDoubleValue());
+    }
 }

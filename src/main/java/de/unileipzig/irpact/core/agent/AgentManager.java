@@ -7,20 +7,14 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroupAffinityMapping;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.misc.InitalizablePart;
-import de.unileipzig.irpact.develop.Todo;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * @author Daniel Abitz
  */
-//Listener support fuer neue Gruppen?
-@Todo("ProcessPlan auch Agenten austauschen!!! -> wenn er dem Jadexagenten uebergeben wird")
 public interface AgentManager extends InitalizablePart {
 
     //=========================

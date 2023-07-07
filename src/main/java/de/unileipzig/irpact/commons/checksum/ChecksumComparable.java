@@ -2,6 +2,7 @@ package de.unileipzig.irpact.commons.checksum;
 
 import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.core.logging.IRPLogging;
+import de.unileipzig.irpact.develop.Todo;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.function.Function;
  *
  * @author Daniel Abitz
  */
+@Todo("rename, z.B. ComparableChecksum")
 public interface ChecksumComparable {
 
     IRPLogger LOGGER0 = IRPLogging.getLogger(ChecksumComparable.class);

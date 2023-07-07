@@ -5,7 +5,7 @@ import de.unileipzig.irpact.commons.persistence.PersistManager;
 import de.unileipzig.irpact.commons.persistence.RestoreManager;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryPRBase;
-import de.unileipzig.irpact.core.process.filter.EntireNetworkNodeFilterScheme;
+import de.unileipzig.irpact.core.network.filter.EntireNetworkNodeFilterScheme;
 import de.unileipzig.irpact.core.persistence.binaryjson.BinaryJsonData;
 import de.unileipzig.irptools.util.log.IRPLogger;
 

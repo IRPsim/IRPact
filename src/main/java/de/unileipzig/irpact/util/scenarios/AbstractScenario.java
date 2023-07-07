@@ -1,22 +1,21 @@
 package de.unileipzig.irpact.util.scenarios;
 
-import de.unileipzig.irpact.commons.exception.IRPactIllegalArgumentException;
-import de.unileipzig.irpact.io.param.input.names.InAttributeName;
-import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
-import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
-import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
-import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irpact.commons.util.JsonUtil;
 import de.unileipzig.irpact.core.logging.IRPLevel;
 import de.unileipzig.irpact.io.param.input.InGeneral;
 import de.unileipzig.irpact.io.param.input.InInformation;
 import de.unileipzig.irpact.io.param.input.InRoot;
 import de.unileipzig.irpact.io.param.input.InScenarioVersion;
+import de.unileipzig.irpact.io.param.input.names.InAttributeName;
+import de.unileipzig.irpact.io.param.input.product.initial.InNewProductHandler;
+import de.unileipzig.irpact.io.param.input.product.initial.InPVactAttributeBasedInitialAdoption;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
+import de.unileipzig.irpact.io.param.input.visualisation.result.InGenericOutputImage;
 import de.unileipzig.irpact.start.Start;
 import de.unileipzig.irpact.start.Start3;
 import de.unileipzig.irpact.start.irpact.IRPact;
+import de.unileipzig.irpact.util.IRPArgs;
 import de.unileipzig.irptools.graphviz.StandardLayoutAlgorithm;
 import de.unileipzig.irptools.io.annual.AnnualData;
 import de.unileipzig.irptools.io.perennial.PerennialData;
@@ -173,6 +172,12 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
         return computeCachedIfAbsent(name, InAttributeName::new);
     }
 
+    protected InAttributeName[] getAttributeNames(String... names) {
+        return Arrays.stream(names)
+                .map(this::getAttributeName)
+                .toArray(InAttributeName[]::new);
+    }
+
     protected boolean isCached(String name) {
         return NAMED_DATA.containsKey(name);
     }
@@ -214,9 +219,11 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
         run(args, data);
     }
 
-    public void runLegacy() throws Throwable {
+    public void runLegacy(String... additionalArgs) throws Throwable {
         IRPArgs args = new IRPArgs();
+        args.addDirect(additionalArgs);
         updateArgs(args);
+
         List<InRoot> roots = createSetupAndValidateRoots();
         if(roots.size() != 1) {
             throw new IllegalArgumentException("legacy does not supports multiple years");
@@ -404,11 +411,16 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
     }
 
     protected void validate(List<InRoot> inRoots) {
+        int index = 0;
         for(InRoot inRoot: inRoots) {
-            //exiting first simulation year
-            if(inRoot != null && !inRoot.general.hasFirstSimulationYear()) {
-                throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
+            if(inRoot == null) {
+                throw new NullPointerException("inRoot is null at index " + index);
             }
+            //exiting first simulation year
+//            if(inRoot != null && !inRoot.general.isEnableFirstSimulationYear()) {
+//                throw new IRPactIllegalArgumentException("missing initial year (name '{}')", getName());
+//            }
+            index++;
         }
     }
 
@@ -503,10 +515,19 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
 
     public void setupRoot(InRoot root) {
         root.setImages(InGenericOutputImage.createDefaultImages());
+        setCorporateDesignColorPalette(root);
+    }
+
+    public void setCorporateDesignColorPalette(InRoot root) {
+        root.setColorPalettes(CorporateDesignUniLeipzig.IN_CD_UL, CorporateDesignUniLeipzig.IN_CD_UL_2);
     }
 
     public void setupGeneral(InGeneral general) {
         general.setForceLogToConsole(isForceLogConsole());
+        runGeneralSetup(general);
+    }
+
+    protected void runGeneralSetup(InGeneral general) {
         if(generalSetup != null) {
             generalSetup.accept(general);
         }
@@ -533,6 +554,10 @@ public abstract class AbstractScenario implements ScenarioWithMetaData {
     @SuppressWarnings("unchecked")
     public <R extends AbstractScenario> R autoCast() {
         return (R) this;
+    }
+
+    public <R extends AbstractScenario> R castTo(Class<R> c) {
+        return c.cast(this);
     }
 
     public void setHardReplace(boolean hardReplace) {

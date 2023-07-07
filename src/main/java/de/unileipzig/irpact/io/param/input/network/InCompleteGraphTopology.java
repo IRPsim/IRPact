@@ -4,22 +4,22 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.network.topology.CompleteGraphTopology;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.NETWORK;
-import static de.unileipzig.irpact.io.param.IOConstants.TOPOLOGY;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.NETWORK_TOPO_COMPLETE;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(NETWORK_TOPO_COMPLETE)
 public class InCompleteGraphTopology implements InGraphTopologyScheme {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,23 +30,29 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), NETWORK, TOPOLOGY, thisName());
-        addEntry(res, thisClass(), "initialWeight");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0,
+            hidden = true
+    )
     public double initialWeight;
 
     public InCompleteGraphTopology() {
     }
 
     public InCompleteGraphTopology(String name, double initialWeight) {
-        this._name = name;
+        this.name = name;
         this.initialWeight = initialWeight;
     }
 
@@ -57,18 +63,18 @@ public class InCompleteGraphTopology implements InGraphTopologyScheme {
 
     public InCompleteGraphTopology newCopy(CopyCache cache) {
         InCompleteGraphTopology copy = new InCompleteGraphTopology();
-        copy._name = _name;
+        copy.name = name;
         copy.initialWeight = initialWeight;
         return copy;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public double getInitialWeight() {

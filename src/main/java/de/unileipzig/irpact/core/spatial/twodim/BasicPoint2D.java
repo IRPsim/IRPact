@@ -48,6 +48,13 @@ public class BasicPoint2D implements Point2D {
         return new BasicPoint2D(getY(), getX());
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
+    public void reverseThis() {
+        double temp = x;
+        x = y;
+        y = temp;
+    }
+
     @Override
     public boolean hasId() {
         return id.hasValue();

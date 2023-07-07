@@ -43,26 +43,24 @@ public enum Metric2D implements Metric {
             return x2 + y2;
         }
     },
-    //Info: lat = y, long = x
     HAVERSINE_M(4) {
         @Override
         public double distance(Point2D from, Point2D to) {
             if(from == to) return 0.0;
             return GeoMath.haversineDistance(
-                    from.getY(), from.getX(),
-                    to.getY(), to.getX(),
+                    from.getX(), from.getY(),
+                    to.getX(), to.getY(),
                     GeoMath.EARTH_RADIUS_METER
             );
         }
     },
-    //Info: lat = y, long = x
     HAVERSINE_KM(5) {
         @Override
         public double distance(Point2D from, Point2D to) {
             if(from == to) return 0.0;
             return GeoMath.haversineDistance(
-                    from.getY(), from.getX(),
-                    to.getY(), to.getX(),
+                    from.getX(), from.getY(),
+                    to.getX(), to.getY(),
                     GeoMath.EARTH_RADIUS_KILOMETER
             );
         }
@@ -116,5 +114,9 @@ public enum Metric2D implements Metric {
         Point2D f = Metric2D.cast(from);
         Point2D t = Metric2D.cast(to);
         return distance(f, t);
+    }
+
+    public double distance(double x1, double y1, double x2, double y2) {
+        return distance(new BasicPoint2D(x1, y1), new BasicPoint2D(x2, y2));
     }
 }

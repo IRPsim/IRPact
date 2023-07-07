@@ -22,6 +22,8 @@ public interface TimeModel extends Nameable, InitalizablePart {
      */
     void setupTimeModel();
 
+    boolean hasStarted();
+
     TimeMode getMode();
 
     Timestamp convert(ZonedDateTime zdt);

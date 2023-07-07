@@ -2,6 +2,7 @@ package de.unileipzig.irpact.core.simulation;
 
 import de.unileipzig.irpact.start.MainCommandLineOptions;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -16,7 +17,13 @@ public interface Settings {
 
     void apply(MainCommandLineOptions clOptions);
 
-    boolean prefereCsv();
+    //=========================
+    //File
+    //=========================
+
+    Path getOutputDir();
+
+    Path getDownloadDir();
 
     //=========================
     //run and previous run
@@ -84,6 +91,9 @@ public interface Settings {
 
     void setLogResultAdoptionsAll(boolean log);
     boolean isLogResultAdoptionsAll();
+
+    void setLogAdoptionAnalysis(boolean log);
+    boolean isLogAdoptionAnalysis();
 
     void setLogPerformance(boolean log);
     boolean isLogPerformance();

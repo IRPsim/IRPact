@@ -11,11 +11,6 @@ import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.ra.alg.RelativeAgreementAlgorithm;
-import de.unileipzig.irpact.core.process.ra.uncert.BasicUncertaintyManager;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyCache;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyHandler;
-import de.unileipzig.irpact.core.process.ra.uncert.UncertaintyManager;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.product.handler.NewProductHandler;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
@@ -38,18 +33,18 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     protected SimulationEnvironment environment;
     protected Rnd rnd;
-    protected UncertaintyHandler uncertaintyHandler;
     protected double speedOfConvergence;
-    protected RelativeAgreementAlgorithm raAlgorithm;
     protected Map<Integer, Timestamp> week27Map = new HashMap<>();
     protected boolean isYearChange = false;
+    protected boolean skipAwareness = false;
+    protected boolean skipFeasibility = false;
+    protected boolean forceEvaluate = false;
+    protected double adoptionCertaintyBase = 1.0;
+    protected double adoptionCertaintyFactor = 1.0;
 
     protected final List<NewProductHandler> newProductHandlers = new ArrayList<>();
 
     public RAProcessModelBase() {
-        uncertaintyHandler = new UncertaintyHandler();
-        uncertaintyHandler.setCache(new UncertaintyCache());
-        uncertaintyHandler.setManager(new BasicUncertaintyManager());
     }
 
     @Override
@@ -58,6 +53,18 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     @Override
     public final IRPSection getDefaultSection() {
         return IRPSection.INITIALIZATION_PARAMETER;
+    }
+
+    protected int getYearDelta() {
+        return environment.getTimeModel().getCurrentYear() - environment.getTimeModel().getFirstSimulationYear();
+    }
+
+    public boolean hasAdoptionCertainty() {
+        return !(adoptionCertaintyBase == 1.0 && adoptionCertaintyFactor == 1.0);
+    }
+
+    protected double getAdoptionCertainty() {
+        return adoptionCertaintyBase * Math.pow(adoptionCertaintyFactor, getYearDelta());
     }
 
     public void addNewProductHandler(NewProductHandler initialAdoptionHandler) {
@@ -70,7 +77,6 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 
     public void setEnvironment(SimulationEnvironment environment) {
         this.environment = environment;
-        uncertaintyHandler.setEnvironment(environment);
     }
     public SimulationEnvironment getEnvironment() {
         return environment;
@@ -84,6 +90,34 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
         return rnd;
     }
 
+    public void setSkipAwareness(boolean skipAwareness) {
+        this.skipAwareness = skipAwareness;
+    }
+
+    public boolean isSkipAwareness() {
+        return skipAwareness;
+    }
+
+    public void setSkipFeasibility(boolean skipFeasibility) {
+        this.skipFeasibility = skipFeasibility;
+    }
+
+    public boolean isSkipFeasibility() {
+        return skipFeasibility;
+    }
+
+    public void setForceEvaluate(boolean forceEvaluate) {
+        this.forceEvaluate = forceEvaluate;
+    }
+
+    public boolean isForceEvaluate() {
+        return forceEvaluate;
+    }
+
+    public boolean isNotForceEvaluate() {
+        return !isForceEvaluate();
+    }
+
     public void setSpeedOfConvergence(double speedOfConvergence) {
         this.speedOfConvergence = speedOfConvergence;
     }
@@ -92,29 +126,45 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
         return speedOfConvergence;
     }
 
-    public UncertaintyManager getUncertaintyManager() {
-        return uncertaintyHandler.getManager();
+    public void setAdoptionCertaintyBase(double adoptionCertaintyBase) {
+        this.adoptionCertaintyBase = adoptionCertaintyBase;
     }
 
-    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
-        uncertaintyHandler.setManager(uncertaintyManager);
+    public double getAdoptionCertaintyBase() {
+        return adoptionCertaintyBase;
     }
 
-    public UncertaintyCache getUncertaintyCache() {
-        return uncertaintyHandler.getCache();
+    public void setAdoptionCertaintyFactor(double adoptionCertaintyFactor) {
+        this.adoptionCertaintyFactor = adoptionCertaintyFactor;
     }
 
-    public void setUncertaintyCache(UncertaintyCache uncertaintyCache) {
-        uncertaintyHandler.setCache(uncertaintyCache);
+    public double getAdoptionCertaintyFactor() {
+        return adoptionCertaintyFactor;
     }
-
-    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
-        this.raAlgorithm = raAlgorithm;
-    }
-
-    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
-        return raAlgorithm;
-    }
+//
+//    public UncertaintyManager getUncertaintyManager() {
+//        return uncertaintyHandler.getManager();
+//    }
+//
+//    public void setUncertaintyManager(UncertaintyManager uncertaintyManager) {
+//        uncertaintyHandler.setManager(uncertaintyManager);
+//    }
+//
+//    public UncertaintyCache getUncertaintyCache() {
+//        return uncertaintyHandler.getCache();
+//    }
+//
+//    public void setUncertaintyCache(UncertaintyCache uncertaintyCache) {
+//        uncertaintyHandler.setCache(uncertaintyCache);
+//    }
+//
+//    public void setRelativeAgreementAlgorithm(RelativeAgreementAlgorithm raAlgorithm) {
+//        this.raAlgorithm = raAlgorithm;
+//    }
+//
+//    public RelativeAgreementAlgorithm getRelativeAgreementAlgorithm() {
+//        return raAlgorithm;
+//    }
 
     private void setYearChange(boolean isYearChange) {
         this.isYearChange = isYearChange;
@@ -153,7 +203,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     protected void initUncertainty() {
-        uncertaintyHandler.initalize();
+//        uncertaintyHandler.initalize();
     }
 
     @Override
@@ -281,7 +331,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
 //        double pp = getPurchasePower(agent);
 //        double ns = getNoveltySeeking(agent);
 //        return pp;
-        return helper.findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
+        return helper.getDouble(agent, RAConstants.PURCHASE_POWER_EUR, true);
     }
 
     //=========================
@@ -293,7 +343,7 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
         if(info.hasId()) {
             return info.getId();
         } else {
-            return getAttributeHelper().findLongValue(agent, RAConstants.ID);
+            return getAttributeHelper().getLong(agent, RAConstants.ID, true);
         }
     }
 
@@ -302,23 +352,23 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     }
 
     public double getPurchasePower(ConsumerAgent agent) {
-        return getAttributeHelper().findDoubleValue(agent, RAConstants.PURCHASE_POWER_EUR);
+        return getAttributeHelper().getDouble(agent, RAConstants.PURCHASE_POWER_EUR, true);
     }
 
     public boolean isShareOf1Or2FamilyHouse(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE);
+        return getAttributeHelper().getBoolean(agent, RAConstants.SHARE_1_2_HOUSE, true);
     }
 
     public void setShareOf1Or2FamilyHouse(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.SHARE_1_2_HOUSE, value);
+        getAttributeHelper().setBoolean(agent, RAConstants.SHARE_1_2_HOUSE, value, true);
     }
 
     public boolean isHouseOwner(ConsumerAgent agent) {
-        return getAttributeHelper().findBooleanValue(agent, RAConstants.HOUSE_OWNER);
+        return getAttributeHelper().getBoolean(agent, RAConstants.HOUSE_OWNER, true);
     }
 
     public void setHouseOwner(ConsumerAgent agent, boolean value) {
-        getAttributeHelper().findAndSetBooleanValue(agent, RAConstants.HOUSE_OWNER, value);
+        getAttributeHelper().setBoolean(agent, RAConstants.HOUSE_OWNER, value, true);
     }
 
     //=========================
@@ -326,31 +376,31 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     //=========================
 
     public double getCommunicationFrequencySN(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.COMMUNICATION_FREQUENCY_SN);
+        return getAttributeHelper().getDouble(agent, RAConstants.COMMUNICATION_FREQUENCY_SN, true);
     }
 
     public double getRewiringRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.REWIRING_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.REWIRING_RATE, true);
     }
 
     public double getNoveltySeeking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.NOVELTY_SEEKING);
+        return getAttributeHelper().getDouble(agent, RAConstants.NOVELTY_SEEKING, true);
     }
 
     public double getDependentJudgmentMaking(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING);
+        return getAttributeHelper().getDouble(agent, RAConstants.DEPENDENT_JUDGMENT_MAKING, true);
     }
 
     public double getEnvironmentalConcern(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.ENVIRONMENTAL_CONCERN);
+        return getAttributeHelper().getDouble(agent, RAConstants.ENVIRONMENTAL_CONCERN, true);
     }
 
     public double getConstructionRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.CONSTRUCTION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.CONSTRUCTION_RATE, true);
     }
 
     public double getRenovationRate(ConsumerAgent agent) {
-        return getAttributeHelper().getDoubleValue(agent, RAConstants.RENOVATION_RATE);
+        return getAttributeHelper().getDouble(agent, RAConstants.RENOVATION_RATE, true);
     }
 
     //=========================
@@ -358,22 +408,22 @@ public abstract class RAProcessModelBase extends NameableBase implements Process
     //=========================
 
     public double getFinancialThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.FINANCIAL_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.FINANCIAL_THRESHOLD, true);
     }
 
     public double getAdoptionThreshold(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.ADOPTION_THRESHOLD);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.ADOPTION_THRESHOLD, true);
     }
 
     public double getInitialProductAwareness(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_AWARENESS, true);
     }
 
     public double getInitialProductInterest(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_PRODUCT_INTEREST, true);
     }
 
     public double getInitialAdopter(ConsumerAgent agent, Product product) {
-        return getAttributeHelper().getDoubleValue(agent, product, RAConstants.INITIAL_ADOPTER);
+        return getAttributeHelper().getDouble(agent, product, RAConstants.INITIAL_ADOPTER, true);
     }
 }

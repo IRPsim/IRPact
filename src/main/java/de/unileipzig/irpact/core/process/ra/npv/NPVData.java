@@ -5,6 +5,9 @@ package de.unileipzig.irpact.core.process.ra.npv;
  */
 public interface NPVData {
 
+    //tFIT
+    double getTFit();
+
     //I_(0, t_0)
     double getNettosystempreis(int t0);
 

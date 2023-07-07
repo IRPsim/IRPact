@@ -2,48 +2,60 @@ package de.unileipzig.irpact.commons.util.data;
 
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.util.MapSupplier;
+import de.unileipzig.irpact.commons.util.SetSupplier;
 
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
 
 /**
  * @author Daniel Abitz
  */
 public class MapDataStore extends NameableBase implements DataStore {
 
-    private static final Function<Object, Set<Object>> SET_CREATOR = key -> new LinkedHashSet<>();
-
     protected final Lock LOCK = new ReentrantLock();
-    protected MapSupplier supplier;
+    protected MapSupplier mapSupplier;
+    protected SetSupplier setSupplier;
     protected Map<Object, Object> data;
+    protected Map<Object, Map<Object, Object>> annualData;
     protected Map<Object, Set<Object>> flags;
 
     public MapDataStore() {
-        this(MapSupplier.LINKED);
+        this(MapSupplier.LINKED, SetSupplier.LINKED);
     }
 
-    public MapDataStore(MapSupplier supplier) {
-        this(supplier, supplier.newMap());
+    public MapDataStore(MapSupplier mapSupplier, SetSupplier setSupplier) {
+        this(mapSupplier, setSupplier, mapSupplier.newMap(), mapSupplier.newMap(), mapSupplier.newMap());
     }
 
-    public MapDataStore(MapSupplier supplier, Map<Object, Object> data) {
-        this.supplier = supplier;
+    public MapDataStore(
+            MapSupplier mapSupplier,
+            SetSupplier setSupplier,
+            Map<Object, Object> data,
+            Map<Object, Map<Object, Object>> annualData,
+            Map<Object, Set<Object>> flags) {
+        this.mapSupplier = mapSupplier;
+        this.setSupplier = setSupplier;
         this.data = data;
-        this.flags = supplier.newMap();
+        this.annualData = annualData;
+        this.flags = flags;
     }
 
     protected MapDataStore(MapDataStore other) {
-        this.supplier = other.supplier;
-        this.data = supplier.newMap();
-        this.flags = supplier.newMap();
+        this.mapSupplier = other.mapSupplier;
+        this.data = mapSupplier.newMap();
+        this.annualData = mapSupplier.newMap();
+        this.flags = mapSupplier.newMap();
 
         data.putAll(other.data);
+        for(Map.Entry<Object, Map<Object, Object>> entry: other.annualData.entrySet()) {
+            Map<Object, Object> map = mapSupplier.newMap();
+            map.putAll(entry.getValue());
+            annualData.put(entry.getKey(), map);
+        }
         for(Map.Entry<Object, Set<Object>> entry: other.flags.entrySet()) {
-            Set<Object> set = SET_CREATOR.apply(entry.getKey());
+            Set<Object> set = setSupplier.newSet();
             set.addAll(entry.getValue());
             flags.put(entry.getKey(), set);
         }
@@ -77,6 +89,10 @@ public class MapDataStore extends NameableBase implements DataStore {
         data.clear();
     }
 
+    //=========================
+    //key
+    //=========================
+
     @Override
     public boolean contains(Object key) {
         return key != null && data.containsKey(key);
@@ -99,6 +115,42 @@ public class MapDataStore extends NameableBase implements DataStore {
         return data.get(key);
     }
 
+    //=========================
+    //annual key
+    //=========================
+
+    @Override
+    public boolean contains(Object year, Object key) {
+        if(key == null) return false;
+        Map<Object, Object> map = annualData.get(year);
+        return map != null && map.containsKey(key);
+    }
+
+    @Override
+    public void put(Object year, Object key, Object obj) {
+        annualData.computeIfAbsent(year, _year -> mapSupplier.newMap()).put(key, obj);
+    }
+
+    @Override
+    public boolean remove(Object year, Object key) {
+        if(key == null) return false;
+        Map<Object, Object> map = annualData.get(year);
+        return map != null && map.remove(key) != null;
+    }
+
+    @Override
+    public Object get(Object year, Object key) {
+        validateKey(key);
+        Map<Object, Object> map = annualData.get(year);
+        return map == null
+                ? null
+                : map.get(key);
+    }
+
+    //=========================
+    //flag
+    //=========================
+
     @Override
     public boolean hasFlag(Object key, Object flag) {
         if(key == null) return false;
@@ -109,7 +161,7 @@ public class MapDataStore extends NameableBase implements DataStore {
     @Override
     public void setFlag(Object key, Object flag) {
         validateKey(key);
-        flags.computeIfAbsent(key, SET_CREATOR).add(flag);
+        flags.computeIfAbsent(key, _key -> setSupplier.newSet()).add(flag);
     }
 
     @Override

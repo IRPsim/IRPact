@@ -4,6 +4,7 @@ import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.core.agent.Agent;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,10 @@ public interface SocialGraph extends ChecksumComparable {
      * @author Daniel Abitz
      */
     interface Edge extends ChecksumComparable {
+
+        default String printLabel() {
+            return getSource().getLabel() + "->" + getTarget().getLabel();
+        }
 
         void setSource(Node node);
 
@@ -144,4 +149,6 @@ public interface SocialGraph extends ChecksumComparable {
     boolean removeEdge(Edge edge);
 
     Set<? extends Edge> removeAllEdges(Type type);
+
+    void printGraph(Appendable target) throws IOException;
 }

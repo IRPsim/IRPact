@@ -84,7 +84,7 @@ public class ModularRAProcessPlan extends RAProcessPlanBase implements ProcessPl
     }
 
     @Override
-    public ProcessPlanResult execute(List<PostAction<?>> postActions) throws Throwable {
+    public ProcessPlanResult execute(List<PostAction> postActions) throws Throwable {
         throw new UnsupportedOperationException();
     }
 

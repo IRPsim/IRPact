@@ -31,6 +31,7 @@ import de.unileipzig.irpact.core.simulation.BasicVersion;
 import de.unileipzig.irpact.core.simulation.BinaryTaskManager;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InIndependentConsumerAgentGroupAttribute;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
@@ -47,6 +48,7 @@ import de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentGroup;
 import de.unileipzig.irpact.jadex.simulation.BasicJadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.simulation.JadexSimulationEnvironment;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
+import de.unileipzig.irpact.start.MainCommandLineOptions;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
@@ -66,7 +68,9 @@ public class JadexInputParser implements IRPactInputParser {
     private static final IRPLogger LOGGER = IRPLogging.getLogger(JadexInputParser.class);
 
     private final Map<Holder, Object> CACHE = new LinkedHashMap<>();
+    private MetaData metaData;
     private ResourceLoader resourceLoader;
+    private MainCommandLineOptions options;
 
     private final MutableInt simulationYear = MutableInt.empty();
     private BasicJadexSimulationEnvironment environment;
@@ -76,6 +80,9 @@ public class JadexInputParser implements IRPactInputParser {
     }
 
     private void validate() {
+        if(metaData == null) {
+            throw new NoSuchElementException("no meta data");
+        }
         if(resourceLoader == null) {
             throw new NoSuchElementException("no resource loader");
         }
@@ -90,6 +97,7 @@ public class JadexInputParser implements IRPactInputParser {
         environment = new BasicJadexSimulationEnvironment();
         environment.setName("Initial_Environment");
         environment.initDefault();
+        environment.setMetaData(metaData);
         environment.setResourceLoader(resourceLoader);
     }
 
@@ -103,8 +111,21 @@ public class JadexInputParser implements IRPactInputParser {
         return environment.isRestored();
     }
 
+    public void setMetaData(MetaData metaData) {
+        this.metaData = metaData;
+    }
+
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
+    }
+
+    public void setOptions(MainCommandLineOptions options) {
+        this.options = options;
+    }
+
+    @Override
+    public MainCommandLineOptions getOptions() {
+        return options;
     }
 
     @Override
@@ -581,35 +602,37 @@ public class JadexInputParser implements IRPactInputParser {
     private void applyDefaultAwarenessInterestHandler() {
         for(ProcessModel pm: environment.getProcessModels().getProcessModels()) {
             if(pm instanceof AbstractConsumerAgentMPMWithUpdater) {
-                AbstractConsumerAgentMPMWithUpdater mpm = (AbstractConsumerAgentMPMWithUpdater) pm;
-                handleAbstractConsumerAgentMPMWithUpdater(mpm);
+//                AbstractConsumerAgentMPMWithUpdater mpm = (AbstractConsumerAgentMPMWithUpdater) pm;
+//                handleAbstractConsumerAgentMPMWithUpdater(mpm);
+                throw new UnsupportedOperationException();
             }
             if(pm instanceof RAProcessModelBase) {
-                RAProcessModelBase rapm = (RAProcessModelBase) pm;
-                handleRAProcessModelBase(rapm);
+//                RAProcessModelBase rapm = (RAProcessModelBase) pm;
+//                handleRAProcessModelBase(rapm);
+                throw new UnsupportedOperationException();
             }
         }
     }
 
-    private void handleAbstractConsumerAgentMPMWithUpdater(AbstractConsumerAgentMPMWithUpdater mpm) {
-        boolean addDefault = true;
-        for(NewProductHandler handler: mpm.getNewProductHandlers()) {
-            if(handler instanceof DefaultAwarenessInterestHandler) {
-                LOGGER.trace("AbstractConsumerAgentMPMWithUpdater {} already has {}: {}", mpm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
-                addDefault = false;
-                break;
-            }
-        }
-        if(addDefault) {
-            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
-            handler.setName(mpm.getName() + "_awarenessInterestHandler");
-            handler.setRnd(deriveRnd());
-            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
-            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
-            mpm.addNewProductHandler(handler);
-            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", mpm.getName());
-        }
-    }
+//    private void handleAbstractConsumerAgentMPMWithUpdater(AbstractConsumerAgentMPMWithUpdater mpm) {
+//        boolean addDefault = true;
+//        for(NewProductHandler handler: mpm.getNewProductHandlers()) {
+//            if(handler instanceof DefaultAwarenessInterestHandler) {
+//                LOGGER.trace("AbstractConsumerAgentMPMWithUpdater {} already has {}: {}", mpm.getName(), DefaultAwarenessInterestHandler.class.getSimpleName(), handler.getName());
+//                addDefault = false;
+//                break;
+//            }
+//        }
+//        if(addDefault) {
+//            DefaultAwarenessInterestHandler handler = new DefaultAwarenessInterestHandler();
+//            handler.setName(mpm.getName() + "_awarenessInterestHandler");
+//            handler.setRnd(deriveRnd());
+//            handler.setAwarenessAttributeName(INITIAL_PRODUCT_AWARENESS);
+//            handler.setInterestAttributeName(INITIAL_PRODUCT_INTEREST);
+//            mpm.addNewProductHandler(handler);
+//            LOGGER.trace(IRPSection.INITIALIZATION_PARAMETER, "add DefaultAwarenessInterestHandler to {}", mpm.getName());
+//        }
+//    }
 
     private void handleRAProcessModelBase(RAProcessModelBase rapm) {
         boolean addDefault = true;

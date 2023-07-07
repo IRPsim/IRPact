@@ -7,14 +7,10 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
 import de.unileipzig.irpact.commons.time.TimeUtil;
-import de.unileipzig.irpact.commons.util.CollectionUtil;
-import de.unileipzig.irpact.commons.util.ImageUtil;
-import de.unileipzig.irpact.commons.util.ProgressCalculator;
-import de.unileipzig.irpact.commons.util.StringUtil;
+import de.unileipzig.irpact.commons.util.*;
 import de.unileipzig.irpact.commons.util.data.AtomicDouble;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
-import de.unileipzig.irpact.core.logging.DataLogger;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
 import de.unileipzig.irpact.core.misc.InitializationStage;
@@ -23,7 +19,6 @@ import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.misc.graphviz.GraphvizConfiguration;
 import de.unileipzig.irpact.core.network.SocialGraph;
 import de.unileipzig.irpact.core.postprocessing.BasicPostprocessingManager;
-import de.unileipzig.irpact.core.postprocessing.PostprocessingManager;
 import de.unileipzig.irpact.core.simulation.*;
 import de.unileipzig.irpact.core.util.BasicMetaData;
 import de.unileipzig.irpact.core.util.MetaData;
@@ -82,11 +77,12 @@ public final class IRPact implements IRPActAccess {
     private static final String SIMULATION_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexSimulationAgentBDI.class";
     private static final String AGENTMANAGER_AGENT = "de.unileipzig.irpact.jadex.agents.simulation.JadexIRPactAgentManagerAgentBDI.class";
     private static final String CONSUMER_AGENT = "de.unileipzig.irpact.jadex.agents.consumer.JadexConsumerAgentBDI.class";
+
     private static final String SIMULATION_AGENT_NAME = "IRPact_Simulation_Agent";
 
-    //reminder: change version in loc_lang.yaml
+    //reminder: change version in loc_XX.yaml
     private static final String MAJOR_STRING = "1";
-    private static final String MINOR_STRING = "10";
+    private static final String MINOR_STRING = "27";
     private static final String BUILD_STRING = "0";
     public static final String VERSION_STRING = MAJOR_STRING + "_" + MINOR_STRING + "_" + BUILD_STRING;
     public static final Version VERSION = new BasicVersion(MAJOR_STRING, MINOR_STRING, BUILD_STRING);
@@ -109,20 +105,86 @@ public final class IRPact implements IRPActAccess {
     public static final String IMAGE_STACKTRACE = "Stacktrace";
     public static final String IMAGE_STACKTRACE_PNG = IMAGE_STACKTRACE + ".png";
 
-    public static final String IMAGE_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZ";
-    public static final String IMAGE_ANNUAL_ADOPTIONS_PNG = IMAGE_ANNUAL_ADOPTIONS + ".png";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP = "JaehrlicheAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS_ZIP + ".png";
 
-    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS = "JaehrlicheAdoptionenVergleich";
     public static final String IMAGE_COMPARED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_ANNUAL_ADOPTIONS + ".png";
 
-    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS = "JaehrlicheAdoptionenPhase";
-    public static final String IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS_PNG = IMAGE_ANNUAL_CUMULATIVE_ADOPTIONS + ".png";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS = "JaehrlicheKumulierteAdoptionenVergleich";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_PNG = IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS + ".png";
 
-    public static final String IMAGE_ANNUAL_INTEREST = "Interessensentwicklung";
-    public static final String IMAGE_ANNUAL_INTEREST_PNG = IMAGE_ANNUAL_INTEREST + ".png";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP = "JaehrlicheKumulierteAdoptionenPLZVergleich";
+    public static final String IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP_PNG = IMAGE_COMPARED_CUMULATED_ANNUAL_ADOPTIONS_ZIP + ".png";
 
-    public static final String IMAGE_PHASE_OVERVIEW = "Phasenuebersicht";
-    public static final String IMAGE_PHASE_OVERVIEW_JPG = IMAGE_PHASE_OVERVIEW + ".png";
+    //UMBENNEN (ProzessModelPhasen)
+    public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW = "Prozessmodellphasenuebersicht";
+    public static final String IMAGE_PROCESS_MODEL_PHASE_OVERVIEW_PNG = IMAGE_PROCESS_MODEL_PHASE_OVERVIEW + ".png";
+
+    public static final String IMAGE_ANNUAL_INTEREST_GROWTH = "Interessensentwicklung";
+    public static final String IMAGE_ANNUAL_INTEREST_GROWTH_PNG = IMAGE_ANNUAL_INTEREST_GROWTH + ".png";
+
+    public static final String IMAGE_PHASE_OVERVIEW = "Adoptionsphasenuebersicht";
+    public static final String IMAGE_PHASE_OVERVIEW_PNG = IMAGE_PHASE_OVERVIEW + ".png";
+
+    public static final String IMAGE_QUANTILE_NPV = "NPV_Quantile";
+    public static final String IMAGE_QUANTILE_NPV_PNG = IMAGE_QUANTILE_NPV + ".png";
+
+    public static final String IMAGE_QUANTILE_ENV = "ENV_Quantile";
+    public static final String IMAGE_QUANTILE_ENV_PNG = IMAGE_QUANTILE_ENV + ".png";
+
+    public static final String IMAGE_QUANTILE_NOV = "NOV_Quantile";
+    public static final String IMAGE_QUANTILE_NOV_PNG = IMAGE_QUANTILE_NOV + ".png";
+
+    public static final String IMAGE_QUANTILE_SOCIAL = "SOCIAL_Quantile";
+    public static final String IMAGE_QUANTILE_SOCIAL_PNG = IMAGE_QUANTILE_SOCIAL + ".png";
+
+    public static final String IMAGE_QUANTILE_LOCAL = "LOCAL_Quantile";
+    public static final String IMAGE_QUANTILE_LOCAL_PNG = IMAGE_QUANTILE_LOCAL + ".png";
+
+    public static final String IMAGE_QUANTILE_UTILITY = "UTILITY_Quantile";
+    public static final String IMAGE_QUANTILE_UTILITY_PNG = IMAGE_QUANTILE_UTILITY + ".png";
+
+    public static final String IMAGE_BUCKET_NPV = "NPV_Buckets";
+    public static final String IMAGE_BUCKET_NPV_PNG = IMAGE_BUCKET_NPV + ".png";
+
+    public static final String IMAGE_BUCKET_ENV = "ENV_Buckets";
+    public static final String IMAGE_BUCKET_ENV_PNG = IMAGE_BUCKET_ENV + ".png";
+
+    public static final String IMAGE_BUCKET_NOV = "NOV_Buckets";
+    public static final String IMAGE_BUCKET_NOV_PNG = IMAGE_BUCKET_NOV + ".png";
+
+    public static final String IMAGE_BUCKET_SOCIAL = "SOCIAL_Buckets";
+    public static final String IMAGE_BUCKET_SOCIAL_PNG = IMAGE_BUCKET_SOCIAL + ".png";
+
+    public static final String IMAGE_BUCKET_LOCAL = "LOCAL_Buckets";
+    public static final String IMAGE_BUCKET_LOCAL_PNG = IMAGE_BUCKET_LOCAL + ".png";
+
+    public static final String IMAGE_BUCKET_UTILITY = "UTILITY_Buckets";
+    public static final String IMAGE_BUCKET_UTILITY_PNG = IMAGE_BUCKET_UTILITY + ".png";
+
+    public static final String IMAGE_ANNUAL_ADOPTION_MILIEU = "JaehrlicheAdoptionenMilieu";
+    public static final String IMAGE_ANNUAL_ADOPTION_MILIEU_PNG = IMAGE_ANNUAL_ADOPTION_MILIEU + ".png";
+
+    public static final String IMAGE_ANNUAL_INTEREST_OVERVIEW = "JaehrlichesInteresse";
+    public static final String IMAGE_ANNUAL_INTEREST_OVERVIEW_PNG = IMAGE_ANNUAL_INTEREST_OVERVIEW + ".png";
+
+    public static final String IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW = "JaehrlichesKumuliertesInteresse";
+    public static final String IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW_PNG = IMAGE_ANNUAL_CUMULATED_INTEREST_OVERVIEW + ".png";
+
+    public static final int INVALID_CUSTOM_IMAGE = 0;
+    public static final int CUSTOM_IMAGE_SECTION_SIZE = 10;
+    public static boolean isValidImageId(int id) {
+        return id > 0 && id <= CUSTOM_IMAGE_SECTION_SIZE;
+    }
+
+    private static final String IMAGE_CUSTOM = "CustomImage";
+    public static String getCustomImage(int id) {
+        return IMAGE_CUSTOM + id;
+    }
+    public static String getCustomImagePng(int id) {
+        return getCustomImage(id) + ".png";
+    }
 
     private static final String ALL_EVAL_BASENAME = "Komplette_Evaluierungen";
     public static final String ALL_EVAL_CSV = ALL_EVAL_BASENAME + ".csv";
@@ -353,8 +415,6 @@ public final class IRPact implements IRPActAccess {
             initializeNewSimulationEnvironment();
         }
 
-        initializeDataLogger();
-
         META_DATA.apply(environment.getSettings());
 
         createGraphvizConfiguration();
@@ -378,21 +438,36 @@ public final class IRPact implements IRPActAccess {
         settings.apply(CL_OPTIONS);
     }
 
+    private int getStartYear() {
+        int year;
+        if(inRoot.getGeneral().isEnableFirstSimulationYear()) {
+            year = inRoot.getGeneral().getFirstSimulationYear();
+            LOGGER.info("use 'custom' start year: {}", year);
+        } else {
+            year = inEntry.getConfig().getYear();
+            LOGGER.info("use start year: {}", year);
+        }
+        return year;
+    }
+
     private void createSimulationEnvironment() throws ParsingException {
-        int year = inEntry.getConfig().getYear();
+        int year = getStartYear();
         JadexInputParser parser = new JadexInputParser();
         parser.setSimulationYear(year);
+        parser.setMetaData(META_DATA);
         parser.setResourceLoader(META_DATA.getLoader());
+        parser.setOptions(CL_OPTIONS);
         environment = parser.parseRoot(inRoot);
         environment.getSettings().setFirstSimulationYear(year);
     }
 
     private void restorePreviousSimulationEnvironment() throws Exception {
         LOGGER.info(IRPSection.GENERAL, "restore previous environment");
-        int year = inEntry.getConfig().getYear();
+        int year = getStartYear();
         JadexRestoreUpdater updater = new JadexRestoreUpdater();
         updater.setSimulationYear(year);
         updater.setResourceLoader(META_DATA.getLoader());
+        updater.setOptions(CL_OPTIONS);
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
         environment = (JadexSimulationEnvironment) persistenceModul.restore(
                 META_DATA,
@@ -401,17 +476,6 @@ public final class IRPact implements IRPActAccess {
                 updater,
                 inRoot
         );
-    }
-
-    private void initializeDataLogger() throws IOException {
-        Path dir = CL_OPTIONS.getCreatedDownloadDir();
-        DataLogger dataLogger = environment.getDataLogger();
-
-        dataLogger.setLogEvaluationTarget(dir.resolve(ALL_EVAL_CSV));
-        dataLogger.startLogEvaluation();
-
-        dataLogger.setLogFinancialComponentTarget(dir.resolve(FIN_CSV));
-        dataLogger.startLogFinancialComponent();
     }
 
     private void createGraphvizConfiguration() throws Exception {
@@ -890,7 +954,7 @@ public final class IRPact implements IRPActAccess {
     private void createNoErrorImageIfDesired() {
         if(inRoot.getGeneral().shouldPrintNoErrorImage()) {
             try {
-                createNoErrorImage(getStackTraceImagePath());
+                createNonErrorImage(getStackTraceImagePath());
             } catch (Throwable t) {
                 LOGGER.error("failed to create no-error image", t);
             }
@@ -1030,15 +1094,53 @@ public final class IRPact implements IRPActAccess {
     }
 
     private void runPostprocessing() {
-        PostprocessingManager postprocessor = new BasicPostprocessingManager(META_DATA, CL_OPTIONS, inRoot, environment);
+        BasicPostprocessingManager postprocessor = new BasicPostprocessingManager(META_DATA, CL_OPTIONS, inRoot, environment);
         postprocessor.execute();
+        printPerformanceResult(postprocessor.getPerformanceNode());
+    }
+
+    private void printPerformanceResult(ObjectNode performanceResult) {
+        LOGGER.info("[printPerformanceResult] size={}", performanceResult.size());
+        if(performanceResult.isEmpty()) {
+            return;
+        }
+
+        Runnable printTask;
+        if(isSingleValue(performanceResult)) {
+            LOGGER.info("[printPerformanceResult] print single value");
+            printTask = () -> System.out.println(getSingleValue(performanceResult));
+        } else {
+            LOGGER.info("[printPerformanceResult] print array value");
+            printTask = () -> System.out.println(printMultiValue(performanceResult));
+        }
+
+        boolean consoleDisabled = ConsoleUtil.isDisabled();
+        if(consoleDisabled) ConsoleUtil.enable();
+        printTask.run();
+        if(consoleDisabled) ConsoleUtil.disable();
+    }
+
+    private static boolean isSingleValue(ObjectNode node) {
+        return node.size() == 1 && node.elements().next().isValueNode();
+    }
+
+    private static double getSingleValue(ObjectNode node) {
+        return node.elements().next().doubleValue();
+    }
+
+    private static String printMultiValue(ObjectNode node) {
+        return JsonUtil.toMinimalString(node);
     }
 
     private void finalTask() {
-        LOGGER.info(IRPSection.GENERAL, "simulation finished");
+        LOGGER.info(IRPSection.GENERAL, "simulation finished (environment == null ? {})", environment == null);
+        if(environment != null) {
+            environment.closeEntities();
+        }
         copyLogIfPossible();;
         IRPLogging.terminate();
         clearConverterCache();
+        ConsoleUtil.enable();
     }
 
     private void copyLogIfPossible() {
@@ -1074,14 +1176,14 @@ public final class IRPact implements IRPActAccess {
         }
     }
 
-    public static void createNoErrorImage(Path target) {
+    public static void createNonErrorImage(Path target) {
         try {
             ImageUtil.writeText(
                     "(Datum: " + TimeUtil.printNowWithoutMs() + ")\n\nKein Fehler aufgetreten!",
                     target
             );
         } catch (Throwable t) {
-            LOGGER.error("writing no-error image failed", t);
+            LOGGER.error("writing non-error image failed", t);
         }
     }
 

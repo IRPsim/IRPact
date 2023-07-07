@@ -68,7 +68,7 @@ public class SlowTruncatedNormalDistribution extends AbstractBoundedUnivariateDo
         do {
             drawnValue = rnd.nextGaussian(standardDeviation, mean);
         } while(isOutOfRange(drawnValue));
-        return drawnValue;
+        return roundValue(drawnValue);
     }
 
     @Override

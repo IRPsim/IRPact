@@ -6,6 +6,7 @@ import de.unileipzig.irpact.commons.exception.InitializationException;
 import de.unileipzig.irpact.commons.util.ProgressCalculator;
 import de.unileipzig.irpact.commons.util.Rnd;
 import de.unileipzig.irpact.commons.resource.ResourceLoader;
+import de.unileipzig.irpact.commons.util.SetSupplier;
 import de.unileipzig.irpact.commons.util.WeightedProgressCalculator;
 import de.unileipzig.irpact.commons.util.data.DataStore;
 import de.unileipzig.irpact.commons.util.data.MapDataStore;
@@ -15,10 +16,8 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgent;
 import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.*;
-import de.unileipzig.irpact.core.logging.BasicDataAnalyser;
-import de.unileipzig.irpact.core.logging.BasicDataLogger;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
-import de.unileipzig.irpact.core.logging.DataLogger;
+import de.unileipzig.irpact.core.logging.data.BasicDataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.misc.MissingDataException;
 import de.unileipzig.irpact.core.misc.ValidationException;
 import de.unileipzig.irpact.core.network.BasicSocialNetwork;
@@ -34,10 +33,14 @@ import de.unileipzig.irpact.core.spatial.SpatialInformation;
 import de.unileipzig.irpact.core.spatial.SpatialModel;
 import de.unileipzig.irpact.core.persistence.BasicPersistenceModul;
 import de.unileipzig.irpact.core.util.AttributeHelper;
+import de.unileipzig.irpact.core.util.MetaData;
 import de.unileipzig.irpact.jadex.time.JadexTimeModel;
 import de.unileipzig.irpact.start.irpact.IRPact;
 import de.unileipzig.irptools.util.log.IRPLogger;
 import jadex.bridge.service.annotation.Reference;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Daniel Abitz
@@ -53,14 +56,17 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     protected Rnd rnd;
     protected boolean restored = false;
 
+    protected final Set<CloseableSimulationEntity> CLOSABLE_ENTITIES = SetSupplier.CONCURRENT_LINKED_HASH.newSet();
+
     protected final AttributeHelper HELPER = new AttributeHelper(this);
     protected final DataStore STORE = newStore();
     protected final ProgressCalculator PROGRESS_CALC = new WeightedProgressCalculator(IRPact.NUMBER_OF_PROGRESS_PHASES);
+
+    protected MetaData metaData;
     protected Settings settings;
     protected BinaryTaskManager taskManager;
     protected PersistenceModul persistenceModul;
     protected ResourceLoader resourceLoader;
-    protected DataLogger dataLogger;
     protected DataAnalyser dataAnalyser;
 
     //components
@@ -118,16 +124,12 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         BasicJadexLifeCycleControl lifeCycleControl = new BasicJadexLifeCycleControl();
         BasicBinaryTaskManager taskManager = new BasicBinaryTaskManager();
         BasicPersistenceModul persistenceModul = new BasicPersistenceModul();
-        BasicDataLogger dataLogger = new BasicDataLogger();
         BasicDataAnalyser dataAnalyser = new BasicDataAnalyser();
 
         setSettings(initData);
 
         setDataAnalyser(dataAnalyser);
         dataAnalyser.setEnvironment(this);
-
-        setDataLogger(dataLogger);
-        dataLogger.setEnvironment(this);
 
         setAgentManager(agentManager);
         agentManager.setEnvironment(this);
@@ -158,6 +160,44 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     @Override
     public boolean isRestored() {
         return restored;
+    }
+
+    @Override
+    public void register(CloseableSimulationEntity entity) {
+        CLOSABLE_ENTITIES.add(entity);
+    }
+
+    @Override
+    public boolean isRegistered(CloseableSimulationEntity entity) {
+        return CLOSABLE_ENTITIES.contains(entity);
+    }
+
+    @Override
+    public boolean unregister(CloseableSimulationEntity entity) {
+        return CLOSABLE_ENTITIES.remove(entity);
+    }
+
+    @Override
+    public void closeEntities() {
+        Set<CloseableSimulationEntity> copy = new HashSet<>(CLOSABLE_ENTITIES);
+        CLOSABLE_ENTITIES.clear();
+        LOGGER.trace("close entities: {}", copy.size());
+        for(CloseableSimulationEntity entity: copy) {
+            try {
+                entity.closeEntity();
+            } catch (Throwable t) {
+                LOGGER.warn("closing '" + entity + "' failed");
+            }
+        }
+    }
+
+    @Override
+    public MetaData getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(MetaData metaData) {
+        this.metaData = metaData;
     }
 
     @Override
@@ -289,15 +329,6 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
     }
 
     @Override
-    public DataLogger getDataLogger() {
-        return dataLogger;
-    }
-
-    public void setDataLogger(DataLogger dataLogger) {
-        this.dataLogger = dataLogger;
-    }
-
-    @Override
     public DataAnalyser getDataAnalyser() {
         return dataAnalyser;
     }
@@ -381,6 +412,7 @@ public class BasicJadexSimulationEnvironment extends NameableBase implements Jad
         spatialModel.postAgentCreationValidation();
         timeModel.postAgentCreationValidation();
         lifeCycleControl.postAgentCreationValidation();
+
     }
 
     @Override

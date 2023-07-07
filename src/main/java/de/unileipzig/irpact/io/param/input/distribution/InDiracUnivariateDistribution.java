@@ -4,7 +4,9 @@ import de.unileipzig.irpact.commons.distribution.DiracUnivariateDoubleDistributi
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -12,13 +14,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 
 import java.lang.invoke.MethodHandles;
 
-import static de.unileipzig.irpact.io.param.IOConstants.DISTRIBUTIONS;
-import static de.unileipzig.irpact.io.param.ParamUtil.*;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.DISTRIBUTIONS_DIRAC;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(DISTRIBUTIONS_DIRAC)
 public class InDiracUnivariateDistribution implements InUnivariateDoubleDistribution {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -29,25 +31,27 @@ public class InDiracUnivariateDistribution implements InUnivariateDoubleDistribu
         return thisClass().getSimpleName();
     }
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), DISTRIBUTIONS, thisName());
-        addEntry(res, thisClass(), "value");
     }
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(InDiracUnivariateDistribution.class);
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public double value;
 
     public InDiracUnivariateDistribution() {
     }
 
     public InDiracUnivariateDistribution(String name, double value) {
-        this._name = name;
+        this.name = name;
         this.value = value;
     }
 
@@ -58,14 +62,22 @@ public class InDiracUnivariateDistribution implements InUnivariateDoubleDistribu
 
     public InDiracUnivariateDistribution newCopy(CopyCache cache) {
         InDiracUnivariateDistribution copy = new InDiracUnivariateDistribution();
-        copy._name = _name;
+        copy.name = name;
         copy.value = value;
         return copy;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getName() {
-        return _name;
+        return name;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public double getValue() {

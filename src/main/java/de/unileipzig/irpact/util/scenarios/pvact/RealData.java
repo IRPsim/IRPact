@@ -12,6 +12,8 @@ import de.unileipzig.irpact.io.param.input.distribution.InTruncatedNormalDistrib
 import de.unileipzig.irpact.util.pvact.Milieu;
 
 import java.util.*;
+import java.util.function.DoubleBinaryOperator;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
 /**
@@ -127,12 +129,18 @@ public final class RealData {
     public static final double SCALE = 0.5;
     public static final double MULTIPLIER = 15;
 
-    public static final double WEIGHT_NS = 0.3472;
-    public static final double WEIGHT_NEP = -0.0780;
-    public static final double WEIGHT_EK = 0.0013;
-    public static final double WEIGHT_NPV = 0.5673;
-    public static final double WEIGHT_SOCIAL = 0.0113;
-    public static final double WEIGHT_LOCALE = 0.1509;
+    public static final double FINANCIAL_THRESHOLD = 38827.44;
+
+    public static final double WEIGHT_NS = 0.348;
+    public static final double WEIGHT_NEP = -0.0996;
+    public static final double WEIGHT_EK = 0;
+    public static final double WEIGHT_NPV = 0.5927;
+    public static final double WEIGHT_SOCIAL = 0;
+    public static final double WEIGHT_LOCALE = 0.1589;
+
+    public static final double CONVERAGE = 0.696375945;
+    public static final double CONVERAGE_LEIPZIG = 0.696375945;
+    public static final double CONVERAGE_DRESDEN = 0.724427331658821;
 
     public static final double[] COMMU = {
             0.204,
@@ -161,16 +169,16 @@ public final class RealData {
     };
 
     public static final double[] REWIRE = {
-            0.5,
-            0.75,
-            1,
-            1,
-            0.75,
-            0.75,
-            0.5,
-            0.25,
-            0.5,
-            1
+            0.005,
+            0.0075,
+            0.01,
+            0.01,
+            0.0075,
+            0.0075,
+            0.005,
+            0.0025,
+            0.005,
+            0.01
     };
 
     public static final Map<Integer, Double> CONST_RATES = CollectionUtil.hashMapOf(
@@ -186,7 +194,27 @@ public final class RealData {
             2017, 0.00409967647131461,
             2018, 0.00411108283512271,
             2019, 0.00438894416886053,
-            2020, 0.0044289612161372
+            2020, 0.0044289612161372,
+            2021, 0,
+            2022, 0,
+            2023, 0,
+            2024, 0,
+            2025, 0,
+            2026, 0,
+            2027, 0,
+            2028, 0,
+            2029, 0,
+            2030, 0,
+            2031, 0,
+            2032, 0,
+            2033, 0,
+            2034, 0,
+            2035, 0,
+            2036, 0,
+            2037, 0,
+            2038, 0,
+            2039, 0,
+            2040, 0
     );
 
     public static final Map<Integer, Double> RENO_RATES = CollectionUtil.hashMapOf(
@@ -202,7 +230,27 @@ public final class RealData {
             2017, 0.00344274036205577,
             2018, 0.00336238383793679,
             2019, 0.00388714073628027,
-            2020, 0.00329614110309881
+            2020, 0.00329614110309881,
+            2021, 0,
+            2022, 0,
+            2023, 0,
+            2024, 0,
+            2025, 0,
+            2026, 0,
+            2027, 0,
+            2028, 0,
+            2029, 0,
+            2030, 0,
+            2031, 0,
+            2032, 0,
+            2033, 0,
+            2034, 0,
+            2035, 0,
+            2036, 0,
+            2037, 0,
+            2038, 0,
+            2039, 0,
+            2040, 0
     );
 
     public final PVactConsumerAgentGroupBuilder CAGS;
@@ -275,15 +323,33 @@ public final class RealData {
             String name,
             Milieu[] milieus,
             double[] means,
-            double[] sds) {
+            double[] sds,
+            DoubleBinaryOperator lowerBound,
+            DoubleBinaryOperator upperBound) {
         Map<Milieu, InTruncatedNormalDistribution> map = new LinkedHashMap<>();
         for(int i = 0; i < milieus.length; i++) {
             map.put(
                     milieus[i],
-                    new InTruncatedNormalDistribution(name + "_" + milieus[i].print(), sds[i], means[i], 0, 1)
+                    new InTruncatedNormalDistribution(name + "_" + milieus[i].print(), sds[i], means[i], lowerBound.applyAsDouble(sds[i], means[i]), upperBound.applyAsDouble(sds[i], means[i]))
             );
         }
         return map;
+    }
+
+    public static DoubleBinaryOperator lowerBound(double bound) {
+        return (_sd, _mean) -> bound;
+    }
+
+    public static DoubleBinaryOperator lowerBoundSD(double sdMultiple, double min) {
+        return (_sd, _mean) -> Math.max(_mean - (_sd * sdMultiple), min);
+    }
+
+    public static DoubleBinaryOperator upperBoundSD(double sdMultiple, double max) {
+        return (_sd, _mean) -> Math.min(_mean + (_sd * sdMultiple), max);
+    }
+
+    public static DoubleBinaryOperator upperBound(double bound) {
+        return (_sd, _mean) -> bound;
     }
 
     public static Map<Milieu, InBernoulliDistribution> buildBernoulli(

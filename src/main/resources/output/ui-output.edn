@@ -16,10 +16,10 @@
         :description "Darstellung der Adoptionen im Simulationszeitraum nach unterschiedlichen Kriterien." 
         :sections [
           {
-            :label "Jährliche Adoptionen (PLZ)" 
+            :label "Jährliche Adoptionen (Milieu)" 
             :icon "fa fa-file-image-o" 
-            :description "Zeigt die jährlichen Adoptionen für die einzelnen Postleitzahlen." 
-            :image "JaehrlicheAdoptionenPLZ.png"
+            :description "Zeigt die jährlichen Adoptionen für die einzelnen Milieus." 
+            :image "JaehrlicheAdoptionenMilieu.png"
           } 
           {
             :label "Jährliche Adoptionen im Vergleich (PLZ)" 
@@ -31,7 +31,7 @@
             :label "Jährliche Adoptionen (Phase)" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die kumulierten jährlichen Adoptionen für die verschiedenen Adoptionsphasen." 
-            :image "JaehrlicheAdoptionenPhase.png"
+            :image "Prozessmodellphasenuebersicht.png"
           } 
           {
             :label "Interessensentwicklung" 
@@ -43,7 +43,190 @@
             :label "Phasenuebersicht" 
             :icon "fa fa-file-image-o" 
             :description "Zeigt die Entwicklung der Phasen an." 
-            :image "Phasenuebersicht.png"
+            :image "Adoptionsphasenuebersicht.png"
+          } 
+          {
+            :label "Jährliche Übersicht der interessierten Agenten" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährliche Anzahl der interessierten Agenten." 
+            :image "JaehrlichesInteresse.png"
+          } 
+          {
+            :label "Kumulierte jährliche Übersicht der interessierten Agenten" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährliche kumulierte Anzahl der interessierten Agenten." 
+            :image "JaehrlichesKumuliertesInteresse.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenVergleich.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenVergleich.png"
+          } 
+          {
+            :label "Jährliche kumulierte Adoptionen im Vergleich (PLZ)" 
+            :icon "fa fa-file-image-o" 
+            :description "Zeigt die jährlichen kumulierten Adoptionen für die einzelnen Postleitzahlen im Vergleich zu realen Daten." 
+            :image "JaehrlicheKumulierteAdoptionenPLZVergleich.png"
+          }
+        ]
+      } 
+      {
+        :label "Quantile" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "NPV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NPV_Quantile.png"
+          } 
+          {
+            :label "ENV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "ENV_Quantile.png"
+          } 
+          {
+            :label "NOV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NOV_Quantile.png"
+          } 
+          {
+            :label "SOCIAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "SOCIAL_Quantile.png"
+          } 
+          {
+            :label "LOCAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "LOCAL_Quantile.png"
+          } 
+          {
+            :label "UTILITY" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "UTILITY_Quantile.png"
+          }
+        ]
+      } 
+      {
+        :label "Bereichsanalyse" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "NPV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NPV_Buckets.png"
+          } 
+          {
+            :label "ENV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "ENV_Buckets.png"
+          } 
+          {
+            :label "NOV" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "NOV_Buckets.png"
+          } 
+          {
+            :label "SOCIAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "SOCIAL_Buckets.png"
+          } 
+          {
+            :label "LOCAL" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "LOCAL_Buckets.png"
+          } 
+          {
+            :label "UTILITY" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "UTILITY_Buckets.png"
+          }
+        ]
+      } 
+      {
+        :label "Benutzerdefiniert" 
+        :icon "fa fa-plus-square" 
+        :description "todo" 
+        :sections [
+          {
+            :label "Bild 1" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage1.png"
+          } 
+          {
+            :label "Bild 2" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage2.png"
+          } 
+          {
+            :label "Bild 3" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage3.png"
+          } 
+          {
+            :label "Bild 4" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage4.png"
+          } 
+          {
+            :label "Bild 5" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage5.png"
+          } 
+          {
+            :label "Bild 6" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage6.png"
+          } 
+          {
+            :label "Bild 7" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage7.png"
+          } 
+          {
+            :label "Bild 8" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage8.png"
+          } 
+          {
+            :label "Bild 9" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage9.png"
+          } 
+          {
+            :label "Bild 10" 
+            :icon "fa fa-file-image-o" 
+            :description "todo" 
+            :image "CustomImage10.png"
           }
         ]
       }
@@ -68,9 +251,8 @@
     ]
   } 
   {
-    :label "Adoptionen der Konsumergruppen" 
+    :label "set_OutConsumerAgentGroup" 
     :set "set_OutConsumerAgentGroup" 
-    :description "todo" 
     :tags [["OutConsumerAgentGroup" "adoptionsThisPeriod"] ["OutConsumerAgentGroup" "initialAdoptionsThisPeriod"] ["OutConsumerAgentGroup" "adoptionsCumulative"] ["OutConsumerAgentGroup" "initialAdoptionsCumulative"]]
   } 
   {

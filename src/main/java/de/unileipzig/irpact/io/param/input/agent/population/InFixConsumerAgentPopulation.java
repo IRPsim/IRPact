@@ -5,10 +5,12 @@ import de.unileipzig.irpact.core.agent.consumer.ConsumerAgentGroup;
 import de.unileipzig.irpact.core.agent.population.AgentPopulation;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPSection;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.ParamUtil;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.io.param.input.agent.consumer.InConsumerAgentGroup;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -17,14 +19,13 @@ import de.unileipzig.irptools.util.log.IRPLogger;
 import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
-import static de.unileipzig.irpact.io.param.IOConstants.*;
-import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
-import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.AGENTS_POP_FIX;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(AGENTS_POP_FIX)
 public class InFixConsumerAgentPopulation implements InAgentPopulation {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -37,20 +38,22 @@ public class InFixConsumerAgentPopulation implements InAgentPopulation {
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), AGENTS, POPULATION, thisName());
-        addEntry(res, thisClass(), "size");
-        addEntry(res, thisClass(), "cags");
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public int size;
 
     @FieldDefinition
+    @LocalizedUiResource.AddEntry
     public InConsumerAgentGroup[] cags;
 
     public InFixConsumerAgentPopulation() {
@@ -69,7 +72,7 @@ public class InFixConsumerAgentPopulation implements InAgentPopulation {
 
     public InFixConsumerAgentPopulation newCopy(CopyCache cache) {
         InFixConsumerAgentPopulation copy = new InFixConsumerAgentPopulation();
-        copy._name = _name;
+        copy.name = name;
         copy.size = size;
         copy.cags = cache.copyArray(cags);
         return copy;
@@ -77,11 +80,11 @@ public class InFixConsumerAgentPopulation implements InAgentPopulation {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public int getSize() {

@@ -4,9 +4,12 @@ import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.product.attribute.ProductAttribute;
 import de.unileipzig.irpact.core.product.attribute.ProductDoubleGroupAttribute;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
 import de.unileipzig.irpact.io.param.input.InIRPactEntity;
 import de.unileipzig.irpact.io.param.ParamUtil;
+import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -16,11 +19,13 @@ import java.lang.invoke.MethodHandles;
 import static de.unileipzig.irpact.io.param.IOConstants.PRODUCTS;
 import static de.unileipzig.irpact.io.param.ParamUtil.addEntry;
 import static de.unileipzig.irpact.io.param.ParamUtil.putClassPath;
+import static de.unileipzig.irpact.io.param.input.TreeViewStructureEnum.PRODUCTS_FIXATTR;
 
 /**
  * @author Daniel Abitz
  */
 @Definition
+@LocalizedUiResource.PutClassPath(PRODUCTS_FIXATTR)
 public class InFixProductAttribute implements InIRPactEntity {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -31,27 +36,32 @@ public class InFixProductAttribute implements InIRPactEntity {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), PRODUCTS, thisName());
-        addEntry(res, thisClass(), "refPGA");
-        addEntry(res, thisClass(), "fixPAvalue");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
-    public InProductGroupAttribute[] refPGA;
+    @LocalizedUiResource.AddEntry
+    @LocalizedUiResource.SimpleSet(
+            decDefault = 0
+    )
+    public double fixPAvalue = 0;
 
     @FieldDefinition
-    public double fixPAvalue;
+    @LocalizedUiResource.AddEntry
+    public InProductGroupAttribute[] refPGA = new InProductGroupAttribute[0];
 
     public InFixProductAttribute() {
     }
 
     public InFixProductAttribute(String name, InProductGroupAttribute grpAttr, double value) {
-        this._name = name;
+        this.name = name;
         setGroupAttribute(grpAttr);
         this.fixPAvalue = value;
     }
@@ -63,7 +73,7 @@ public class InFixProductAttribute implements InIRPactEntity {
 
     public InFixProductAttribute newCopy(CopyCache cache) {
         InFixProductAttribute copy = new InFixProductAttribute();
-        copy._name = _name;
+        copy.name = name;
         copy.refPGA = cache.copyArray(refPGA);
         copy.fixPAvalue = fixPAvalue;
         return copy;
@@ -71,15 +81,15 @@ public class InFixProductAttribute implements InIRPactEntity {
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     public void setName(String fullName) {
-        this._name = fullName;
+        this.name = fullName;
     }
 
     public void setName(String grpName, String attributeName) {
-        this._name = ParamUtil.concName(grpName, attributeName);
+        this.name = ParamUtil.concName(grpName, attributeName);
     }
 
     public String getAttributeName() throws ParsingException {

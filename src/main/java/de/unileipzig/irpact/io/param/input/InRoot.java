@@ -15,18 +15,39 @@ import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedPVactCons
 import de.unileipzig.irpact.io.param.input.agent.population.InFixConsumerAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InAgentPopulation;
 import de.unileipzig.irpact.io.param.input.agent.population.InFileBasedConsumerAgentPopulation;
+import de.unileipzig.irpact.io.param.input.color.InColor;
+import de.unileipzig.irpact.io.param.input.color.InColorARGB;
+import de.unileipzig.irpact.io.param.input.color.InColorPalette;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
-import de.unileipzig.irpact.io.param.input.process.modular.InModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.InModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentModularProcessModel;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.InConsumerAgentMPMWithAdoptionHandler;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentCalculationModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentEvaluationModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.InConsumerAgentModule;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.calc.*;
-import de.unileipzig.irpact.io.param.input.process.modular.ca.component.eval.*;
-import de.unileipzig.irpact.io.param.input.process.mra.InModularRAProcessModel;
-import de.unileipzig.irpact.io.param.input.process.mra.component.*;
+import de.unileipzig.irpact.io.param.input.postdata.InBucketAnalyser;
+import de.unileipzig.irpact.io.param.input.postdata.InNeighbourhoodOverview;
+import de.unileipzig.irpact.io.param.input.postdata.InPostDataAnalysis;
+import de.unileipzig.irpact.io.param.input.process2.modular.InModularProcessModel2;
+import de.unileipzig.irpact.io.param.input.process2.modular.InModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InSpecialUtilityCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.models.ca.InBasicCAModularProcessModel;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.InConsumerAgentModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.action.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InConsumerAgentBoolModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InThresholdReachedModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.bool.InBernoulliModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.input.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InConsumerAgentCalculationLoggingModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.calc.logging.InCsvValueLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InConsumerAgentEvalModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.eval.InRunUntilFailureModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.*;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InConsumerAgentEvalRALoggingModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.evalra.logging.InPhaseLoggingModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InConsumerAgentReevaluationModule2;
+import de.unileipzig.irpact.io.param.input.process2.modular.ca.modules.reeval.InReevaluatorModule3;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.init.InInitializationHandler;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InLinearePercentageAgentAttributeScaler;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.init.general.InUncertaintySupplierInitializer;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.InReevaluator2;
+import de.unileipzig.irpact.io.param.input.process2.modular.components.reeval.ca.*;
 import de.unileipzig.irpact.io.param.input.product.initial.*;
 import de.unileipzig.irpact.io.param.input.special.InSpecialPVactInput;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InGraphvizGeneral;
@@ -43,11 +64,12 @@ import de.unileipzig.irpact.io.param.input.file.InPVFile;
 import de.unileipzig.irpact.io.param.input.visualisation.network.InConsumerAgentGroupColor;
 import de.unileipzig.irpact.io.param.inout.persist.binary.BinaryPersistData;
 import de.unileipzig.irpact.io.param.input.process.ra.uncert.*;
+import de.unileipzig.irpact.io.param.input.visualisation.result2.*;
 import de.unileipzig.irpact.io.param.irpopt.*;
 import de.unileipzig.irpact.io.param.input.names.InAttributeName;
 import de.unileipzig.irpact.io.param.input.names.InName;
-import de.unileipzig.irpact.io.param.input.process.InProcessPlanNodeFilterScheme;
-import de.unileipzig.irpact.io.param.input.process.ra.InRAProcessPlanMaxDistanceFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.InNodeFilterScheme;
+import de.unileipzig.irpact.io.param.input.process.ra.InMaxDistanceNodeFilterDistanceScheme;
 import de.unileipzig.irpact.io.param.input.process.*;
 import de.unileipzig.irpact.io.param.input.file.InSpatialTableFile;
 import de.unileipzig.irpact.io.param.input.process.ra.*;
@@ -84,6 +106,8 @@ import de.unileipzig.irptools.util.TreeAnnotationResource;
 import de.unileipzig.irptools.util.UiEdn;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -284,7 +308,6 @@ public class InRoot implements RootClass {
 
     @FieldDefinition
     public InOutputImage[] images = new InOutputImage[0];
-
     public boolean hasImages() {
         return images != null && images.length > 0;
     }
@@ -296,6 +319,45 @@ public class InRoot implements RootClass {
     }
     public void setImages(Collection<? extends InOutputImage> images) {
         this.images = images.toArray(new InOutputImage[0]);
+    }
+
+    @FieldDefinition
+    public InOutputImage2[] images2 = new InOutputImage2[0];
+    public boolean hasImages2() {
+        return images2 != null && images2.length > 0;
+    }
+    public InOutputImage2[] getImages2() throws ParsingException {
+        return getNonNullArray(images2, "images2");
+    }
+    public void setImages2(InOutputImage2... images2) {
+        this.images2 = images2;
+    }
+    public void setImages2(Collection<? extends InOutputImage2> images) {
+        this.images2 = images.toArray(new InOutputImage2[0]);
+    }
+
+    @FieldDefinition
+    public InPostDataAnalysis[] postData = new InPostDataAnalysis[0];
+    public boolean hasPostData() {
+        return postData != null && postData.length > 0;
+    }
+    public InPostDataAnalysis[] getPostData() throws ParsingException {
+        return getNonNullArray(postData, "postData");
+    }
+    public void setPostData(InPostDataAnalysis... postData) {
+        this.postData = postData;
+    }
+    public void setPostData(Collection<? extends InPostDataAnalysis> postData) {
+        this.postData = postData.toArray(new InPostDataAnalysis[0]);
+    }
+
+    @FieldDefinition
+    public InColorPalette[] palettes = new InColorPalette[0];
+    public void setColorPalettes(InColorPalette... palettes) {
+        this.palettes = palettes;
+    }
+    public InColorPalette[] getColorPalettes() {
+        return palettes;
     }
 
     //=========================
@@ -348,6 +410,16 @@ public class InRoot implements RootClass {
     }
     public InProcessModel[] getProcessModels() throws ParsingException {
         return getNonEmptyArray(processModels, "processModel");
+    }
+
+    @FieldDefinition
+    public InNodeFilterScheme[] nodeFilterSchemes = new InNodeFilterScheme[0];
+
+    public void setNodeFilterSchemes(InNodeFilterScheme[] nodeFilterSchemes) {
+        this.nodeFilterSchemes = nodeFilterSchemes;
+    }
+    public InNodeFilterScheme[] getNodeFilterSchemes() throws ParsingException {
+        return getNonEmptyArray(nodeFilterSchemes, "nodeFilterSchemes");
     }
 
     //=========================
@@ -576,18 +648,40 @@ public class InRoot implements RootClass {
     }
 
     @Override
+    //TODO remove
+    @Todo
     public AnnotationResource getResources() {
-        return new IOResources();
+//        return new IOResources();
+        throw new UnsupportedOperationException(); //REMOVE
     }
 
     @Override
+    //TODO update
+    @Todo
     public AnnotationResource getResource(Path pathToFile) {
-        return new IOResources(pathToFile);
+//        return new IOResources(pathToFile);
+        try {
+            LocalizedSnakeYamlBasedUiResource res = new LocalizedSnakeYamlBasedUiResource();
+            res.load(pathToFile);
+            setupStructure(res);
+            res.add(INPUT_WITH_ROOT);
+            //TODO hack -> ENTFERNEN
+            IOResources oldStuff = new IOResources();
+            oldStuff.init(res);
+            finishSetup(res);
+            //===
+            res.update();
+            return res;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
+    @Todo
     public AnnotationResource getResource(Locale locale) {
-        return new IOResources(locale);
+//        return new IOResources(locale);
+        throw new UnsupportedOperationException(); //ResourceLoader...
     }
 
     @Override
@@ -768,8 +862,6 @@ public class InRoot implements RootClass {
             InBernoulliDistribution.class,
             InBooleanDistribution.class,
             InBoundedNormalDistribution.class,
-            InBoundedUniformDoubleDistribution.class,
-            InBoundedUniformIntegerDistribution.class,
             InDiracUnivariateDistribution.class,
             InFiniteMassPointsDiscreteDistribution.class,
             InMassPoint.class,
@@ -788,12 +880,37 @@ public class InRoot implements RootClass {
             InOutputImage.class,
             InROutputImage.class,
 
+            InBucketAnalyser.class,
+            InNeighbourhoodOverview.class,
+            InPostDataAnalysis.class,
+
+            InAdoptionPhaseOverviewImage.class,
+            InAnnualBucketImage.class,
+            InAnnualInterestImage.class,
+            InAnnualMilieuImage.class,
+            InComparedAnnualImage.class,
+            InComparedAnnualZipImage.class,
+            InComparedCumulatedAnnualImage.class,
+            InComparedCumulatedAnnualZipImage.class,
+            InCumulatedAnnualInterestImage.class,
+            InCustomAverageQuantilRangeImage.class,
+            InInterestOverviewImage.class,
+            InLoggingResultImage2.class,
+            InQuantileRange.class,
+            InProcessPhaseOverviewImage.class,
+            InOutputImage2.class,
+            InSpecialAverageQuantilRangeImage.class,
+
             InProductGroupThresholdEntry.class,
             InProductInterestSupplyScheme.class,
             InProductThresholdInterestSupplyScheme.class,
 
             InAttributeName.class,
             InName.class,
+
+            InColor.class,
+            InColorARGB.class,
+            InColorPalette.class,
 
             InCompleteGraphTopology.class,
             InDistanceEvaluator.class,
@@ -804,73 +921,166 @@ public class InRoot implements RootClass {
             InNumberOfTies.class,
             InUnlinkedGraphTopology.class,
 
-            InGlobalDeffuantUncertainty.class,
-            InGroupBasedDeffuantUncertainty.class,
-            InPVactGlobalDeffuantUncertainty.class,
-            InPVactGroupBasedDeffuantUncertainty.class,
-            InUncertainty.class,
+            InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion.class,
+            InPVactIndividualGlobalModerateExtremistUncertaintySupplier.class,
+            InPVactUpdatableGlobalModerateExtremistUncertainty.class,
+            InUncertaintySupplier.class,
 
-            InDisabledProcessPlanNodeFilterScheme.class,
-            InEntireNetworkNodeFilterScheme.class,
-            InRAProcessModel.class,
-            InRAProcessPlanMaxDistanceFilterScheme.class,
-            InRAProcessPlanNodeFilterScheme.class,
+            InDisabledNodeFilterDistanceScheme.class,
+            InEntireNetworkNodeFilterDistanceScheme.class,
+            InMaxDistanceNodeFilterDistanceScheme.class,
+            InNodeDistanceFilterScheme.class,
             InProcessModel.class,
-            InProcessPlanNodeFilterScheme.class,
+            InNodeFilterScheme.class,
 
-            InComponent.class,
-            InDefaultDoActionComponent.class,
-            InDefaultHandleDecisionMakingComponent.class,
-            InDefaultHandleFeasibilityComponent.class,
-            InDefaultHandleInterestComponent.class,
-            InDoNothingComponent.class,
-            InEvaluableComponent.class,
-            InSumAttributeComponent.class,
-            InSumIntermediateComponent.class,
-            InSumThresholdComponent.class,
-            InValueComponent.class,
-            InModularRAProcessModel.class,
+//            InComponent.class,
+//            InDefaultDoActionComponent.class,
+//            InDefaultHandleDecisionMakingComponent.class,
+//            InDefaultHandleFeasibilityComponent.class,
+//            InDefaultHandleInterestComponent.class,
+//            InDoNothingComponent.class,
+//            InEvaluableComponent.class,
+//            InSumAttributeComponent.class,
+//            InSumIntermediateComponent.class,
+//            InSumThresholdComponent.class,
+//            InValueComponent.class,
+//            InModularRAProcessModel.class,
+//
+//            //MPM v2
+//            InAddModule_calcgraphnode.class,
+//            InAttributeInputModule_inputgraphnode.class,
+//            InDisaggregatedFinancialModule_inputgraphnode.class,
+//            InDisaggregatedNPVModule_inputgraphnode.class,
+//            InEnvironmentalConcernModule_inputgraphnode.class,
+//            InFinancialComponentModule_inputgraphnode.class,
+//            InLogisticModule_calcgraphnode.class,
+//            InNoveltySeekingModule_inputgraphnode.class,
+//            InNPVModule_inputgraphnode.class,
+//            InProductModule_calcgraphnode.class,
+//            InPurchasePowerModule_inputgraphnode.class,
+//            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
+//            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
+//            InSocialComponentModule_inputgraphnode.class,
+//            InSumModule_calcgraphnode.class,
+//            InWeightedAddModule_calcgraphnode.class,
+//            InWeightedModule_calcgraphnode.class,
+//
+//            InBranchModule_evalgraphnode.class,
+//            InDefaultActionModule_evalgraphnode.class,
+//            InDefaultDecisionMakingModule_evalgraphnode.class,
+//            InDefaultFeasibilityModule_evalgraphnode.class,
+//            InDefaultInterestModule_evalgraphnode.class,
+//            InDoNothingModule_evalgraphnode.class,
+//            InFilterModule_evalgraphnode.class,
+//            InSimpleGetPhaseModule_evalgraphnode.class,
+//            InStageEvaluationModule_evalgraphnode.class,
+//            InSumThresholdEvaluationModule_evalgraphnode.class,
+//            InThresholdEvaluationModule_evalgraphnode.class,
+//
+//            InConsumerAgentCalculationModule.class,
+//            InConsumerAgentEvaluationModule.class,
+//            InConsumerAgentModule.class,
+//
+//            InConsumerAgentModularProcessModel.class,
+//            InConsumerAgentMPMWithAdoptionHandler.class,
+//
+//            InModularProcessModel.class,
+//            InModule.class,
+            //===
 
-            //MPM v2
-            InAddModule_calcgraphnode.class,
-            InAttributeInputModule_inputgraphnode.class,
-            InDisaggregatedFinancialModule_inputgraphnode.class,
-            InDisaggregatedNPVModule_inputgraphnode.class,
-            InEnvironmentalConcernModule_inputgraphnode.class,
-            InFinancialComponentModule_inputgraphnode.class,
-            InLogisticModule_calcgraphnode.class,
-            InNoveltySeekingModule_inputgraphnode.class,
-            InNPVModule_inputgraphnode.class,
-            InProductModule_calcgraphnode.class,
-            InPurchasePowerModule_inputgraphnode.class,
-            InShareOfAdopterInLocalNetworkModule_inputgraphnode.class,
-            InShareOfAdopterInSocialNetworkModule_inputgraphnode.class,
-            InSocialComponentModule_inputgraphnode.class,
-            InSumModule_calcgraphnode.class,
-            InWeightedAddModule_calcgraphnode.class,
-            InWeightedModule_calcgraphnode.class,
-
-            InBranchModule_evalgraphnode.class,
-            InDefaultActionModule_evalgraphnode.class,
-            InDefaultDecisionMakingModule_evalgraphnode.class,
-            InDefaultFeasibilityModule_evalgraphnode.class,
-            InDefaultInterestModule_evalgraphnode.class,
-            InDoNothingModule_evalgraphnode.class,
-            InFilterModule_evalgraphnode.class,
-            InSimpleGetPhaseModule_evalgraphnode.class,
-            InStageEvaluationModule_evalgraphnode.class,
-            InSumThresholdEvaluationModule_evalgraphnode.class,
-            InThresholdEvaluationModule_evalgraphnode.class,
-
-            InConsumerAgentCalculationModule.class,
-            InConsumerAgentEvaluationModule.class,
-            InConsumerAgentModule.class,
-
-            InConsumerAgentModularProcessModel.class,
-            InConsumerAgentMPMWithAdoptionHandler.class,
-
-            InModularProcessModel.class,
-            InModule.class,
+            //MPM3
+            InModularProcessModel2.class,
+            InModule2.class,
+            //modules
+            InBasicCAModularProcessModel.class,
+            InConsumerAgentModule2.class,
+            //action
+            InCommunicationModule3.class,
+            InConsumerAgentActionModule2.class,
+            InIfElseActionModule3.class,
+            InNOPModule3.class,
+            InRewireModule3.class,
+            //bool
+            InConsumerAgentBoolModule2.class,
+            InThresholdReachedModule3.class,
+            InBernoulliModule3.class,
+            //calc
+            InAddScalarModule3.class,
+            InConsumerAgentCalculationModule2.class,
+            InLogisticModule3.class,
+            InMulScalarModule3.class,
+            InProductModule3.class,
+            InSumModule3.class,
+            //calc-input
+            InAnnualAvgAgentAssetNPVModule2.class,
+            InAnnualAvgAgentNPVModule2.class,
+            InAnnualAvgAssetNPVModule2.class,
+            InAnnualAvgExistingAssetNPVModule2.class,
+            InAnnualAvgNPVModule2.class,
+            InAnnualMaxAgentNPVModule2.class,
+            InAnnualMaxAssetNPVModule2.class,
+            InAnnualMaxExistingAssetNPVModule2.class,
+            InAnnualMinAgentNPVModule2.class,
+            InAnnualMinAssetNPVModule2.class,
+            InAnnualMinExistingAssetNPVModule2.class,
+            InAssetNPVModule3.class,
+            InAttributeInputModule3.class,
+            InAvgFinModule3.class,
+            InConsumerAgentInputModule2.class,
+            InGlobalAvgAssetNPVModule3.class,
+            InGlobalAvgExistingAssetNPVModule3.class,
+            InGlobalAvgNPVModule3.class,
+            InGlobalMaxAssetNPVModule3.class,
+            InGlobalMaxExistingAssetNPVModule3.class,
+            InGlobalMaxAgentNPVModule2.class,
+            InGlobalMinAssetNPVModule3.class,
+            InGlobalMinExistingAssetNPVModule3.class,
+            InGlobalMinAgentNPVModule2.class,
+            InLocalShareOfAdopterModule3.class,
+            InNaNModule3.class,
+            InNPVLogisticModule3.class,
+            InNPVModule3.class,
+            InSelectNPVModule3.class,
+            InSocialShareOfAdopterModule3.class,
+            InValueModule3.class,
+            //calc-logging
+            InConsumerAgentCalculationLoggingModule2.class,
+            InCsvValueLoggingModule3.class,
+            InSpecialUtilityCsvValueLoggingModule3.class,
+            //eval
+            InConsumerAgentEvalModule2.class,
+            InRunUntilFailureModule3.class,
+            //evalra
+            InConsumerAgentEvalRAModule2.class,
+            InDecisionMakingDeciderModule3.class,
+            InDoAdoptModule3.class,
+            InFeasibilityModule3.class,
+            InInitializationModule3.class,
+            InInterestModule3.class,
+            InMainBranchingModule3.class,
+            InPhaseUpdateModule3.class,
+            InYearBasedAdoptionDeciderModule3.class,
+            //reeval-modules
+            InConsumerAgentReevaluationModule2.class,
+            InReevaluatorModule3.class,
+            //reeval-modules logging
+            InConsumerAgentEvalRALoggingModule2.class,
+            InPhaseLoggingModule3.class,
+            //reeval-ca
+            InAnnualInterestLogger.class,
+            InConstructionRenovationUpdater.class,
+            InDecisionMakingReevaluator.class,
+            InImpededResetter.class,
+            InLinearePercentageAgentAttributeUpdater.class,
+            InMultiReevaluator.class,
+            InUncertaintyReevaluator.class,
+            //reeval-general
+            InReevaluator2.class,
+            //handler-init
+            InAgentAttributeScaler.class,
+            InInitializationHandler.class,
+            InLinearePercentageAgentAttributeScaler.class,
+            InUncertaintySupplierInitializer.class,
             //===
 
             //special
@@ -891,6 +1101,10 @@ public class InRoot implements RootClass {
 
             InNewProductHandler.class,
             InPVactAttributeBasedInitialAdoption.class,
+            InPVactDefaultAwarenessHandler.class,
+            InPVactDefaultAwarenessInterestHandler.class,
+            InPVactDefaultInterestHandler.class,
+            InPVactDependentInterestScaler.class,
             InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData.class,
             InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData.class,
 
@@ -911,7 +1125,7 @@ public class InRoot implements RootClass {
             InGraphvizGeneral.class,
             InConsumerAgentGroupColor.class,
 
-            InGeneral.class,
+            InGeneral.class, //TODO
             InInformation.class,
             InIRPactVersion.class,
             InScenarioVersion.class,
@@ -941,19 +1155,17 @@ public class InRoot implements RootClass {
             )
     );
 
+    private static final List<ParserInput> ROOT = ParserInput.listOf(DefinitionType.INPUT, InRoot.class);
+
     public static final List<ParserInput> INPUT_WITH_ROOT = ParserInput.merge(
             INPUT_WITHOUT_TEMPLATES,
             IRPOPT,
-            ParserInput.listOf(DefinitionType.INPUT,
-                    InRoot.class
-            )
+            ROOT
     );
 
     public static final List<ParserInput> INPUT_WITH_TEMPLATE_AND_ROOT = ParserInput.merge(
             INPUT_WITH_TEMPLATES,
-            ParserInput.listOf(DefinitionType.INPUT,
-                    InRoot.class
-            )
+            ROOT
     );
 
     public static final List<ParserInput> INPUT_WITHOUT_GRAPHVIZ = ParserInput.merge(
@@ -973,137 +1185,26 @@ public class InRoot implements RootClass {
     //UI
     //=========================
 
-    public static void initRes(TreeAnnotationResource res) {
-        InRootUI.initRes(res);
-        //TODO remove
-//        IOResources.Data userData = res.getUserDataAs();
-//        MultiCounter counter = userData.getCounter();
-//
-//        addPathElement(res, INFORMATIONS, ROOT);
-//                addPathElement(res, ABOUT_IRPACT, INFORMATIONS);
-//                addPathElement(res, InScenarioVersion.thisName(), INFORMATIONS);
-//                addPathElement(res, InInformation.thisName(), INFORMATIONS);
-//
-//        addPathElement(res, GENERAL_SETTINGS, ROOT);
-//                addPathElement(res, LOGGING, GENERAL_SETTINGS);
-//                        addPathElement(res, LOGGING_GENERAL, LOGGING);
-//                        addPathElement(res, LOGGING_DATA, LOGGING);
-//                        addPathElement(res, LOGGING_RESULT, LOGGING);
-//                        addPathElement(res, LOGGING_SCRIPT, LOGGING);
-//                addPathElement(res, IMAGE, GENERAL_SETTINGS);
-//                        addPathElement(res, InGenericOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InGnuPlotOutputImage.thisName(), IMAGE);
-//                        addPathElement(res, InROutputImage.thisName(), IMAGE);
-//                addPathElement(res, SPECIAL_SETTINGS, GENERAL_SETTINGS);
-//                        addPathElement(res, VisibleBinaryData.thisName(), SPECIAL_SETTINGS);
-//
-//        addPathElement(res, InAttributeName.thisName(), ROOT);
-//
-//        addPathElement(res, FILES, ROOT);
-//            addPathElement(res, InPVFile.thisName(), FILES);
-//            addPathElement(res, InSpatialTableFile.thisName(), FILES);
-//
-//        addPathElement(res, DISTRIBUTIONS, ROOT);
-//            addPathElement(res, InBernoulliDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBooleanDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InDiracUnivariateDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InFiniteMassPointsDiscreteDistribution.thisName(), DISTRIBUTIONS);
-//                addPathElement(res, InMassPoint.thisName(), InFiniteMassPointsDiscreteDistribution.thisName());
-//            addPathElement(res, InNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InSlowTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InTruncatedNormalDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedUniformDoubleDistribution.thisName(), DISTRIBUTIONS);
-//            addPathElement(res, InBoundedUniformIntegerDistribution.thisName(), DISTRIBUTIONS);
-//
-//        addPathElement(res, AGENTS, ROOT);
-//                addPathElement(res, CONSUMER, AGENTS);
-//                        addPathElement(res, CONSUMER_GROUP, CONSUMER);
-//                                addPathElement(res, InGeneralConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InPVactConsumerAgentGroup.thisName(), CONSUMER_GROUP);
-//                        addPathElement(res, CONSUMER_ATTR, CONSUMER);
-//                                addPathElement(res, InGeneralConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InGeneralConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InNameSplitConsumerAgentGroupAttribute.thisName(), CONSUMER_GROUP);
-//                                addPathElement(res, InNameSplitConsumerAgentAnnualGroupAttribute.thisName(), CONSUMER_GROUP);
-//                        addPathElement(res, CONSUMER_AFFINITY, CONSUMER);
-//                                addPathElement(res, InAffinities.thisName(), CONSUMER_AFFINITY);
-//                                addPathElement(res, InComplexAffinityEntry.thisName(), CONSUMER_AFFINITY);
-//                                addPathElement(res, InNameSplitAffinityEntry.thisName(), CONSUMER_AFFINITY);
-//                        addPathElement(res, CONSUMER_INTEREST, CONSUMER);
-//                                addPathElement(res, InProductThresholdInterestSupplyScheme.thisName(), CONSUMER_INTEREST);
-//                                        addPathElement(res, InProductGroupThresholdEntry.thisName(), InProductThresholdInterestSupplyScheme.thisName());
-//                addPathElement(res, POPULATION, AGENTS);
-//                        addPathElement(res, InFixConsumerAgentPopulation.thisName(), POPULATION);
-//                        addPathElement(res, InFileBasedConsumerAgentPopulation.thisName(), POPULATION);
-//                        addPathElement(res, InFileBasedPVactConsumerAgentPopulation.thisName(), POPULATION);
-//
-//        addPathElement(res, NETWORK, ROOT);
-//                addPathElement(res, TOPOLOGY, NETWORK);
-//                        addPathElement(res, InUnlinkedGraphTopology.thisName(), TOPOLOGY);
-//                        addPathElement(res, InCompleteGraphTopology.thisName(), TOPOLOGY);
-//                        addPathElement(res, InFreeNetworkTopology.thisName(), TOPOLOGY);
-//                                addPathElement(res, InNumberOfTies.thisName(), InFreeNetworkTopology.thisName());
-//                addPathElement(res, DIST_FUNC, NETWORK);
-//                        addPathElement(res, InNoDistance.thisName(), DIST_FUNC);
-//                        addPathElement(res, InInverse.thisName(), DIST_FUNC);
-//
-//        addPathElement(res, PRODUCTS, ROOT);
-//                addPathElement(res, PRODUCTS_GROUP, PRODUCTS);
-//                        addPathElement(res, InBasicProductGroup.thisName(), PRODUCTS_GROUP);
-//                addPathElement(res, PRODUCTS_ATTR, PRODUCTS);
-//                        addPathElement(res, InBasicProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-//                        addPathElement(res, InNameSplitProductGroupAttribute.thisName(), PRODUCTS_ATTR);
-//                addPathElement(res, InFixProduct.thisName(), PRODUCTS);
-//                addPathElement(res, InFixProductAttribute.thisName(), PRODUCTS);
-//                addPathElement(res, PRODUCTS_FINDING_SCHEME, PRODUCTS);
-//                        addPathElement(res, InFixProductFindingScheme.thisName(), PRODUCTS_FINDING_SCHEME);
-//
-//        addPathElement(res, PROCESS_MODEL, ROOT);
-//                addPathElement(res, InRAProcessModel.thisName(), PROCESS_MODEL);
-//                        addPathElement(res, PROCESS_MODEL_RA_UNCERT, InRAProcessModel.thisName());
-//                                addPathElement(res, InGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InPVactGlobalDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                                addPathElement(res, InPVactGroupBasedDeffuantUncertainty.thisName(), PROCESS_MODEL_RA_UNCERT);
-//                addPathElement(res, PROCESS_FILTER, PROCESS_MODEL);
-//                        addPathElement(res, InDisabledProcessPlanNodeFilterScheme.thisName(), PROCESS_FILTER);
-//                        addPathElement(res, InEntireNetworkNodeFilterScheme.thisName(), PROCESS_FILTER);
-//                        addPathElement(res, InRAProcessPlanMaxDistanceFilterScheme.thisName(), PROCESS_FILTER);
-//
-//        addPathElement(res, SPATIAL, ROOT);
-//                addPathElement(res, SPATIAL_MODEL, SPATIAL);
-//                        addPathElement(res, InSpace2D.thisName(), SPATIAL_MODEL);
-//                addPathElement(res, SPATIAL_MODEL_DIST, SPATIAL);
-//                        addPathElement(res, SPATIAL_MODEL_DIST_FILE, SPATIAL_MODEL_DIST);
-//                                //addPathElement(res, SPATIAL_MODEL_DIST_FILE_CUSTOMPOS, SPATIAL_MODEL_DIST_FILE);
-//                                addPathElement(res, SPATIAL_MODEL_DIST_FILE_FILEPOS, SPATIAL_MODEL_DIST_FILE);
-//                                        addPathElement(res, InFileBasedSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedSelectSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedSelectGroupSpatialInformationSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedPVactMilieuSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//                                        addPathElement(res, InFileBasedPVactMilieuZipSupplier.thisName(), SPATIAL_MODEL_DIST_FILE_FILEPOS);
-//
-//        addPathElement(res, TIME, ROOT);
-//                addPathElement(res, InDiscreteTimeModel.thisName(), TIME);
-//                addPathElement(res, InUnitStepDiscreteTimeModel.thisName(), TIME);
-//
-//        res.wrapElementBuilder(res.getCachedElement(GRAPHVIZ))
-//                .setEdnPriority(counter.getAndInc(ROOT));
-//
-//                addPathElement(res, GRAPHVIZ_AGENT_COLOR_MAPPING, GRAPHVIZ);
-//
-//        addPathElement(res, SUBMODULE, ROOT);
-//                addPathElement(res, SUBMODULE_GRAPHVIZDEMO, SUBMODULE);
-//
-//        addPathElement(res, DEV, ROOT);
-//                addPathElement(res, TEST, DEV);
-//                        addPathElement(res, InTestData.thisName(), TEST);
+    private static void setupStructure(LocalizedUiResource res) {
+        for(TreeViewStructureEnum structure: TreeViewStructureEnum.getAllPaths()) {
+            if(structure.isNotRoot()) {
+                res.addPathElement(structure.getPath());
+            }
+        }
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        InRootUI.applyRes(res);
-        //TODO remove
-//        res.getCachedElement("OPTACT").setParent(res.getCachedElement(SUBMODULE));
-//        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+
+    private static void finishSetup(LocalizedUiResource res) {
+        res.getCachedElement("OPTACT").setParent(res.getCachedElement(TreeViewStructureEnum.SUBMODULE.getPath().getLast()));
+        res.getCachedElement("AgentGroup_Element").setParent(res.getCachedElement("OPTACT"));
+        res.getCachedElement(IOConstants.GRAPHVIZ).setParent(res.getCachedElement("OPTACT"));
+    }
+
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
+    }
+
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        //optact rest
     }
 }

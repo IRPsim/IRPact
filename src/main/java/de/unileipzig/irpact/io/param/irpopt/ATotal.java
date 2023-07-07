@@ -23,8 +23,10 @@ import java.util.Map;
 )
 public class ATotal implements InIRPactEntity {
 
+    @TreeAnnotationResource.Init
     public static void initRes(TreeAnnotationResource res) {
     }
+    @TreeAnnotationResource.Apply
     public static void applyRes(TreeAnnotationResource res) {
     }
 

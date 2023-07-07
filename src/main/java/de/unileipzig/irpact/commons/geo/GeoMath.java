@@ -1,5 +1,10 @@
 package de.unileipzig.irpact.commons.geo;
 
+import de.unileipzig.irpact.commons.util.MathUtil;
+import de.unileipzig.irpact.commons.util.Rnd;
+
+import java.util.function.BiFunction;
+
 /**
  * @author Daniel Abitz
  */
@@ -11,9 +16,87 @@ public final class GeoMath {
     private GeoMath() {
     }
 
+    public static double randomLatitude(Rnd rnd) {
+        return rnd.nextDouble(-90, 90);
+    }
+
+    public static double randomLongitude(Rnd rnd) {
+        return rnd.nextDouble(-180, 180);
+    }
+
+    //https://jordinl.com/posts/2019-02-15-how-to-generate-random-geocoordinates-within-given-radius
+    public static double[] randomCircularLongitudeLatitude(
+            double lon, double lat,
+            double maxd, double mind,
+            double radius,
+            Rnd rnd) {
+        return randomCircularLongitudeLatitude(
+                lon, lat,
+                maxd, mind,
+                radius,
+                rnd,
+                (rndLon, rndLat) -> {
+                    double[] p = new double[2];
+                    p[0] = rndLon;
+                    p[1] = rndLat;
+                    return p;
+                }
+        );
+    }
+
+    public static void randomCircularLongitudeLatitude(
+            double lon, double lat,
+            double maxd, double mind,
+            double radius,
+            Rnd rnd,
+            double[] p) {
+        randomCircularLongitudeLatitude(
+                lon, lat,
+                maxd, mind,
+                radius,
+                rnd,
+                (rndLon, rndLat) -> {
+                    p[0] = rndLon;
+                    p[1] = rndLat;
+                    return null;
+                }
+        );
+    }
+
+    public static <R> R randomCircularLongitudeLatitude(
+            double lon, double lat,
+            double maxd, double mind,
+            double radius,
+            Rnd rnd,
+            BiFunction<? super Double, ? super Double, ? extends R> func) {
+        double radlon = Math.toRadians(lon);
+        double radlat = Math.toRadians(lat);
+
+        double maxd2 = maxd * maxd;
+        double mind2 = mind * mind;
+        double d = Math.sqrt(rnd.nextDouble() * (maxd2 - mind2) + mind2);
+        double dradius = d / radius;
+        double deltaLat = Math.cos(rnd.nextDouble() * Math.PI) * dradius;
+
+        //lon
+        double sign = MathUtil.rndSign(rnd);
+        double tempLon = Math.acos(
+                ((Math.cos(dradius) - Math.cos(deltaLat)) /
+                (Math.cos(radlat) * Math.cos(deltaLat + radlat))) +
+                1
+        );
+        double deltaLon = sign * tempLon;
+        double rndLon = Math.toDegrees(radlon + deltaLon);
+
+        //lat
+        double rndLat = Math.toDegrees(radlat + deltaLat);
+
+        return func.apply(rndLon, rndLat);
+    }
+
     public static double haversineDistance(
-            double latitude1, double longitude1,
-            double latitude2, double longitude2,
+            double longitude1, double latitude1,
+            double longitude2, double latitude2,
             double radius) {
         if(latitude1 == latitude2 && longitude1 == longitude2) {
             return 0.0;

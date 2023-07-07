@@ -85,7 +85,7 @@ public class ImageProcessor extends PostProcessor {
     public RealAdoptionData getRealAdoptionData(InOutputImage image) {
         if(image.hasRealAdoptionDataFile()) {
             try {
-                return getRealAdoptionData(image.getRealAdoptionDataFile());
+                return getScaledRealAdoptionData(image.getRealAdoptionDataFile());
             } catch (Throwable t) {
                 LOGGER.warn("loading adoption data for '{}' failed: {}", image.getBaseFileName(), t.getMessage());
                 return getFallbackAdoptionData();
@@ -141,17 +141,6 @@ public class ImageProcessor extends PostProcessor {
         delete(Paths.get(RPLOTS_PDF));
         delete(clOptions.getOutputDir().resolve(RPLOTS_PDF));
         delete(clOptions.getDownloadDir().resolve(RPLOTS_PDF));
-    }
-
-    private static void delete(Path path) {
-        try {
-            if(Files.exists(path)) {
-                Files.deleteIfExists(path);
-                LOGGER.trace(IRPSection.RESULT, "deleted: '{}'", path);
-            }
-        } catch (IOException e) {
-            LOGGER.error("deleting '" + path + "' failed", e);
-        }
     }
 
     //=========================

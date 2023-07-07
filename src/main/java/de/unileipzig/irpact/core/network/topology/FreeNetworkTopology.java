@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.network.topology;
 
+import de.unileipzig.irpact.commons.Nameable;
 import de.unileipzig.irpact.commons.checksum.ChecksumComparable;
 import de.unileipzig.irpact.commons.NameableBase;
 import de.unileipzig.irpact.commons.checksum.Checksums;
@@ -160,6 +161,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
     public void initalize(SimulationEnvironment environment, SocialGraph graph) throws InitializationException {
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "initialize free network graph");
 
+//        LOGGER.info("RND: {}", getRnd().getInitialSeed());
+
         if(environment.isRestored()) {
             LOGGER.warn("DIRTY FIX");
             return;
@@ -187,6 +190,16 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         targetCache.clear();
         System.gc();
         LOGGER.trace("total added: {}", added);
+
+//        try {
+//            StringBuilder sb = new StringBuilder();
+//            graph.printGraph(sb);
+//            LOGGER.info("graph:\n{}", sb.toString());
+//        } catch (IOException e) {
+//            throw new UncheckedIOException(e);
+//        }
+//
+//        if(true) throw new RuntimeException();
     }
 
     protected Collection<ConsumerAgent> drawTargets(
@@ -205,7 +218,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         if(!selfReferential) {
             cagOrder.setSkipSelfReferentialGroup(sourceCag);
         }
-        cagOrder.determine(edgeCount, sourceAffinities, allowLessEdges, rnd);
+        cagOrder.determine(source, edgeCount, sourceAffinities, allowLessEdges, rnd);
         LOGGER.trace(IRPSection.INITIALIZATION_NETWORK, "edge targets for '{}': {}", source.getName(), LazyPrinter.of(cagOrder::printEdgeTargets));
         cagOrder.apply(li, edgeType);
 
@@ -377,8 +390,8 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
      */
     protected static class CagOrder {
 
-        protected DataCounter<ConsumerAgentGroup> existingLinkCounter = new DataCounter<>();
-        protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>();
+        protected DataCounter<ConsumerAgentGroup> existingLinkCounter = new DataCounter<>(new LinkedHashMap<>());
+        protected DataCounter<ConsumerAgentGroup> linkCounter = new DataCounter<>(new LinkedHashMap<>());
         protected ConsumerAgentGroup skipSelfReferentialGroup;
 
         protected CagOrder() {
@@ -410,6 +423,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
         }
 
         protected void determine(
+                ConsumerAgent source,
                 int count,
                 ConsumerAgentGroupAffinities affinities,
                 boolean allowLessAgents,
@@ -417,10 +431,10 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
             ConsumerAgentGroupAffinities caga = affinities;
             ConsumerAgentGroup target;
             int found = existingLinkCounter.total();
+            LOGGER.trace("[{}] req={}", source.getName(), count);
             boolean tryAgain = found < count;
             while(tryAgain) {
                 target = caga.getWeightedRandom(rnd);
-
                 if(isMax(target)) {
                     caga = caga.createWithout(target);
                     if(caga.isEmpty()) {
@@ -428,7 +442,7 @@ public class FreeNetworkTopology extends NameableBase implements GraphTopologySc
                             LOGGER.info("[allowLessAgents] not enough agents, agents found: {}, required: {}", found, count);
                             return;
                         } else {
-                            throw new InitializationException("not enough agents, agents found: {}, required: {}", found, count);
+                            throw new InitializationException("not enough agents, agents found: {}, required: {} ({})", found, count, linkCounter.printCounterMap(Nameable::getName));
                         }
                     }
                     tryAgain = true;

@@ -45,7 +45,7 @@ public class ModularRAProcessModel extends RAProcessModelBase {
         return Checksums.SMART.getChecksum(
                 getName(),
                 rnd,
-                uncertaintyHandler.getManager(),
+//                uncertaintyHandler.getManager(),
                 interestComponent,
                 feasibilityComponent,
                 decisionMakingComponent,

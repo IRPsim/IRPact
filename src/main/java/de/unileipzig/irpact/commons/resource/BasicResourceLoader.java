@@ -104,7 +104,7 @@ public class BasicResourceLoader implements ResourceLoader {
     public InputStream getExternalAsStream(String fileName) {
         try {
             Path path = getExternal(fileName);
-            return Files.exists(path)
+            return path != null && Files.exists(path)
                     ? Files.newInputStream(path)
                     : null;
         } catch (IOException e) {

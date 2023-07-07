@@ -3,9 +3,12 @@ package de.unileipzig.irpact.io.param.input.visualisation.result;
 import de.unileipzig.irpact.commons.exception.ParsingException;
 import de.unileipzig.irpact.core.postprocessing.image.d2v.DataToVisualize;
 import de.unileipzig.irpact.core.postprocessing.image.SupportedEngine;
-import de.unileipzig.irpact.io.param.input.InRootUI;
+import de.unileipzig.irpact.develop.ToRemove;
+import de.unileipzig.irpact.io.param.LocalizedUiResource;
+import de.unileipzig.irpact.io.param.input.TreeViewStructureEnum;
 import de.unileipzig.irpact.io.param.input.file.InRealAdoptionDataFile;
 import de.unileipzig.irptools.defstructure.annotation.Definition;
+import de.unileipzig.irptools.defstructure.annotation.DefinitionName;
 import de.unileipzig.irptools.defstructure.annotation.FieldDefinition;
 import de.unileipzig.irptools.util.CopyCache;
 import de.unileipzig.irptools.util.TreeAnnotationResource;
@@ -20,6 +23,7 @@ import static de.unileipzig.irpact.io.param.ParamUtil.*;
  * @author Daniel Abitz
  */
 @Definition
+@ToRemove
 public class InROutputImage implements InOutputImage {
 
     private static final MethodHandles.Lookup L = MethodHandles.lookup();
@@ -30,33 +34,39 @@ public class InROutputImage implements InOutputImage {
         return thisClass().getSimpleName();
     }
 
-    public static void initRes(TreeAnnotationResource res) {
+    @TreeAnnotationResource.Init
+    public static void initRes(LocalizedUiResource res) {
     }
-    public static void applyRes(TreeAnnotationResource res) {
-        putClassPath(res, thisClass(), InRootUI.SETT_VISURESULT_R);
-        addEntryWithDefaultAndDomain(res, thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntriesWithDefaultAndDomain(res, thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
-        addEntryWithDefaultAndDomain(res, thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
-        addEntry(res, thisClass(), "realAdoptionDataFile");
+    @TreeAnnotationResource.Apply
+    public static void applyRes(LocalizedUiResource res) {
+        res.putClassPath(thisClass(), TreeViewStructureEnum.SETT_VISURESULT_R.getPath());
+        res.addEntryWithDefaultAndDomain(thisClass(), "annualZip", VALUE_TRUE, DOMAIN_BOOLEAN);
+        res.addEntriesWithDefaultAndDomain(thisClass(), dataToVisualizeWithoutDefault, VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeScript", VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeData", VALUE_FALSE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "storeImage", VALUE_TRUE, DOMAIN_BOOLEAN);
+        res.addEntryWithDefaultAndDomain(thisClass(), "imageWidth", VALUE_1280, DOMAIN_G0);
+        res.addEntryWithDefaultAndDomain(thisClass(), "imageHeight", VALUE_720, DOMAIN_G0);
+        res.addEntryWithDefaultAndDomain(thisClass(), "linewidth", VALUE_1, DOMAIN_G0);
+        res.addEntry(thisClass(), "realAdoptionDataFile");
 
-        setRules(res, thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
+        res.setRules(thisClass(), dataToVisualize, dataToVisualizeBuilder.withKeyModifier(buildDefaultParameterNameOperator(thisClass())));
 
-        setUnit(res, thisClass(), "imageWidth", UNIT_PIXEL);
-        setUnit(res, thisClass(), "imageHeight", UNIT_PIXEL);
+        res.setUnit(thisClass(), "imageWidth", UNIT_PIXEL);
+        res.setUnit(thisClass(), "imageHeight", UNIT_PIXEL);
     }
 
-    public String _name;
+    @DefinitionName
+    public String name;
 
     @FieldDefinition
     public boolean annualZip = true;
 
     @FieldDefinition
     public boolean annualZipWithReal = false;
+
+    @FieldDefinition
+    public boolean annualZipWithRealTotal = false;
 
     @FieldDefinition
     public boolean cumulativeAnnualPhase = false;
@@ -114,9 +124,10 @@ public class InROutputImage implements InOutputImage {
 
     public InROutputImage newCopy(CopyCache cache) {
         InROutputImage copy = new InROutputImage();
-        copy._name = _name;
+        copy.name = name;
         copy.annualZip = annualZip;
         copy.annualZipWithReal = annualZipWithReal;
+        copy.annualZipWithRealTotal = annualZipWithRealTotal;
         copy.cumulativeAnnualPhase = cumulativeAnnualPhase;
         copy.cumulativeAnnualPhase2 = cumulativeAnnualPhase2;
         copy.annualInterest2D = annualInterest2D;
@@ -138,12 +149,12 @@ public class InROutputImage implements InOutputImage {
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return _name;
+        return name;
     }
 
     @Override
@@ -154,6 +165,7 @@ public class InROutputImage implements InOutputImage {
     public void setMode(DataToVisualize mode) {
         annualZip = false;
         annualZipWithReal = false;
+        annualZipWithRealTotal = false;
         cumulativeAnnualPhase = false;
         cumulativeAnnualPhase2 = false;
         annualInterest2D = false;
@@ -166,6 +178,10 @@ public class InROutputImage implements InOutputImage {
 
             case COMPARED_ANNUAL_ZIP:
                 annualZipWithReal = true;
+                break;
+
+            case COMPARED_ANNUAL:
+                annualZipWithRealTotal = true;
                 break;
 
             case CUMULATIVE_ANNUAL_PHASE:
@@ -194,6 +210,7 @@ public class InROutputImage implements InOutputImage {
         List<DataToVisualize> modes = new ArrayList<>();
         if(annualZip) modes.add(DataToVisualize.ANNUAL_ZIP);
         if(annualZipWithReal) modes.add(DataToVisualize.COMPARED_ANNUAL_ZIP);
+        if(annualZipWithRealTotal) modes.add(DataToVisualize.COMPARED_ANNUAL);
         if(cumulativeAnnualPhase) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE);
         if(cumulativeAnnualPhase2) modes.add(DataToVisualize.CUMULATIVE_ANNUAL_PHASE_WITH_INITIAL);
         if(annualInterest2D) modes.add(DataToVisualize.ANNUAL_INTEREST_2D);

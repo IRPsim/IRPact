@@ -17,16 +17,6 @@ public class BasicConsumerAgentPostAction implements ConsumerAgentPostAction {
     }
 
     @Override
-    public boolean isSupported(Class<?> type) {
-        return type.isInstance(data);
-    }
-
-    @Override
-    public ConsumerAgentData getInput() {
-        return data;
-    }
-
-    @Override
     public String getInputName() {
         return data.getAgent().getName();
     }

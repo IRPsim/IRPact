@@ -25,9 +25,21 @@ InGeneral_timeoutUseSec:
 InGeneral_timeoutUseMin:
   gams_identifier: "Timeout in Minuten"
   gams_description: "Die Länge des Timeouts wird in Minuten angegeben."
+InGeneral_enableFirstSimulationYear:
+  gams_identifier: "[Spezialoption] Startjahr aktivieren?"
+  gams_description: "Ermöglicht die Nutzung des alternativen Startjahrs."
+InGeneral_firstSimulationYear:
+  gams_identifier: "[Spezialoption] Startjahr"
+  gams_description: "Diese Einstellung überschreibt das tatsächliche Startjahr der IRPsim-Einstellungen. Diese Option wurde eingebaut, um eine Seinsitivitätenanalyse über die Jahre zu nutzen."
 InGeneral_lastSimulationYear:
   gams_identifier: "[Spezialoption] Letzte zu simulierende Jahr"
   gams_description: "([Wichtig] Diese Option darf nur bei puren IRPact-Aufrufen (keine Modellkopplungen) genutzt werden, da sonst die Zeitkonsistenz verletzt wird!) Setzt das letzte zu simulierende Jahr der Simulation. Es wird dabei immer mindestens ein Jahr simuliert. Sollte der Wert also kleiner sein als das Ausgangsjahr, so wird dennoch das Ausgangsjahr simuliert. Beispiel: Ist das Ausgangsjahr = 2010 und letzte Simulationsjahr = 2013, dann werden die Jahre 2010, 2011, 2012 und 2013 simuliert."
+InGeneral_a:
+  gams_identifier: "Jahreszahl"
+  gams_description: "Einlesen des zu optimierenden Jahres"
+InGeneral_deltaii:
+  gams_identifier: "Zeitschrittlänge"
+  gams_description: "Einlesen der Zeitschrittlänge der Simulationszeitreihen (bezogen auf eine Stunde Bsp. 15 Min = 0.25)"
 
 logging:
   edn_label: "Logging"
@@ -98,7 +110,7 @@ InGeneral_passErrorMessageToOutput:
 InGeneral_printStacktraceImage:
   gams_identifier: "Stacktrace als Bild ausgeben"
   gams_description: "Falls diese Option aktiviert ist, wird bei einem potentiellen Fehler der Stacktrace als Bild ausgegeben. Dieser Ansatz ermöglicht eine sofortige Fehleranalyse im Ergebnis."
-InGeneral_printNoErrorImage:
+InGeneral_printNonErrorImage:
   gams_identifier: "Ersatzbild bei keinem Fehler erstellen"
   gams_description: "Falls diese Option aktiviert ist, wird die Nachricht 'Kein Fehler aufgetreten!' in der Ausgabe als Bild angegeben. Anderenfalls wird kein Bild erstellt."
 InGeneral_skipPersist:
@@ -127,7 +139,7 @@ VisibleBinaryData_idVisible:
 
 
 result_visualisation:
-  edn_label: "Ergebnisvisualisierung"
+  edn_label: "ErgebnisvisualisierungOLD"
   edn_description: "Hier kann die Ergebnisvisualisierung konfiguriert werden. Der Bezeichner für die Setelemente wird dabei als Basisname verwendet. Wird zum Beispiel eine Visualisierung mittels gnuplot und dem Namen 'Ergebnis' definiert, werden folgende drei Dateien erstellt: Ergebnis.csv (Daten), Ergebnis.gnu (Skript) und Ergebnis.png (Bild). Es kann zusätzlich individuell eingestellt werden, welche Dateien gespeichert und zum Download angeboten werden können."
 
 InGenericOutputImage:
@@ -145,6 +157,9 @@ InGenericOutputImage_annualZip:
 InGenericOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGenericOutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGenericOutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -188,6 +203,9 @@ InGnuPlotOutputImage_annualZip:
 InGnuPlotOutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InGnuPlotOutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InGnuPlotOutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -231,6 +249,9 @@ InROutputImage_annualZip:
 InROutputImage_annualZipWithReal:
   gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten (PLZ)"
   gams_description: "Stellt die jährlichen Adoptionen, aufgeschlüsselt nach PLZ, in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
+InROutputImage_annualZipWithRealTotal:
+  gams_identifier: "Darstellung: jährliche Adoptionen im Vergleich zu realen Daten"
+  gams_description: "Stellt die jährlichen Adoptionen in einer line chart dar. Zusätzlich werden die realen Adoptionen mit dargestellt."
 InROutputImage_cumulativeAnnualPhase:
   gams_identifier: "Darstellung: kumulierte jährliche Adoptionen (Phase) (ohne Initiale)"
   gams_description: "Stellt die kumulierten jährlichen Adoptionen, aufgeschlüsselt nach der Adoptionsphase, in einer stacked bar chart dar. Die initialen Adopter werden nicht berücksichtigt."
@@ -265,6 +286,682 @@ InROutputImage_realAdoptionDataFile:
   gams_identifier: "Reale Adoptionsdaten"
   gams_description: "Legt die realen zu nutzenden Adoptionsdaten fest."
 
+
+result_data2:
+  edn_label: "Datenanalyse"
+  edn_description: "todo"
+
+InBucketAnalyser:
+  edn_label: "BucketAnalyser"
+  edn_description: "todo"
+InBucketAnalyser_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InBucketAnalyser_storeCsv:
+  gams_identifier: "storeCsv"
+  gams_description: "todo"
+InBucketAnalyser_storeXlsx:
+  gams_identifier: "storeXlsx"
+  gams_description: "todo"
+InBucketAnalyser_bucketRange:
+  gams_identifier: "bucketRange"
+  gams_description: "todo"
+InBucketAnalyser_loggingModule:
+  gams_identifier: "loggingModule"
+  gams_description: "todo"
+
+InNeighbourhoodOverview:
+  edn_label: "Nachbarschaftsübersicht"
+  edn_description: "Gibt eine Tabelle aller Agenten und ihrer räumlichen Nachbarn aus. Diese Übersicht kann genutzt werden, um einen Überblick über die räumliche Verteilung der Agenten zu erhalten. Achtung: Diese Analyse kann zu großen Dateien führen!"
+InNeighbourhoodOverview_enabled:
+  gams_identifier: "Verwenden?"
+  gams_description: "Mittels dieser Option kann die Analyse aktiviert bzw. deaktiviert."
+InNeighbourhoodOverview_storeCsv:
+  gams_identifier: "Als csv speichern?"
+  gams_description: "todo"
+InNeighbourhoodOverview_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InNeighbourhoodOverview_nodeFilterScheme:
+  gams_identifier: "Netzwerkfilter für räumliche Sicht"
+  gams_description: "todo"
+
+
+result_visualisation2:
+  edn_label: "Ergebnisvisualisierung"
+  edn_description: "todo"
+
+InAdoptionPhaseOverviewImage:
+  edn_label: "Adoptionsphasenübersicht"
+  edn_description: "todo"
+InAdoptionPhaseOverviewImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InAdoptionPhaseOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InAnnualBucketImage:
+  edn_label: "Jährliche Bereichsanalyse"
+  edn_description: "todo"
+InAnnualBucketImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualBucketImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualBucketImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualBucketImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualBucketImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualBucketImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualBucketImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualBucketImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualBucketImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InAnnualBucketImage_useCustomYRange:
+  gams_identifier: "Benutzerdefinierte Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualBucketImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualBucketImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualBucketImage_bucketSize:
+  gams_identifier: "Bereichsgröße"
+  gams_description: "todo"
+InAnnualBucketImage_fractionDigits:
+  gams_identifier: "Anzahl Nachkommastellen (Legende)"
+  gams_description: "todo"
+InAnnualBucketImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualBucketImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InAnnualBucketImage_loggingModule:
+  gams_identifier: "Loggingmodule"
+  gams_description: "todo"
+
+InAnnualInterestImage:
+  edn_label: "Jährliche Analyse interessierter Agenten"
+  edn_description: "todo"
+InAnnualInterestImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualInterestImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualInterestImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualInterestImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualInterestImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualInterestImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualInterestImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualInterestImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualInterestImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InAnnualInterestImage_useCustomYRangeMin:
+  gams_identifier: "Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualInterestImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualInterestImage_useCustomYRangeMax:
+  gams_identifier: "Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualInterestImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualInterestImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualInterestImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InCumulatedAnnualInterestImage:
+  edn_label: "Kumulierte jährliche Analyse interessierter Agenten"
+  edn_description: "todo"
+InCumulatedAnnualInterestImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useCustomYRangeMin:
+  gams_identifier: "Benutzerdefinierten Minimalwert (Min Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_useCustomYRangeMax:
+  gams_identifier: "Benutzerdefinierten Maximalwert (Max Y) für die Y-Achse nutzen?"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InCumulatedAnnualInterestImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InAnnualMilieuImage:
+  edn_label: "Jährliche Adoptionen nach Milieu"
+  edn_description: "todo"
+InAnnualMilieuImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InAnnualMilieuImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InAnnualMilieuImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InAnnualMilieuImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InAnnualMilieuImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InAnnualMilieuImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InAnnualMilieuImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InAnnualMilieuImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InAnnualMilieuImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InAnnualMilieuImage_showInitial:
+  gams_identifier: "Initiale Adoptionen anzeigen?"
+  gams_description: "todo"
+InAnnualMilieuImage_useCustomYRange:
+  gams_identifier: "Benutzerdefinierte Y-Achse nutzen?"
+  gams_description: "todo"
+InAnnualMilieuImage_minY:
+  gams_identifier: "Min Y (Achse)"
+  gams_description: "todo"
+InAnnualMilieuImage_maxY:
+  gams_identifier: "Max Y (Achse)"
+  gams_description: "todo"
+InAnnualMilieuImage_customImageId:
+  gams_identifier: "Benutzerdefinierte Bild-Id"
+  gams_description: "todo"
+InAnnualMilieuImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InComparedAnnualImage:
+  edn_label: "Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedAnnualImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedAnnualImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedAnnualImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedAnnualImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedAnnualImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedAnnualImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedAnnualImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedAnnualImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedAnnualImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedAnnualImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedAnnualImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedAnnualImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedAnnualImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedAnnualImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
+InComparedAnnualImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedAnnualImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedAnnualImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
+InComparedCumulatedAnnualImage:
+  edn_label: "Kumulierte Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedCumulatedAnnualImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedCumulatedAnnualImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedCumulatedAnnualImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
+InComparedAnnualZipImage:
+  edn_label: "PLZ-basierte Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedAnnualZipImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedAnnualZipImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedAnnualZipImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedAnnualZipImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedAnnualZipImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedAnnualZipImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedAnnualZipImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedAnnualZipImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedAnnualZipImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedAnnualZipImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedAnnualZipImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedAnnualZipImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedAnnualZipImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedAnnualZipImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
+InComparedAnnualZipImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedAnnualZipImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedAnnualZipImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
+InComparedCumulatedAnnualZipImage:
+  edn_label: "PLZ-basierte kumulierte Adoptionen mit Realdaten"
+  edn_description: "todo"
+InComparedCumulatedAnnualZipImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_skipInvalidZips:
+  gams_identifier: "skipInvalidZips"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_showPreYear:
+  gams_identifier: "showPreYear"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_showUnscaled:
+  gams_identifier: "showUnscaled"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_startAtMinValue:
+  gams_identifier: "startAtMinValue"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_autoTickY:
+  gams_identifier: "autoTickY"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InComparedCumulatedAnnualZipImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InComparedCumulatedAnnualZipImage_realData:
+  gams_identifier: "realData"
+  gams_description: "todo"
+
+InCustomAverageQuantilRangeImage:
+  edn_label: "Benutzerdefinierte Quantilanalyse"
+  edn_description: "todo"
+InCustomAverageQuantilRangeImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_printAverage:
+  gams_identifier: "printAverage"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InCustomAverageQuantilRangeImage_ranges:
+  gams_identifier: "ranges"
+  gams_description: "todo"
+InCustomAverageQuantilRangeImage_loggingModules:
+  gams_identifier: "loggingModules"
+  gams_description: "todo"
+
+InInterestOverviewImage:
+  edn_label: "Interessensübersicht"
+  edn_description: "todo"
+InInterestOverviewImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InInterestOverviewImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InInterestOverviewImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InInterestOverviewImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InInterestOverviewImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InInterestOverviewImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InInterestOverviewImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InInterestOverviewImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InInterestOverviewImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InInterestOverviewImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InInterestOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InQuantileRange:
+  edn_label: "Quantilbereich"
+  edn_description: "todo"
+InQuantileRange_lowerBound:
+  gams_identifier: "lowerBound"
+  gams_description: "todo"
+InQuantileRange_upperBound:
+  gams_identifier: "upperBound"
+  gams_description: "todo"
+
+InProcessPhaseOverviewImage:
+  edn_label: "Prozessphasenübersicht"
+  edn_description: "todo"
+InProcessPhaseOverviewImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_boxWidth:
+  gams_identifier: "boxWidth"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InProcessPhaseOverviewImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+
+InSpecialAverageQuantilRangeImage:
+  edn_label: "Spezielle Quantilbereiche"
+  edn_description: "todo"
+InSpecialAverageQuantilRangeImage_enabled:
+  gams_identifier: "enabled"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_useGnuplot:
+  gams_identifier: "useGnuplot"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_useR:
+  gams_identifier: "useR"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeScript:
+  gams_identifier: "storeScript"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeData:
+  gams_identifier: "storeData"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_storeImage:
+  gams_identifier: "storeImage"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_printAverage:
+  gams_identifier: "printAverage"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_imageWidth:
+  gams_identifier: "imageWidth"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_imageHeight:
+  gams_identifier: "imageHeight"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_linewidth:
+  gams_identifier: "linewidth"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_customImageId:
+  gams_identifier: "customImageId"
+  gams_description: "todo"
+InSpecialAverageQuantilRangeImage_colorPalette:
+  gams_identifier: "Zu nutzende Farben"
+  gams_description: "Bestimmt die verwendete Farbpalette für die Abbildung. Falls keine ausgewählt wurde, wird das Standardfarbschema verwendet."
+InSpecialAverageQuantilRangeImage_loggingModules:
+  gams_identifier: "loggingModules"
+  gams_description: "todo"
 
 network_visualisation:
   edn_label: "Netzwerkvisualisierung"
@@ -315,6 +1012,9 @@ data_output:
 InGeneral_logResultAdoptionsAll:
   gams_identifier: "Komplettausgabe"
   gams_description: "Gibt zu jedem Agenten alle Adoptionsinformationen aus. Nichtadopter werden ebenfalls ausgegeben."
+InGeneral_logAdoptionAnalysis:
+  gams_identifier: "Adoptionsanalyse"
+  gams_description: "Erstellt eine Adoptionsanalyse.json für die programmatische Auswertung. Diese beinhaltet die kumulierten Adoptionsdaten untergliedert nach Jahr und Postleitzahl."
 InGeneral_logPerformance:
   gams_identifier: "Performance"
   gams_description: "Performance.xlsx"
@@ -333,19 +1033,48 @@ InGeneral_logAllEvaluation:
 InGeneral_evaluationBucketSize:
   gams_identifier: "Bereichsgröße (Evaluierungswerte)"
   gams_description: "Bestimmt die Bereichsgrößen bei den Evaluierungsdaten."
-InGeneral_logFinancialComponent:
-  gams_identifier: "Finanzielle Komponente"
-  gams_description: "Finanzielle_Komponente.xlsx"
+
+
+color_settings:
+  edn_label: "Farbeinstellungen"
+  edn_description: "Definiert Farben und legt Farbpaletten fest."
+
+InColorPalette:
+  edn_label: "Farbpalette"
+  edn_description: "Hier können Farbpaletten definiert werden, welche in Abbildungen verwendet werden können."
+InColorPalette_colors:
+  gams_identifier: "Farben"
+  gams_description: "todo"
+
+InColorARGB:
+  edn_label: "Farbe (RGB)"
+  edn_description: "Hier können RGB Farben mit einem Alphawert definiert werden. Die Werte müssen dabei zwischen 0 und 255 liegen."
+InColorARGB_priority:
+  gams_identifier: "Priorität"
+  gams_description: "Legt die Farbpriorität fest. Dieser Wert kann je nach Verwendung einen unterschiedlichen Verwendungszweck haben. Bei der Nutzung von Farbpaletten legt die Priorität die Reihenfolge der Farben fest. Auf diese Weise lassen sich Farben individuell anordnen."
+InColorARGB_alpha:
+  gams_identifier: "Alpha"
+  gams_description: "Legt den Alphawert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_red:
+  gams_identifier: "Rot"
+  gams_description: "Legt den Rotwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_green:
+  gams_identifier: "Grün"
+  gams_description: "Legt den Grünwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+InColorARGB_blue:
+  gams_identifier: "Blau"
+  gams_description: "Legt den Blauwert der Farbe fest. Dieser muss zwischen 0 und 255 liegen."
+
 
 
 informations:
   edn_label: "Informationen"
   edn_description: "Informationen über IRPact und das Szenario"
 
-#dran denken: Version auch in IRPact.json aendern
+#update version in IRPact.java
 InIRPactVersion:
   edn_label: "Über IRPact"
-  edn_description: "IRPact v1.10.0"
+  edn_description: "IRPact v1.27.0 (x)"
 InIRPactVersion_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -379,9 +1108,9 @@ InPVFile_placeholderPVFile:
 InSpatialTableFile:
   edn_label: "Tabellarische Dateien"
   edn_description: "Daten in tabellarischer Form. Es werden .xlsx und .csv unterstützt."
-InSpatialTableFile_placeholderInSpatialFile:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+InSpatialTableFile_coverage:
+  gams_identifier: "Abdeckungsfaktor"
+  gams_description: "Gibt an, wie viel die räumlichen Daten im Vergleich zur Realität abbilden."
 
 InRealAdoptionDataFile:
   edn_label: "Reale Adoptionsdaten"
@@ -391,6 +1120,21 @@ InRealAdoptionDataFile_placeholder:
   gams_description: "Ungenutzter Platzhalter"
 
 
+##########################
+# Distribution anchors
+##########################
+
+_DISTRIBUTION_ANCHORS:
+  MODE_NO_ROUNDING_ID: &MODE_NO_ROUNDING_ID "Kein Runden"
+  MODE_NO_ROUNDING_DESC: &MODE_NO_ROUNDING_DESC "Es wird nicht gerundet. Die Zahl bleibt unverändert."
+  MODE_FLOOR_ID: &MODE_FLOOR_ID "Abrunden"
+  MODE_FLOOR_DESC: &MODE_FLOOR_DESC "Die Zahl wird immer abgerundet."
+  MODE_CEIL_ID: &MODE_CEIL_ID "Aufrunden"
+  MODE_CEIL_DESC: &MODE_CEIL_DESC "Die Zahl wird immer aufgerundet."
+  MODE_ROUND_ID: &MODE_ROUND_ID "Kaufmännisches Runden"
+  MODE_ROUND_DESC: &MODE_ROUND_DESC "Alles kleiner ,5 wird abgerundet und alles größer bzw. gleich ,5 wird aufgerundet."
+
+##########################
 
 distributions:
   edn_label: "Verteilungsfunktionen"
@@ -435,26 +1179,6 @@ InBoundedNormalDistribution_upperBound:
   gams_identifier: "Obergrenze (inklusiv)"
   gams_description: "Legt die Obergrenze fest."
 
-InBoundedUniformDoubleDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InBoundedUniformDoubleDistribution_lowerBound:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InBoundedUniformDoubleDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
-
-InBoundedUniformIntegerDistribution:
-  edn_label: "Gleichverteilte ganze Zahlen"
-  edn_description: "Verteilungsfunktion, welche ganzzahlige Werte gleichverteilt aus einem Bereich zieht."
-InBoundedUniformIntegerDistribution_lowerBound:
-  gams_identifier: "Untergrenze (inklusiv)"
-  gams_description: "Legt die Untergrenze fest."
-InBoundedUniformIntegerDistribution_upperBound:
-  gams_identifier: "Obergrenze (exklusiv)"
-  gams_description: "Legt die Obergrenze fest."
-
 InDiracUnivariateDistribution:
   edn_label: "Dirac-Verteilung"
   edn_description: "Verteilungsfunktion, welche einen konstanten Wert zurück gibt."
@@ -488,10 +1212,22 @@ InNormalDistribution_standardDeviation:
 InNormalDistribution_mean:
   gams_identifier: "Mittelwert"
   gams_description: "Der zu nutzende Mittelwert."
+InNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 InSlowTruncatedNormalDistribution:
-  edn_label: "Bernoulliverteilung"
-  edn_description: "Auf Bernoulli basierende Verteilungsfunktion, welche mit Wahrscheinlichkeit p x oder (1-p) y zurück gibt."
+  edn_label: "(TEST) Langsame abgeschnittene Normalverteilung"
+  edn_description: "(TESTIMPLEMENTIERUNG) Diese Variante zieht so lange Werte, bis sie im gültigen Bereich liegen."
 InSlowTruncatedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Legt die Standardabweichung fest."
@@ -510,10 +1246,22 @@ InSlowTruncatedNormalDistribution_upperBound:
 InSlowTruncatedNormalDistribution_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Gibt an, ob die obere Grenze inklusive sein soll."
+InSlowTruncatedNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InSlowTruncatedNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InSlowTruncatedNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InSlowTruncatedNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 InTruncatedNormalDistribution:
   edn_label: "Abgeschnittene Normalverteilung"
-  edn_description: "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution)."
+  edn_description: "Verteilungsfunktion auf Basis der abgeschnittenen Normalverteilung (truncated normal distribution). Zusätzlich werden verschiedene Rundungsstrategien unterstützt."
 InTruncatedNormalDistribution_standardDeviation:
   gams_identifier: "Standardabweichung"
   gams_description: "Die Standardabweichung der Normalverteilung."
@@ -526,6 +1274,18 @@ InTruncatedNormalDistribution_lowerBound:
 InTruncatedNormalDistribution_upperBound:
   gams_identifier: "Obere Grenze"
   gams_description: "Obere Grenze des Bereiches für die gültigen Werte."
+InTruncatedNormalDistribution_modeNoRounding:
+  gams_identifier: *MODE_NO_ROUNDING_ID
+  gams_description: *MODE_NO_ROUNDING_DESC
+InTruncatedNormalDistribution_modeFloor:
+  gams_identifier: *MODE_FLOOR_ID
+  gams_description: *MODE_FLOOR_DESC
+InTruncatedNormalDistribution_modeCeil:
+  gams_identifier: *MODE_CEIL_ID
+  gams_description: *MODE_CEIL_DESC
+InTruncatedNormalDistribution_modeRound:
+  gams_identifier: *MODE_ROUND_ID
+  gams_description: *MODE_ROUND_DESC
 
 agents:
   edn_label: "Agenten"
@@ -703,13 +1463,47 @@ initial_adopters:
 InPVactAttributeBasedInitialAdoption:
   edn_label: "Attributbasierte initiale Adopter"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand des Attributes für initiale Adoptionen der Konsumergruppen festgelegt. Es müssen hier keine weiteren Optionen eingestellt werden."
-InPVactAttributeBasedInitialAdoption_placeholder:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
+InPVactAttributeBasedInitialAdoption_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDefaultAwarenessHandler:
+  edn_label: "Standardinitialisierung von Awareness"
+  edn_description: "todo"
+InPVactDefaultAwarenessHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDefaultAwarenessInterestHandler:
+  edn_label: "Standardinitialisierung von Interesse und Awareness"
+  edn_description: "todo"
+InPVactDefaultAwarenessInterestHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDefaultInterestHandler:
+  edn_label: "Standardinitialisierung von Interesse"
+  edn_description: "todo"
+InPVactDefaultInterestHandler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+
+InPVactDependentInterestScaler:
+  edn_label: "Initialisierung des initialien Interesses in Bezug auf novelty seeking"
+  edn_description: "Initialisiert das initiale Interesse in Bezug auf das sortierte novelty seeking Attribut. Dazu werden auf Basis der Verteilungsfunktion Werte für das initiale Interesse gezogen. Die sortierten Werte werden den, in auf das novelty seeking, sortierten Agenten zugeordnet."
+InPVactDependentInterestScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InPVactDependentInterestScaler_distribution:
+  gams_identifier: "Verteilungsfunktion"
+  gams_description: "Diese Funktion"
 
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
 InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
@@ -717,6 +1511,15 @@ InPVactFileBasedConsumerGroupBasedInitialAdoptionWithRealData_file:
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData:
   edn_label: "Gewichtete initiale Adopter nach realen Daten"
   edn_description: "Mittels dieser Variante werden die initialen Adopter anhand von realen Daten bestimmt. Das Attribute für initiale Adoptionen gibt dabei die Verteilung innerhalb der Postleitzahlgebiete an und nicht den Anteil der Agenten selber."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_scale:
+  gams_identifier: "Automatische Skalierung"
+  gams_description: "Ermöglicht das automatische Skalieren der Werte. Die Skalierung selber orientiert sich dabei an der Agentenpopulation."
+InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_fixError:
+  gams_identifier: "Automatische Fehlerkorrektur"
+  gams_description: "Falls aufgrund arithmetisch Fehler initiale Adopter fehlen, werden diese nachträglich bestimmt."
 InPVactFileBasedWeightedConsumerGroupBasedInitialAdoptionWithRealData_file:
   gams_identifier: "Eingabedatei"
   gams_description: "Bestimmt die Datei mit den realen Adoptionsdaten."
@@ -843,7 +1646,7 @@ InNoDistance_placeholderNoDistance:
 
 InInverse:
   edn_label: "Inverse Distanz"
-  edn_description: "Benutzt 1/distance für die Auswertung."
+  edn_description: "Benutzt 1\\/distance für die Auswertung."
 InInverse_placeholderInverse:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
@@ -908,7 +1711,7 @@ InFixProductAttribute_fixPAvalue:
 
 products_finding_scheme:
   edn_label: "Schema für Produktfindung"
-  edn_description: "Benutzt 1/distance für die Auswertung."
+  edn_description: "Benutzt 1\\/distance für die Auswertung."
 
 InFixProductFindingScheme:
   edn_label: "Fixproduktschema"
@@ -920,11 +1723,20 @@ InFixProductFindingScheme_refFixProduct:
 
 
 process_model:
-  edn_label: "Prozessmodell"
+  edn_label: "ProzessmodellALT"
   edn_description: "Definiert das Prozessmodell in IRPact. Aktuell darf nur ein Modell existieren."
 
 InRAProcessModel:
   edn_label: "Relative Agreement"
+InRAProcessModel_skipAwareness:
+  gams_identifier: "Awareness überspringen?"
+  gams_description: "Überspringt die Awareness-Phase. Interesse wird dabei automatisch maximiert."
+InRAProcessModel_skipFeasibility:
+  gams_identifier: "Feasibility überspringen?"
+  gams_description: "Überspringt die Feasibility-Phase."
+InRAProcessModel_forceEvaluate:
+  gams_identifier: "Evaluierung auch bei fin. Misserfolg?"
+  gams_description: "Die Agenten führen die Evaluierung auch bei finanziellem Misserfolg durch. Diese Option dient primär der Datenanalyse und hat keine weiteren Auswirkungen."
 InRAProcessModel_a:
   gams_identifier: "Einfluss finanzielle Komponente (a)"
   gams_description: "Legt den Einfluss der finanziellen Komponente fest."
@@ -967,6 +1779,12 @@ InRAProcessModel_communicationFactor:
 InRAProcessModel_rewireFactor:
   gams_identifier: "Rewire-Faktor"
   gams_description: "Skaliert die Rewire-Wahrscheinlichkeit der Agenten."
+InRAProcessModel_adoptionCertaintyBase:
+  gams_identifier: "Adoptionsbestätigung (Basiswert)"
+  gams_description: "Basiswert der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
+InRAProcessModel_adoptionCertaintyFactor:
+  gams_identifier: "Adoptionsbestätigung (Jahresfaktor)"
+  gams_description: "Jahresfaktor der Adoptionsbestätigung: Basiswert*Jahresfaktor^Jahresdelta"
 InRAProcessModel_adopterPoints:
   gams_identifier: "Einfluss der Kommunikation mit Adoptern"
   gams_description: "Legt den Einfluss für die Kommunikation mit Adoptern fest."
@@ -1018,20 +1836,6 @@ InAutoUncertaintyGroupAttribute:
   edn_label: "Automatisch"
   edn_description: "Bestimmt die Unsicherheit automatisch. Achtung: Diese Variante wird aktuell noch nicht unterstützt."
 InAutoUncertaintyGroupAttribute_placeholderAutoUncert:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
-
-InDisabledProcessPlanNodeFilterScheme:
-  edn_label: "Kein Distanzfilter"
-  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
-InDisabledProcessPlanNodeFilterScheme_placeholder:
-  gams_identifier: "---"
-  gams_description: "Ungenutzter Platzhalter"
-
-InEntireNetworkNodeFilterScheme:
-  edn_label: "Gesamtes Netzwerk"
-  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
-InEntireNetworkNodeFilterScheme_placeholder:
   gams_identifier: "---"
   gams_description: "Ungenutzter Platzhalter"
 
@@ -1104,115 +1908,111 @@ InPVactUncertaintyGroupAttribute_cags:
   gams_description: "Bestimmt die Konsumergruppe, deren Attribute mit dieser Unsicherheit behandelt werden sollen."
 
 process_filter:
-  edn_label: "Netzwerkfilter für Prozesse"
-  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
+  edn_label: "Peereffektdistanzeinstellung"
+  edn_description: "todo"
 
-InRAProcessPlanMaxDistanceFilterScheme:
-  edn_label: "Maximale Distnz (PVact)"
-  edn_description: "Ermöglicht die Festlegung der Unsicherheit für Konsumergruppen. Diese Variante setzt PVact-Attribute vorraus."
-InRAProcessPlanMaxDistanceFilterScheme_maxDistance:
+InDisabledNodeFilterDistanceScheme:
+  edn_label: "Kein Peereffekt"
+  edn_description: "Deaktiviert den Netzwerkfilter für die sichtbaren PV-Anlagen. Die sichtbare Komponente wird somit deaktiviert."
+InDisabledNodeFilterDistanceScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InEntireNetworkNodeFilterDistanceScheme:
+  edn_label: "Peereffekt mit ganzen Gebiet"
+  edn_description: "Nutzt das gesamte Netzwerk für die sichtbaren PV-Anlagen."
+InEntireNetworkNodeFilterDistanceScheme_placeholder:
+  gams_identifier: "---"
+  gams_description: "Ungenutzter Platzhalter"
+
+InMaxDistanceNodeFilterDistanceScheme:
+  edn_label: "Maximale Entfernung"
+  edn_description: "todo"
+InMaxDistanceNodeFilterDistanceScheme_maxDistance:
   gams_identifier: "Maximale Entfernung"
   gams_description: "Legt die maximale Entfernung fest. Die Einheit richtet sich sowohl nach den Ausgangsdaten als auch der verwendeten Metric im räumlichen Modell."
-InRAProcessPlanMaxDistanceFilterScheme_inclusive:
+InMaxDistanceNodeFilterDistanceScheme_inclusive:
   gams_identifier: "Grenzwert inklusive?"
   gams_description: "Legt fest, ob der Grenzwert inklusiv (<=) oder exklusiv (<) ist."
 
-InGlobalDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf allen Agenten"
-  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen."
-InGlobalDeffuantUncertainty_extremistParameter:
+InUpdatableGlobalModerateExtremistUncertainty:
+  edn_label: "Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die verwendeten Attribute sind: NOV, ENV und DJM."
+InUpdatableGlobalModerateExtremistUncertainty_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InGlobalDeffuantUncertainty_extremistUncertainty:
+InUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InGlobalDeffuantUncertainty_moderateUncertainty:
+InUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InGlobalDeffuantUncertainty_lowerBoundInclusive:
+InUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InGlobalDeffuantUncertainty_upperBoundInclusive:
+InUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InGlobalDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppen fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InGlobalDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
+InUpdatableGlobalModerateExtremistUncertainty_attributeNames:
+  gams_identifier: "Attribute"
+  gams_description: "Legt die Attribute fest, welche eine Unsicherheit erhalten sollen."
 
-InGroupBasedDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf individuellen Agentengruppen"
-  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe."
-InGroupBasedDeffuantUncertainty_extremistParameter:
+InPVactUpdatableGlobalModerateExtremistUncertainty:
+  edn_label: "Zeitlich aktualisierbare Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 1)"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten und unterstützt zeitbasierte Aktualisierungen. Die verwendeten Attribute sind NOV und ENV."
+InPVactUpdatableGlobalModerateExtremistUncertainty_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InGroupBasedDeffuantUncertainty_extremistUncertainty:
+InPVactUpdatableGlobalModerateExtremistUncertainty_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InGroupBasedDeffuantUncertainty_moderateUncertainty:
+InPVactUpdatableGlobalModerateExtremistUncertainty_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InGroupBasedDeffuantUncertainty_lowerBoundInclusive:
+InPVactUpdatableGlobalModerateExtremistUncertainty_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InGroupBasedDeffuantUncertainty_upperBoundInclusive:
+InPVactUpdatableGlobalModerateExtremistUncertainty_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InGroupBasedDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InGroupBasedDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
 
-InPVactGlobalDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf allen PVact-Agenten"
-  edn_description: "Bestimmt die Unsicherheit in Bezug auf alle zu betrachtenen Agentengruppen. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
-InPVactGlobalDeffuantUncertainty_extremistParameter:
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier:
+  edn_label: "Individuell aktualisierte Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 2)"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Bei Änderungen passt jeder Agent seine eigene Unsicherheit an. Die verwendeten Attribute sind NOV und ENV."
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGlobalDeffuantUncertainty_extremistUncertainty:
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGlobalDeffuantUncertainty_moderateUncertainty:
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGlobalDeffuantUncertainty_lowerBoundInclusive:
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGlobalDeffuantUncertainty_upperBoundInclusive:
+InPVactIndividualGlobalModerateExtremistUncertaintySupplier_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InPVactGlobalDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
 
-InPVactGroupBasedDeffuantUncertainty:
-  edn_label: "Unsicherheit basierend auf individuellen PVact-Agentengruppen"
-  edn_description: "Bestimmt die Unsicherheit individuell für jede betrachtete Agentengruppe. Im Gegensatz zur allgemeinen Variante sind die Attribute hier fest vorgegeben."
-InPVactGroupBasedDeffuantUncertainty_extremistParameter:
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion:
+  edn_label: "Hochdynamische Moderate-Extremisten-Unsicherheit basierend auf allen PVact-Agenten (Option 3)"
+  edn_description: "Diese Variante unterteilt Agenten in Moderate und Extremisten. Die Bereiche werden bei jeder Meinungsänderung angepasst. Die verwendeten Attribute sind NOV und ENV."
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistParameter:
   gams_identifier: "Extremistenparameter"
   gams_description: "Legt den Extremistenparameter fest. Dieser Wert beschreibt den prozentualen Anteil der Exremisten."
-InPVactGroupBasedDeffuantUncertainty_extremistUncertainty:
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_extremistUncertainty:
   gams_identifier: "Unsicherheit der Extremisten"
   gams_description: "Legt den Wert der Unsicherheit für Extremisten fest."
-InPVactGroupBasedDeffuantUncertainty_moderateUncertainty:
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_moderateUncertainty:
   gams_identifier: "Unsicherheit der Moderaten"
   gams_description: "Legt den Wert der Unsicherheit für Moderate fest."
-InPVactGroupBasedDeffuantUncertainty_lowerBoundInclusive:
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_lowerBoundInclusive:
   gams_identifier: "Untere Grenze inklusive?"
   gams_description: "Legt fest, ob der untere Grenzwert inklusiv (>=) oder exklusiv (>) ist."
-InPVactGroupBasedDeffuantUncertainty_upperBoundInclusive:
+InPVactGlobalModerateExtremistUncertaintyWithUpdatableOpinion_upperBoundInclusive:
   gams_identifier: "Obere Grenze inklusive?"
   gams_description: "Legt fest, ob der obere Grenzwert inklusiv (<=) oder exklusiv (<) ist."
-InPVactGroupBasedDeffuantUncertainty_cags:
-  gams_identifier: "Betrachtete Agentengruppen"
-  gams_description: "Legt die Agentengruppe fest, auf deren Basis die Unsicherheit berechnet werden soll."
-InPVactGroupBasedDeffuantUncertainty_attributeNames:
-  gams_identifier: "Betrachtete Attribute"
-  gams_description: "Legt die Attribute fest, die mit dieser Unsicherheit verbunden werden sollen."
 
 
 InModularRAProcessModel:
@@ -1927,6 +2727,1138 @@ InWeightedModule_calcgraphnode_input_graphedge:
   gams_identifier: "Eingabemodul"
   gams_description: "todo"
 
+##########################
+# graph anchor&aliases for copy&paste:
+##########################
+
+_ANCHORS:
+  # modules
+  ACTION_MODULE_LABEL: &ACTION_MODULE_LABEL "Aktionsmodule"
+  BOOL_MODULE_LABEL: &BOOL_MODULE_LABEL "Entscheidungsmodule"
+  CALC_MODULE_LABEL: &CALC_MODULE_LABEL "Berechnungsmodule"
+  INPUT_MODULE_LABEL: &INPUT_MODULE_LABEL "Eingabemodule"
+  LOGGING_MODULE_LABEL: &LOGGING_MODULE_LABEL "Loggingmodule"
+  SYSTEM_MODULE_LABEL: &SYSTEM_MODULE_LABEL "Systemmodule"
+  PVACT_MODULE_LABEL: &PVACT_MODULE_LABEL "PVact-Module"
+  REEVAL_MODULE_LABEL: &REEVAL_MODULE_LABEL "Reevaluierungsmodule"
+  # edges
+  ACTION_EDGE_LABEL: &ACTION_EDGE_LABEL "Aktionskante"
+  BOOL_EDGE_LABEL: &BOOL_EDGE_LABEL "Entscheidungskante"
+  CALC_EDGE_LABEL: &CALC_EDGE_LABEL "Berechnungskante"
+  SYSTEM_EDGE_LABEL: &SYSTEM_EDGE_LABEL "Systemkante"
+  PVACT_EDGE_LABEL: &PVACT_EDGE_LABEL "PVact-Kante"
+  REEVAL_EDGE_LABEL: &REEVAL_EDGE_LABEL "Reevalluierungskante"
+
+_ACTION_HELPER:
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+  graphedge_label: *ACTION_EDGE_LABEL
+
+_BOOL_HELPER:
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+  graphedge_label: *BOOL_EDGE_LABEL
+
+_CALC_HELPER:
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+  graphedge_label: *CALC_EDGE_LABEL
+
+_INPUT_HELPER:
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+
+_LOGGING_HELPER:
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+
+_SYSTEM_HELPER:
+  graphnode_colorlabel: *SYSTEM_MODULE_LABEL
+  graphnode_borderlabel: *SYSTEM_MODULE_LABEL
+  graphnode_shapelabel: *SYSTEM_MODULE_LABEL
+  graphedge_label: *SYSTEM_EDGE_LABEL
+
+_PVACT_HELPER:
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+  graphedge_label: *PVACT_EDGE_LABEL
+
+_REEVAL_HELPER:
+  graphnode_colorlabel: *REEVAL_MODULE_LABEL
+  graphnode_borderlabel: *REEVAL_MODULE_LABEL
+  graphnode_shapelabel: *REEVAL_MODULE_LABEL
+  graphedge_label: *REEVAL_EDGE_LABEL
+
+##########################
+# process model v4
+##########################
+
+process_model4:
+  edn_label: "Prozessmodell"
+  edn_description: "todo"
+
+process_model4_base:
+  edn_label: "Basismodell"
+  edn_description: "todo"
+
+process_model4_uncertainty:
+  edn_label: "Einstellungen für Unsicherheit"
+  edn_description: "todo"
+
+process_model4_distance:
+  edn_label: "Peereffektdistanzeinstellungen"
+  edn_description: "todo"
+
+process_model4_init:
+  edn_label: "Komponenten für die Initialisierung"
+  edn_description: "todo"
+
+process_model4_reeval:
+  edn_label: "Komponenten für die Reevaluierung"
+  edn_description: "todo"
+
+process_model4_generalmodules:
+  edn_label: "Allgemeine Module"
+  edn_description: "todo"
+
+process_model4_generalmodules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_numberinput:
+  edn_label: "Zahlenbasierte Eingabemodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_numbereval:
+  edn_label: "Zahlenbasierte Auswertungsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_bool:
+  edn_label: "Entscheidungsmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_system:
+  edn_label: "Systemmodule"
+  edn_description: "todo"
+
+process_model4_generalmodules_independent:
+  edn_label: "Unabhängige Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules:
+  edn_label: "PVact-Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_numberinput:
+  edn_label: "Zahlenbasierte Eingabemodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_numberlogging:
+  edn_label: "Zahlenbasierte Loggingmodule"
+  edn_description: "todo"
+
+process_model4_pvactmodules_pvgeneral:
+  edn_label: "PV spezifische allgemeine Module"
+  edn_description: "todo"
+
+process_model4_pvactmodules_pvlogging:
+  edn_label: "PV spezifische Loggingmodule"
+  edn_description: "todo"
+
+##########################
+# process model v3
+##########################
+
+InModularProcessModel2:
+  edn_label: "Modulgraph"
+  edn_description: "Darstellung des aktuellen Modulgraphs"
+  graph_edgeheading: "Kanten"
+  graph_colorheading: "Farbbedeutung"
+  graph_borderheading: "Kantenbedeutung"
+  graph_shapeheading: "Formbedeutungen"
+  graph_iconheading: "Iconbedeutung"
+
+process_model2:
+  edn_label: "Prozessmodell"
+  edn_description: "todo"
+
+process_modular3:
+  edn_label: "Modulares Prozessmodell2"
+  edn_description: "todo"
+
+# Modell
+process_modular3_PV_model:
+  edn_label: "Modell"
+  edn_description: "todo"
+
+InBasicCAModularProcessModel:
+  edn_label: "Standardprozessmodell"
+  edn_description: "todo"
+InBasicCAModularProcessModel_startModule:
+  gams_identifier: "Startmodul"
+  gams_description: "todo"
+InBasicCAModularProcessModel_initializationHandlers:
+  gams_identifier: "Konfiguratoren für die Initialisierung"
+  gams_description: "todo"
+InBasicCAModularProcessModel_newProductHandlers:
+  gams_identifier: "Konfiguratoren für neue Produkte"
+  gams_description: "todo"
+InBasicCAModularProcessModel_initializationReevaluators:
+  gams_identifier: "Reevalueirung zur Initialisierung"
+  gams_description: "todo"
+InBasicCAModularProcessModel_startOfYearReevaluators:
+  gams_identifier: "Reevalueirung zum Jahresbeginn"
+  gams_description: "todo"
+InBasicCAModularProcessModel_midOfYearReevaluators:
+  gams_identifier: "Reevalueirung zur Jahresmitte (27. Woche)"
+  gams_description: "todo"
+InBasicCAModularProcessModel_endOfYearReevaluators:
+  gams_identifier: "Reevalueirung zum Jahresende"
+  gams_description: "todo"
+
+# Reevaluierungen
+process_modular3_PV_reeval:
+  edn_label: "Reevaluierung"
+  edn_description: "todo"
+
+InAnnualInterestLogger:
+  edn_label: "AnnualInterestLogger"
+  edn_description: "todo"
+InAnnualInterestLogger_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InConstructionRenovationUpdater:
+  edn_label: "ConstructionRenovationUpdater"
+  edn_description: "todo"
+InConstructionRenovationUpdater_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InDecisionMakingReevaluator:
+  edn_label: "DecisionMakingReevaluator"
+  edn_description: "todo"
+InDecisionMakingReevaluator_modules:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InImpededResetter:
+  edn_label: "ImpededResetter"
+  edn_description: "todo"
+InImpededResetter_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InLinearePercentageAgentAttributeUpdater:
+  edn_label: "Fancy Agentenattributaktualisierer"
+  edn_description: "todo"
+InLinearePercentageAgentAttributeUpdater_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InLinearePercentageAgentAttributeUpdater_scaler:
+  gams_identifier: "scaler"
+  gams_description: "todo"
+
+InMultiReevaluator:
+  edn_label: "ReevaluatorModuleLinker"
+  edn_description: "todo"
+InMultiReevaluator_modules:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+
+InUncertaintyReevaluator:
+  edn_label: "Updater für Unsicherheiten"
+  edn_description: "todo"
+InUncertaintyReevaluator_priorty:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InUncertaintyReevaluator_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten:"
+  gams_description: "todo"
+
+# Handler
+process_modular3_PV_handler:
+  edn_label: "Konfiguratoren"
+  edn_description: "todo"
+
+# Init
+process_modular3_PV_handler_init:
+  edn_label: "Initialisierung"
+  edn_description: "todo"
+
+InAgentAttributeScaler:
+  edn_label: "Agentattributskalierer"
+  edn_description: "todo; newValue = (oldValue - min) \\/ (max - min)"
+InAgentAttributeScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InAgentAttributeScaler_attribute:
+  gams_identifier: "Attribut"
+  gams_description: "todo"
+
+InLinearePercentageAgentAttributeScaler:
+  edn_label: "Fancy Agentattributskalierer"
+  edn_description: "todo; y = m * x + n"
+InLinearePercentageAgentAttributeScaler_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InLinearePercentageAgentAttributeScaler_mValue:
+  gams_identifier: "m"
+  gams_description: "todo"
+InLinearePercentageAgentAttributeScaler_nValue:
+  gams_identifier: "n"
+  gams_description: "todo"
+InLinearePercentageAgentAttributeScaler_attribute:
+  gams_identifier: "Attribut"
+  gams_description: "todo"
+
+InUncertaintySupplierInitializer:
+  edn_label: "Initialisierer für Unsicherheiten"
+  edn_description: "todo"
+InUncertaintySupplierInitializer_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InUncertaintySupplierInitializer_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten"
+  gams_description: "todo"
+
+
+process_modular3_PV_handler_newproduct:
+  edn_label: "Neue Produkte"
+  edn_description: "todo"
+
+# Module
+process_modular3_PV_modules:
+  edn_label: "Module"
+  edn_description: "todo"
+
+# void
+process_modular3_PV_modules_action:
+  edn_label: "Aktionsmodule"
+  edn_description: "todo"
+
+InCommunicationModule3:
+  edn_label: "Kommunikationsmodul"
+  edn_description: "todo"
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InCommunicationModule3_adopterPoints:
+  gams_identifier: "Adopter points"
+  gams_description: "todo"
+InCommunicationModule3_interestedPoints:
+  gams_identifier: "Interested points"
+  gams_description: "todo"
+InCommunicationModule3_awarePoints:
+  gams_identifier: "Aware points"
+  gams_description: "todo"
+InCommunicationModule3_unknownPoints:
+  gams_identifier: "Unknown üpoints"
+  gams_description: "todo"
+InCommunicationModule3_raEnabled:
+  gams_identifier: "Relative agreement nutzen?"
+  gams_description: "Diese Option aktiviert bzw. deaktiviert das relative agreement."
+InCommunicationModule3_raLoggingEnabled:
+  gams_identifier: "Relative agreement loggen?"
+  gams_description: "Ermöglicht das Speichern der Änderungen im realtive agreement. Der Logdateiname entspricht dem Modulnamen. Warnung: Diese Option kann zu großen Dateien führen!"
+InCommunicationModule3_raPrintHeader:
+  gams_identifier: "Kopfzeile schreiben?"
+  gams_description: "todo"
+InCommunicationModule3_raOpinionLogging:
+  gams_identifier: "Meinung loggen?"
+  gams_description: "Falls ausgewählt, wird die Meinung der kommunizierenden Agenten geloggt."
+InCommunicationModule3_raUnceraintyLogging:
+  gams_identifier: "Unsicherheit loggen?"
+  gams_description: "Falls ausgewählt, wird die Unsicherheit der kommunizierenden Agenten geloggt."
+InCommunicationModule3_raKeepCsv:
+  gams_identifier: "Als csv speichern?"
+  gams_description: "todo"
+InCommunicationModule3_raStoreXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InCommunicationModule3_speedOfConvergence:
+  gams_identifier: "Speed of convergence"
+  gams_description: "todo"
+InCommunicationModule3_attitudeGap:
+  gams_identifier: "Attitude gap"
+  gams_description: "todo"
+InCommunicationModule3_chanceNeutral:
+  gams_identifier: "Wahrscheinllichkeit: Neutral"
+  gams_description: "todo"
+InCommunicationModule3_chanceConvergence:
+  gams_identifier: "Wahrscheinllichkeit: Konvergenz"
+  gams_description: "todo"
+InCommunicationModule3_chanceDivergence:
+  gams_identifier: "Wahrscheinllichkeit: Divergenz"
+  gams_description: "todo"
+InCommunicationModule3_uncertaintySuppliers:
+  gams_identifier: "Unsicherheiten"
+  gams_description: "todo"
+
+InIfElseActionModule3:
+  edn_label: "IfElseActionModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InIfElseActionModule3_testModule:
+  gams_identifier: "test"
+  gams_description: "todo"
+  graphedge_label: *BOOL_EDGE_LABEL
+InIfElseActionModule3_onTrueModule:
+  gams_identifier: "onTrue"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+InIfElseActionModule3_onFalseModule:
+  gams_identifier: "onFalse"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+
+InNOPModule3:
+  edn_label: "NOP"
+  edn_description: "todo"
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InNOPModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InRewireModule3:
+  edn_label: "Rewiremodul"
+  edn_description: "todo"
+  graphnode_colorlabel: *ACTION_MODULE_LABEL
+  graphnode_borderlabel: *ACTION_MODULE_LABEL
+  graphnode_shapelabel: *ACTION_MODULE_LABEL
+InRewireModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+# boolean
+process_modular3_PV_modules_bool:
+  edn_label: "Entscheidungsmodule"
+  edn_description: "todo"
+
+InBernoulliModule3:
+  edn_label: "BernoulliModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+InBernoulliModule3_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InBernoulliModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InThresholdReachedModule3:
+  edn_label: "ThresholdReachedModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *BOOL_MODULE_LABEL
+  graphnode_borderlabel: *BOOL_MODULE_LABEL
+  graphnode_shapelabel: *BOOL_MODULE_LABEL
+InThresholdReachedModule3_priority:
+  gams_identifier: "Priorität"
+  gams_description: "todo"
+InThresholdReachedModule3_drawModule:
+  gams_identifier: "Vergleichswertmodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InThresholdReachedModule3_thresholdModule:
+  gams_identifier: "Grenzwertmodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+# double
+process_modular3_PV_modules_calc:
+  edn_label: "Berechnungsmodule"
+  edn_description: "todo"
+
+InAddScalarModule3:
+  edn_label: "AddScalarModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InAddScalarModule3_scalar:
+  gams_identifier: "scalar"
+  gams_description: "todo"
+InAddScalarModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InLogisticModule3:
+  edn_label: "LogisticModule"
+  edn_description: "L\\/(1+e^(-k*(x-x0)))"
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InLogisticModule3_valueL:
+  gams_identifier: "L"
+  gams_description: "todo"
+InLogisticModule3_valueK:
+  gams_identifier: "k"
+  gams_description: "todo"
+InLogisticModule3_xinputModule:
+  gams_identifier: "x Modul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InLogisticModule3_x0inputModule:
+  gams_identifier: "x0 Modul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InLogisticModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+InMulScalarModule3:
+  edn_label: "MulScalarModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InMulScalarModule3_scalar:
+  gams_identifier: "scalar"
+  gams_description: "todo"
+InMulScalarModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InProductModule3:
+  edn_label: "ProductModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InProductModule3_inputModule:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InSumModule3:
+  edn_label: "SumModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *CALC_MODULE_LABEL
+  graphnode_borderlabel: *CALC_MODULE_LABEL
+  graphnode_shapelabel: *CALC_MODULE_LABEL
+InSumModule3_inputModule:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSumModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+# double - input
+process_modular3_PV_modules_input:
+  edn_label: "Eingabemodule"
+  edn_description: "todo"
+
+InAttributeInputModule3:
+  edn_label: "Attributmodul"
+  edn_description: "todo"
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAttributeInputModule3_attribute:
+  gams_identifier: "attribute"
+  gams_description: "todo"
+InAttributeInputModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+InAvgFinModule3:
+  edn_label: "AvgFinModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAvgFinModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InNPVModule3:
+  edn_label: "NPVModule"
+  edn_description: "Berechnet den NPV für einen einzelnen Agenten in Abhängigkeit des Jahres."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InSelectNPVModule3:
+  edn_label: "NPV-Auswahl-Module"
+  edn_description: "Berechnet den NPV auf verschiedene Varianten:
+    1: der Standard-NPV des Agenten für das Simulationsjahr
+    2: jährlicher Durchschnitt über existierende Dachkombinationen
+    3: jährlicher Durchschnitt über alle möglichen Dachkombinationen
+    4: jährlicher Durchschnitt über alle Agenten
+    5: simulationsweiter Durchschnitt über existierende Dachkombinationen
+    6: simulationsweiter Durchschnitt über alle möglichen Dachkombinationen
+    7: simulationsweiter Durchschnitt über alle Agenten
+    8 - 19: ...
+  "
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InSelectNPVModule3_npvId:
+  gams_identifier: "NPV-ID"
+  gams_description: "Der zu nutzende NPV-Typ."
+InSelectNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InNPVLogisticModule3:
+  edn_label: "NPV-Logistikmodul"
+  edn_description: "L\\/(1+e^(-k*(x-x0))) mit x als NPV und x0:
+    1: jährliches min\\/max über existierende Dachkombinationen
+    2: jährliches min\\/max über alle möglichen Dachkombinationen
+    3: jährliches min\\/max über alle Agenten
+    4: simulationsweites min\\/max über existierende Dachkombinationen
+    5: simulationsweites min\\/max über alle möglichen Dachkombinationen
+    6: simulationsweites min\\/max über alle Agenten
+  "
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNPVLogisticModule3_valueL:
+  gams_identifier: "L"
+  gams_description: "todo"
+InNPVLogisticModule3_valueK:
+  gams_identifier: "k"
+  gams_description: "todo"
+InNPVLogisticModule3_npvId:
+  gams_identifier: "NPV-ID"
+  gams_description: "Der zu nutzende NPV-Typ."
+InNPVLogisticModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InNPVLogisticModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+InGlobalAvgNPVModule3:
+  edn_label: "GlobalAvgAgentNPVModule"
+  edn_description: "Berechnet den durchschnittlichen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalAvgNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMaxAgentNPVModule2:
+  edn_label: "GlobalMaxAgentNPVModule"
+  edn_description: "Berechnet den maximalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinAgentNPVModule2:
+  edn_label: "GlobalMinAgentNPVModule"
+  edn_description: "Berechnet den minimalen globalen (über alle Jahre) NPV über alle Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+# DEPRECATED
+InAnnualAvgAgentAssetNPVModule2:
+  edn_label: "AnnualAvgAgentAssetNPVModule"
+  edn_description: "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten. Die NPV Werte werden dabei anhand von Neigung und Ausrichtung gewichtet."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgAgentAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgAssetNPVModule2:
+  edn_label: "AnnualAvgAssetNPVModule2"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMaxAssetNPVModule2:
+  edn_label: "AnnualMaxAssetNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinAssetNPVModule2:
+  edn_label: "AnnualMinAssetNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgExistingAssetNPVModule2:
+  edn_label: "AnnualAvgAssetNPVModule2"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgExistingAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMaxExistingAssetNPVModule2:
+  edn_label: "AnnualMaxExistingAssetNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxExistingAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinExistingAssetNPVModule2:
+  edn_label: "AnnualMinExistingAssetNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinExistingAssetNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalAvgExistingAssetNPVModule3:
+  edn_label: "AnnualAvgAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten durchschnittlichen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalAvgExistingAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMaxExistingAssetNPVModule3:
+  edn_label: "GlobalMaxExistingAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten maximalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxExistingAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinExistingAssetNPVModule3:
+  edn_label: "GlobalMinExistingAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten minimalen NPV auf Basis der existierenden Dächer."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinExistingAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+# DEPRECATED
+InAssetNPVModule3:
+  edn_label: "AssetNPVModule"
+  edn_description: "(VERALTET) Berechnet den NPV für einen einzelnen Agenten in Abhängig des Jahres. Der Wert wird in Abhängigkeit von Neigung und Ausrichtung gewichtet."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalAvgAssetNPVModule3:
+  edn_label: "GlobalAvgAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten durchschnittlichen NPV auf Basis aller Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalAvgAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMaxAssetNPVModule3:
+  edn_label: "GlobalMaxAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten maximalen NPV auf Basis aller Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMaxAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalMinAssetNPVModule3:
+  edn_label: "GlobalMinAssetNPVModule"
+  edn_description: "Berechnet den simulationsweiten minimalen NPV auf Basis aller Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalMinAssetNPVModule3_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+# DEPRECATED
+InAnnualAvgNPVModule2:
+  edn_label: "AnnualAvgNPVModule"
+  edn_description: "(VERALTET) Berechnet den jährlichen durchschnittlichen NPV unabhängig von den Agenten über alle Ausrichtungen und Neigungen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualAvgAgentNPVModule2:
+  edn_label: "AnnualAvgAgentNPVModule"
+  edn_description: "Berechnet den jährlichen durchschnittlichen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualAvgAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMaxAgentNPVModule2:
+  edn_label: "AnnualMaxAgentNPVModule"
+  edn_description: "Berechnet den jährlichen maximalen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMaxAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualMinAgentNPVModule2:
+  edn_label: "AnnualMinAgentNPVModule"
+  edn_description: "Berechnet den jährlichen minimalen NPV auf Basis der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualMinAgentNPVModule2_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InLocalShareOfAdopterModule3:
+  edn_label: "LocalShareOfAdopterModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InLocalShareOfAdopterModule3_maxToStore:
+  gams_identifier: "maxToStore"
+  gams_description: "todo"
+InLocalShareOfAdopterModule3_nodeFilterScheme:
+  gams_identifier: "nodeFilterScheme"
+  gams_description: "todo"
+InLocalShareOfAdopterModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+InNaNModule3:
+  edn_label: "NaNModule"
+  edn_description: "Gibt NaN (not a number) zurück."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InNaNModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InSocialShareOfAdopterModule3:
+  edn_label: "SocialShareOfAdopterModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InSocialShareOfAdopterModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+InSocialShareOfAdopterModule3_specialId:
+  gams_identifier: "specialId"
+  gams_description: "todo"
+
+InValueModule3:
+  edn_label: "ValueModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InValueModule3_value:
+  gams_identifier: "Rückgabewert"
+  gams_description: "todo"
+
+#double logging
+InCsvValueLoggingModule3:
+  edn_label: "MinimalCsvValueLoggingModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+InCsvValueLoggingModule3_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
+InCsvValueLoggingModule3_logReevaluatorCall:
+  gams_identifier: "Reevaluierungsaufrufe loggen?"
+  gams_description: "todo"
+InCsvValueLoggingModule3_logDefaultCall:
+  gams_identifier: "Normale Aufrufe loggen?"
+  gams_description: "todo"
+InCsvValueLoggingModule3_printHeader:
+  gams_identifier: "Kopfzeile schreiben?"
+  gams_description: "todo"
+InCsvValueLoggingModule3_storeXlsx:
+  gams_identifier: "Als xlsx speichern?"
+  gams_description: "todo"
+InCsvValueLoggingModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InSpecialUtilityCsvValueLoggingModule3:
+  edn_label: "SpecialUtilityCsvValueLoggingModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *LOGGING_MODULE_LABEL
+  graphnode_borderlabel: *LOGGING_MODULE_LABEL
+  graphnode_shapelabel: *LOGGING_MODULE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_utilityModule:
+  gams_identifier: "Utility-Modul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_utilityLogger:
+  gams_identifier: "utilityLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_localShareLogger:
+  gams_identifier: "localShareLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_socialShareLogger:
+  gams_identifier: "socialShareLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_envLogger:
+  gams_identifier: "envLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_novLogger:
+  gams_identifier: "novLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InSpecialUtilityCsvValueLoggingModule3_npvLogger:
+  gams_identifier: "npvLogger"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+# plan
+process_modular3_PV_modules_eval:
+  edn_label: "Planauswertungsmodule"
+  edn_description: "todo"
+
+InRunUntilFailureModule3:
+  edn_label: "RunUntilFailureModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *SYSTEM_MODULE_LABEL
+  graphnode_borderlabel: *SYSTEM_MODULE_LABEL
+  graphnode_shapelabel: *SYSTEM_MODULE_LABEL
+InRunUntilFailureModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *SYSTEM_EDGE_LABEL
+
+# stage
+process_modular3_PV_modules_evalra:
+  edn_label: "PVact-Auswertungsmodule"
+  edn_description: "todo"
+
+InDecisionMakingDeciderModule3:
+  edn_label: "DecisionMakingDeciderModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InDecisionMakingDeciderModule3_forceEvaluation:
+  gams_identifier: "forceEvaluation"
+  gams_description: "todo"
+InDecisionMakingDeciderModule3_finCheckModule:
+  gams_identifier: "Finanz-Testmodul"
+  gams_description: "todo"
+  graphedge_label: *BOOL_EDGE_LABEL
+InDecisionMakingDeciderModule3_thresholdModule:
+  gams_identifier: "Grenzwertmodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+InDecisionMakingDeciderModule3_utilityModule:
+  gams_identifier: "Utilitymodul"
+  gams_description: "todo"
+  graphedge_label: *CALC_EDGE_LABEL
+
+InDoAdoptModule3:
+  edn_label: "DoAdoptModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InDoAdoptModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+
+InFeasibilityModule3:
+  edn_label: "FeasibilityModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InFeasibilityModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+
+InInitializationModule3:
+  edn_label: "InitializationModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InInitializationModule3_placeholder:
+  gams_identifier: "---"
+  gams_description: "todo"
+
+InInterestModule3:
+  edn_label: "InterestModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InInterestModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+
+InMainBranchingModule3:
+  edn_label: "MainBranchingModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InMainBranchingModule3_initModule:
+  gams_identifier: "init"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_awarenessModule:
+  gams_identifier: "awareness"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_feasibilityModule:
+  gams_identifier: "feasiblity"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_decisionModule:
+  gams_identifier: "decision"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+InMainBranchingModule3_adoptedModule:
+  gams_identifier: "adopted"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+InMainBranchingModule3_impededModule:
+  gams_identifier: "impeded"
+  gams_description: "todo"
+  graphedge_label: *ACTION_EDGE_LABEL
+
+InPhaseUpdateModule3:
+  edn_label: "PhaseUpdateModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InPhaseUpdateModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+
+InYearBasedAdoptionDeciderModule3:
+  edn_label: "YearBasedAdoptionDeciderModule"
+  edn_description: "rnd.draw < base * pow(factor, currentYear - adoptionYear)"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InYearBasedAdoptionDeciderModule3_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
+InYearBasedAdoptionDeciderModule3_base:
+  gams_identifier: "base"
+  gams_description: "todo"
+InYearBasedAdoptionDeciderModule3_factor:
+  gams_identifier: "factor"
+  gams_description: "todo"
+InYearBasedAdoptionDeciderModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+
+# stage logging
+InPhaseLoggingModule3:
+  edn_label: "PhaseLoggingModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *PVACT_MODULE_LABEL
+  graphnode_borderlabel: *PVACT_MODULE_LABEL
+  graphnode_shapelabel: *PVACT_MODULE_LABEL
+InPhaseLoggingModule3_enabled:
+  gams_identifier: "Modul verwenden?"
+  gams_description: "todo"
+InPhaseLoggingModule3_inputModule:
+  gams_identifier: "Eingabemodul"
+  gams_description: "todo"
+  graphedge_label: *PVACT_EDGE_LABEL
+
+# reeval
+process_modular3_PV_modules_reeval:
+  edn_label: "Reevaluierungsmodule"
+  edn_description: "todo"
+
+InReevaluatorModule3:
+  edn_label: "InReevaluatorModule"
+  edn_description: "todo"
+  graphnode_colorlabel: *REEVAL_MODULE_LABEL
+  graphnode_borderlabel: *REEVAL_MODULE_LABEL
+  graphnode_shapelabel: *REEVAL_MODULE_LABEL
+InReevaluatorModule3_inputModule:
+  gams_identifier: "Eingabemodule"
+  gams_description: "todo"
+  graphedge_label: *REEVAL_EDGE_LABEL
+
+##########################
+#
+##########################
+
 spatial:
   edn_label: "Räumliche Modell"
   edn_description: "Definiert das räumliche Modell und zugehörige Komponenten."
@@ -1981,14 +3913,14 @@ InFileBasedSpatialInformationSupplier_yPositionKey:
 InFileBasedSpatialInformationSupplier_idKey:
   gams_identifier: "ID-Schlüssel"
   gams_description: "Bestimmt den Schlüssel für die Auswahl der ID in der tabellarischen Datei (Spaltenname)."
-InFileBasedSpatialInformationSupplier_attrFile:
+InFileBasedSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
 InFileBasedSelectSpatialInformationSupplier:
   edn_label: "Zugeordnet"
   edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen."
-InFileBasedSelectSpatialInformationSupplier_attrFile:
+InFileBasedSelectSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 InFileBasedSelectSpatialInformationSupplier_xPositionKey:
@@ -2007,7 +3939,7 @@ InFileBasedSelectSpatialInformationSupplier_selectKey:
 InFileBasedSelectGroupSpatialInformationSupplier:
   edn_label: "Zugeordnet und gewichtet"
   edn_description: "Die Daten werden, basierend auf einem gewünschtem Attribut, zugeordnet. Die Zuordnung basiert dabei auf Basis des Bezeichners der Agentengruppen. Zusätzlich wird ein Gruppierungsattribut genutzt, um die Daten zu wichten."
-InFileBasedSelectGroupSpatialInformationSupplier_attrFile:
+InFileBasedSelectGroupSpatialInformationSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 InFileBasedSelectGroupSpatialInformationSupplier_xPositionKey:
@@ -2029,7 +3961,7 @@ InFileBasedSelectGroupSpatialInformationSupplier_groupKey:
 InFileBasedPVactMilieuSupplier:
   edn_label: "PVact - Milieu"
   edn_description: "Die Daten werden, basierend auf dem Milieu, zugeordnet."
-InFileBasedPVactMilieuSupplier_attrFile:
+InFileBasedPVactMilieuSupplier_file:
   gams_identifier: "Tabellarische Datei"
   gams_description: "Legt die Datei fest, aus der die räumlichen Informationen gelesen werden sollen."
 
@@ -2141,6 +4073,10 @@ dev:
 test_data:
   edn_label: "Testdaten"
   edn_description: "Testdaten"
+
+deprecated:
+  edn_label: "DEPRECATED"
+  edn_description: "..."
 
 InTestData:
   edn_label: "Einfache Testdaten"
@@ -2256,6 +4192,66 @@ InSpecialPVactInput_const2019:
 InSpecialPVactInput_const2020:
   gams_identifier: "Jahr 2020"
   gams_description: "Stellt die Konstruktionsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2021:
+  gams_identifier: "Jahr 2021"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2022:
+  gams_identifier: "Jahr 2022"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2023:
+  gams_identifier: "Jahr 2023"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2024:
+  gams_identifier: "Jahr 2024"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2025:
+  gams_identifier: "Jahr 2025"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2026:
+  gams_identifier: "Jahr 2026"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2027:
+  gams_identifier: "Jahr 2027"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2028:
+  gams_identifier: "Jahr 2028"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2029:
+  gams_identifier: "Jahr 2029"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2030:
+  gams_identifier: "Jahr 2030"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2031:
+  gams_identifier: "Jahr 2031"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2032:
+  gams_identifier: "Jahr 2032"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2033:
+  gams_identifier: "Jahr 2033"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2034:
+  gams_identifier: "Jahr 2034"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2035:
+  gams_identifier: "Jahr 2035"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2036:
+  gams_identifier: "Jahr 2036"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2037:
+  gams_identifier: "Jahr 2037"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2038:
+  gams_identifier: "Jahr 2038"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2039:
+  gams_identifier: "Jahr 2039"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_const2040:
+  gams_identifier: "Jahr 2040"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
 
 special_input_pvact_renorate:
   edn_label: "Jährliche Renovierungsraten"
@@ -2302,6 +4298,66 @@ InSpecialPVactInput_reno2019:
   gams_description: "Stellt die Renovierungsrate für das Jahr 2019 ein."
 InSpecialPVactInput_reno2020:
   gams_identifier: "Jahr 2020"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2021:
+  gams_identifier: "Jahr 2021"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2022:
+  gams_identifier: "Jahr 2022"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2023:
+  gams_identifier: "Jahr 2023"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2024:
+  gams_identifier: "Jahr 2024"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2025:
+  gams_identifier: "Jahr 2025"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2026:
+  gams_identifier: "Jahr 2026"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2027:
+  gams_identifier: "Jahr 2027"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2028:
+  gams_identifier: "Jahr 2028"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2029:
+  gams_identifier: "Jahr 2029"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2030:
+  gams_identifier: "Jahr 2030"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2031:
+  gams_identifier: "Jahr 2031"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2032:
+  gams_identifier: "Jahr 2032"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2033:
+  gams_identifier: "Jahr 2033"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2034:
+  gams_identifier: "Jahr 2034"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2035:
+  gams_identifier: "Jahr 2035"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2036:
+  gams_identifier: "Jahr 2036"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2037:
+  gams_identifier: "Jahr 2037"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2038:
+  gams_identifier: "Jahr 2038"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2039:
+  gams_identifier: "Jahr 2039"
+  gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
+InSpecialPVactInput_reno2040:
+  gams_identifier: "Jahr 2040"
   gams_description: "Stellt die Renovierungsrate für das Jahr 2020 ein."
 
 
@@ -2466,14 +4522,6 @@ InGeneral_logCalculateDecisionMaking:
 logging_script:
   edn_label: "Ausgabe von Skripten und Daten"
   edn_description: "Diese Optionen ermöglichen die Ausgabe von Ergebnissen in spezieller Form. Neben den Daten werden auch Skripte mit ausgegeben."
-InGeneral_logScriptAdoptionsZip:
-  gams_identifier: "Adoptionen nach PLZ (line)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach der PLZ aus. Zusätzlich wird das Script für eine line chart ausgegeben."
-  gams_domain: "[0|1]"
-InGeneral_logScriptAdoptionsZipPhase:
-  gams_identifier: "kumulierte Adoptionen nach PLZ und Phase (stacked bar)"
-  gams_description: "Gibt die Adoptionsergebnisse gruppiert nach dem PLZ und Phase aus. Zusätzlich wird das Skript für eine bar chart ausgegeben."
-  gams_domain: "[0|1]"
 
 #deprecated
 names:
@@ -2527,7 +4575,7 @@ InGeneral_logNonAdopterAnalysis:
 InGeneral_logInitialAdopterAnalysis:
   gams_identifier: "Initiale Adopter"
   gams_description: "Speichert alle auftretenden initialen Adoptionen. (InitialAdopter.csv in Analyse.zip)"
-InGeneral_logAdoptionAnalysis:
+InGeneral_logAdoptionAnalysis_OLD:
   gams_identifier: "Adoptions"
   gams_description: "Speichert alle auftretenden Adoptionen. (Adoptions.csv in Analyse.zip)"
 InGeneral_logDecisionAnalysis:

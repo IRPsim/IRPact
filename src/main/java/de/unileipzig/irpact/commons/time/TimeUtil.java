@@ -32,6 +32,10 @@ public final class TimeUtil {
         return zone;
     }
 
+    public static int getYear(long epochMilli) {
+        return msToTime(epochMilli).getYear();
+    }
+
     public static ZonedDateTime msToTime(long epochMilli) {
         return ZonedDateTime.ofInstant(
                 Instant.ofEpochMilli(epochMilli),
@@ -50,6 +54,11 @@ public final class TimeUtil {
     public static ZonedDateTime endOfYear(int year) {
         ZonedDateTime zdt = startOfYear(year + 1);
         return zdt.minusNanos(1);
+    }
+
+    public static ZonedDateTime lastDayOfYear(int year) {
+        return LocalDate.of(year, 12, 31)
+                .atStartOfDay(getZone());
     }
 
     public static ZonedDateTime of(int year, long weeks) {

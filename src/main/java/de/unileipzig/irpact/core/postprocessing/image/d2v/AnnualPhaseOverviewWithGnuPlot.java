@@ -1,7 +1,7 @@
 package de.unileipzig.irpact.core.postprocessing.image.d2v;
 
 import de.unileipzig.irpact.commons.util.io3.JsonTableData3;
-import de.unileipzig.irpact.core.logging.DataAnalyser;
+import de.unileipzig.irpact.core.logging.data.DataAnalyser;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.postprocessing.image.CsvBasedImageData;
 import de.unileipzig.irpact.core.postprocessing.image.ImageData;

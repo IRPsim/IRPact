@@ -8,9 +8,10 @@ import de.unileipzig.irpact.core.logging.LoggingHelper;
 import de.unileipzig.irpact.core.need.Need;
 import de.unileipzig.irpact.core.process.ProcessModel;
 import de.unileipzig.irpact.core.process.ProcessPlan;
-import de.unileipzig.irpact.core.process.ra.uncert.Uncertainty;
+import de.unileipzig.irpact.core.process2.uncert.Uncertainty;
 import de.unileipzig.irpact.core.product.Product;
 import de.unileipzig.irpact.core.simulation.SimulationEnvironment;
+import de.unileipzig.irpact.develop.Dev;
 import de.unileipzig.irptools.util.log.IRPLogger;
 
 /**
@@ -26,7 +27,7 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     protected Product product;
     protected ConsumerAgent agent;
     protected Rnd rnd;
-    protected RAStage stage = RAStage.PRE_INITIALIZATION;
+    protected RAStage currentStage = RAStage.PRE_INITIALIZATION;
     protected boolean underRenovation = false;
     protected boolean underConstruction = false;
 
@@ -50,11 +51,11 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
 
     public RAStage getStage() {
-        return stage;
+        return currentStage;
     }
     public void setStage(RAStage stage) {
-        logStageUpdate(this.stage, stage);
-        this.stage = stage;
+        logStageUpdate(currentStage, stage);
+        currentStage = stage;
     }
     protected void logStageUpdate(RAStage current, RAStage nextStage)  {
         LOGGER.trace(IRPSection.SIMULATION_PROCESS, "[{}] stage update: {} -> {}", agent.getName(), current, nextStage);
@@ -105,7 +106,8 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
 
     public Uncertainty getUncertainty() {
-        return getModel().getUncertaintyCache().getUncertainty(getAgent());
+        //return getModel().getUncertaintyCache().getUncertainty(getAgent());
+        return Dev.throwException();
     }
 
     @Override
@@ -117,16 +119,16 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     }
 
     public void runAdjustmentAtStartOfYear() {
-        if(stage == RAStage.IMPEDED) {
+        if(currentStage == RAStage.IMPEDED) {
             trace("reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
-            stage = RAStage.DECISION_MAKING;
+            currentStage = RAStage.DECISION_MAKING;
         }
     }
 
     public void runEvaluationAtEndOfYear() {
-        if(stage == RAStage.IMPEDED) {
+        if(currentStage == RAStage.IMPEDED) {
             trace("reset process stage '{}' to '{}' for agent '{}'", RAStage.IMPEDED, RAStage.DECISION_MAKING, agent.getName());
-            stage = RAStage.DECISION_MAKING;
+            currentStage = RAStage.DECISION_MAKING;
             doRunEvaluationAtEndOfYear();
         }
     }
@@ -134,7 +136,7 @@ public abstract class RAProcessPlanBase implements ProcessPlan, LoggingHelper {
     protected abstract void doRunEvaluationAtEndOfYear();
 
     public void runUpdateAtMidOfYear() {
-        if(stage == RAStage.ADOPTED) {
+        if(currentStage == RAStage.ADOPTED) {
             trace("agent '{}' is adopter, skip renovation/construction", agent.getName());
             return;
         }

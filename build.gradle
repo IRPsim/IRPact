@@ -90,7 +90,7 @@ ext {
     jacksonVersion = '2.12.2'
     jadexDistVersion = '4.0.241' //'4.0.187'
     logbackVersion = '1.2.3'
-    apachePoiVersion = '5.0.0'
+    apachePoiVersion = '5.1.0'
     geotoolsVersion = '25.1'
 }
 
@@ -131,6 +131,9 @@ dependencies {
 
     implementation "org.apache.poi:poi:$apachePoiVersion"
     implementation "org.apache.poi:poi-ooxml:$apachePoiVersion"
+    //for apache poi
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.1'
+
 
     //custom
     implementation files('customlibs/IRPtools-1.0-SNAPSHOT.jar')
@@ -155,7 +158,7 @@ tasks.register('buildUberJar', Jar) {
             it.isDirectory() ? it : zipTree(it)
         }
     } with jar
-    duplicatesStrategy = 'include'
+    duplicatesStrategy = 'exclude'
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
 

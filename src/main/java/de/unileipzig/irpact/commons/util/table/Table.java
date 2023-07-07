@@ -35,6 +35,8 @@ public interface Table<T> {
 
     void addColumn(String name);
 
+    void addColumn(int index, String name);
+
     void addColumns(String... names);
 
     boolean removeColumn(String columnName);

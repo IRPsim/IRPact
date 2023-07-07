@@ -57,7 +57,7 @@ public class FilterModule
     }
 
     @Override
-    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction<?>> postActions) throws Throwable {
+    public AdoptionResult evaluate(ConsumerAgentData data, List<PostAction> postActions) throws Throwable {
         AdoptionResult result = getInputModule().evaluate(data, postActions);
 
         if(result == AdoptionResult.IN_PROCESS) {

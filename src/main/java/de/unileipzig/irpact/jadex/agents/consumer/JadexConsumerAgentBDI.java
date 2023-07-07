@@ -165,6 +165,12 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
+    public void firstIRPactAgentAction(List<PostAction> postActions) throws Throwable {
+        log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] first action ({})", getName(), now());
+        nextIRPactAgentLoopAction(postActions);
+    }
+
+    @Override
     public Map<String, Object> endIRPactAgent() throws Throwable {
         log().trace(IRPSection.SIMULATION_LIFECYCLE, "[{}] end ({})", getName(), now());
         runOnEnd();
@@ -172,7 +178,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
     }
 
     @Override
-    public void nextIRPactAgentLoopAction(List<PostAction<?>> postActions) throws Throwable {
+    public void nextIRPactAgentLoopAction(List<PostAction> postActions) throws Throwable {
         pulse();
 
         resetOnNewAction();
@@ -608,8 +614,13 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
 
     @Override
     public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase) {
+        adopt(need, product, stamp, phase, Double.NaN);
+    }
+
+    @Override
+    public void adopt(Need need, Product product, Timestamp stamp, AdoptionPhase phase, double utility) {
         if(needs.contains(need)) {
-            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase);
+            AdoptedProduct adoptedProduct = new BasicAdoptedProduct(need, product, stamp, phase, utility);
             needs.remove(need);
             addAdoptedProduct(adoptedProduct);
             LOGGER.trace(IRPSection.SIMULATION_AGENT, "[{}] adopt '{}' at {}", getName(), product.getName(), stamp);
@@ -689,7 +700,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         log().trace(IRPSection.SIMULATION_AGENT, "[{}] post end sync", getName());
     }
 
-    protected void executePlans(List<PostAction<?>> postActions) throws Throwable {
+    protected void executePlans(List<PostAction> postActions) throws Throwable {
         Map<Need, ProcessPlan> adoptedPlans = null;
 
         for(Map.Entry<Need, ProcessPlan> entry: getActivePlans().entrySet()) {
@@ -836,7 +847,7 @@ public class JadexConsumerAgentBDI extends AbstractJadexAgentBDI implements Cons
         return plan.execute();
     }
 
-    protected ProcessPlanResult executePlan(ProcessPlan plan, List<PostAction<?>> postActions) throws Throwable {
+    protected ProcessPlanResult executePlan(ProcessPlan plan, List<PostAction> postActions) throws Throwable {
         return plan.execute(postActions);
     }
 }

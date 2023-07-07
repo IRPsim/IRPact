@@ -1,6 +1,7 @@
 package de.unileipzig.irpact.start;
 
 import de.unileipzig.irpact.commons.logging.LazyPrinter;
+import de.unileipzig.irpact.commons.util.ConsoleUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.logging.IRPLoggingMessage;
 import de.unileipzig.irpact.core.logging.IRPSection;
@@ -96,6 +97,10 @@ public final class Start {
 
     private boolean initLogging() {
         try {
+            if(options.isNoConsole()) {
+                ConsoleUtil.disable();
+                setThrowExceptionInMain(true);
+            }
             IRPLogging.setFilterError(options.isFilterError());
             setupLogging();
             return true;
@@ -160,7 +165,14 @@ public final class Start {
         if(isHelpOrVersion()) return result;
         if(isRunIRPtools()) return runIRPtools();
         if(isRunUtilities()) return runUtilities();
-        return runPreloader(scenario, callbacks);
+        Result result = runPreloader(scenario, callbacks);
+        LOGGER.trace("clearTmpInputIfRequired");
+        try {
+            options.clearTmpInputIfRequired();
+        } catch (IOException e) {
+            LOGGER.error("clearTmpInputIfRequired", e);
+        }
+        return result;
     }
 
     private Result runIRPtools() {
@@ -257,6 +269,7 @@ public final class Start {
         Start start = new Start();
         Result result = start.run(args);
         if(result.isFailure() && result.hasCause() && isThrowExceptionInMain()) {
+            ConsoleUtil.enable();
             throw new StartException(result.getCause());
         }
     }

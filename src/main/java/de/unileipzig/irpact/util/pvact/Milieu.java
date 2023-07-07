@@ -42,4 +42,13 @@ public enum Milieu implements Printable {
     public String print() {
         return TEXT;
     }
+
+    public static Milieu get(String name) {
+        for(Milieu m: values()) {
+            if(m.TEXT.equals(name)) {
+                return m;
+            }
+        }
+        return null;
+    }
 }
