@@ -1,5 +1,6 @@
 package de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input;
 
+import de.unileipzig.irpact.commons.util.MathUtil;
 import de.unileipzig.irpact.core.logging.IRPLogging;
 import de.unileipzig.irpact.core.process.ra.npv.NPVData;
 import de.unileipzig.irpact.core.process.ra.npv.NPVDataSupplier;
@@ -14,11 +15,11 @@ import java.util.List;
 /**
  * @author Daniel Abitz
  */
-public class GlobalMinAgentNPVModule2
+public class NormalizedNPVModule2
         extends AbstractCACalculationModule2
         implements RAHelperAPI2 {
 
-    private static final IRPLogger LOGGER = IRPLogging.getLogger(GlobalMinAgentNPVModule2.class);
+    private static final IRPLogger LOGGER = IRPLogging.getLogger(NormalizedNPVModule2.class);
 
     protected NPVDataSupplier dataSupplier;
     protected NPVData data;
@@ -71,9 +72,12 @@ public class GlobalMinAgentNPVModule2
         SimulationEnvironment environment = input.getEnvironment();
         int start = environment.getSettings().getFirstSimulationYear();
         int end = environment.getSettings().getLastSimulationYear();
-        double value = dataSupplier.globalMinAgentNPV(input::streamConsumerAgents, start, end);
-        trace("[{}]@[{}] GlobalMinAgentNPVModule2 = {}", getName(), printInputInfo(input),
-            value);
-        return value;
+        double min = dataSupplier.globalMinAgentNPV(input::streamConsumerAgents, start, end);
+        double max = dataSupplier.globalMaxAgentNPV(input::streamConsumerAgents, start, end);
+        double npv = dataSupplier.NPV(input.getAgent(), getCurrentYear(input));
+        double normalized = MathUtil.normalize(npv, min, max);
+        trace("[{}]@[{}] npv={}, min={}, max={}, normalized={}", getName(), printInputInfo(input),
+            npv, min, max, normalized);
+        return normalized;
     }
 }

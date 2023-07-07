@@ -64,6 +64,8 @@ public class MulScalarModule2<I>
         checkAndWarnNaN(input, v, getNonnullSubmodule(), "value");
         double r = s * v;
         checkAndWarnNaN(input, r, "result");
+        trace("[{}]@[{}] {}={} * {} = {}", getName(), printInputInfo(input),
+            getNonnullSubmodule().getName(), v, s, r);
         return r;
     }
 }

@@ -32,4 +32,8 @@ public final class MathUtil {
         double slope = (outMax - outMin) / (inMax - inMin);
         return outMin + slope * (in - inMin);
     }
+
+    public static double normalize(double value, double min, double max) {
+        return (value - min) / (max - min);
+    }
 }

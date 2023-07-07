@@ -71,6 +71,9 @@ public class GlobalMaxAgentNPVModule2
         SimulationEnvironment environment = input.getEnvironment();
         int start = environment.getSettings().getFirstSimulationYear();
         int end = environment.getSettings().getLastSimulationYear();
-        return dataSupplier.globalMaxAgentNPV(input::streamConsumerAgents, start, end);
+        double value = dataSupplier.globalMaxAgentNPV(input::streamConsumerAgents, start, end);
+        trace("[{}]@[{}] GlobalMaxAgentNPVModule2 = {}", getName(), printInputInfo(input),
+            value);
+        return value;
     }
 }

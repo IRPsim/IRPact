@@ -96,6 +96,8 @@ public class LogisticModule2<I>
         checkAndWarnNaN(input, x0, getX0(), "x0");
         double r = MathUtil.logistic(getL(), getK(), x, x0);
         checkAndWarnNaN(input, r, "result");
+        trace("[{}]@[{}] {} / (1 + e^-{}({}-{})) = {}", getName(), printInputInfo(input),
+            getL(), getK(), x, x0, r);
         setSpecialData(specialId, r, input);
         return r;
     }
