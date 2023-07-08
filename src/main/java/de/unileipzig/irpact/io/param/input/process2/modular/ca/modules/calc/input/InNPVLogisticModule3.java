@@ -21,11 +21,9 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.Globa
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinExistingAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NPVModule2;
-import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NormalizedNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.calc.LogisticModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.calc.MulScalarModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.calc.SumModule2;
-import de.unileipzig.irpact.core.process2.modular.modules.calc.input.ValueModule2;
 import de.unileipzig.irpact.core.process2.modular.modules.core.CalculationModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
 import de.unileipzig.irpact.core.start.InputParser;
@@ -99,7 +97,6 @@ public class InNPVLogisticModule3 implements InConsumerAgentCalculationModule2 {
     public static final int CASE_GlobalExistingAssetNPVModule3 = 4;
     public static final int CASE_GlobalAssetNPVModule3 = 5;
     public static final int CASE_GlobalAgentNPVModule2 = 6;
-    public static final int CASE_test = 100;
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
@@ -192,17 +189,10 @@ public class InNPVLogisticModule3 implements InConsumerAgentCalculationModule2 {
 
     protected CalculationModule2<ConsumerAgentData2> getXInput(IRPactInputParser parser)
         throws ParsingException {
-        if (getNpvId() == CASE_test) {
-            NormalizedNPVModule2 module = new NormalizedNPVModule2();
-            module.setName(getName() + "_normalizedNpv");
-            module.setData(getNPVData(parser));
-            return module;
-        } else {
-            NPVModule2 module = new NPVModule2();
-            module.setName(getName() + "_npv");
-            module.setData(getNPVData(parser));
-            return module;
-        }
+        NPVModule2 module = new NPVModule2();
+        module.setName(getName() + "_npv");
+        module.setData(getNPVData(parser));
+        return module;
     }
 
     protected CalculationModule2<ConsumerAgentData2> getX0Input(IRPactInputParser parser)
@@ -247,12 +237,6 @@ public class InNPVLogisticModule3 implements InConsumerAgentCalculationModule2 {
                 ((GlobalMinAgentNPVModule2) min).setData(getNPVData(parser));
                 max = new GlobalMaxAgentNPVModule2();
                 ((GlobalMaxAgentNPVModule2) max).setData(getNPVData(parser));
-                break;
-            case CASE_test:
-                min = new ValueModule2<>();
-                ((ValueModule2<?>) min).setValue(0);
-                max = new ValueModule2<>();
-                ((ValueModule2<?>) max).setValue(1);
                 break;
             default:
                 throw new IllegalStateException("unsupported npvId: " + getNpvId());
