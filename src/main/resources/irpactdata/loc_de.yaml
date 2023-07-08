@@ -3301,6 +3301,66 @@ InNPVModule3_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InAnnualNormAgentNPVModule:
+  edn_label: "AnnualNormAgentNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. des jährlichen NPV der existierenden Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualNormAgentNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualNormAssetNPVModule:
+  edn_label: "AnnualNormAssetNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. des jährlichen NPV aller möglichen Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualNormAssetNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InAnnualNormExistingAssetNPVModule:
+  edn_label: "AnnualNormExistingAssetNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. des jährlichen NPV der existierenden Dachkombinationen."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InAnnualNormExistingAssetNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalNormAgentNPVModule:
+  edn_label: "GlobalNormAgentNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. alle (simulationsweit) Kombinationsmöglichkeiten von Neigung und Ausrichtung der Agenten."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalNormAgentNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalNormAssetNPVModule:
+  edn_label: "GlobalNormAssetNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. aller Dachkombinationen (simulationsweit)."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalNormAssetNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
+InGlobalNormExistingAssetNPVModule:
+  edn_label: "GlobalNormExistingAssetNPVModule"
+  edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. der existierenden Dachkombinationen (simulationsweit)."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InGlobalNormExistingAssetNPVModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+
 InSelectNPVModule3:
   edn_label: "NPV-Auswahl-Module"
   edn_description: "Berechnet den NPV auf verschiedene Varianten:
@@ -3311,7 +3371,7 @@ InSelectNPVModule3:
     5: simulationsweiter Durchschnitt über existierende Dachkombinationen
     6: simulationsweiter Durchschnitt über alle möglichen Dachkombinationen
     7: simulationsweiter Durchschnitt über alle Agenten
-    8 - 19: ...
+    8 - 25: ...
   "
   graphnode_colorlabel: *INPUT_MODULE_LABEL
   graphnode_borderlabel: *INPUT_MODULE_LABEL

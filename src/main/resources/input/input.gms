@@ -3595,6 +3595,33 @@ SET set_InAnnualMinExistingAssetNPVModule2_inputnode3(set_InConsumerAgentInputMo
 * - type: Boolean
 PARAMETER par_link_InAnnualMinExistingAssetNPVModule2_inputnode3_InPVFile_pvFile(set_InAnnualMinExistingAssetNPVModule2_inputnode3,set_InPVFile)
 
+* - identifier: InAnnualNormAgentNPVModule_inputnode3
+* - type: String
+SET set_InAnnualNormAgentNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualNormAgentNPVModule_inputnode3_InPVFile_pvFile(set_InAnnualNormAgentNPVModule_inputnode3,set_InPVFile)
+
+* - identifier: InAnnualNormAssetNPVModule_inputnode3
+* - type: String
+SET set_InAnnualNormAssetNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualNormAssetNPVModule_inputnode3_InPVFile_pvFile(set_InAnnualNormAssetNPVModule_inputnode3,set_InPVFile)
+
+* - identifier: InAnnualNormExistingAssetNPVModule_inputnode3
+* - type: String
+SET set_InAnnualNormExistingAssetNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InAnnualNormExistingAssetNPVModule_inputnode3_InPVFile_pvFile(set_InAnnualNormExistingAssetNPVModule_inputnode3,set_InPVFile)
+
 * - identifier: InAssetNPVModule3_inputnode3
 * - type: String
 SET set_InAssetNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
@@ -3715,6 +3742,33 @@ SET set_InGlobalMinAgentNPVModule2_inputnode3(set_InConsumerAgentInputModule2)
 * - type: Boolean
 PARAMETER par_link_InGlobalMinAgentNPVModule2_inputnode3_InPVFile_pvFile(set_InGlobalMinAgentNPVModule2_inputnode3,set_InPVFile)
 
+* - identifier: InGlobalNormAgentNPVModule_inputnode3
+* - type: String
+SET set_InGlobalNormAgentNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InGlobalNormAgentNPVModule_inputnode3_InPVFile_pvFile(set_InGlobalNormAgentNPVModule_inputnode3,set_InPVFile)
+
+* - identifier: InGlobalNormAssetNPVModule_inputnode3
+* - type: String
+SET set_InGlobalNormAssetNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InGlobalNormAssetNPVModule_inputnode3_InPVFile_pvFile(set_InGlobalNormAssetNPVModule_inputnode3,set_InPVFile)
+
+* - identifier: InGlobalNormExistingAssetNPVModule_inputnode3
+* - type: String
+SET set_InGlobalNormExistingAssetNPVModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InGlobalNormExistingAssetNPVModule_inputnode3_InPVFile_pvFile(set_InGlobalNormExistingAssetNPVModule_inputnode3,set_InPVFile)
+
 * - identifier: InLocalShareOfAdopterModule3_inputnode3
 * - type: String
 SET set_InLocalShareOfAdopterModule3_inputnode3(set_InConsumerAgentInputModule2)
@@ -3794,7 +3848,7 @@ PARAMETER par_link_InNPVModule3_inputnode3_InPVFile_pvFile(set_InNPVModule3_inpu
 SET set_InSelectNPVModule3_inputnode3(set_InConsumerAgentInputModule2)
 
 * - default: 1
-* - domain: [1,19]
+* - domain: [1,25]
 * - description: Der zu nutzende NPV-Typ.
 * - identifier: NPV-ID
 * - type: Integer

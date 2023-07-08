@@ -15,6 +15,9 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.Annua
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinAgentNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinAssetNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualMinExistingAssetNPVModule2;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualNormAgentNPVModule;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualNormAssetNPVModule;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.AnnualNormExistingAssetNPVModule;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAgentNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalAvgExistingAssetNPVModule3;
@@ -24,6 +27,9 @@ import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.Globa
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinAgentNPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinAssetNPVModule3;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalMinExistingAssetNPVModule3;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalNormAgentNPVModule;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalNormAssetNPVModule;
+import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.GlobalNormExistingAssetNPVModule;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.calc.input.NPVModule2;
 import de.unileipzig.irpact.core.process2.modular.ca.ra.modules.core.AbstractCACalculationModule2;
 import de.unileipzig.irpact.core.start.IRPactInputParser;
@@ -110,6 +116,12 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
     public static final int CASE_GlobalMaxAssetNPVModule3 = 17;
     public static final int CASE_GlobalMinAgentNPVModule2 = 18;
     public static final int CASE_GlobalMaxAgentNPVModule2 = 19;
+    public static final int CASE_AnnualNormAgentNPVModule = 20;
+    public static final int CASE_AnnualNormAssetNPVModule = 21;
+    public static final int CASE_AnnualNormExistingAssetNPVModule = 22;
+    public static final int CASE_GlobalNormAgentNPVModule = 23;
+    public static final int CASE_GlobalNormAssetNPVModule = 24;
+    public static final int CASE_GlobalNormExistingAssetNPVModule = 25;
 
     private static final IRPLogger LOGGER = IRPLogging.getLogger(thisClass());
 
@@ -127,7 +139,7 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
     @LocalizedUiResource.AddEntry
     @LocalizedUiResource.SimpleSet(
         intDefault = 1,
-        domain = "[1,19]"
+        domain = "[1,25]"
     )
     public long npvId = 1;
     public void setNpvId(int npvId) {
@@ -297,6 +309,41 @@ public class InSelectNPVModule3 implements InConsumerAgentInputModule2 {
                 ((GlobalMaxAgentNPVModule2) module).setData(getPvFile(parser));
                 break;
 
+            case CASE_AnnualNormAgentNPVModule:
+                module = new AnnualNormAgentNPVModule();
+                module.setName(getName());
+                ((AnnualNormAgentNPVModule) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualNormAssetNPVModule:
+                module = new AnnualNormAssetNPVModule();
+                module.setName(getName());
+                ((AnnualNormAssetNPVModule) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_AnnualNormExistingAssetNPVModule:
+                module = new AnnualNormExistingAssetNPVModule();
+                module.setName(getName());
+                ((AnnualNormExistingAssetNPVModule) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalNormAgentNPVModule:
+                module = new GlobalNormAgentNPVModule();
+                module.setName(getName());
+                ((GlobalNormAgentNPVModule) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalNormAssetNPVModule:
+                module = new GlobalNormAssetNPVModule();
+                module.setName(getName());
+                ((GlobalNormAssetNPVModule) module).setData(getPvFile(parser));
+                break;
+
+            case CASE_GlobalNormExistingAssetNPVModule:
+                module = new GlobalNormExistingAssetNPVModule();
+                module.setName(getName());
+                ((GlobalNormExistingAssetNPVModule) module).setData(getPvFile(parser));
+                break;
 
             default:
                 throw new ParsingException("illegal NPV-ID: " + getNpvId());
