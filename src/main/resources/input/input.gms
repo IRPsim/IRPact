@@ -3790,6 +3790,64 @@ PARAMETER par_link_InLocalShareOfAdopterModule3_inputnode3_InNodeDistanceFilterS
 * - type: Integer
 PARAMETER par_InLocalShareOfAdopterModule3_inputnode3_specialId(set_InLocalShareOfAdopterModule3_inputnode3)
 
+* - identifier: InMagicNPVLogisticModule_inputnode3
+* - type: String
+SET set_InMagicNPVLogisticModule_inputnode3(set_InConsumerAgentInputModule2)
+
+* - description: todo
+* - identifier: pvFile
+* - type: Boolean
+PARAMETER par_link_InMagicNPVLogisticModule_inputnode3_InPVFile_pvFile(set_InMagicNPVLogisticModule_inputnode3,set_InPVFile)
+
+* - default: 1
+* - domain: [1,6]
+* - description: Der zu nutzende NPV-Typ.
+* - identifier: NPV-ID
+* - type: Integer
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_npvId(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 1.0
+* - description: todo
+* - identifier: L
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_valueL(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 1.0
+* - description: todo
+* - identifier: k
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_valueK(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 0.5
+* - description: todo
+* - identifier: x0
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_x0(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 0.0
+* - description: todo
+* - identifier: move
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_move(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 1.0
+* - description: todo
+* - identifier: scale
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_scale(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 0.0
+* - description: todo
+* - identifier: newRangeMin
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_newRangeMin(set_InMagicNPVLogisticModule_inputnode3)
+
+* - default: 1.0
+* - description: todo
+* - identifier: newRangeMax
+* - type: Float
+PARAMETER par_InMagicNPVLogisticModule_inputnode3_newRangeMax(set_InMagicNPVLogisticModule_inputnode3)
+
 * - identifier: InNaNModule3_inputnode3
 * - type: String
 SET set_InNaNModule3_inputnode3(set_InConsumerAgentInputModule2)

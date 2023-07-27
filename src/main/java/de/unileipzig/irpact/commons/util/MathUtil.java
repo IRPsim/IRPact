@@ -33,6 +33,12 @@ public final class MathUtil {
         return outMin + slope * (in - inMin);
     }
 
+    public static double transform2(double oldValue, double oldMin, double oldMax, double newMin, double newMax) {
+        double oldRange = oldMax - oldMin;
+        double newRange = newMax - newMin;
+        return (((oldValue - oldMin) * newRange) / oldRange) + newMin;
+    }
+
     public static double normalize(double value, double min, double max) {
         return (value - min) / (max - min);
     }

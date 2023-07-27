@@ -3311,6 +3311,40 @@ InAnnualNormAgentNPVModule_pvFile:
   gams_identifier: "pvFile"
   gams_description: "todo"
 
+InMagicNPVLogisticModule:
+  edn_label: "Spezielles NPV Logistik Modul"
+  edn_description: "Berechnet den NPV des Agenten, normiert ihn, wendet die logistische Funktion an und transformiert ihn in den angegebenden Bereich."
+  graphnode_colorlabel: *INPUT_MODULE_LABEL
+  graphnode_borderlabel: *INPUT_MODULE_LABEL
+  graphnode_shapelabel: *INPUT_MODULE_LABEL
+InMagicNPVLogisticModule_pvFile:
+  gams_identifier: "pvFile"
+  gams_description: "todo"
+InMagicNPVLogisticModule_npvId:
+  gams_identifier: "NPV-ID"
+  gams_description: "Der zu nutzende NPV-Typ."
+InMagicNPVLogisticModule_valueL:
+  gams_identifier: "L"
+  gams_description: "todo"
+InMagicNPVLogisticModule_valueK:
+  gams_identifier: "k"
+  gams_description: "todo"
+InMagicNPVLogisticModule_x0:
+  gams_identifier: "x0"
+  gams_description: "todo"
+InMagicNPVLogisticModule_move:
+  gams_identifier: "move"
+  gams_description: "todo"
+InMagicNPVLogisticModule_scale:
+  gams_identifier: "scale"
+  gams_description: "todo"
+InMagicNPVLogisticModule_newRangeMin:
+  gams_identifier: "newRangeMin"
+  gams_description: "todo"
+InMagicNPVLogisticModule_newRangeMax:
+  gams_identifier: "newRangeMax"
+  gams_description: "todo"
+
 InAnnualNormAssetNPVModule:
   edn_label: "AnnualNormAssetNPVModule"
   edn_description: "Berechnet den NPV des Agenten als normierten Wert bzgl. des jährlichen NPV aller möglichen Dachkombinationen."

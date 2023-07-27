@@ -1043,6 +1043,7 @@ public class InRoot implements RootClass {
             InGlobalNormAssetNPVModule.class,
             InGlobalNormExistingAssetNPVModule.class,
             InLocalShareOfAdopterModule3.class,
+            InMagicNPVLogisticModule.class,
             InNaNModule3.class,
             InNPVLogisticModule3.class,
             InNPVModule3.class,
